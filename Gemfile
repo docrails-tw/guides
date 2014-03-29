@@ -1,7 +1,12 @@
 source 'https://rubygems.org'
 
-gem 'redcarpet', '~> 2.2.2'
+gem 'activesupport' , '~> 4.0.4'
 
-gem 'nokogiri', '>= 1.4.5'
+gem 'actionpack', '~> 4.0.4'
 
-gem 'rails'
+group :doc do
+  gem 'redcarpet', '~> 2.2.2'
+  gem 'w3c_validators'
+end
+
+gem 'rake', '~> 10.2.2'
