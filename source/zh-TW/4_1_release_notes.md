@@ -1,58 +1,44 @@
-Ruby on Rails 4.1 Release Notes
+Ruby on Rails 4.1 發佈記
 ===============================
 
-Highlights in Rails 4.1:
+Rails 4.1 精華摘要：
 
-* Spring application preloader
+* 採用 Spring 來預載應用程式
 * `config/secrets.yml`
-* Action Pack variants
-* Action Mailer previews
+* Action Pack Variants
+* Action Mailer Preview
 
-These release notes cover only the major changes. To know about various bug
-fixes and changes, please refer to the change logs or check out the
-[list of commits](https://github.com/rails/rails/commits/master) in the main
-Rails repository on GitHub.
+本篇僅涵蓋主要的變化。要了解關於已修復的 Bug、功能變更等，請參考 [Rails GitHub 主頁](https://github.com/rails/rails)上各個 Gem 的 CHANGELOG 或是 [Rails 的提交歷史](https://github.com/rails/rails/commits/master)。
 
 --------------------------------------------------------------------------------
 
-Upgrading to Rails 4.1
-----------------------
+升級至 Rails 4.1
+--------------------
 
-If you're upgrading an existing application, it's a great idea to have good test
-coverage before going in. You should also first upgrade to Rails 4.0 in case you
-haven't and make sure your application still runs as expected before attempting
-an update to Rails 4.1. A list of things to watch out for when upgrading is
-available in the
-[Upgrading Ruby on Rails](upgrading_ruby_on_rails.html#upgrading-from-rails-4-0-to-rails-4-1)
-guide.
+如果您正試著升級現有的應用程式至 Rails 4.1，最好有廣的測試覆蓋度。首先應先升級至 4.0，再升上 4.1。升級需要注意的事項在此篇 [Ruby on Rails 升級指南](/guides/edge-translation/upgrading-ruby-on-rails-zh_TW.md#2-從-rails-40-升級到-rails-41)可以找到。
 
+主要的新功能
+------------------
 
-Major Features
---------------
+### 應用程式預加載器：Spring
 
-### Spring Application Preloader
+Spring 會預加載你的 Rails 應用程式。保持應用程式在背景執行，如此一來在執行 Rails 命令時：如跑測試、`rake`、`migrate` 時，不用每次都重啟 Rails 應用程式，加速你的開發流程。
 
-Spring is a Rails application preloader. It speeds up development by keeping
-your application running in the background so you don't need to boot it every
-time you run a test, rake task or migration.
+新版 Rails 4.1 應用程式出廠內建 “Spring 化” 的 binstubs（aka，執行檔，如 `rails`、`rake`）。這表示 `bin/rails`、`bin/rake` 會自動採用 Spring 預載的那一份 Rails。
 
-New Rails 4.1 applications will ship with "springified" binstubs. This means
-that `bin/rails` and `bin/rake` will automatically take advantage of preloaded
-spring environments.
-
-**Running rake tasks:**
+**執行 rake task：**
 
 ```
 bin/rake test:models
 ```
 
-**Running a Rails command:**
+**執行 console：**
 
 ```
 bin/rails console
 ```
 
-**Spring introspection:**
+**查看 Spring**
 
 ```
 $ bin/spring status
@@ -63,60 +49,59 @@ Spring is running:
  3746 spring app    | my_app | started 10 secs ago | development mode
 ```
 
-Have a look at the
-[Spring README](https://github.com/rails/spring/blob/master/README.md) to
-see all available features.
+請查閱 [Spring README](https://github.com/rails/spring/blob/master/README.md) 了解所有功能。
 
-See the [Upgrading Ruby on Rails](upgrading_ruby_on_rails.html#spring)
-guide on how to migrate existing applications to use this feature.
+參考 [Ruby on Rails 升級指南](http://edgeguides.rubyonrails.org/upgrading_ruby_on_rails.html)來了解如何在現有專案裡導入 Spring。
 
 ### `config/secrets.yml`
 
-Rails 4.1 generates a new `secrets.yml` file in the `config` folder. By default,
-this file contains the application's `secret_key_base`, but it could also be
-used to store other secrets such as access keys for external APIs.
+Rails 4.1 採用新的 `secrets.yml`，產生在 `config/` 目錄。這個檔案預設存有應用程式的 `secret_key_base`，也可以用來存放其它 secrets，比如存放外部 API 需要用的 access keys。例子：
 
-The secrets added to this file are accessible via `Rails.application.secrets`.
-For example, with the following `config/secrets.yml`:
+`secrets.yml`:
 
 ```yaml
 development:
-  secret_key_base: 3b7cd727ee24e8444053437c36cc66c3
-  some_api_key: SOMEKEY
+  secret_key_base: "3b7cd727ee24e8444053437c36cc66c3"
+  some_api_key: "b2c299a4a7b2fe41b6b7ddf517604a1c34"
 ```
 
-`Rails.application.secrets.some_api_key` returns `SOMEKEY` in the development
-environment.
+如何讀：
 
-See the [Upgrading Ruby on Rails](upgrading_ruby_on_rails.html#config-secrets-yml)
-guide on how to migrate existing applications to use this feature.
+```ruby
+> Rails.application.secrets
+=> "3b7cd727ee24e8444053437c36cc66c3"
+> Rails.application.secrets.some_api_key
+=> "SOMEKEY"
+```
+
+參考 [Ruby on Rails 升級指南](http://edgeguides.rubyonrails.org/upgrading_ruby_on_rails.html)來了解如何在現有專案裡導入此功能。
 
 ### Action Pack Variants
 
-We often want to render different HTML/JSON/XML templates for phones,
-tablets, and desktop browsers. Variants make it easy.
+針對手機、平板、桌上型電腦及瀏覽器，常需要 `render` 不同格式的模版：`html`、`json`、`xml`。
 
-The request variant is a specialization of the request format, like `:tablet`,
-`:phone`, or `:desktop`.
+__Variant 簡化了這件事。__
 
-You can set the variant in a `before_action`:
+Request variant 是一種特殊的 request 格式，像是 `:tablet`、`:phone` 或 `:desktop`。
+
+可在 `before_action` 裡設定 Variant：
 
 ```ruby
 request.variant = :tablet if request.user_agent =~ /iPad/
 ```
 
-Respond to variants in the action just like you respond to formats:
+在 Controller `action` 裡，`respond_to` 特殊格式跟一般格式方法相同：
 
 ```ruby
 respond_to do |format|
   format.html do |html|
-    html.tablet # renders app/views/projects/show.html+tablet.erb
+    html.tablet # 會 render app/views/projects/show.html+tablet.erb
     html.phone { extra_setup; render ... }
   end
 end
 ```
 
-Provide separate templates for each format and variant:
+再給每個特殊格式提供對應的模版：
 
 ```
 app/views/projects/show.html.erb
@@ -124,7 +109,7 @@ app/views/projects/show.html+tablet.erb
 app/views/projects/show.html+phone.erb
 ```
 
-You can also simplify the variants definition using the inline syntax:
+Variant 定義也可用 inline 寫法來簡化：
 
 ```ruby
 respond_to do |format|
@@ -134,13 +119,9 @@ respond_to do |format|
 end
 ```
 
-### Action Mailer Previews
+### Action Mailer 預覽
 
-Action Mailer previews provide a way to visually see how emails look by visiting
-a special URL that renders them.
-
-You implement a preview class whose methods return the mail object you'd like
-to check:
+Action Mailer Preview 提供你訪問特定 URL，來預覽 Email 信件。假設你有個 `Notifier` Mailer，則需要實現 `Notifier` 的 Preview Class，實作方法來返回信件內容：
 
 ```ruby
 class NotifierPreview < ActionMailer::Preview
@@ -150,20 +131,17 @@ class NotifierPreview < ActionMailer::Preview
 end
 ```
 
-The preview is available in http://localhost:3000/rails/mailers/notifier/welcome,
-and a list of them in http://localhost:3000/rails/mailers.
+如此一來便可以訪問 http://localhost:3000/rails/mailers/notifier/welcome 來預覽 Email。
 
-By default, these preview classes live in `test/mailers/previews`.
-This can be configured using the `preview_path` option.
+所有可預覽的 Email 可在此找到：http://localhost:3000/rails/mailers。
 
-See its
-[documentation](http://api.rubyonrails.org/v4.1.0/classes/ActionMailer/Base.html)
-for a detailed write up.
+預設這些 preview class 產生在 `test/mailers/previews`、可以透過 `preview_path` 選項來調整存放的位置。
+
+參見 [Action Mailer 的文件](http://api.rubyonrails.org/v4.1.0/classes/ActionMailer/Base.html)來了解更多細節。
 
 ### Active Record enums
 
-Declare an enum attribute where the values map to integers in the database, but
-can be queried by name.
+宣告一個 `enum` 屬性，將屬性映射到資料庫的整數，並可透過名字查詢出來：
 
 ```ruby
 class Conversation < ActiveRecord::Base
@@ -175,35 +153,25 @@ conversation.active? # => false
 conversation.status  # => "archived"
 
 Conversation.archived # => Relation for all archived Conversations
-
-Conversation.statuses # => { "active" => 0, "archived" => 1 }
 ```
 
-See its
-[documentation](http://api.rubyonrails.org/v4.1.0/classes/ActiveRecord/Enum.html)
-for a detailed write up.
+參見 [active_record/enum.rb](http://api.rubyonrails.org/v4.1.0/classes/ActiveRecord/Enum.html) 來了解更多細節。
 
-### Message Verifiers
+### Message Verifier 訊息驗證器
 
-Message verifiers can be used to generate and verify signed messages. This can
-be useful to safely transport sensitive data like remember-me tokens and
-friends.
-
-The method `Rails.application.message_verifier` returns a new message verifier
-that signs messages with a key derived from secret_key_base and the given
-message verifier name:
+訊息驗證器用來產生與驗證訊息，可以用來保護敏感資料（如 `remember_me` 的 token）傳輸的安全性。
 
 ```ruby
 signed_token = Rails.application.message_verifier(:remember_me).generate(token)
 Rails.application.message_verifier(:remember_me).verify(signed_token) # => token
 
 Rails.application.message_verifier(:remember_me).verify(tampered_token)
-# raises ActiveSupport::MessageVerifier::InvalidSignature
+# 拋出異常 ActiveSupport::MessageVerifier::InvalidSignature
 ```
 
 ### Module#concerning
 
-A natural, low-ceremony way to separate responsibilities within a class:
+一種自然、輕量級的方式來拆分 Class 內的職責。
 
 ```ruby
 class Todo < ActiveRecord::Base
@@ -224,98 +192,77 @@ class Todo < ActiveRecord::Base
 end
 ```
 
-This example is equivalent to defining a `EventTracking` module inline,
-extending it with `ActiveSupport::Concern`, then mixing it in to the
-`Todo` class.
+等同於以前要定義 `EventTracking` Module，`extend ActiveSupport::Concern`，再混入 (mixin) `Todo` Class。
 
-See its
-[documentation](http://api.rubyonrails.org/v4.1.0/classes/Module/Concerning.html)
-for a detailed write up and the intended use cases.
+參見 [Module#concerning](http://api.rubyonrails.org/v4.1.0/classes/Module/Concerning.html) 來了解更多細節。
 
-### CSRF protection from remote `<script>` tags
+### CSRF 機制新增遠端 `<script>` 防護。
 
-Cross-site request forgery (CSRF) protection now covers GET requests with
-JavaScript responses, too. That prevents a third-party site from referencing
-your JavaScript URL and attempting to run it to extract sensitive data.
+Rails 的跨站偽造請求（CSRF）防護機制現在也會保護從第三方 JavaScript 來的 GET 請求了！這預防第三方網站引用你的 JavaScript，試圖竊取敏感資料。
 
-This means any of your tests that hit `.js` URLs will now fail CSRF protection
-unless they use `xhr`. Upgrade your tests to be explicit about expecting
-XmlHttpRequests. Instead of `post :create, format: :js`, switch to the explicit
-`xhr :post, :create, format: :js`.
+這意味著任何訪問 `.js` URL 的測試會失敗（因為受 CSRF 保護），必須明確指定使用 `xhr` （`XmlHttpRequests`）。
 
+```ruby
+post :create, format: :js
+```
+
+改寫為
+
+```ruby
+xhr :post, :create, format: :js
+```
 
 Railties
---------
+------------------
 
-Please refer to the
-[Changelog](https://github.com/rails/rails/blob/4-1-stable/railties/CHANGELOG.md)
-for detailed changes.
+請參考 [Changelog](https://github.com/rails/rails/blob/4-1-stable/railties/CHANGELOG.md) 來了解更多細節。
 
-### Removals
+### 移除
 
-* Removed `update:application_controller` rake task.
+* 移除了 `update:application_controller` rake task。
 
-* Removed deprecated `Rails.application.railties.engines`.
+* 移除了 `Rails.application.railties.engines`。
 
-* Removed deprecated `threadsafe!` from Rails Config.
+* Rails 移除了 `config.threadsafe!` 設定。
 
-* Removed deprecated `ActiveRecord::Generators::ActiveModel#update_attributes` in
-  favor of `ActiveRecord::Generators::ActiveModel#update`.
+* 移除了 `ActiveRecord::Generators::ActiveModel#update_attributes`，
+    請改用 `ActiveRecord::Generators::ActiveModel#update`。
 
-* Removed deprecated `config.whiny_nils` option.
+* 移除了 `config.whiny_nils` 設定。
 
-* Removed deprecated rake tasks for running tests: `rake test:uncommitted` and
-  `rake test:recent`.
+* 移除了用來跑測試的兩個 task：`rake test:uncommitted` 與 `rake test:recent`。
 
-### Notable changes
+### 值得一提的變化
 
-* The [Spring application
-  preloader](https://github.com/rails/spring) is now installed
-  by default for new applications. It uses the development group of
-  the Gemfile, so will not be installed in
-  production. ([Pull Request](https://github.com/rails/rails/pull/12958))
+* [Spring](https://github.com/rails/spring) 納入 Rails 4.1 應用程式的預設 Gem，列在 `Gemfile`
+  的 `group :development` 裡，production 環境不會安裝。[PR#12958](https://github.com/rails/rails/pull/12958)
 
-* `BACKTRACE` environment variable to show unfiltered backtraces for test
-  failures. ([Commit](https://github.com/rails/rails/commit/84eac5dab8b0fe9ee20b51250e52ad7bfea36553))
+* `BACKTRACE` 環境變數可看測試的完整 backtrace （沒有過濾敏感資料）。[Commit](https://github.com/rails/rails/commit/84eac5dab8b0fe9ee20b51250e52ad7bfea36553)
 
-* Exposed `MiddlewareStack#unshift` to environment
-  configuration. ([Pull Request](https://github.com/rails/rails/pull/12479))
+* 環境設定檔可設定 `MiddlewareStack#unshift`。 [PR#12749](https://github.com/rails/rails/pull/12749)
 
-* Added `Application#message_verifier` method to return a message
-  verifier. ([Pull Request](https://github.com/rails/rails/pull/12995))
+* 新增 `Application#message_verifier` 方法來回傳訊息驗證器。[PR#12995](https://github.com/rails/rails/pull/12995)
 
-* The `test_help.rb` file which is required by the default generated test
-  helper will automatically keep your test database up-to-date with
-  `db/schema.rb` (or `db/structure.sql`). It raises an error if
-  reloading the schema does not resolve all pending migrations. Opt out
-  with `config.active_record.maintain_test_schema = false`. ([Pull
-  Request](https://github.com/rails/rails/pull/13528))
+* 預設產生的 `test_helper.rb` 會 `require` `test_help.rb`，幫你把測試的資料庫與 `db/schema.rb` （或 `db/structure.sql`）同步。但發現尚未執行的 migration 與 schema 不一致時會拋出錯誤。錯誤拋出與否則是由這個設定決定：`config.active_record.maintain_test_schema = false`，參見此 [PR#13528](https://github.com/rails/rails/pull/13528)。
 
-* Introduce `Rails.gem_version` as a convenience method to return
-  `Gem::Version.new(Rails.version)`, suggesting a more reliable way to perform
-  version comparison. ([Pull Request](https://github.com/rails/rails/pull/14103))
-
+* 引入一個方便的方法： `Rails.gem_version`，來回傳 `Gem::Version.new(Rails.version)` 的值，一個更加可靠的方式來做版本比對。 [PR#14103](https://github.com/rails/rails/pull/14103)
 
 Action Pack
------------
+------------------
 
-Please refer to the
-[Changelog](https://github.com/rails/rails/blob/4-1-stable/actionpack/CHANGELOG.md)
-for detailed changes.
+請參考 [Changelog](https://github.com/rails/rails/blob/4-1-stable/actionpack/CHANGELOG.md) 來了解更多細節。
 
-### Removals
+### 移除
 
-* Removed deprecated Rails application fallback for integration testing, set
-  `ActionDispatch.test_app` instead.
+* 移除了 Rails 針對整合測試的補救方案（fallback），請設定 `ActionDispatch.test_app`。
 
-* Removed deprecated `page_cache_extension` config.
+* 移除了 `config.page_cache_extension` 設定。
 
-* Removed deprecated `ActionController::RecordIdentifier`, use
-  `ActionView::RecordIdentifier` instead.
+* 移除了 `ActionController::RecordIdentifier`，請改用 `ActionView::RecordIdentifier`。
 
-* Removed deprecated constants from Action Controller:
+* 更改 Action Controller 下列常數的名稱：
 
-  | Removed                            | Successor                       |
+  | 移除                                | 採用                            |
   |:-----------------------------------|:--------------------------------|
   | ActionController::AbstractRequest  | ActionDispatch::Request         |
   | ActionController::Request          | ActionDispatch::Request         |
@@ -325,315 +272,215 @@ for detailed changes.
   | ActionController::Integration      | ActionDispatch::Integration     |
   | ActionController::IntegrationTest  | ActionDispatch::IntegrationTest |
 
-### Notable changes
+### 值得一提的變化
 
-* `protect_from_forgery` also prevents cross-origin `<script>` tags.
-  Update your tests to use `xhr :get, :foo, format: :js` instead of
-  `get :foo, format: :js`.
-  ([Pull Request](https://github.com/rails/rails/pull/13345))
+* `protect_from_forgery` 現在也會預防跨站的 `<script>`。請更新測試，使用 `xhr :get, :foo, format: :js` 來取代 `get :foo, format: :js`。[PR#13345](https://github.com/rails/rails/pull/13345)
 
-* `#url_for` takes a hash with options inside an
-  array. ([Pull Request](https://github.com/rails/rails/pull/9599))
+* `#url_for` 接受額外的 options，可將選項打包成 hash，放在陣列傳入。[PR#9599](https://github.com/rails/rails/pull/9599)
 
-* Added `session#fetch` method fetch behaves similarly to
-  [Hash#fetch](http://www.ruby-doc.org/core-1.9.3/Hash.html#method-i-fetch),
-  with the exception that the returned value is always saved into the
-  session. ([Pull Request](https://github.com/rails/rails/pull/12692))
+* 新增 `session#fetch` 方法，行為與 [Hash#fetch](http://www.ruby-doc.org/core-2.0.0/Hash.html#method-i-fetch) 類似，差別在回傳值永遠會存回 session。 [PR#12692](https://github.com/rails/rails/pull/12692)
 
-* Separated Action View completely from Action
-  Pack. ([Pull Request](https://github.com/rails/rails/pull/11032))
+* 將 Action View 從 Action Pack 裡整個抽離出來。 [PR#11032](https://github.com/rails/rails/pull/11032)
 
-* Log which keys were affected by deep
-  munge. ([Pull Request](https://github.com/rails/rails/pull/13813))
+* 記錄受 deep munge 影響的 key。 [PR#13813](https://github.com/rails/rails/pull/13813)
 
-* New config option `config.action_dispatch.perform_deep_munge` to opt out of
-  params "deep munging" that was used to address security vulnerability
-  CVE-2013-0155. ([Pull Request](https://github.com/rails/rails/pull/13188))
+* 新設定： `config.action_dispatch.perform_deep_munge`。用來決定是不是要開啟 "deep munging" （deep munge 用來處理安全風險 CVE-2013-0155）。 [PR#13188](https://github.com/rails/rails/pull/13188)
 
-* New config option `config.action_dispatch.cookies_serializer` for specifying a
-  serializer for the signed and encrypted cookie jars. (Pull Requests
-  [1](https://github.com/rails/rails/pull/13692),
-  [2](https://github.com/rails/rails/pull/13945) /
-  [More Details](upgrading_ruby_on_rails.html#cookies-serializer))
+* 新設定：`config.action_dispatch.cookies_serializer`。用來指定加密與簽署 cookie jars 的 serializer。 [PR#13692](https://github.com/rails/rails/pull/13692) & [PR#13945](https://github.com/rails/rails/pull/13945) & [更多資訊](http://edgeguides.rubyonrails.org/upgrading_ruby_on_rails.html#cookies-serializer)
 
-* Added `render :plain`, `render :html` and `render
-  :body`. ([Pull Request](https://github.com/rails/rails/pull/14062) /
-  [More Details](upgrading_ruby_on_rails.html#rendering-content-from-string))
-
+* 新增 `render :plain`、`render :html` 以及 `render
+  :body`。 [PR#14062](https://github.com/rails/rails/pull/14062) & [更多資訊](http://edgeguides.rubyonrails.org/upgrading_ruby_on_rails.html#rendering-content-from-string)
 
 Action Mailer
--------------
+------------------
 
-Please refer to the
-[Changelog](https://github.com/rails/rails/blob/4-1-stable/actionmailer/CHANGELOG.md)
-for detailed changes.
+請參考 [Changelog](https://github.com/rails/rails/blob/4-1-stable/actionmailer/CHANGELOG.md) 來了解更多細節。
 
-### Notable changes
+### 值得一提的變化
 
-* Added mailer previews feature based on 37 Signals mail_view
-  gem. ([Commit](https://github.com/rails/rails/commit/d6dec7fcb6b8fddf8c170182d4fe64ecfc7b2261))
+* 新增 Mailer 預覽信件功能（基於 37 Signals 公司所開發的 mail_view Gem。）[Commit](https://github.com/rails/rails/commit/d6dec7fcb6b8fddf8c170182d4fe64ecfc7b2261)
 
-* Instrument the generation of Action Mailer messages. The time it takes to
-  generate a message is written to the log. ([Pull Request](https://github.com/rails/rails/pull/12556))
-
+*  Action Mailer 產生 mail 的時間會寫到 log 裡。 [PR#12556](https://github.com/rails/rails/pull/12556)
 
 Active Record
--------------
+------------------
 
-Please refer to the
-[Changelog](https://github.com/rails/rails/blob/4-1-stable/activerecord/CHANGELOG.md)
-for detailed changes.
+請參考 [Changelog](https://github.com/rails/rails/blob/4-1-stable/activerecord/CHANGELOG.md) 來了解更多細節。
 
-### Removals
+### 移除
 
-* Removed deprecated nil-passing to the following `SchemaCache` methods:
-  `primary_keys`, `tables`, `columns` and `columns_hash`.
+* 移除了傳入 `nil` 至右列 `SchemaCache` 的方法：`primary_keys`、`tables`、`columns` 及 `columns_hash`。
 
-* Removed deprecated block filter from `ActiveRecord::Migrator#migrate`.
+* 從 `ActiveRecord::Migrator#migrate` 移除了 block filter。
 
-* Removed deprecated String constructor from `ActiveRecord::Migrator`.
+* 從 `ActiveRecord::Migrator` 移除了 String constructor。
 
-* Removed deprecated `scope` use without passing a callable object.
+* 移除了 scope 沒傳 callable object 的用法。
 
-* Removed deprecated `transaction_joinable=` in favor of `begin_transaction`
-  with a `:joinable` option.
+* 移除了 `transaction_joinable=`，請改用 `begin_transaction` 搭配 `:joinable` 選項的組合。
 
-* Removed deprecated `decrement_open_transactions`.
+* 移除了 `decrement_open_transactions`。
 
-* Removed deprecated `increment_open_transactions`.
+* 移除了 `increment_open_transactions`。
 
-* Removed deprecated `PostgreSQLAdapter#outside_transaction?`
-  method. You can use `#transaction_open?` instead.
+* 移除了 `PostgreSQLAdapter#outside_transaction?`，可用 `#transaction_open?` 來取代。
 
-* Removed deprecated `ActiveRecord::Fixtures.find_table_name` in favor of
-  `ActiveRecord::Fixtures.default_fixture_model_name`.
+* 移除了 `ActiveRecord::Fixtures.find_table_name` 請改用 `ActiveRecord::Fixtures.default_fixture_model_name`。
 
-* Removed deprecated `columns_for_remove` from `SchemaStatements`.
+* 從 `SchemaStatements` 移除了 `columns_for_remove`。
 
-* Removed deprecated `SchemaStatements#distinct`.
+* 移除了 `SchemaStatements#distinct`。
 
-* Moved deprecated `ActiveRecord::TestCase` into the Rails test
-  suite. The class is no longer public and is only used for internal
-  Rails tests.
+* 將棄用的 `ActiveRecord::TestCase` 移到 Rails test 裡。
 
-* Removed support for deprecated option `:restrict` for `:dependent`
-  in associations.
+* 移除有 `:dependent` 選項的關聯傳入 `:restrict` 選項。
 
-* Removed support for deprecated `:delete_sql`, `:insert_sql`, `:finder_sql`
-  and `:counter_sql` options in associations.
+* 移除了 association 這幾個選項 `:delete_sql`、`:insert_sql`、`:finder_sql` 及 `:counter_sql`。
 
-* Removed deprecated method `type_cast_code` from Column.
+* 從 Column 移除了 `type_cast_code` 方法。
 
-* Removed deprecated `ActiveRecord::Base#connection` method.
-  Make sure to access it via the class.
+* 移除了 `ActiveRecord::Base#connection` 實體方法，請透過 Class 來使用。
 
-* Removed deprecation warning for `auto_explain_threshold_in_seconds`.
+* 移除了 `auto_explain_threshold_in_seconds` 的警告。
 
-* Removed deprecated `:distinct` option from `Relation#count`.
+* 移除了 `Relation#count` 的 `:distinct` 選項。
 
-* Removed deprecated methods `partial_updates`, `partial_updates?` and
-  `partial_updates=`.
+* 移除了 `partial_updates`、`partial_updates?` 與 `partial_updates=`。
 
-* Removed deprecated method `scoped`.
+* 移除了 `scoped`。
 
-* Removed deprecated method `default_scopes?`.
+* 移除了 `default_scopes?`。
 
-* Remove implicit join references that were deprecated in 4.0.
+* 移除了隱式的 join references。
 
-* Removed `activerecord-deprecated_finders` as a dependency.
-  Please see [the gem README](https://github.com/rails/activerecord-deprecated_finders#active-record-deprecated-finders)
-  for more info.
+* 移掉 `activerecord-deprecated_finders` gem 的相依性，請參考[該 Gem 的 README](https://github.com/rails/activerecord-deprecated_finders#active-record-deprecated-finders) 來了解更多資訊。
 
-* Removed usage of `implicit_readonly`. Please use `readonly` method
-  explicitly to mark records as
-  `readonly`. ([Pull Request](https://github.com/rails/rails/pull/10769))
+* 移除了 `implicit_readonly`。請改用 `readonly` 方法，並將 record 明確標明為 `readonly`。 [PR#10769](https://github.com/rails/rails/pull/10769)
 
-### Deprecations
+### 棄用
 
-* Deprecated `quoted_locking_column` method, which isn't used anywhere.
+* 棄用了任何地方都沒用到的 `quoted_locking_column` 方法。
 
-* Deprecated `ConnectionAdapters::SchemaStatements#distinct`,
-  as it is no longer used by internals. ([Pull Request](https://github.com/rails/rails/pull/10556))
+* Rails 內部棄用了 `ConnectionAdapters::SchemaStatements#distinct`。 [PR#10556](https://github.com/rails/rails/pull/10556)
 
-* Deprecated `rake db:test:*` tasks as the test database is now
-  automatically maintained. See railties release notes. ([Pull
-  Request](https://github.com/rails/rails/pull/13528))
+* 棄用 `rake db:test:*` 系列的 task，因為現在會自動設定好測試資料庫。參見 Railties 的發佈記。[PR#13528](https://github.com/rails/rails/pull/13528)
 
-* Deprecate unused `ActiveRecord::Base.symbolized_base_class`
-  and `ActiveRecord::Base.symbolized_sti_name` without
-  replacement. [Commit](https://github.com/rails/rails/commit/97e7ca48c139ea5cce2fa9b4be631946252a1ebd)
+* 棄用了無用的 `ActiveRecord::Base.symbolized_base_class` 與 `ActiveRecord::Base.symbolized_sti_name`，且沒有替代方案。[Commit](https://github.com/rails/rails/commit/97e7ca48c139ea5cce2fa9b4be631946252a1ebd)
 
-### Notable changes
+### 值得一提的變化
 
-* Default scopes are no longer overridden by chained conditions.
+* 預設 scope 不會再被一連串的條件語句給覆蓋掉。
 
-  Before this change when you defined a `default_scope` in a model
-  it was overridden by chained conditions in the same field. Now it
-  is merged like any other scope. [More Details](upgrading_ruby_on_rails.html#changes-on-default-scopes).
+  之前的行為：若在 Model 有定義 `default_scope`，則會被一連串的條件語句給覆蓋掉。現在會像其它 Scope 一樣合併。[更多細節](http://edgeguides.rubyonrails.org/upgrading_ruby_on_rails.html#changes-on-default-scopes)
 
-* Added `ActiveRecord::Base.to_param` for convenient "pretty" URLs derived from
-  a model's attribute or
-  method. ([Pull Request](https://github.com/rails/rails/pull/12891))
+* 新增 `ActiveRecord::Base.to_param` 來顯示漂亮的 URL。 [PR#12891](https://github.com/rails/rails/pull/12891)
 
-* Added `ActiveRecord::Base.no_touching`, which allows ignoring touch on
-  models. ([Pull Request](https://github.com/rails/rails/pull/12772))
+* 新增 `ActiveRecord::Base.no_touching`，可允許忽略對 Model 的 touch。 [PR#12772](https://github.com/rails/rails/pull/12772)
 
-* Unify boolean type casting for `MysqlAdapter` and `Mysql2Adapter`.
-  `type_cast` will return `1` for `true` and `0` for `false`. ([Pull Request](https://github.com/rails/rails/pull/12425))
+* 統一了 `MysqlAdapter` 與 `Mysql2Adapter` 的布林轉換，`true` 會返回 `1`，`false` 返回 `0`。 [PR#12425](https://github.com/rails/rails/pull/12425)
 
-* `.unscope` now removes conditions specified in
-  `default_scope`. ([Commit](https://github.com/rails/rails/commit/94924dc32baf78f13e289172534c2e71c9c8cade))
+* `unscope` 現在移除了 `default_scope` 規範的 conditions。[Commit](https://github.com/rails/rails/commit/94924dc32baf78f13e289172534c2e71c9c8cade)
 
-* Added `ActiveRecord::QueryMethods#rewhere` which will overwrite an existing,
-  named where condition. ([Commit](https://github.com/rails/rails/commit/f950b2699f97749ef706c6939a84dfc85f0b05f2))
+* 新增 `ActiveRecord::QueryMethods#rewhere`，會覆寫已存在的 where 條件。[Commit](https://github.com/rails/rails/commit/f950b2699f97749ef706c6939a84dfc85f0b05f2)
 
-* Extended `ActiveRecord::Base#cache_key` to take an optional list of timestamp
-  attributes of which the highest will be used. ([Commit](https://github.com/rails/rails/commit/e94e97ca796c0759d8fcb8f946a3bbc60252d329))
+* 擴充了 `ActiveRecord::Base#cache_key`，可接受多個 timestamp，會使用數值最大的 timestamp。[Commit](https://github.com/rails/rails/commit/e94e97ca796c0759d8fcb8f946a3bbc60252d329)
 
-* Added `ActiveRecord::Base#enum` for declaring enum attributes where the values
-  map to integers in the database, but can be queried by
-  name. ([Commit](https://github.com/rails/rails/commit/db41eb8a6ea88b854bf5cd11070ea4245e1639c5))
+* 新增 `ActiveRecord::Base#enum`，用來枚舉 attributes。將 attributes 映射到資料庫的整數，並可透過名字查詢出來。[Commit](https://github.com/rails/rails/commit/db41eb8a6ea88b854bf5cd11070ea4245e1639c5)
 
-* Type cast json values on write, so that the value is consistent with reading
-  from the database. ([Pull Request](https://github.com/rails/rails/pull/12643))
+* 寫入資料庫時，JSON 會做類型轉換。這樣子讀寫才會一致。 [PR#12643](https://github.com/rails/rails/pull/12643)
 
-* Type cast hstore values on write, so that the value is consistent
-  with reading from the database. ([Commit](https://github.com/rails/rails/commit/5ac2341fab689344991b2a4817bd2bc8b3edac9d))
+* 寫入資料庫時，hstore 會做類型轉換，這樣子讀寫才會一致。[Commit](https://github.com/rails/rails/commit/5ac2341fab689344991b2a4817bd2bc8b3edac9d)
 
-* Make `next_migration_number` accessible for third party
-  generators. ([Pull Request](https://github.com/rails/rails/pull/12407))
+* `next_migration_number` 可供第三方函式庫存取。 [PR#12407](https://github.com/rails/rails/pull/12407)
 
-* Calling `update_attributes` will now throw an `ArgumentError` whenever it
-  gets a `nil` argument. More specifically, it will throw an error if the
-  argument that it gets passed does not respond to to
-  `stringify_keys`. ([Pull Request](https://github.com/rails/rails/pull/9860))
+* 若是呼叫 `update_attributes` 的參數有 `nil`，則會拋出 `ArgumentError`。更精準的說，傳進來的參數，沒有回應(`respond_to`) `stringify_keys` 的話，會拋出錯誤。[PR#9860](https://github.com/rails/rails/pull/9860)
 
-* `CollectionAssociation#first`/`#last` (e.g. `has_many`) use a `LIMIT`ed
-  query to fetch results rather than loading the entire
-  collection. ([Pull Request](https://github.com/rails/rails/pull/12137))
+* `CollectionAssociation#first`/`#last` (`has_many`) ，Query 會使用 `LIMIT` 來限制提取的數量，而不是將整個 collection 載入出來。 [PR#12137](https://github.com/rails/rails/pull/12137)
 
-* `inspect` on Active Record model classes does not initiate a new
-  connection. This means that calling `inspect`, when the database is missing,
-  will no longer raise an exception. ([Pull Request](https://github.com/rails/rails/pull/11014))
+* 對 Active Record Model 的類別做 `inspect` 不會去連資料庫。這樣當資料庫不存在時，`inspect` 才不會噴錯誤。[PR#11014](https://github.com/rails/rails/pull/11014)
 
-* Removed column restrictions for `count`, let the database raise if the SQL is
-  invalid. ([Pull Request](https://github.com/rails/rails/pull/10710))
+* 移除了 `count` 的欄位限制，SQL 不正確時，讓資料庫自己丟出錯誤。 [PR#10710](https://github.com/rails/rails/pull/10710)
 
-* Rails now automatically detects inverse associations. If you do not set the
-  `:inverse_of` option on the association, then Active Record will guess the
-  inverse association based on heuristics. ([Pull Request](https://github.com/rails/rails/pull/10886))
+* Rails 現在會自動偵測 inverse associations。如果 association 沒有設定 `:inverse_of`，則 Active Record 會自己猜出對應的 associaiton。[PR#10886](https://github.com/rails/rails/pull/10886)
 
-* Handle aliased attributes in ActiveRecord::Relation. When using symbol keys,
-  ActiveRecord will now translate aliased attribute names to the actual column
-  name used in the database. ([Pull Request](https://github.com/rails/rails/pull/7839))
+* `ActiveRecord::Relation` 會處理有別名的 attributes。當使用符號作為 key 時，Active Record 現在也會一起翻譯別名的屬性了，將其轉成資料庫內所使用的欄位名。[PR#7839](https://github.com/rails/rails/pull/7839)
 
-* The ERB in fixture files is no longer evaluated in the context of the main
-  object. Helper methods used by multiple fixtures should be defined on modules
-  included in `ActiveRecord::FixtureSet.context_class`. ([Pull Request](https://github.com/rails/rails/pull/13022))
+* Fixtures 檔案中的 ERB 不在 main 物件上下文裡執行了，多個 fixtures 使用的 Helper ，需要定義在被 `ActiveRecord::FixtureSet.context_class` 包含的 Module 裡。 [PR#13022](https://github.com/rails/rails/pull/13022)
 
-* Don't create or drop the test database if RAILS_ENV is specified
-  explicitly. ([Pull Request](https://github.com/rails/rails/pull/13629))
+* 若明確指定了 `RAILS_ENV`，則不要建立或刪除資料庫。 [PR#13629](https://github.com/rails/rails/pull/13629)
 
-* `Relation` no longer has mutator methods like `#map!` and `#delete_if`. Convert
-  to an `Array` by calling `#to_a` before using these methods. ([Pull Request](https://github.com/rails/rails/pull/13314))
+* `Relation` 不再有像是 `#map!` 以及 `#delete_if` 的 mutator 方法。要使用這些方法之前，先呼叫 `#to_a`。 [PR#13314](https://github.com/rails/rails/pull/13314)
 
-* `find_in_batches`, `find_each`, `Result#each` and `Enumerable#index_by` now
-  return an `Enumerator` that can calculate its
-  size. ([Pull Request](https://github.com/rails/rails/pull/13938))
+* `find_in_batches`、`find_each`、`Result#each` 以及 `Enumerable#index_by`，現在會回傳 `Enumerator`，可以用來計算 `size`。[PR#13938](https://github.com/rails/rails/pull/13938)
 
-* `scope`, `enum` and Associations now raise on "dangerous" name
-  conflicts. ([Pull Request](https://github.com/rails/rails/pull/13450),
-  [Pull Request](https://github.com/rails/rails/pull/13896))
+* `scope`、`enum` 以及 Associations 現在對“危險的”名稱會拋出警告。 [PR#13450](https://github.com/rails/rails/pull/13450) & [PR#13896](https://github.com/rails/rails/pull/13896)
 
-* `second` through `fifth` methods act like the `first`
-  finder. ([Pull Request](https://github.com/rails/rails/pull/13757))
+* 確保 `second` 致 `fifth` 的 Finder 方法與 `first` 行為一致。 [PR#13757](https://github.com/rails/rails/pull/13757)
 
-* Make `touch` fire the `after_commit` and `after_rollback`
-  callbacks. ([Pull Request](https://github.com/rails/rails/pull/12031))
+* `touch` 方法會觸發 `after_commit` 與 `after_rollback` Callbacks. [PR#12031](https://github.com/rails/rails/pull/12031)
 
-* Enable partial indexes for `sqlite >= 3.8.0`.
-  ([Pull Request](https://github.com/rails/rails/pull/13350))
+* `sqlite >= 3.8.0` 啟用 partial indexes。 [PR#13350](https://github.com/rails/rails/pull/13350)
 
-* Make `change_column_null`
-  revertible. ([Commit](https://github.com/rails/rails/commit/724509a9d5322ff502aefa90dd282ba33a281a96))
+* 讓 `change_column_null` 是可逆操作。[Commit](https://github.com/rails/rails/commit/724509a9d5322ff502aefa90dd282ba33a281a96)
 
-* Added a flag to disable schema dump after migration. This is set to `false`
-  by default in the production environment for new applications.
-  ([Pull Request](https://github.com/rails/rails/pull/13948))
+* 加入一個 flag 來禁止資料庫遷移後的 schema dump。Production 環境預設為 `false`。 [PR#13948](https://github.com/rails/rails/pull/13948)
 
 Active Model
-------------
+------------------
 
-Please refer to the
-[Changelog](https://github.com/rails/rails/blob/4-1-stable/activemodel/CHANGELOG.md)
-for detailed changes.
+請參考 [Changelog](https://github.com/rails/rails/blob/4-1-stable/activemodel/CHANGELOG.md) 來了解更多細節。
 
-### Deprecations
+### 棄用
 
-* Deprecate `Validator#setup`. This should be done manually now in the
-  validator's constructor. ([Commit](https://github.com/rails/rails/commit/7d84c3a2f7ede0e8d04540e9c0640de7378e9b3a))
+* 棄用了 `Validator#setup`。現在要手動在 Validator 的 constructor 裡處理。[Commit](https://github.com/rails/rails/commit/7d84c3a2f7ede0e8d04540e9c0640de7378e9b3a)
 
-### Notable changes
+### 值得一提的變化
 
-* Added new API methods `reset_changes` and `changes_applied` to
-  `ActiveModel::Dirty` that control changes state.
+* `ActiveModel::Dirty` 加入新的 API：`reset_changes` 與 `changes_applied`，來控制改變的狀態。
 
-* Ability to specify multiple contexts when defining a
-  validation. ([Pull Request](https://github.com/rails/rails/pull/13754))
+* 定義 validation 可以指定多個 context。 [PR#13754](https://github.com/rails/rails/pull/13754)
 
-* `attribute_changed?` now accepts a hash to check if the attribute was changed
-  `:from` and/or `:to` a given
-  value. ([Pull Request](https://github.com/rails/rails/pull/13131))
-
+* `attribute_changed?` 現在可以接受 hash，來檢查 attribute 是否從 `:from` 變到 `:to`。 [PR#13131](https://github.com/rails/rails/pull/13131)
 
 Active Support
---------------
+------------------
 
-Please refer to the
-[Changelog](https://github.com/rails/rails/blob/4-1-stable/activesupport/CHANGELOG.md)
-for detailed changes.
+請參考 [Changelog](https://github.com/rails/rails/blob/4-1-stable/activesupport/CHANGELOG.md) 來了解更多細節。
 
+### 移除
 
-### Removals
+* 移除對 `MultiJSON` Gem 的依賴。也就是說 `ActiveSupport::JSON.decode` 不再接受給 `MultiJSON` 的 hash 參數。[PR#10576](https://github.com/rails/rails/pull/10576)
 
-* Removed `MultiJSON` dependency. As a result, `ActiveSupport::JSON.decode`
-  no longer accepts an options hash for `MultiJSON`. ([Pull Request](https://github.com/rails/rails/pull/10576) / [More Details](upgrading_ruby_on_rails.html#changes-in-json-handling))
+* 移除了 `encode_json` hook，本來可以用來把 object 轉成 JSON。這個功能被抽成了 [activesupport-json_encoder](https://github.com/rails/activesupport-json_encoder) Gem，請參考 [PR#12183](https://github.com/rails/rails/pull/12183) 與[這裡](upgrading_ruby_on_rails.html#changes-in-json-handling)。
 
-* Removed support for the `encode_json` hook used for encoding custom objects into
-  JSON. This feature has been extracted into the [activesupport-json_encoder](https://github.com/rails/activesupport-json_encoder)
-  gem.
-  ([Related Pull Request](https://github.com/rails/rails/pull/12183) /
-  [More Details](upgrading_ruby_on_rails.html#changes-in-json-handling))
+* 移除了 `ActiveSupport::JSON::Variable`。
 
-* Removed deprecated `ActiveSupport::JSON::Variable` with no replacement.
+* 移除了 `String#encoding_aware?`（`core_ext/string/encoding.rb`）。
 
-* Removed deprecated `String#encoding_aware?` core extensions (`core_ext/string/encoding`).
+* 移除了 `Module#local_constant_names` 請改用 `Module#local_constants`。
 
-* Removed deprecated `Module#local_constant_names` in favor of `Module#local_constants`.
+* 移除了 `DateTime.local_offset` 請改用 `DateTime.civil_from_format`。
 
-* Removed deprecated `DateTime.local_offset` in favor of `DateTime.civil_from_format`.
+* 移除了 `Logger` （`core_ext/logger.rb`）。
 
-* Removed deprecated `Logger` core extensions (`core_ext/logger.rb`).
+* 移除了 `Time#time_with_datetime_fallback`、`Time#utc_time` 與
+  `Time#local_time`，請改用 `Time#utc` 與 `Time#local`。
 
-* Removed deprecated `Time#time_with_datetime_fallback`, `Time#utc_time` and
-  `Time#local_time` in favor of `Time#utc` and `Time#local`.
+* 移除了 `Hash#diff`。
 
-* Removed deprecated `Hash#diff` with no replacement.
+* 移除了 `Date#to_time_in_current_zone` 請改用 `Date#in_time_zone`。
 
-* Removed deprecated `Date#to_time_in_current_zone` in favor of `Date#in_time_zone`.
+* 移除了 `Proc#bind`。
 
-* Removed deprecated `Proc#bind` with no replacement.
+* 移除了 `Array#uniq_by` 與 `Array#uniq_by!` 請改用 Ruby 原生的
+  `Array#uniq` 與 `Array#uniq!`。
 
-* Removed deprecated `Array#uniq_by` and `Array#uniq_by!`, use native
-  `Array#uniq` and `Array#uniq!` instead.
+* 移除了 `ActiveSupport::BasicObject` 請改用 `ActiveSupport::ProxyObject`。
 
-* Removed deprecated `ActiveSupport::BasicObject`, use
-  `ActiveSupport::ProxyObject` instead.
+* 移除了 `BufferedLogger`, 請改用 `ActiveSupport::Logger`。
 
-* Removed deprecated `BufferedLogger`, use `ActiveSupport::Logger` instead.
-
-* Removed deprecated `assert_present` and `assert_blank` methods, use `assert
-  object.blank?` and `assert object.present?` instead.
+* 移除了 `assert_present` 與 `assert_blank`，請改用 `assert
+  object.blank?` 與 `assert object.present?`。
 
 * Remove deprecated `#filter` method for filter objects, use the corresponding
   method instead (e.g. `#before` for a before filter).
@@ -641,90 +488,52 @@ for detailed changes.
 * Removed 'cow' => 'kine' irregular inflection from default
   inflections. ([Commit](https://github.com/rails/rails/commit/c300dca9963bda78b8f358dbcb59cabcdc5e1dc9))
 
-### Deprecations
+### 棄用
 
-* Deprecated `Numeric#{ago,until,since,from_now}`, the user is expected to
-  explicitly convert the value into an AS::Duration, i.e. `5.ago` => `5.seconds.ago`
-  ([Pull Request](https://github.com/rails/rails/pull/12389))
+* 棄用了 `Numeric#{ago,until,since,from_now}`，要明確的將數值轉成 `AS::Duration`。比如 `5.ago` 請改成 `5.seconds.ago`。 [PR#12389](https://github.com/rails/rails/pull/12389)
 
-* Deprecated the require path `active_support/core_ext/object/to_json`. Require
-  `active_support/core_ext/object/json` instead. ([Pull Request](https://github.com/rails/rails/pull/12203))
+* 引用路徑裡棄用了 `active_support/core_ext/object/to_json`。請改用`active_support/core_ext/object/json` 來取代。 [PR#12203](https://github.com/rails/rails/pull/12203)
 
-* Deprecated `ActiveSupport::JSON::Encoding::CircularReferenceError`. This feature
-  has been extracted into the [activesupport-json_encoder](https://github.com/rails/activesupport-json_encoder)
-  gem.
-  ([Pull Request](https://github.com/rails/rails/pull/12785) /
-  [More Details](upgrading_ruby_on_rails.html#changes-in-json-handling))
+* 棄用了 `ActiveSupport::JSON::Encoding::CircularReferenceError`。這個功能被抽成了[activesupport-json_encoder](https://github.com/rails/activesupport-json_encoder) Gem，請參考 [PR#12183](https://github.com/rails/rails/pull/ 12183) 與[這裡](upgrading_ruby_on_rails.html#changes-in-json-handling)。
 
-* Deprecated `ActiveSupport.encode_big_decimal_as_string` option. This feature has
-  been extracted into the [activesupport-json_encoder](https://github.com/rails/activesupport-json_encoder)
-  gem.
-  ([Pull Request](https://github.com/rails/rails/pull/13060) /
-  [More Details](upgrading_ruby_on_rails.html#changes-in-json-handling))
+* 棄用了 `ActiveSupport.encode_big_decimal_as_string` 選項。這個功能被抽成了[activesupport-json_encoder](https://github.com/rails/activesupport-json_encoder) Gem，請參考 [PR#12183](https://github.com/rails/rails/pull/ 12183) 與[這裡](upgrading_ruby_on_rails.html#changes-in-json-handling)。
 
-* Deprecate custom `BigDecimal`
-  serialization. ([Pull Request](https://github.com/rails/rails/pull/13911))
+* 棄用自訂的 `BigDecimal`
+  serialization。 [PR#13911](https://github.com/rails/rails/pull/13911)
 
-### Notable changes
+### 值得一提的變化
 
-* `ActiveSupport`'s JSON encoder has been rewritten to take advantage of the
-  JSON gem rather than doing custom encoding in pure-Ruby.
-  ([Pull Request](https://github.com/rails/rails/pull/12183) /
-  [More Details](upgrading_ruby_on_rails.html#changes-in-json-handling))
+* 使用 JSON gem 重寫 ActiveSupport 的 JSON Encoding 部分，提升了純 Ruby 編碼的效率。參考 [PR#12183](https://github.com/rails/rails/pull/12183) 與[這裡](http://edgeguides.rubyonrails.org/upgrading_ruby_on_rails.html#changes-in-json-handling)。
 
-* Improved compatibility with the JSON gem.
-  ([Pull Request](https://github.com/rails/rails/pull/12862) /
-  [More Details](upgrading_ruby_on_rails.html#changes-in-json-handling))
+* 提升 JSON gem 相容性。 [PR#12862](https://github.com/rails/rails/pull/12862) 與[這裡](http://edgeguides.rubyonrails.org/upgrading_ruby_on_rails.html#changes-in-json-handling)
 
-* Added `ActiveSupport::Testing::TimeHelpers#travel` and `#travel_to`. These
-  methods change current time to the given time or duration by stubbing
-  `Time.now` and `Date.today`.
+* 新增 `ActiveSupport::Testing::TimeHelpers#travel` 與 `#travel_to`。這些方法透過 stubbing `Time.now` 與 `Date.today`，可設定任何時間，坐時光旅行。
 
-* Added `ActiveSupport::Testing::TimeHelpers#travel_back`. This method returns
-  the current time to the original state, by removing the stubs added by `travel`
-  and `travel_to`. ([Pull Request](https://github.com/rails/rails/pull/13884))
+* 新增 `ActiveSupport::Testing::TimeHelpers#travel_back`。這個方法將當下時間回到原本的狀態。透過移除 `travel` 與 `travel_to` 加入的 stubs 辦到。 [PR#13884](https://github.com/rails/rails/pull/13884)
 
-* Added `Numeric#in_milliseconds`, like `1.hour.in_milliseconds`, so we can feed
-  them to JavaScript functions like
-  `getTime()`. ([Commit](https://github.com/rails/rails/commit/423249504a2b468d7a273cbe6accf4f21cb0e643))
+* 新增 `Numeric#in_milliseconds`，像是 1 小時有幾毫秒：`1.hour.in_milliseconds`。可以將時間轉成毫秒，再餵給 JavaScript 的 `getTime()` 函數。[Commit](https://github.com/rails/rails/commit/423249504a2b468d7a273cbe6accf4f21cb0e643)
 
-* Added `Date#middle_of_day`, `DateTime#middle_of_day` and `Time#middle_of_day`
-  methods. Also added `midday`, `noon`, `at_midday`, `at_noon` and
-  `at_middle_of_day` as
-  aliases. ([Pull Request](https://github.com/rails/rails/pull/10879))
+* 新增了 `Date#middle_of_day`、`DateTime#middle_of_day` 與 `Time#middle_of_day`
+  方法。同時添加了 `midday`、`noon`、`at_midday`、`at_noon`、`at_middle_of_day` 作為別名。[PR#10879](https://github.com/rails/rails/pull/10879)
 
-* Added `Date#all_week/month/quarter/year` for generating date
-  ranges. ([Pull Request](https://github.com/rails/rails/pull/9685))
+* 新增 `Date#all_week/month/quarter/year` 用來產生一組日期範圍。  [PR#9685](https://github.com/rails/rails/pull/9685)
 
-* Added `Time.zone.yesterday` and
-  `Time.zone.tomorrow`. ([Pull Request](https://github.com/rails/rails/pull/12822))
+* 新增 `Time.zone.yesterday` 以及
+  `Time.zone.tomorrow`。 [PR#12822](https://github.com/rails/rails/pull/12822)
 
-* Added `String#remove(pattern)` as a short-hand for the common pattern of
-  `String#gsub(pattern,'')`. ([Commit](https://github.com/rails/rails/commit/5da23a3f921f0a4a3139495d2779ab0d3bd4cb5f))
+* `String#gsub(pattern,'')` 可簡寫為 `String#remove(pattern)`。[Commit](https://github.com/rails/rails/commit/5da23a3f921f0a4a3139495d2779ab0d3bd4cb5f)
 
-* Added `Hash#compact` and `Hash#compact!` for removing items with nil value
-  from hash. ([Pull Request](https://github.com/rails/rails/pull/13632))
+* 新增 `Hash#compact` 與 `Hash#compact!` 來移除 hash 中的 nil。 [PR#13632](https://github.com/rails/rails/pull/13632)
 
-* `blank?` and `present?` commit to return
-  singletons. ([Commit](https://github.com/rails/rails/commit/126dc47665c65cd129967cbd8a5926dddd0aa514))
+* `blank?` and `present?` 會返回 singleton。 ([Commit](https://github.com/rails/rails/commit/126dc47665c65cd129967cbd8a5926dddd0aa514))
 
-* Default the new `I18n.enforce_available_locales` config to `true`, meaning
-  `I18n` will make sure that all locales passed to it must be declared in the
-  `available_locales`
-  list. ([Pull Request](https://github.com/rails/rails/pull/13341))
+* 新的設定： `I18n.enforce_available_locales` 預設是 `true`。代表 `I18n` 會確保所有傳入的 locale 都預先在 `available_locales` 裡聲明。 [PR#13341](https://github.com/rails/rails/pull/13341)
 
-* Introduce `Module#concerning`: a natural, low-ceremony way to separate
-  responsibilities within a
-  class. ([Commit](https://github.com/rails/rails/commit/1eee0ca6de975b42524105a59e0521d18b38ab81))
+* 引入 `Module#concerning`：一種自然、輕量級的方式來拆分 Class 內的職責。[Commit](https://github.com/rails/rails/commit/1eee0ca6de975b42524105a59e0521d18b38ab81)
 
-* Added `Object#presence_in` to simplify value whitelisting.
-  ([Commit](https://github.com/rails/rails/commit/4edca106daacc5a159289eae255207d160f22396))
+* 新增 `Object#presence_in` 來簡化對數值做白名單。[Commit](https://github.com/rails/rails/commit/4edca106daacc5a159289eae255207d160f22396)
 
+致謝
+------------------
 
-Credits
--------
-
-See the
-[full list of contributors to Rails](http://contributors.rubyonrails.org/) for
-the many people who spent many hours making Rails, the stable and robust
-framework it is. Kudos to all of them.
+許多人花了寶貴的時間貢獻至 Rails 專案，使 Rails 成為更穩定、更強韌的網路框架，參考[完整的 Rails 貢獻者清單](http://contributors.rubyonrails.org/)，感謝所有的貢獻者！
