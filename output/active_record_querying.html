@@ -1,0 +1,2104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<title>Active Record Query Interface — Ruby on Rails Guides</title>
+<link rel="stylesheet" type="text/css" href="stylesheets/style.css" />
+<link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+
+<link rel="stylesheet" type="text/css" href="stylesheets/syntaxhighlighter/shCore.css" />
+<link rel="stylesheet" type="text/css" href="stylesheets/syntaxhighlighter/shThemeRailsGuides.css" />
+
+<link rel="stylesheet" type="text/css" href="stylesheets/fixes.css" />
+
+<link href="images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+</head>
+<body class="guide">
+  <div id="topNav">
+    <div class="wrapper">
+      <strong class="more-info-label">More at <a href="http://rubyonrails.org/">rubyonrails.org:</a> </strong>
+      <span class="red-button more-info-button">
+        More Ruby on Rails
+      </span>
+      <ul class="more-info-links s-hidden">
+        <li class="more-info"><a href="http://rubyonrails.org/">Overview</a></li>
+        <li class="more-info"><a href="http://rubyonrails.org/download">Download</a></li>
+        <li class="more-info"><a href="http://rubyonrails.org/deploy">Deploy</a></li>
+        <li class="more-info"><a href="https://github.com/rails/rails">Code</a></li>
+        <li class="more-info"><a href="http://rubyonrails.org/screencasts">Screencasts</a></li>
+        <li class="more-info"><a href="http://rubyonrails.org/documentation">Documentation</a></li>
+        <li class="more-info"><a href="http://rubyonrails.org/ecosystem">Ecosystem</a></li>
+        <li class="more-info"><a href="http://rubyonrails.org/community">Community</a></li>
+        <li class="more-info"><a href="http://weblog.rubyonrails.org/">Blog</a></li>
+      </ul>
+    </div>
+  </div>
+  <div id="header">
+    <div class="wrapper clearfix">
+      <h1><a href="index.html" title="Return to home page">Guides.rubyonrails.org</a></h1>
+      <ul class="nav">
+        <li><a class="nav-item" href="index.html">Home</a></li>
+        <li class="guides-index guides-index-large">
+          <a href="index.html" id="guidesMenu" class="guides-index-item nav-item">Guides Index</a>
+          <div id="guides" class="clearfix" style="display: none;">
+            <hr />
+              <dl class="L">
+                <dt>Start Here</dt>
+                <dd><a href="getting_started.html">Getting Started with Rails</a></dd>
+                <dt>Models</dt>
+                <dd><a href="active_record_basics.html">Active Record Basics</a></dd>
+                <dd><a href="migrations.html">Rails Database Migrations</a></dd>
+                <dd><a href="active_record_validations.html">Active Record Validations</a></dd>
+                <dd><a href="active_record_callbacks.html">Active Record Callbacks</a></dd>
+                <dd><a href="association_basics.html">Active Record Associations</a></dd>
+                <dd><a href="active_record_querying.html">Active Record Query Interface</a></dd>
+                <dt>Views</dt>
+                <dd><a href="layouts_and_rendering.html">Layouts and Rendering in Rails</a></dd>
+                <dd><a href="form_helpers.html">Action View Form Helpers</a></dd>
+                <dt>Controllers</dt>
+                <dd><a href="action_controller_overview.html">Action Controller Overview</a></dd>
+                <dd><a href="routing.html">Rails Routing from the Outside In</a></dd>
+              </dl>
+              <dl class="R">
+                <dt>Digging Deeper</dt>
+                <dd><a href="active_support_core_extensions.html">Active Support Core Extensions</a></dd>
+                <dd><a href="i18n.html">Rails Internationalization API</a></dd>
+                <dd><a href="action_mailer_basics.html">Action Mailer Basics</a></dd>
+                <dd><a href="security.html">Securing Rails Applications</a></dd>
+                <dd><a href="debugging_rails_applications.html">Debugging Rails Applications</a></dd>
+                <dd><a href="configuring.html">Configuring Rails Applications</a></dd>
+                <dd><a href="command_line.html">Rails Command Line Tools and Rake Tasks</a></dd>
+                <dd><a href="asset_pipeline.html">Asset Pipeline</a></dd>
+                <dd><a href="working_with_javascript_in_rails.html">Working with JavaScript in Rails</a></dd>
+                <dt>Extending Rails</dt>
+                <dd><a href="rails_on_rack.html">Rails on Rack</a></dd>
+                <dd><a href="generators.html">Creating and Customizing Rails Generators</a></dd>
+                <dt>Contributing to Ruby on Rails</dt>
+                <dd><a href="contributing_to_ruby_on_rails.html">Contributing to Ruby on Rails</a></dd>
+                <dd><a href="api_documentation_guidelines.html">API Documentation Guidelines</a></dd>
+                <dd><a href="ruby_on_rails_guides_guidelines.html">Ruby on Rails Guides Guidelines</a></dd>
+                <dt>Maintenance Policy</dt>
+                <dd><a href="maintenance_policy.html">Maintenance Policy</a></dd>
+                <dt>Release Notes</dt>
+                <dd><a href="4_1_release_notes.html">Ruby on Rails 4.1 Release Notes</a></dd>
+                <dd><a href="4_0_release_notes.html">Ruby on Rails 4.0 Release Notes</a></dd>
+                <dd><a href="3_2_release_notes.html">Ruby on Rails 3.2 Release Notes</a></dd>
+                <dd><a href="3_1_release_notes.html">Ruby on Rails 3.1 Release Notes</a></dd>
+                <dd><a href="3_0_release_notes.html">Ruby on Rails 3.0 Release Notes</a></dd>
+                <dd><a href="2_3_release_notes.html">Ruby on Rails 2.3 Release Notes</a></dd>
+                <dd><a href="2_2_release_notes.html">Ruby on Rails 2.2 Release Notes</a></dd>
+              </dl>
+          </div>
+        </li>
+        <li><a class="nav-item" href="contributing_to_ruby_on_rails.html">Contribute</a></li>
+        <li><a class="nav-item" href="credits.html">Credits</a></li>
+        <li class="guides-index guides-index-small">
+          <select class="guides-index-item nav-item">
+            <option value="index.html">Guides Index</option>
+              <optgroup label="Start Here">
+                  <option value="getting_started.html">Getting Started with Rails</option>
+              </optgroup>
+              <optgroup label="Models">
+                  <option value="active_record_basics.html">Active Record Basics</option>
+                  <option value="migrations.html">Rails Database Migrations</option>
+                  <option value="active_record_validations.html">Active Record Validations</option>
+                  <option value="active_record_callbacks.html">Active Record Callbacks</option>
+                  <option value="association_basics.html">Active Record Associations</option>
+                  <option value="active_record_querying.html">Active Record Query Interface</option>
+              </optgroup>
+              <optgroup label="Views">
+                  <option value="layouts_and_rendering.html">Layouts and Rendering in Rails</option>
+                  <option value="form_helpers.html">Action View Form Helpers</option>
+              </optgroup>
+              <optgroup label="Controllers">
+                  <option value="action_controller_overview.html">Action Controller Overview</option>
+                  <option value="routing.html">Rails Routing from the Outside In</option>
+              </optgroup>
+              <optgroup label="Digging Deeper">
+                  <option value="active_support_core_extensions.html">Active Support Core Extensions</option>
+                  <option value="i18n.html">Rails Internationalization API</option>
+                  <option value="action_mailer_basics.html">Action Mailer Basics</option>
+                  <option value="security.html">Securing Rails Applications</option>
+                  <option value="debugging_rails_applications.html">Debugging Rails Applications</option>
+                  <option value="configuring.html">Configuring Rails Applications</option>
+                  <option value="command_line.html">Rails Command Line Tools and Rake Tasks</option>
+                  <option value="asset_pipeline.html">Asset Pipeline</option>
+                  <option value="working_with_javascript_in_rails.html">Working with JavaScript in Rails</option>
+              </optgroup>
+              <optgroup label="Extending Rails">
+                  <option value="rails_on_rack.html">Rails on Rack</option>
+                  <option value="generators.html">Creating and Customizing Rails Generators</option>
+              </optgroup>
+              <optgroup label="Contributing to Ruby on Rails">
+                  <option value="contributing_to_ruby_on_rails.html">Contributing to Ruby on Rails</option>
+                  <option value="api_documentation_guidelines.html">API Documentation Guidelines</option>
+                  <option value="ruby_on_rails_guides_guidelines.html">Ruby on Rails Guides Guidelines</option>
+              </optgroup>
+              <optgroup label="Maintenance Policy">
+                  <option value="maintenance_policy.html">Maintenance Policy</option>
+              </optgroup>
+              <optgroup label="Release Notes">
+                  <option value="4_1_release_notes.html">Ruby on Rails 4.1 Release Notes</option>
+                  <option value="4_0_release_notes.html">Ruby on Rails 4.0 Release Notes</option>
+                  <option value="3_2_release_notes.html">Ruby on Rails 3.2 Release Notes</option>
+                  <option value="3_1_release_notes.html">Ruby on Rails 3.1 Release Notes</option>
+                  <option value="3_0_release_notes.html">Ruby on Rails 3.0 Release Notes</option>
+                  <option value="2_3_release_notes.html">Ruby on Rails 2.3 Release Notes</option>
+                  <option value="2_2_release_notes.html">Ruby on Rails 2.2 Release Notes</option>
+              </optgroup>
+          </select>
+        </li>
+      </ul>
+      </div>
+    </div>
+  </div>
+  <hr class="hide" />
+
+  <div id="feature">
+    <div class="wrapper">
+      <h2>Active Record Query Interface</h2><p>This guide covers different ways to retrieve data from the database using Active Record.</p><p>After reading this guide, you will know:</p>
+<ul>
+<li>How to find records using a variety of methods and conditions.</li>
+<li>How to specify the order, retrieved attributes, grouping, and other properties of the found records.</li>
+<li>How to use eager loading to reduce the number of database queries needed for data retrieval.</li>
+<li>How to use dynamic finders methods.</li>
+<li>How to check for the existence of particular records.</li>
+<li>How to perform various calculations on Active Record models.</li>
+<li>How to run EXPLAIN on relations.</li>
+</ul>
+
+
+                <div id="subCol">
+            <h3 class="chapter"><img src="images/chapters_icon.gif" alt="" />Chapters</h3>
+            <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html><body><ol class="chapters">
+<li>
+<a href="#retrieving-objects-from-the-database">Retrieving Objects from the Database</a>
+
+<ul>
+<li><a href="#retrieving-a-single-object">Retrieving a Single Object</a></li>
+<li><a href="#retrieving-multiple-objects">Retrieving Multiple Objects</a></li>
+<li><a href="#retrieving-multiple-objects-in-batches">Retrieving Multiple Objects in Batches</a></li>
+</ul>
+</li>
+<li>
+<a href="#conditions">Conditions</a>
+
+<ul>
+<li><a href="#pure-string-conditions">Pure String Conditions</a></li>
+<li><a href="#array-conditions">Array Conditions</a></li>
+<li><a href="#hash-conditions">Hash Conditions</a></li>
+<li><a href="#not-conditions">NOT Conditions</a></li>
+</ul>
+</li>
+<li><a href="#ordering">Ordering</a></li>
+<li><a href="#selecting-specific-fields">Selecting Specific Fields</a></li>
+<li><a href="#limit-and-offset">Limit and Offset</a></li>
+<li><a href="#group">Group</a></li>
+<li><a href="#having">Having</a></li>
+<li>
+<a href="#overriding-conditions">Overriding Conditions</a>
+
+<ul>
+<li><a href="#unscope"><code>unscope</code></a></li>
+<li><a href="#only"><code>only</code></a></li>
+<li><a href="#reorder"><code>reorder</code></a></li>
+<li><a href="#reverse-order"><code>reverse_order</code></a></li>
+<li><a href="#rewhere"><code>rewhere</code></a></li>
+</ul>
+</li>
+<li><a href="#null-relation">Null Relation</a></li>
+<li><a href="#readonly-objects">Readonly Objects</a></li>
+<li>
+<a href="#locking-records-for-update">Locking Records for Update</a>
+
+<ul>
+<li><a href="#optimistic-locking">Optimistic Locking</a></li>
+<li><a href="#pessimistic-locking">Pessimistic Locking</a></li>
+</ul>
+</li>
+<li>
+<a href="#joining-tables">Joining Tables</a>
+
+<ul>
+<li><a href="#using-a-string-sql-fragment">Using a String SQL Fragment</a></li>
+<li><a href="#using-array-hash-of-named-associations">Using Array/Hash of Named Associations</a></li>
+<li><a href="#specifying-conditions-on-the-joined-tables">Specifying Conditions on the Joined Tables</a></li>
+</ul>
+</li>
+<li>
+<a href="#eager-loading-associations">Eager Loading Associations</a>
+
+<ul>
+<li><a href="#eager-loading-multiple-associations">Eager Loading Multiple Associations</a></li>
+<li><a href="#specifying-conditions-on-eager-loaded-associations">Specifying Conditions on Eager Loaded Associations</a></li>
+</ul>
+</li>
+<li>
+<a href="#scopes">Scopes</a>
+
+<ul>
+<li><a href="#passing-in-arguments">Passing in arguments</a></li>
+<li><a href="#merging-of-scopes">Merging of scopes</a></li>
+<li><a href="#applying-a-default-scope">Applying a default scope</a></li>
+<li><a href="#removing-all-scoping">Removing All Scoping</a></li>
+</ul>
+</li>
+<li><a href="#dynamic-finders">Dynamic Finders</a></li>
+<li>
+<a href="#find-or-build-a-new-object">Find or Build a New Object</a>
+
+<ul>
+<li><a href="#find-or-create-by"><code>find_or_create_by</code></a></li>
+<li><a href="#find-or-create-by-bang"><code>find_or_create_by!</code></a></li>
+<li><a href="#find-or-initialize-by"><code>find_or_initialize_by</code></a></li>
+</ul>
+</li>
+<li>
+<a href="#finding-by-sql">Finding by SQL</a>
+
+<ul>
+<li><a href="#select-all"><code>select_all</code></a></li>
+<li><a href="#pluck"><code>pluck</code></a></li>
+<li><a href="#ids"><code>ids</code></a></li>
+</ul>
+</li>
+<li><a href="#existence-of-objects">Existence of Objects</a></li>
+<li>
+<a href="#calculations">Calculations</a>
+
+<ul>
+<li><a href="#count">Count</a></li>
+<li><a href="#average">Average</a></li>
+<li><a href="#minimum">Minimum</a></li>
+<li><a href="#maximum">Maximum</a></li>
+<li><a href="#sum">Sum</a></li>
+</ul>
+</li>
+<li>
+<a href="#running-explain">Running EXPLAIN</a>
+
+<ul>
+<li><a href="#interpreting-explain">Interpreting EXPLAIN</a></li>
+</ul>
+</li>
+</ol></body></html>
+
+          </div>
+
+    </div>
+  </div>
+
+  <div id="container">
+    <div class="wrapper">
+      <div id="mainCol">
+        <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html><body>
+<p>If you're used to using raw SQL to find database records, then you will generally find that there are better ways to carry out the same operations in Rails. Active Record insulates you from the need to use SQL in most cases.</p>
+<p>Code examples throughout this guide will refer to one or more of the following models:</p>
+<div class="info"><p>All of the following models use <code>id</code> as the primary key, unless specified otherwise.</p></div>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+class Client &lt; ActiveRecord::Base
+  has_one :address
+  has_many :orders
+  has_and_belongs_to_many :roles
+end
+
+</pre>
+</div>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+class Address &lt; ActiveRecord::Base
+  belongs_to :client
+end
+
+</pre>
+</div>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+class Order &lt; ActiveRecord::Base
+  belongs_to :client, counter_cache: true
+end
+
+</pre>
+</div>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+class Role &lt; ActiveRecord::Base
+  has_and_belongs_to_many :clients
+end
+
+</pre>
+</div>
+<p>Active Record will perform queries on the database for you and is compatible with most database systems (MySQL, PostgreSQL and SQLite to name a few). Regardless of which database system you're using, the Active Record method format will always be the same.</p>
+<h3 id="retrieving-objects-from-the-database">1 Retrieving Objects from the Database</h3>
+<p>To retrieve objects from the database, Active Record provides several finder methods. Each finder method allows you to pass arguments into it to perform certain queries on your database without writing raw SQL.</p>
+<p>The methods are:</p>
+<ul>
+<li><code>bind</code></li>
+<li><code>create_with</code></li>
+<li><code>distinct</code></li>
+<li><code>eager_load</code></li>
+<li><code>extending</code></li>
+<li><code>from</code></li>
+<li><code>group</code></li>
+<li><code>having</code></li>
+<li><code>includes</code></li>
+<li><code>joins</code></li>
+<li><code>limit</code></li>
+<li><code>lock</code></li>
+<li><code>none</code></li>
+<li><code>offset</code></li>
+<li><code>order</code></li>
+<li><code>preload</code></li>
+<li><code>readonly</code></li>
+<li><code>references</code></li>
+<li><code>reorder</code></li>
+<li><code>reverse_order</code></li>
+<li><code>select</code></li>
+<li><code>uniq</code></li>
+<li><code>where</code></li>
+</ul>
+<p>All of the above methods return an instance of <code>ActiveRecord::Relation</code>.</p>
+<p>The primary operation of <code>Model.find(options)</code> can be summarized as:</p>
+<ul>
+<li>Convert the supplied options to an equivalent SQL query.</li>
+<li>Fire the SQL query and retrieve the corresponding results from the database.</li>
+<li>Instantiate the equivalent Ruby object of the appropriate model for every resulting row.</li>
+<li>Run <code>after_find</code> callbacks, if any.</li>
+</ul>
+<h4 id="retrieving-a-single-object">1.1 Retrieving a Single Object</h4>
+<p>Active Record provides several different ways of retrieving a single object.</p>
+<h5 id="using-a-primary-key">1.1.1 Using a Primary Key</h5>
+<p>Using <code>Model.find(primary_key)</code>, you can retrieve the object corresponding to the specified <em>primary key</em> that matches any supplied options. For example:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+# Find the client with primary key (id) 10.
+client = Client.find(10)
+# =&gt; #&lt;Client id: 10, first_name: "Ryan"&gt;
+
+</pre>
+</div>
+<p>The SQL equivalent of the above is:</p>
+<div class="code_container">
+<pre class="brush: sql; gutter: false; toolbar: false">
+SELECT * FROM clients WHERE (clients.id = 10) LIMIT 1
+
+</pre>
+</div>
+<p><code>Model.find(primary_key)</code> will raise an <code>ActiveRecord::RecordNotFound</code> exception if no matching record is found.</p>
+<h5 id="retrieving-a-single-object-take">1.1.2 <code>take</code>
+</h5>
+<p><code>Model.take</code> retrieves a record without any implicit ordering. For example:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+client = Client.take
+# =&gt; #&lt;Client id: 1, first_name: "Lifo"&gt;
+
+</pre>
+</div>
+<p>The SQL equivalent of the above is:</p>
+<div class="code_container">
+<pre class="brush: sql; gutter: false; toolbar: false">
+SELECT * FROM clients LIMIT 1
+
+</pre>
+</div>
+<p><code>Model.take</code> returns <code>nil</code> if no record is found and no exception will be raised.</p>
+<div class="info"><p>The retrieved record may vary depending on the database engine.</p></div>
+<h5 id="retrieving-a-single-object-first">1.1.3 <code>first</code>
+</h5>
+<p><code>Model.first</code> finds the first record ordered by the primary key. For example:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+client = Client.first
+# =&gt; #&lt;Client id: 1, first_name: "Lifo"&gt;
+
+</pre>
+</div>
+<p>The SQL equivalent of the above is:</p>
+<div class="code_container">
+<pre class="brush: sql; gutter: false; toolbar: false">
+SELECT * FROM clients ORDER BY clients.id ASC LIMIT 1
+
+</pre>
+</div>
+<p><code>Model.first</code> returns <code>nil</code> if no matching record is found and no exception will be raised.</p>
+<h5 id="retrieving-a-single-object-last">1.1.4 <code>last</code>
+</h5>
+<p><code>Model.last</code> finds the last record ordered by the primary key. For example:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+client = Client.last
+# =&gt; #&lt;Client id: 221, first_name: "Russel"&gt;
+
+</pre>
+</div>
+<p>The SQL equivalent of the above is:</p>
+<div class="code_container">
+<pre class="brush: sql; gutter: false; toolbar: false">
+SELECT * FROM clients ORDER BY clients.id DESC LIMIT 1
+
+</pre>
+</div>
+<p><code>Model.last</code> returns <code>nil</code> if no matching record is found and no exception will be raised.</p>
+<h5 id="find-by">1.1.5 <code>find_by</code>
+</h5>
+<p><code>Model.find_by</code> finds the first record matching some conditions. For example:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Client.find_by first_name: 'Lifo'
+# =&gt; #&lt;Client id: 1, first_name: "Lifo"&gt;
+
+Client.find_by first_name: 'Jon'
+# =&gt; nil
+
+</pre>
+</div>
+<p>It is equivalent to writing:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Client.where(first_name: 'Lifo').take
+
+</pre>
+</div>
+<h5 id="take-bang">1.1.6 <code>take!</code>
+</h5>
+<p><code>Model.take!</code> retrieves a record without any implicit ordering. For example:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+client = Client.take!
+# =&gt; #&lt;Client id: 1, first_name: "Lifo"&gt;
+
+</pre>
+</div>
+<p>The SQL equivalent of the above is:</p>
+<div class="code_container">
+<pre class="brush: sql; gutter: false; toolbar: false">
+SELECT * FROM clients LIMIT 1
+
+</pre>
+</div>
+<p><code>Model.take!</code> raises <code>ActiveRecord::RecordNotFound</code> if no matching record is found.</p>
+<h5 id="first-bang">1.1.7 <code>first!</code>
+</h5>
+<p><code>Model.first!</code> finds the first record ordered by the primary key. For example:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+client = Client.first!
+# =&gt; #&lt;Client id: 1, first_name: "Lifo"&gt;
+
+</pre>
+</div>
+<p>The SQL equivalent of the above is:</p>
+<div class="code_container">
+<pre class="brush: sql; gutter: false; toolbar: false">
+SELECT * FROM clients ORDER BY clients.id ASC LIMIT 1
+
+</pre>
+</div>
+<p><code>Model.first!</code> raises <code>ActiveRecord::RecordNotFound</code> if no matching record is found.</p>
+<h5 id="last-bang">1.1.8 <code>last!</code>
+</h5>
+<p><code>Model.last!</code> finds the last record ordered by the primary key. For example:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+client = Client.last!
+# =&gt; #&lt;Client id: 221, first_name: "Russel"&gt;
+
+</pre>
+</div>
+<p>The SQL equivalent of the above is:</p>
+<div class="code_container">
+<pre class="brush: sql; gutter: false; toolbar: false">
+SELECT * FROM clients ORDER BY clients.id DESC LIMIT 1
+
+</pre>
+</div>
+<p><code>Model.last!</code> raises <code>ActiveRecord::RecordNotFound</code> if no matching record is found.</p>
+<h5 id="find-by-bang">1.1.9 <code>find_by!</code>
+</h5>
+<p><code>Model.find_by!</code> finds the first record matching some conditions. It raises <code>ActiveRecord::RecordNotFound</code> if no matching record is found. For example:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Client.find_by! first_name: 'Lifo'
+# =&gt; #&lt;Client id: 1, first_name: "Lifo"&gt;
+
+Client.find_by! first_name: 'Jon'
+# =&gt; ActiveRecord::RecordNotFound
+
+</pre>
+</div>
+<p>It is equivalent to writing:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Client.where(first_name: 'Lifo').take!
+
+</pre>
+</div>
+<h4 id="retrieving-multiple-objects">1.2 Retrieving Multiple Objects</h4>
+<h5 id="using-multiple-primary-keys">1.2.1 Using Multiple Primary Keys</h5>
+<p><code>Model.find(array_of_primary_key)</code> accepts an array of <em>primary keys</em>, returning an array containing all of the matching records for the supplied <em>primary keys</em>. For example:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+# Find the clients with primary keys 1 and 10.
+client = Client.find([1, 10]) # Or even Client.find(1, 10)
+# =&gt; [#&lt;Client id: 1, first_name: "Lifo"&gt;, #&lt;Client id: 10, first_name: "Ryan"&gt;]
+
+</pre>
+</div>
+<p>The SQL equivalent of the above is:</p>
+<div class="code_container">
+<pre class="brush: sql; gutter: false; toolbar: false">
+SELECT * FROM clients WHERE (clients.id IN (1,10))
+
+</pre>
+</div>
+<div class="warning"><p><code>Model.find(array_of_primary_key)</code> will raise an <code>ActiveRecord::RecordNotFound</code> exception unless a matching record is found for <strong>all</strong> of the supplied primary keys.</p></div>
+<h5 id="retrieving-multiple-objects-take">1.2.2 take</h5>
+<p><code>Model.take(limit)</code> retrieves the first number of records specified by <code>limit</code> without any explicit ordering:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Client.take(2)
+# =&gt; [#&lt;Client id: 1, first_name: "Lifo"&gt;,
+      #&lt;Client id: 2, first_name: "Raf"&gt;]
+
+</pre>
+</div>
+<p>The SQL equivalent of the above is:</p>
+<div class="code_container">
+<pre class="brush: sql; gutter: false; toolbar: false">
+SELECT * FROM clients LIMIT 2
+
+</pre>
+</div>
+<h5 id="retrieving-multiple-objects-first">1.2.3 first</h5>
+<p><code>Model.first(limit)</code> finds the first number of records specified by <code>limit</code> ordered by primary key:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Client.first(2)
+# =&gt; [#&lt;Client id: 1, first_name: "Lifo"&gt;,
+      #&lt;Client id: 2, first_name: "Raf"&gt;]
+
+</pre>
+</div>
+<p>The SQL equivalent of the above is:</p>
+<div class="code_container">
+<pre class="brush: sql; gutter: false; toolbar: false">
+SELECT * FROM clients ORDER BY id ASC LIMIT 2
+
+</pre>
+</div>
+<h5 id="retrieving-multiple-objects-last">1.2.4 last</h5>
+<p><code>Model.last(limit)</code> finds the number of records specified by <code>limit</code> ordered by primary key in descending order:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Client.last(2)
+# =&gt; [#&lt;Client id: 10, first_name: "Ryan"&gt;,
+      #&lt;Client id: 9, first_name: "John"&gt;]
+
+</pre>
+</div>
+<p>The SQL equivalent of the above is:</p>
+<div class="code_container">
+<pre class="brush: sql; gutter: false; toolbar: false">
+SELECT * FROM clients ORDER BY id DESC LIMIT 2
+
+</pre>
+</div>
+<h4 id="retrieving-multiple-objects-in-batches">1.3 Retrieving Multiple Objects in Batches</h4>
+<p>We often need to iterate over a large set of records, as when we send a newsletter to a large set of users, or when we export data.</p>
+<p>This may appear straightforward:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+# This is very inefficient when the users table has thousands of rows.
+User.all.each do |user|
+  NewsLetter.weekly_deliver(user)
+end
+
+</pre>
+</div>
+<p>But this approach becomes increasingly impractical as the table size increases, since <code>User.all.each</code> instructs Active Record to fetch <em>the entire table</em> in a single pass, build a model object per row, and then keep the entire array of model objects in memory. Indeed, if we have a large number of records, the entire collection may exceed the amount of memory available.</p>
+<p>Rails provides two methods that address this problem by dividing records into memory-friendly batches for processing. The first method, <code>find_each</code>, retrieves a batch of records and then yields <em>each</em> record to the block individually as a model. The second method, <code>find_in_batches</code>, retrieves a batch of records and then yields <em>the entire batch</em> to the block as an array of models.</p>
+<div class="info"><p>The <code>find_each</code> and <code>find_in_batches</code> methods are intended for use in the batch processing of a large number of records that wouldn't fit in memory all at once. If you just need to loop over a thousand records the regular find methods are the preferred option.</p></div>
+<h5 id="find-each">1.3.1 <code>find_each</code>
+</h5>
+<p>The <code>find_each</code> method retrieves a batch of records and then yields <em>each</em> record to the block individually as a model. In the following example, <code>find_each</code> will retrieve 1000 records (the current default for both <code>find_each</code> and <code>find_in_batches</code>) and then yield each record individually to the block as a model. This process is repeated until all of the records have been processed:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+User.find_each do |user|
+  NewsLetter.weekly_deliver(user)
+end
+
+</pre>
+</div>
+<h6 id="options-for-find-each">1.3.1.1 Options for <code>find_each</code>
+</h6>
+<p>The <code>find_each</code> method accepts most of the options allowed by the regular <code>find</code> method, except for <code>:order</code> and <code>:limit</code>, which are reserved for internal use by <code>find_each</code>.</p>
+<p>Two additional options, <code>:batch_size</code> and <code>:start</code>, are available as well.</p>
+<p><strong><code>:batch_size</code></strong></p>
+<p>The <code>:batch_size</code> option allows you to specify the number of records to be retrieved in each batch, before being passed individually to the block. For example, to retrieve records in batches of 5000:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+User.find_each(batch_size: 5000) do |user|
+  NewsLetter.weekly_deliver(user)
+end
+
+</pre>
+</div>
+<p><strong><code>:start</code></strong></p>
+<p>By default, records are fetched in ascending order of the primary key, which must be an integer. The <code>:start</code> option allows you to configure the first ID of the sequence whenever the lowest ID is not the one you need. This would be useful, for example, if you wanted to resume an interrupted batch process, provided you saved the last processed ID as a checkpoint.</p>
+<p>For example, to send newsletters only to users with the primary key starting from 2000, and to retrieve them in batches of 5000:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+User.find_each(start: 2000, batch_size: 5000) do |user|
+  NewsLetter.weekly_deliver(user)
+end
+
+</pre>
+</div>
+<p>Another example would be if you wanted multiple workers handling the same processing queue. You could have each worker handle 10000 records by setting the appropriate <code>:start</code> option on each worker.</p>
+<h5 id="find-in-batches">1.3.2 <code>find_in_batches</code>
+</h5>
+<p>The <code>find_in_batches</code> method is similar to <code>find_each</code>, since both retrieve batches of records. The difference is that <code>find_in_batches</code> yields <em>batches</em> to the block as an array of models, instead of individually. The following example will yield to the supplied block an array of up to 1000 invoices at a time, with the final block containing any remaining invoices:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+# Give add_invoices an array of 1000 invoices at a time
+Invoice.find_in_batches(include: :invoice_lines) do |invoices|
+  export.add_invoices(invoices)
+end
+
+</pre>
+</div>
+<div class="note"><p>The <code>:include</code> option allows you to name associations that should be loaded alongside with the models.</p></div>
+<h6 id="options-for-find-in-batches">1.3.2.1 Options for <code>find_in_batches</code>
+</h6>
+<p>The <code>find_in_batches</code> method accepts the same <code>:batch_size</code> and <code>:start</code> options as <code>find_each</code>, as well as most of the options allowed by the regular <code>find</code> method, except for <code>:order</code> and <code>:limit</code>, which are reserved for internal use by <code>find_in_batches</code>.</p>
+<h3 id="conditions">2 Conditions</h3>
+<p>The <code>where</code> method allows you to specify conditions to limit the records returned, representing the <code>WHERE</code>-part of the SQL statement. Conditions can either be specified as a string, array, or hash.</p>
+<h4 id="pure-string-conditions">2.1 Pure String Conditions</h4>
+<p>If you'd like to add conditions to your find, you could just specify them in there, just like <code>Client.where("orders_count = '2'")</code>. This will find all clients where the <code>orders_count</code> field's value is 2.</p>
+<div class="warning"><p>Building your own conditions as pure strings can leave you vulnerable to SQL injection exploits. For example, <code>Client.where("first_name LIKE '%#{params[:first_name]}%'")</code> is not safe. See the next section for the preferred way to handle conditions using an array.</p></div>
+<h4 id="array-conditions">2.2 Array Conditions</h4>
+<p>Now what if that number could vary, say as an argument from somewhere? The find would then take the form:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Client.where("orders_count = ?", params[:orders])
+
+</pre>
+</div>
+<p>Active Record will go through the first element in the conditions value and any additional elements will replace the question marks <code>(?)</code> in the first element.</p>
+<p>If you want to specify multiple conditions:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Client.where("orders_count = ? AND locked = ?", params[:orders], false)
+
+</pre>
+</div>
+<p>In this example, the first question mark will be replaced with the value in <code>params[:orders]</code> and the second will be replaced with the SQL representation of <code>false</code>, which depends on the adapter.</p>
+<p>This code is highly preferable:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Client.where("orders_count = ?", params[:orders])
+
+</pre>
+</div>
+<p>to this code:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Client.where("orders_count = #{params[:orders]}")
+
+</pre>
+</div>
+<p>because of argument safety. Putting the variable directly into the conditions string will pass the variable to the database <strong>as-is</strong>. This means that it will be an unescaped variable directly from a user who may have malicious intent. If you do this, you put your entire database at risk because once a user finds out they can exploit your database they can do just about anything to it. Never ever put your arguments directly inside the conditions string.</p>
+<div class="info"><p>For more information on the dangers of SQL injection, see the <a href="security.html#sql-injection">Ruby on Rails Security Guide</a>.</p></div>
+<h5 id="placeholder-conditions">2.2.1 Placeholder Conditions</h5>
+<p>Similar to the <code>(?)</code> replacement style of params, you can also specify keys/values hash in your array conditions:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Client.where("created_at &gt;= :start_date AND created_at &lt;= :end_date",
+  {start_date: params[:start_date], end_date: params[:end_date]})
+
+</pre>
+</div>
+<p>This makes for clearer readability if you have a large number of variable conditions.</p>
+<h4 id="hash-conditions">2.3 Hash Conditions</h4>
+<p>Active Record also allows you to pass in hash conditions which can increase the readability of your conditions syntax. With hash conditions, you pass in a hash with keys of the fields you want conditionalised and the values of how you want to conditionalise them:</p>
+<div class="note"><p>Only equality, range and subset checking are possible with Hash conditions.</p></div>
+<h5 id="equality-conditions">2.3.1 Equality Conditions</h5>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Client.where(locked: true)
+
+</pre>
+</div>
+<p>The field name can also be a string:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Client.where('locked' =&gt; true)
+
+</pre>
+</div>
+<p>In the case of a belongs_to relationship, an association key can be used to specify the model if an Active Record object is used as the value. This method works with polymorphic relationships as well.</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Post.where(author: author)
+Author.joins(:posts).where(posts: { author: author })
+
+</pre>
+</div>
+<div class="note"><p>The values cannot be symbols. For example, you cannot do <code>Client.where(status: :active)</code>.</p></div>
+<h5 id="range-conditions">2.3.2 Range Conditions</h5>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Client.where(created_at: (Time.now.midnight - 1.day)..Time.now.midnight)
+
+</pre>
+</div>
+<p>This will find all clients created yesterday by using a <code>BETWEEN</code> SQL statement:</p>
+<div class="code_container">
+<pre class="brush: sql; gutter: false; toolbar: false">
+SELECT * FROM clients WHERE (clients.created_at BETWEEN '2008-12-21 00:00:00' AND '2008-12-22 00:00:00')
+
+</pre>
+</div>
+<p>This demonstrates a shorter syntax for the examples in <a href="#array-conditions">Array Conditions</a></p>
+<h5 id="subset-conditions">2.3.3 Subset Conditions</h5>
+<p>If you want to find records using the <code>IN</code> expression you can pass an array to the conditions hash:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Client.where(orders_count: [1,3,5])
+
+</pre>
+</div>
+<p>This code will generate SQL like this:</p>
+<div class="code_container">
+<pre class="brush: sql; gutter: false; toolbar: false">
+SELECT * FROM clients WHERE (clients.orders_count IN (1,3,5))
+
+</pre>
+</div>
+<h4 id="not-conditions">2.4 NOT Conditions</h4>
+<p><code>NOT</code> SQL queries can be built by <code>where.not</code>.</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Post.where.not(author: author)
+
+</pre>
+</div>
+<p>In other words, this query can be generated by calling <code>where</code> with no argument, then immediately chain with <code>not</code> passing <code>where</code> conditions.</p>
+<h3 id="ordering">3 Ordering</h3>
+<p>To retrieve records from the database in a specific order, you can use the <code>order</code> method.</p>
+<p>For example, if you're getting a set of records and want to order them in ascending order by the <code>created_at</code> field in your table:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Client.order(:created_at)
+# OR
+Client.order("created_at")
+
+</pre>
+</div>
+<p>You could specify <code>ASC</code> or <code>DESC</code> as well:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Client.order(created_at: :desc)
+# OR
+Client.order(created_at: :asc)
+# OR
+Client.order("created_at DESC")
+# OR
+Client.order("created_at ASC")
+
+</pre>
+</div>
+<p>Or ordering by multiple fields:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Client.order(orders_count: :asc, created_at: :desc)
+# OR
+Client.order(:orders_count, created_at: :desc)
+# OR
+Client.order("orders_count ASC, created_at DESC")
+# OR
+Client.order("orders_count ASC", "created_at DESC")
+
+</pre>
+</div>
+<p>If you want to call <code>order</code> multiple times e.g. in different context, new order will append previous one</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Client.order("orders_count ASC").order("created_at DESC")
+# SELECT * FROM clients ORDER BY orders_count ASC, created_at DESC
+
+</pre>
+</div>
+<h3 id="selecting-specific-fields">4 Selecting Specific Fields</h3>
+<p>By default, <code>Model.find</code> selects all the fields from the result set using <code>select *</code>.</p>
+<p>To select only a subset of fields from the result set, you can specify the subset via the <code>select</code> method.</p>
+<p>For example, to select only <code>viewable_by</code> and <code>locked</code> columns:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Client.select("viewable_by, locked")
+
+</pre>
+</div>
+<p>The SQL query used by this find call will be somewhat like:</p>
+<div class="code_container">
+<pre class="brush: sql; gutter: false; toolbar: false">
+SELECT viewable_by, locked FROM clients
+
+</pre>
+</div>
+<p>Be careful because this also means you're initializing a model object with only the fields that you've selected. If you attempt to access a field that is not in the initialized record you'll receive:</p>
+<div class="code_container">
+<pre class="brush: plain; gutter: false; toolbar: false">
+ActiveModel::MissingAttributeError: missing attribute: &lt;attribute&gt;
+
+</pre>
+</div>
+<p>Where <code>&lt;attribute&gt;</code> is the attribute you asked for. The <code>id</code> method will not raise the <code>ActiveRecord::MissingAttributeError</code>, so just be careful when working with associations because they need the <code>id</code> method to function properly.</p>
+<p>If you would like to only grab a single record per unique value in a certain field, you can use <code>distinct</code>:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Client.select(:name).distinct
+
+</pre>
+</div>
+<p>This would generate SQL like:</p>
+<div class="code_container">
+<pre class="brush: sql; gutter: false; toolbar: false">
+SELECT DISTINCT name FROM clients
+
+</pre>
+</div>
+<p>You can also remove the uniqueness constraint:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+query = Client.select(:name).distinct
+# =&gt; Returns unique names
+
+query.distinct(false)
+# =&gt; Returns all names, even if there are duplicates
+
+</pre>
+</div>
+<h3 id="limit-and-offset">5 Limit and Offset</h3>
+<p>To apply <code>LIMIT</code> to the SQL fired by the <code>Model.find</code>, you can specify the <code>LIMIT</code> using <code>limit</code> and <code>offset</code> methods on the relation.</p>
+<p>You can use <code>limit</code> to specify the number of records to be retrieved, and use <code>offset</code> to specify the number of records to skip before starting to return the records. For example</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Client.limit(5)
+
+</pre>
+</div>
+<p>will return a maximum of 5 clients and because it specifies no offset it will return the first 5 in the table. The SQL it executes looks like this:</p>
+<div class="code_container">
+<pre class="brush: sql; gutter: false; toolbar: false">
+SELECT * FROM clients LIMIT 5
+
+</pre>
+</div>
+<p>Adding <code>offset</code> to that</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Client.limit(5).offset(30)
+
+</pre>
+</div>
+<p>will return instead a maximum of 5 clients beginning with the 31st. The SQL looks like:</p>
+<div class="code_container">
+<pre class="brush: sql; gutter: false; toolbar: false">
+SELECT * FROM clients LIMIT 5 OFFSET 30
+
+</pre>
+</div>
+<h3 id="group">6 Group</h3>
+<p>To apply a <code>GROUP BY</code> clause to the SQL fired by the finder, you can specify the <code>group</code> method on the find.</p>
+<p>For example, if you want to find a collection of the dates orders were created on:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Order.select("date(created_at) as ordered_date, sum(price) as total_price").group("date(created_at)")
+
+</pre>
+</div>
+<p>And this will give you a single <code>Order</code> object for each date where there are orders in the database.</p>
+<p>The SQL that would be executed would be something like this:</p>
+<div class="code_container">
+<pre class="brush: sql; gutter: false; toolbar: false">
+SELECT date(created_at) as ordered_date, sum(price) as total_price
+FROM orders
+GROUP BY date(created_at)
+
+</pre>
+</div>
+<h3 id="having">7 Having</h3>
+<p>SQL uses the <code>HAVING</code> clause to specify conditions on the <code>GROUP BY</code> fields. You can add the <code>HAVING</code> clause to the SQL fired by the <code>Model.find</code> by adding the <code>:having</code> option to the find.</p>
+<p>For example:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Order.select("date(created_at) as ordered_date, sum(price) as total_price").
+  group("date(created_at)").having("sum(price) &gt; ?", 100)
+
+</pre>
+</div>
+<p>The SQL that would be executed would be something like this:</p>
+<div class="code_container">
+<pre class="brush: sql; gutter: false; toolbar: false">
+SELECT date(created_at) as ordered_date, sum(price) as total_price
+FROM orders
+GROUP BY date(created_at)
+HAVING sum(price) &gt; 100
+
+</pre>
+</div>
+<p>This will return single order objects for each day, but only those that are ordered more than $100 in a day.</p>
+<h3 id="overriding-conditions">8 Overriding Conditions</h3>
+<h4 id="unscope">8.1 <code>unscope</code>
+</h4>
+<p>You can specify certain conditions to be removed using the <code>unscope</code> method. For example:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Post.where('id &gt; 10').limit(20).order('id asc').except(:order)
+
+</pre>
+</div>
+<p>The SQL that would be executed:</p>
+<div class="code_container">
+<pre class="brush: sql; gutter: false; toolbar: false">
+SELECT * FROM posts WHERE id &gt; 10 LIMIT 20
+
+# Original query without `unscope`
+SELECT * FROM posts WHERE id &gt; 10 ORDER BY id asc LIMIT 20
+
+
+</pre>
+</div>
+<p>You can additionally unscope specific where clauses. For example:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Post.where(id: 10, trashed: false).unscope(where: :id)
+# SELECT "posts".* FROM "posts" WHERE trashed = 0
+
+</pre>
+</div>
+<p>A relation which has used <code>unscope</code> will affect any relation it is
+merged in to:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Post.order('id asc').merge(Post.unscope(:order))
+# SELECT "posts".* FROM "posts"
+
+</pre>
+</div>
+<h4 id="only">8.2 <code>only</code>
+</h4>
+<p>You can also override conditions using the <code>only</code> method. For example:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Post.where('id &gt; 10').limit(20).order('id desc').only(:order, :where)
+
+</pre>
+</div>
+<p>The SQL that would be executed:</p>
+<div class="code_container">
+<pre class="brush: sql; gutter: false; toolbar: false">
+SELECT * FROM posts WHERE id &gt; 10 ORDER BY id DESC
+
+# Original query without `only`
+SELECT "posts".* FROM "posts" WHERE (id &gt; 10) ORDER BY id desc LIMIT 20
+
+
+</pre>
+</div>
+<h4 id="reorder">8.3 <code>reorder</code>
+</h4>
+<p>The <code>reorder</code> method overrides the default scope order. For example:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+class Post &lt; ActiveRecord::Base
+  ..
+  ..
+  has_many :comments, -&gt; { order('posted_at DESC') }
+end
+
+Post.find(10).comments.reorder('name')
+
+</pre>
+</div>
+<p>The SQL that would be executed:</p>
+<div class="code_container">
+<pre class="brush: sql; gutter: false; toolbar: false">
+SELECT * FROM posts WHERE id = 10 ORDER BY name
+
+</pre>
+</div>
+<p>In case the <code>reorder</code> clause is not used, the SQL executed would be:</p>
+<div class="code_container">
+<pre class="brush: sql; gutter: false; toolbar: false">
+SELECT * FROM posts WHERE id = 10 ORDER BY posted_at DESC
+
+</pre>
+</div>
+<h4 id="reverse-order">8.4 <code>reverse_order</code>
+</h4>
+<p>The <code>reverse_order</code> method reverses the ordering clause if specified.</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Client.where("orders_count &gt; 10").order(:name).reverse_order
+
+</pre>
+</div>
+<p>The SQL that would be executed:</p>
+<div class="code_container">
+<pre class="brush: sql; gutter: false; toolbar: false">
+SELECT * FROM clients WHERE orders_count &gt; 10 ORDER BY name DESC
+
+</pre>
+</div>
+<p>If no ordering clause is specified in the query, the <code>reverse_order</code> orders by the primary key in reverse order.</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Client.where("orders_count &gt; 10").reverse_order
+
+</pre>
+</div>
+<p>The SQL that would be executed:</p>
+<div class="code_container">
+<pre class="brush: sql; gutter: false; toolbar: false">
+SELECT * FROM clients WHERE orders_count &gt; 10 ORDER BY clients.id DESC
+
+</pre>
+</div>
+<p>This method accepts <strong>no</strong> arguments.</p>
+<h4 id="rewhere">8.5 <code>rewhere</code>
+</h4>
+<p>The <code>rewhere</code> method overrides an existing, named where condition. For example:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Post.where(trashed: true).rewhere(trashed: false)
+
+</pre>
+</div>
+<p>The SQL that would be executed:</p>
+<div class="code_container">
+<pre class="brush: sql; gutter: false; toolbar: false">
+SELECT * FROM posts WHERE `trashed` = 0
+
+</pre>
+</div>
+<p>In case the <code>rewhere</code> clause is not used,</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Post.where(trashed: true).where(trashed: false)
+
+</pre>
+</div>
+<p>the SQL executed would be:</p>
+<div class="code_container">
+<pre class="brush: sql; gutter: false; toolbar: false">
+SELECT * FROM posts WHERE `trashed` = 1 AND `trashed` = 0
+
+</pre>
+</div>
+<h3 id="null-relation">9 Null Relation</h3>
+<p>The <code>none</code> method returns a chainable relation with no records. Any subsequent conditions chained to the returned relation will continue generating empty relations. This is useful in scenarios where you need a chainable response to a method or a scope that could return zero results.</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Post.none # returns an empty Relation and fires no queries.
+
+</pre>
+</div>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+# The visible_posts method below is expected to return a Relation.
+@posts = current_user.visible_posts.where(name: params[:name])
+
+def visible_posts
+  case role
+  when 'Country Manager'
+    Post.where(country: country)
+  when 'Reviewer'
+    Post.published
+  when 'Bad User'
+    Post.none # =&gt; returning [] or nil breaks the caller code in this case
+  end
+end
+
+</pre>
+</div>
+<h3 id="readonly-objects">10 Readonly Objects</h3>
+<p>Active Record provides <code>readonly</code> method on a relation to explicitly disallow modification of any of the returned objects. Any attempt to alter a readonly record will not succeed, raising an <code>ActiveRecord::ReadOnlyRecord</code> exception.</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+client = Client.readonly.first
+client.visits += 1
+client.save
+
+</pre>
+</div>
+<p>As <code>client</code> is explicitly set to be a readonly object, the above code will raise an <code>ActiveRecord::ReadOnlyRecord</code> exception when calling <code>client.save</code> with an updated value of <em>visits</em>.</p>
+<h3 id="locking-records-for-update">11 Locking Records for Update</h3>
+<p>Locking is helpful for preventing race conditions when updating records in the database and ensuring atomic updates.</p>
+<p>Active Record provides two locking mechanisms:</p>
+<ul>
+<li>Optimistic Locking</li>
+<li>Pessimistic Locking</li>
+</ul>
+<h4 id="optimistic-locking">11.1 Optimistic Locking</h4>
+<p>Optimistic locking allows multiple users to access the same record for edits, and assumes a minimum of conflicts with the data. It does this by checking whether another process has made changes to a record since it was opened. An <code>ActiveRecord::StaleObjectError</code> exception is thrown if that has occurred and the update is ignored.</p>
+<p><strong>Optimistic locking column</strong></p>
+<p>In order to use optimistic locking, the table needs to have a column called <code>lock_version</code> of type integer. Each time the record is updated, Active Record increments the <code>lock_version</code> column. If an update request is made with a lower value in the <code>lock_version</code> field than is currently in the <code>lock_version</code> column in the database, the update request will fail with an <code>ActiveRecord::StaleObjectError</code>. Example:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+c1 = Client.find(1)
+c2 = Client.find(1)
+
+c1.first_name = "Michael"
+c1.save
+
+c2.name = "should fail"
+c2.save # Raises an ActiveRecord::StaleObjectError
+
+</pre>
+</div>
+<p>You're then responsible for dealing with the conflict by rescuing the exception and either rolling back, merging, or otherwise apply the business logic needed to resolve the conflict.</p>
+<p>This behavior can be turned off by setting <code>ActiveRecord::Base.lock_optimistically = false</code>.</p>
+<p>To override the name of the <code>lock_version</code> column, <code>ActiveRecord::Base</code> provides a class attribute called <code>locking_column</code>:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+class Client &lt; ActiveRecord::Base
+  self.locking_column = :lock_client_column
+end
+
+</pre>
+</div>
+<h4 id="pessimistic-locking">11.2 Pessimistic Locking</h4>
+<p>Pessimistic locking uses a locking mechanism provided by the underlying database. Using <code>lock</code> when building a relation obtains an exclusive lock on the selected rows. Relations using <code>lock</code> are usually wrapped inside a transaction for preventing deadlock conditions.</p>
+<p>For example:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Item.transaction do
+  i = Item.lock.first
+  i.name = 'Jones'
+  i.save
+end
+
+</pre>
+</div>
+<p>The above session produces the following SQL for a MySQL backend:</p>
+<div class="code_container">
+<pre class="brush: sql; gutter: false; toolbar: false">
+SQL (0.2ms)   BEGIN
+Item Load (0.3ms)   SELECT * FROM `items` LIMIT 1 FOR UPDATE
+Item Update (0.4ms)   UPDATE `items` SET `updated_at` = '2009-02-07 18:05:56', `name` = 'Jones' WHERE `id` = 1
+SQL (0.8ms)   COMMIT
+
+</pre>
+</div>
+<p>You can also pass raw SQL to the <code>lock</code> method for allowing different types of locks. For example, MySQL has an expression called <code>LOCK IN SHARE MODE</code> where you can lock a record but still allow other queries to read it. To specify this expression just pass it in as the lock option:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Item.transaction do
+  i = Item.lock("LOCK IN SHARE MODE").find(1)
+  i.increment!(:views)
+end
+
+</pre>
+</div>
+<p>If you already have an instance of your model, you can start a transaction and acquire the lock in one go using the following code:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+item = Item.first
+item.with_lock do
+  # This block is called within a transaction,
+  # item is already locked.
+  item.increment!(:views)
+end
+
+</pre>
+</div>
+<h3 id="joining-tables">12 Joining Tables</h3>
+<p>Active Record provides a finder method called <code>joins</code> for specifying <code>JOIN</code> clauses on the resulting SQL. There are multiple ways to use the <code>joins</code> method.</p>
+<h4 id="using-a-string-sql-fragment">12.1 Using a String SQL Fragment</h4>
+<p>You can just supply the raw SQL specifying the <code>JOIN</code> clause to <code>joins</code>:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Client.joins('LEFT OUTER JOIN addresses ON addresses.client_id = clients.id')
+
+</pre>
+</div>
+<p>This will result in the following SQL:</p>
+<div class="code_container">
+<pre class="brush: sql; gutter: false; toolbar: false">
+SELECT clients.* FROM clients LEFT OUTER JOIN addresses ON addresses.client_id = clients.id
+
+</pre>
+</div>
+<h4 id="using-array-hash-of-named-associations">12.2 Using Array/Hash of Named Associations</h4>
+<div class="warning"><p>This method only works with <code>INNER JOIN</code>.</p></div>
+<p>Active Record lets you use the names of the <a href="association_basics.html">associations</a> defined on the model as a shortcut for specifying <code>JOIN</code> clauses for those associations when using the <code>joins</code> method.</p>
+<p>For example, consider the following <code>Category</code>, <code>Post</code>, <code>Comment</code>, <code>Guest</code> and <code>Tag</code> models:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+class Category &lt; ActiveRecord::Base
+  has_many :posts
+end
+
+class Post &lt; ActiveRecord::Base
+  belongs_to :category
+  has_many :comments
+  has_many :tags
+end
+
+class Comment &lt; ActiveRecord::Base
+  belongs_to :post
+  has_one :guest
+end
+
+class Guest &lt; ActiveRecord::Base
+  belongs_to :comment
+end
+
+class Tag &lt; ActiveRecord::Base
+  belongs_to :post
+end
+
+</pre>
+</div>
+<p>Now all of the following will produce the expected join queries using <code>INNER JOIN</code>:</p>
+<h5 id="joining-a-single-association">12.2.1 Joining a Single Association</h5>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Category.joins(:posts)
+
+</pre>
+</div>
+<p>This produces:</p>
+<div class="code_container">
+<pre class="brush: sql; gutter: false; toolbar: false">
+SELECT categories.* FROM categories
+  INNER JOIN posts ON posts.category_id = categories.id
+
+</pre>
+</div>
+<p>Or, in English: "return a Category object for all categories with posts". Note that you will see duplicate categories if more than one post has the same category. If you want unique categories, you can use <code>Category.joins(:posts).uniq</code>.</p>
+<h5 id="joining-multiple-associations">12.2.2 Joining Multiple Associations</h5>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Post.joins(:category, :comments)
+
+</pre>
+</div>
+<p>This produces:</p>
+<div class="code_container">
+<pre class="brush: sql; gutter: false; toolbar: false">
+SELECT posts.* FROM posts
+  INNER JOIN categories ON posts.category_id = categories.id
+  INNER JOIN comments ON comments.post_id = posts.id
+
+</pre>
+</div>
+<p>Or, in English: "return all posts that have a category and at least one comment". Note again that posts with multiple comments will show up multiple times.</p>
+<h5 id="joining-nested-associations-single-level">12.2.3 Joining Nested Associations (Single Level)</h5>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Post.joins(comments: :guest)
+
+</pre>
+</div>
+<p>This produces:</p>
+<div class="code_container">
+<pre class="brush: sql; gutter: false; toolbar: false">
+SELECT posts.* FROM posts
+  INNER JOIN comments ON comments.post_id = posts.id
+  INNER JOIN guests ON guests.comment_id = comments.id
+
+</pre>
+</div>
+<p>Or, in English: "return all posts that have a comment made by a guest."</p>
+<h5 id="joining-nested-associations-multiple-level">12.2.4 Joining Nested Associations (Multiple Level)</h5>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Category.joins(posts: [{ comments: :guest }, :tags])
+
+</pre>
+</div>
+<p>This produces:</p>
+<div class="code_container">
+<pre class="brush: sql; gutter: false; toolbar: false">
+SELECT categories.* FROM categories
+  INNER JOIN posts ON posts.category_id = categories.id
+  INNER JOIN comments ON comments.post_id = posts.id
+  INNER JOIN guests ON guests.comment_id = comments.id
+  INNER JOIN tags ON tags.post_id = posts.id
+
+</pre>
+</div>
+<h4 id="specifying-conditions-on-the-joined-tables">12.3 Specifying Conditions on the Joined Tables</h4>
+<p>You can specify conditions on the joined tables using the regular <a href="#array-conditions">Array</a> and <a href="#pure-string-conditions">String</a> conditions. <a href="#hash-conditions">Hash conditions</a> provides a special syntax for specifying conditions for the joined tables:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+time_range = (Time.now.midnight - 1.day)..Time.now.midnight
+Client.joins(:orders).where('orders.created_at' =&gt; time_range)
+
+</pre>
+</div>
+<p>An alternative and cleaner syntax is to nest the hash conditions:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+time_range = (Time.now.midnight - 1.day)..Time.now.midnight
+Client.joins(:orders).where(orders: { created_at: time_range })
+
+</pre>
+</div>
+<p>This will find all clients who have orders that were created yesterday, again using a <code>BETWEEN</code> SQL expression.</p>
+<h3 id="eager-loading-associations">13 Eager Loading Associations</h3>
+<p>Eager loading is the mechanism for loading the associated records of the objects returned by <code>Model.find</code> using as few queries as possible.</p>
+<p><strong>N + 1 queries problem</strong></p>
+<p>Consider the following code, which finds 10 clients and prints their postcodes:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+clients = Client.limit(10)
+
+clients.each do |client|
+  puts client.address.postcode
+end
+
+</pre>
+</div>
+<p>This code looks fine at the first sight. But the problem lies within the total number of queries executed. The above code executes 1 (to find 10 clients) + 10 (one per each client to load the address) = <strong>11</strong> queries in total.</p>
+<p><strong>Solution to N + 1 queries problem</strong></p>
+<p>Active Record lets you specify in advance all the associations that are going to be loaded. This is possible by specifying the <code>includes</code> method of the <code>Model.find</code> call. With <code>includes</code>, Active Record ensures that all of the specified associations are loaded using the minimum possible number of queries.</p>
+<p>Revisiting the above case, we could rewrite <code>Client.limit(10)</code> to use eager load addresses:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+clients = Client.includes(:address).limit(10)
+
+clients.each do |client|
+  puts client.address.postcode
+end
+
+</pre>
+</div>
+<p>The above code will execute just <strong>2</strong> queries, as opposed to <strong>11</strong> queries in the previous case:</p>
+<div class="code_container">
+<pre class="brush: sql; gutter: false; toolbar: false">
+SELECT * FROM clients LIMIT 10
+SELECT addresses.* FROM addresses
+  WHERE (addresses.client_id IN (1,2,3,4,5,6,7,8,9,10))
+
+</pre>
+</div>
+<h4 id="eager-loading-multiple-associations">13.1 Eager Loading Multiple Associations</h4>
+<p>Active Record lets you eager load any number of associations with a single <code>Model.find</code> call by using an array, hash, or a nested hash of array/hash with the <code>includes</code> method.</p>
+<h5 id="array-of-multiple-associations">13.1.1 Array of Multiple Associations</h5>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Post.includes(:category, :comments)
+
+</pre>
+</div>
+<p>This loads all the posts and the associated category and comments for each post.</p>
+<h5 id="nested-associations-hash">13.1.2 Nested Associations Hash</h5>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Category.includes(posts: [{ comments: :guest }, :tags]).find(1)
+
+</pre>
+</div>
+<p>This will find the category with id 1 and eager load all of the associated posts, the associated posts' tags and comments, and every comment's guest association.</p>
+<h4 id="specifying-conditions-on-eager-loaded-associations">13.2 Specifying Conditions on Eager Loaded Associations</h4>
+<p>Even though Active Record lets you specify conditions on the eager loaded associations just like <code>joins</code>, the recommended way is to use <a href="#joining-tables">joins</a> instead.</p>
+<p>However if you must do this, you may use <code>where</code> as you would normally.</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Post.includes(:comments).where("comments.visible" =&gt; true)
+
+</pre>
+</div>
+<p>This would generate a query which contains a <code>LEFT OUTER JOIN</code> whereas the <code>joins</code> method would generate one using the <code>INNER JOIN</code> function instead.</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+  SELECT "posts"."id" AS t0_r0, ... "comments"."updated_at" AS t1_r5 FROM "posts" LEFT OUTER JOIN "comments" ON "comments"."post_id" = "posts"."id" WHERE (comments.visible = 1)
+
+</pre>
+</div>
+<p>If there was no <code>where</code> condition, this would generate the normal set of two queries.</p>
+<p>If, in the case of this <code>includes</code> query, there were no comments for any posts, all the posts would still be loaded. By using <code>joins</code> (an INNER JOIN), the join conditions <strong>must</strong> match, otherwise no records will be returned.</p>
+<h3 id="scopes">14 Scopes</h3>
+<p>Scoping allows you to specify commonly-used queries which can be referenced as method calls on the association objects or models. With these scopes, you can use every method previously covered such as <code>where</code>, <code>joins</code> and <code>includes</code>. All scope methods will return an <code>ActiveRecord::Relation</code> object which will allow for further methods (such as other scopes) to be called on it.</p>
+<p>To define a simple scope, we use the <code>scope</code> method inside the class, passing the query that we'd like to run when this scope is called:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+class Post &lt; ActiveRecord::Base
+  scope :published, -&gt; { where(published: true) }
+end
+
+</pre>
+</div>
+<p>This is exactly the same as defining a class method, and which you use is a matter of personal preference:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+class Post &lt; ActiveRecord::Base
+  def self.published
+    where(published: true)
+  end
+end
+
+</pre>
+</div>
+<p>Scopes are also chainable within scopes:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+class Post &lt; ActiveRecord::Base
+  scope :published,               -&gt; { where(published: true) }
+  scope :published_and_commented, -&gt; { published.where("comments_count &gt; 0") }
+end
+
+</pre>
+</div>
+<p>To call this <code>published</code> scope we can call it on either the class:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Post.published # =&gt; [published posts]
+
+</pre>
+</div>
+<p>Or on an association consisting of <code>Post</code> objects:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+category = Category.first
+category.posts.published # =&gt; [published posts belonging to this category]
+
+</pre>
+</div>
+<h4 id="passing-in-arguments">14.1 Passing in arguments</h4>
+<p>Your scope can take arguments:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+class Post &lt; ActiveRecord::Base
+  scope :created_before, -&gt;(time) { where("created_at &lt; ?", time) }
+end
+
+</pre>
+</div>
+<p>Call the scope as if it were a class method:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Post.created_before(Time.zone.now)
+
+</pre>
+</div>
+<p>However, this is just duplicating the functionality that would be provided to you by a class method.</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+class Post &lt; ActiveRecord::Base
+  def self.created_before(time)
+    where("created_at &lt; ?", time)
+  end
+end
+
+</pre>
+</div>
+<p>Using a class method is the preferred way to accept arguments for scopes. These methods will still be accessible on the association objects:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+category.posts.created_before(time)
+
+</pre>
+</div>
+<h4 id="merging-of-scopes">14.2 Merging of scopes</h4>
+<p>Just like <code>where</code> clauses scopes are merged using <code>AND</code> conditions.</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+class User &lt; ActiveRecord::Base
+  scope :active, -&gt; { where state: 'active' }
+  scope :inactive, -&gt; { where state: 'inactive' }
+end
+
+User.active.inactive
+# SELECT "users".* FROM "users" WHERE "users"."state" = 'active' AND "users"."state" = 'inactive'
+
+</pre>
+</div>
+<p>We can mix and match <code>scope</code> and <code>where</code> conditions and the final sql
+will have all conditions joined with <code>AND</code>.</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+User.active.where(state: 'finished')
+# SELECT "users".* FROM "users" WHERE "users"."state" = 'active' AND "users"."state" = 'finished'
+
+</pre>
+</div>
+<p>If we do want the <code>last where clause</code> to win then <code>Relation#merge</code> can
+be used.</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+User.active.merge(User.inactive)
+# SELECT "users".* FROM "users" WHERE "users"."state" = 'inactive'
+
+</pre>
+</div>
+<p>One important caveat is that <code>default_scope</code> will be prepended in
+<code>scope</code> and <code>where</code> conditions.</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+class User &lt; ActiveRecord::Base
+  default_scope { where state: 'pending' }
+  scope :active, -&gt; { where state: 'active' }
+  scope :inactive, -&gt; { where state: 'inactive' }
+end
+
+User.all
+# SELECT "users".* FROM "users" WHERE "users"."state" = 'pending'
+
+User.active
+# SELECT "users".* FROM "users" WHERE "users"."state" = 'pending' AND "users"."state" = 'active'
+
+User.where(state: 'inactive')
+# SELECT "users".* FROM "users" WHERE "users"."state" = 'pending' AND "users"."state" = 'inactive'
+
+</pre>
+</div>
+<p>As you can see above the <code>default_scope</code> is being merged in both
+<code>scope</code> and <code>where</code> conditions.</p>
+<h4 id="applying-a-default-scope">14.3 Applying a default scope</h4>
+<p>If we wish for a scope to be applied across all queries to the model we can use the
+<code>default_scope</code> method within the model itself.</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+class Client &lt; ActiveRecord::Base
+  default_scope { where("removed_at IS NULL") }
+end
+
+</pre>
+</div>
+<p>When queries are executed on this model, the SQL query will now look something like
+this:</p>
+<div class="code_container">
+<pre class="brush: sql; gutter: false; toolbar: false">
+SELECT * FROM clients WHERE removed_at IS NULL
+
+</pre>
+</div>
+<p>If you need to do more complex things with a default scope, you can alternatively
+define it as a class method:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+class Client &lt; ActiveRecord::Base
+  def self.default_scope
+    # Should return an ActiveRecord::Relation.
+  end
+end
+
+</pre>
+</div>
+<h4 id="removing-all-scoping">14.4 Removing All Scoping</h4>
+<p>If we wish to remove scoping for any reason we can use the <code>unscoped</code> method. This is
+especially useful if a <code>default_scope</code> is specified in the model and should not be
+applied for this particular query.</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Client.unscoped.load
+
+</pre>
+</div>
+<p>This method removes all scoping and will do a normal query on the table.</p>
+<p>Note that chaining <code>unscoped</code> with a <code>scope</code> does not work. In these cases, it is
+recommended that you use the block form of <code>unscoped</code>:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Client.unscoped {
+  Client.created_before(Time.zone.now)
+}
+
+</pre>
+</div>
+<h3 id="dynamic-finders">15 Dynamic Finders</h3>
+<p>For every field (also known as an attribute) you define in your table, Active Record provides a finder method. If you have a field called <code>first_name</code> on your <code>Client</code> model for example, you get <code>find_by_first_name</code> for free from Active Record. If you have a <code>locked</code> field on the <code>Client</code> model, you also get <code>find_by_locked</code> and methods.</p>
+<p>You can specify an exclamation point (<code>!</code>) on the end of the dynamic finders to get them to raise an <code>ActiveRecord::RecordNotFound</code> error if they do not return any records, like <code>Client.find_by_name!("Ryan")</code></p>
+<p>If you want to find both by name and locked, you can chain these finders together by simply typing "<code>and</code>" between the fields. For example, <code>Client.find_by_first_name_and_locked("Ryan", true)</code>.</p>
+<h3 id="find-or-build-a-new-object">16 Find or Build a New Object</h3>
+<div class="note"><p>Some dynamic finders have been deprecated in Rails 4.0 and will be
+removed in Rails 4.1. The best practice is to use Active Record scopes
+instead. You can find the deprecation gem at
+<a href="https://github.com/rails/activerecord-deprecated_finders">https://github.com/rails/activerecord-deprecated_finders</a></p></div>
+<p>It's common that you need to find a record or create it if it doesn't exist. You can do that with the <code>find_or_create_by</code> and <code>find_or_create_by!</code> methods.</p>
+<h4 id="find-or-create-by">16.1 <code>find_or_create_by</code>
+</h4>
+<p>The <code>find_or_create_by</code> method checks whether a record with the attributes exists. If it doesn't, then <code>create</code> is called. Let's see an example.</p>
+<p>Suppose you want to find a client named 'Andy', and if there's none, create one. You can do so by running:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Client.find_or_create_by(first_name: 'Andy')
+# =&gt; #&lt;Client id: 1, first_name: "Andy", orders_count: 0, locked: true, created_at: "2011-08-30 06:09:27", updated_at: "2011-08-30 06:09:27"&gt;
+
+</pre>
+</div>
+<p>The SQL generated by this method looks like this:</p>
+<div class="code_container">
+<pre class="brush: sql; gutter: false; toolbar: false">
+SELECT * FROM clients WHERE (clients.first_name = 'Andy') LIMIT 1
+BEGIN
+INSERT INTO clients (created_at, first_name, locked, orders_count, updated_at) VALUES ('2011-08-30 05:22:57', 'Andy', 1, NULL, '2011-08-30 05:22:57')
+COMMIT
+
+</pre>
+</div>
+<p><code>find_or_create_by</code> returns either the record that already exists or the new record. In our case, we didn't already have a client named Andy so the record is created and returned.</p>
+<p>The new record might not be saved to the database; that depends on whether validations passed or not (just like <code>create</code>).</p>
+<p>Suppose we want to set the 'locked' attribute to <code>false</code> if we're
+creating a new record, but we don't want to include it in the query. So
+we want to find the client named "Andy", or if that client doesn't
+exist, create a client named "Andy" which is not locked.</p>
+<p>We can achieve this in two ways. The first is to use <code>create_with</code>:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Client.create_with(locked: false).find_or_create_by(first_name: 'Andy')
+
+</pre>
+</div>
+<p>The second way is using a block:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Client.find_or_create_by(first_name: 'Andy') do |c|
+  c.locked = false
+end
+
+</pre>
+</div>
+<p>The block will only be executed if the client is being created. The
+second time we run this code, the block will be ignored.</p>
+<h4 id="find-or-create-by-bang">16.2 <code>find_or_create_by!</code>
+</h4>
+<p>You can also use <code>find_or_create_by!</code> to raise an exception if the new record is invalid. Validations are not covered on this guide, but let's assume for a moment that you temporarily add</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+validates :orders_count, presence: true
+
+</pre>
+</div>
+<p>to your <code>Client</code> model. If you try to create a new <code>Client</code> without passing an <code>orders_count</code>, the record will be invalid and an exception will be raised:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Client.find_or_create_by!(first_name: 'Andy')
+# =&gt; ActiveRecord::RecordInvalid: Validation failed: Orders count can't be blank
+
+</pre>
+</div>
+<h4 id="find-or-initialize-by">16.3 <code>find_or_initialize_by</code>
+</h4>
+<p>The <code>find_or_initialize_by</code> method will work just like
+<code>find_or_create_by</code> but it will call <code>new</code> instead of <code>create</code>. This
+means that a new model instance will be created in memory but won't be
+saved to the database. Continuing with the <code>find_or_create_by</code> example, we
+now want the client named 'Nick':</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+nick = Client.find_or_initialize_by(first_name: 'Nick')
+# =&gt; &lt;Client id: nil, first_name: "Nick", orders_count: 0, locked: true, created_at: "2011-08-30 06:09:27", updated_at: "2011-08-30 06:09:27"&gt;
+
+nick.persisted?
+# =&gt; false
+
+nick.new_record?
+# =&gt; true
+
+</pre>
+</div>
+<p>Because the object is not yet stored in the database, the SQL generated looks like this:</p>
+<div class="code_container">
+<pre class="brush: sql; gutter: false; toolbar: false">
+SELECT * FROM clients WHERE (clients.first_name = 'Nick') LIMIT 1
+
+</pre>
+</div>
+<p>When you want to save it to the database, just call <code>save</code>:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+nick.save
+# =&gt; true
+
+</pre>
+</div>
+<h3 id="finding-by-sql">17 Finding by SQL</h3>
+<p>If you'd like to use your own SQL to find records in a table you can use <code>find_by_sql</code>. The <code>find_by_sql</code> method will return an array of objects even if the underlying query returns just a single record. For example you could run this query:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Client.find_by_sql("SELECT * FROM clients
+  INNER JOIN orders ON clients.id = orders.client_id
+  ORDER BY clients.created_at desc")
+
+</pre>
+</div>
+<p><code>find_by_sql</code> provides you with a simple way of making custom calls to the database and retrieving instantiated objects.</p>
+<h4 id="select-all">17.1 <code>select_all</code>
+</h4>
+<p><code>find_by_sql</code> has a close relative called <code>connection#select_all</code>. <code>select_all</code> will retrieve objects from the database using custom SQL just like <code>find_by_sql</code> but will not instantiate them. Instead, you will get an array of hashes where each hash indicates a record.</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Client.connection.select_all("SELECT * FROM clients WHERE id = '1'")
+
+</pre>
+</div>
+<h4 id="pluck">17.2 <code>pluck</code>
+</h4>
+<p><code>pluck</code> can be used to query a single or multiple columns from the underlying table of a model. It accepts a list of column names as argument and returns an array of values of the specified columns with the corresponding data type.</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Client.where(active: true).pluck(:id)
+# SELECT id FROM clients WHERE active = 1
+# =&gt; [1, 2, 3]
+
+Client.distinct.pluck(:role)
+# SELECT DISTINCT role FROM clients
+# =&gt; ['admin', 'member', 'guest']
+
+Client.pluck(:id, :name)
+# SELECT clients.id, clients.name FROM clients
+# =&gt; [[1, 'David'], [2, 'Jeremy'], [3, 'Jose']]
+
+</pre>
+</div>
+<p><code>pluck</code> makes it possible to replace code like:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Client.select(:id).map { |c| c.id }
+# or
+Client.select(:id).map(&amp;:id)
+# or
+Client.select(:id, :name).map { |c| [c.id, c.name] }
+
+</pre>
+</div>
+<p>with:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Client.pluck(:id)
+# or
+Client.pluck(:id, :name)
+
+</pre>
+</div>
+<p>Unlike <code>select</code>, <code>pluck</code> directly converts a database result into a Ruby <code>Array</code>,
+without constructing <code>ActiveRecord</code> objects. This can mean better performance for
+a large or often-running query. However, any model method overrides will
+not be available. For example:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+class Client &lt; ActiveRecord::Base
+  def name
+    "I am #{super}"
+  end
+end
+
+Client.select(:name).map &amp;:name
+# =&gt; ["I am David", "I am Jeremy", "I am Jose"]
+
+Client.pluck(:name)
+# =&gt; ["David", "Jeremy", "Jose"]
+
+</pre>
+</div>
+<p>Furthermore, unlike <code>select</code> and other <code>Relation</code> scopes, <code>pluck</code> triggers an immediate
+query, and thus cannot be chained with any further scopes, although it can work with
+scopes already constructed earlier:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Client.pluck(:name).limit(1)
+# =&gt; NoMethodError: undefined method `limit' for #&lt;Array:0x007ff34d3ad6d8&gt;
+
+Client.limit(1).pluck(:name)
+# =&gt; ["David"]
+
+</pre>
+</div>
+<h4 id="ids">17.3 <code>ids</code>
+</h4>
+<p><code>ids</code> can be used to pluck all the IDs for the relation using the table's primary key.</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Person.ids
+# SELECT id FROM people
+
+</pre>
+</div>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+class Person &lt; ActiveRecord::Base
+  self.primary_key = "person_id"
+end
+
+Person.ids
+# SELECT person_id FROM people
+
+</pre>
+</div>
+<h3 id="existence-of-objects">18 Existence of Objects</h3>
+<p>If you simply want to check for the existence of the object there's a method called <code>exists?</code>.
+This method will query the database using the same query as <code>find</code>, but instead of returning an
+object or collection of objects it will return either <code>true</code> or <code>false</code>.</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Client.exists?(1)
+
+</pre>
+</div>
+<p>The <code>exists?</code> method also takes multiple values, but the catch is that it will return <code>true</code> if any
+one of those records exists.</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Client.exists?(id: [1,2,3])
+# or
+Client.exists?(name: ['John', 'Sergei'])
+
+</pre>
+</div>
+<p>It's even possible to use <code>exists?</code> without any arguments on a model or a relation.</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Client.where(first_name: 'Ryan').exists?
+
+</pre>
+</div>
+<p>The above returns <code>true</code> if there is at least one client with the <code>first_name</code> 'Ryan' and <code>false</code>
+otherwise.</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Client.exists?
+
+</pre>
+</div>
+<p>The above returns <code>false</code> if the <code>clients</code> table is empty and <code>true</code> otherwise.</p>
+<p>You can also use <code>any?</code> and <code>many?</code> to check for existence on a model or relation.</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+# via a model
+Post.any?
+Post.many?
+
+# via a named scope
+Post.recent.any?
+Post.recent.many?
+
+# via a relation
+Post.where(published: true).any?
+Post.where(published: true).many?
+
+# via an association
+Post.first.categories.any?
+Post.first.categories.many?
+
+</pre>
+</div>
+<h3 id="calculations">19 Calculations</h3>
+<p>This section uses count as an example method in this preamble, but the options described apply to all sub-sections.</p>
+<p>All calculation methods work directly on a model:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Client.count
+# SELECT count(*) AS count_all FROM clients
+
+</pre>
+</div>
+<p>Or on a relation:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Client.where(first_name: 'Ryan').count
+# SELECT count(*) AS count_all FROM clients WHERE (first_name = 'Ryan')
+
+</pre>
+</div>
+<p>You can also use various finder methods on a relation for performing complex calculations:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Client.includes("orders").where(first_name: 'Ryan', orders: { status: 'received' }).count
+
+</pre>
+</div>
+<p>Which will execute:</p>
+<div class="code_container">
+<pre class="brush: sql; gutter: false; toolbar: false">
+SELECT count(DISTINCT clients.id) AS count_all FROM clients
+  LEFT OUTER JOIN orders ON orders.client_id = client.id WHERE
+  (clients.first_name = 'Ryan' AND orders.status = 'received')
+
+</pre>
+</div>
+<h4 id="count">19.1 Count</h4>
+<p>If you want to see how many records are in your model's table you could call <code>Client.count</code> and that will return the number. If you want to be more specific and find all the clients with their age present in the database you can use <code>Client.count(:age)</code>.</p>
+<p>For options, please see the parent section, <a href="#calculations">Calculations</a>.</p>
+<h4 id="average">19.2 Average</h4>
+<p>If you want to see the average of a certain number in one of your tables you can call the <code>average</code> method on the class that relates to the table. This method call will look something like this:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Client.average("orders_count")
+
+</pre>
+</div>
+<p>This will return a number (possibly a floating point number such as 3.14159265) representing the average value in the field.</p>
+<p>For options, please see the parent section, <a href="#calculations">Calculations</a>.</p>
+<h4 id="minimum">19.3 Minimum</h4>
+<p>If you want to find the minimum value of a field in your table you can call the <code>minimum</code> method on the class that relates to the table. This method call will look something like this:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Client.minimum("age")
+
+</pre>
+</div>
+<p>For options, please see the parent section, <a href="#calculations">Calculations</a>.</p>
+<h4 id="maximum">19.4 Maximum</h4>
+<p>If you want to find the maximum value of a field in your table you can call the <code>maximum</code> method on the class that relates to the table. This method call will look something like this:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Client.maximum("age")
+
+</pre>
+</div>
+<p>For options, please see the parent section, <a href="#calculations">Calculations</a>.</p>
+<h4 id="sum">19.5 Sum</h4>
+<p>If you want to find the sum of a field for all records in your table you can call the <code>sum</code> method on the class that relates to the table. This method call will look something like this:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Client.sum("orders_count")
+
+</pre>
+</div>
+<p>For options, please see the parent section, <a href="#calculations">Calculations</a>.</p>
+<h3 id="running-explain">20 Running EXPLAIN</h3>
+<p>You can run EXPLAIN on the queries triggered by relations. For example,</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+User.where(id: 1).joins(:posts).explain
+
+</pre>
+</div>
+<p>may yield</p>
+<div class="code_container">
+<pre class="brush: plain; gutter: false; toolbar: false">
+EXPLAIN for: SELECT `users`.* FROM `users` INNER JOIN `posts` ON `posts`.`user_id` = `users`.`id` WHERE `users`.`id` = 1
++----+-------------+-------+-------+---------------+---------+---------+-------+------+-------------+
+| id | select_type | table | type  | possible_keys | key     | key_len | ref   | rows | Extra       |
++----+-------------+-------+-------+---------------+---------+---------+-------+------+-------------+
+|  1 | SIMPLE      | users | const | PRIMARY       | PRIMARY | 4       | const |    1 |             |
+|  1 | SIMPLE      | posts | ALL   | NULL          | NULL    | NULL    | NULL  |    1 | Using where |
++----+-------------+-------+-------+---------------+---------+---------+-------+------+-------------+
+2 rows in set (0.00 sec)
+
+</pre>
+</div>
+<p>under MySQL.</p>
+<p>Active Record performs a pretty printing that emulates the one of the database
+shells. So, the same query running with the PostgreSQL adapter would yield instead</p>
+<div class="code_container">
+<pre class="brush: plain; gutter: false; toolbar: false">
+EXPLAIN for: SELECT "users".* FROM "users" INNER JOIN "posts" ON "posts"."user_id" = "users"."id" WHERE "users"."id" = 1
+                                  QUERY PLAN
+------------------------------------------------------------------------------
+ Nested Loop Left Join  (cost=0.00..37.24 rows=8 width=0)
+   Join Filter: (posts.user_id = users.id)
+   -&gt;  Index Scan using users_pkey on users  (cost=0.00..8.27 rows=1 width=4)
+         Index Cond: (id = 1)
+   -&gt;  Seq Scan on posts  (cost=0.00..28.88 rows=8 width=4)
+         Filter: (posts.user_id = 1)
+(6 rows)
+
+</pre>
+</div>
+<p>Eager loading may trigger more than one query under the hood, and some queries
+may need the results of previous ones. Because of that, <code>explain</code> actually
+executes the query, and then asks for the query plans. For example,</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+User.where(id: 1).includes(:posts).explain
+
+</pre>
+</div>
+<p>yields</p>
+<div class="code_container">
+<pre class="brush: plain; gutter: false; toolbar: false">
+EXPLAIN for: SELECT `users`.* FROM `users`  WHERE `users`.`id` = 1
++----+-------------+-------+-------+---------------+---------+---------+-------+------+-------+
+| id | select_type | table | type  | possible_keys | key     | key_len | ref   | rows | Extra |
++----+-------------+-------+-------+---------------+---------+---------+-------+------+-------+
+|  1 | SIMPLE      | users | const | PRIMARY       | PRIMARY | 4       | const |    1 |       |
++----+-------------+-------+-------+---------------+---------+---------+-------+------+-------+
+1 row in set (0.00 sec)
+
+EXPLAIN for: SELECT `posts`.* FROM `posts`  WHERE `posts`.`user_id` IN (1)
++----+-------------+-------+------+---------------+------+---------+------+------+-------------+
+| id | select_type | table | type | possible_keys | key  | key_len | ref  | rows | Extra       |
++----+-------------+-------+------+---------------+------+---------+------+------+-------------+
+|  1 | SIMPLE      | posts | ALL  | NULL          | NULL | NULL    | NULL |    1 | Using where |
++----+-------------+-------+------+---------------+------+---------+------+------+-------------+
+1 row in set (0.00 sec)
+
+</pre>
+</div>
+<p>under MySQL.</p>
+<h4 id="interpreting-explain">20.1 Interpreting EXPLAIN</h4>
+<p>Interpretation of the output of EXPLAIN is beyond the scope of this guide. The
+following pointers may be helpful:</p>
+<ul>
+<li><p>SQLite3: <a href="http://www.sqlite.org/eqp.html">EXPLAIN QUERY PLAN</a></p></li>
+<li><p>MySQL: <a href="http://dev.mysql.com/doc/refman/5.6/en/explain-output.html">EXPLAIN Output Format</a></p></li>
+<li><p>PostgreSQL: <a href="http://www.postgresql.org/docs/current/static/using-explain.html">Using EXPLAIN</a></p></li>
+</ul>
+</body></html>
+
+
+        <h3>Feedback</h3>
+        <p>
+          You're encouraged to help improve the quality of this guide.
+        </p>
+        <p>
+          Please contribute if you see any typos or factual errors.
+          To get started, you can read our <a href="http://edgeguides.rubyonrails.org/contributing_to_ruby_on_rails.html#contributing-to-the-rails-documentation">documentation contributions</a> section.
+        </p>
+        <p>
+          You may also find incomplete content, or stuff that is not up to date.
+          Please do add any missing documentation for master. Make sure to check
+          <a href="http://edgeguides.rubyonrails.org">Edge Guides</a> first to verify
+          if the issues are already fixed or not on the master branch.
+          Check the <a href="ruby_on_rails_guides_guidelines.html">Ruby on Rails Guides Guidelines</a>
+          for style and conventions.
+        </p>
+        <p>
+          If for whatever reason you spot something to fix but cannot patch it yourself, please
+          <a href="https://github.com/rails/rails/issues">open an issue</a>.
+        </p>
+        <p>And last but not least, any kind of discussion regarding Ruby on Rails
+          documentation is very welcome in the <a href="http://groups.google.com/group/rubyonrails-docs">rubyonrails-docs mailing list</a>.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="hide" />
+  <div id="footer">
+    <div class="wrapper">
+      <p>This work is licensed under a <a href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-Share Alike 3.0</a> License</p>
+<p>"Rails", "Ruby on Rails", and the Rails logo are trademarks of David Heinemeier Hansson. All rights reserved.</p>
+
+    </div>
+  </div>
+
+  <script type="text/javascript" src="javascripts/jquery.min.js"></script>
+  <script type="text/javascript" src="javascripts/responsive-tables.js"></script>
+  <script type="text/javascript" src="javascripts/guides.js"></script>
+  <script type="text/javascript" src="javascripts/syntaxhighlighter/shCore.js"></script>
+  <script type="text/javascript" src="javascripts/syntaxhighlighter/shBrushRuby.js"></script>
+  <script type="text/javascript" src="javascripts/syntaxhighlighter/shBrushXml.js"></script>
+  <script type="text/javascript" src="javascripts/syntaxhighlighter/shBrushSql.js"></script>
+  <script type="text/javascript" src="javascripts/syntaxhighlighter/shBrushPlain.js"></script>
+  <script type="text/javascript">
+    SyntaxHighlighter.all();
+    $(guidesIndex.bind);
+  </script>
+</body>
+</html>

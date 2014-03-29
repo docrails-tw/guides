@@ -1,0 +1,1469 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<title>Action Controller Overview — Ruby on Rails Guides</title>
+<link rel="stylesheet" type="text/css" href="stylesheets/style.css" />
+<link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+
+<link rel="stylesheet" type="text/css" href="stylesheets/syntaxhighlighter/shCore.css" />
+<link rel="stylesheet" type="text/css" href="stylesheets/syntaxhighlighter/shThemeRailsGuides.css" />
+
+<link rel="stylesheet" type="text/css" href="stylesheets/fixes.css" />
+
+<link href="images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+</head>
+<body class="guide">
+  <div id="topNav">
+    <div class="wrapper">
+      <strong class="more-info-label">More at <a href="http://rubyonrails.org/">rubyonrails.org:</a> </strong>
+      <span class="red-button more-info-button">
+        More Ruby on Rails
+      </span>
+      <ul class="more-info-links s-hidden">
+        <li class="more-info"><a href="http://rubyonrails.org/">Overview</a></li>
+        <li class="more-info"><a href="http://rubyonrails.org/download">Download</a></li>
+        <li class="more-info"><a href="http://rubyonrails.org/deploy">Deploy</a></li>
+        <li class="more-info"><a href="https://github.com/rails/rails">Code</a></li>
+        <li class="more-info"><a href="http://rubyonrails.org/screencasts">Screencasts</a></li>
+        <li class="more-info"><a href="http://rubyonrails.org/documentation">Documentation</a></li>
+        <li class="more-info"><a href="http://rubyonrails.org/ecosystem">Ecosystem</a></li>
+        <li class="more-info"><a href="http://rubyonrails.org/community">Community</a></li>
+        <li class="more-info"><a href="http://weblog.rubyonrails.org/">Blog</a></li>
+      </ul>
+    </div>
+  </div>
+  <div id="header">
+    <div class="wrapper clearfix">
+      <h1><a href="index.html" title="Return to home page">Guides.rubyonrails.org</a></h1>
+      <ul class="nav">
+        <li><a class="nav-item" href="index.html">Home</a></li>
+        <li class="guides-index guides-index-large">
+          <a href="index.html" id="guidesMenu" class="guides-index-item nav-item">Guides Index</a>
+          <div id="guides" class="clearfix" style="display: none;">
+            <hr />
+              <dl class="L">
+                <dt>Start Here</dt>
+                <dd><a href="getting_started.html">Getting Started with Rails</a></dd>
+                <dt>Models</dt>
+                <dd><a href="active_record_basics.html">Active Record Basics</a></dd>
+                <dd><a href="migrations.html">Rails Database Migrations</a></dd>
+                <dd><a href="active_record_validations.html">Active Record Validations</a></dd>
+                <dd><a href="active_record_callbacks.html">Active Record Callbacks</a></dd>
+                <dd><a href="association_basics.html">Active Record Associations</a></dd>
+                <dd><a href="active_record_querying.html">Active Record Query Interface</a></dd>
+                <dt>Views</dt>
+                <dd><a href="layouts_and_rendering.html">Layouts and Rendering in Rails</a></dd>
+                <dd><a href="form_helpers.html">Action View Form Helpers</a></dd>
+                <dt>Controllers</dt>
+                <dd><a href="action_controller_overview.html">Action Controller Overview</a></dd>
+                <dd><a href="routing.html">Rails Routing from the Outside In</a></dd>
+              </dl>
+              <dl class="R">
+                <dt>Digging Deeper</dt>
+                <dd><a href="active_support_core_extensions.html">Active Support Core Extensions</a></dd>
+                <dd><a href="i18n.html">Rails Internationalization API</a></dd>
+                <dd><a href="action_mailer_basics.html">Action Mailer Basics</a></dd>
+                <dd><a href="security.html">Securing Rails Applications</a></dd>
+                <dd><a href="debugging_rails_applications.html">Debugging Rails Applications</a></dd>
+                <dd><a href="configuring.html">Configuring Rails Applications</a></dd>
+                <dd><a href="command_line.html">Rails Command Line Tools and Rake Tasks</a></dd>
+                <dd><a href="asset_pipeline.html">Asset Pipeline</a></dd>
+                <dd><a href="working_with_javascript_in_rails.html">Working with JavaScript in Rails</a></dd>
+                <dt>Extending Rails</dt>
+                <dd><a href="rails_on_rack.html">Rails on Rack</a></dd>
+                <dd><a href="generators.html">Creating and Customizing Rails Generators</a></dd>
+                <dt>Contributing to Ruby on Rails</dt>
+                <dd><a href="contributing_to_ruby_on_rails.html">Contributing to Ruby on Rails</a></dd>
+                <dd><a href="api_documentation_guidelines.html">API Documentation Guidelines</a></dd>
+                <dd><a href="ruby_on_rails_guides_guidelines.html">Ruby on Rails Guides Guidelines</a></dd>
+                <dt>Maintenance Policy</dt>
+                <dd><a href="maintenance_policy.html">Maintenance Policy</a></dd>
+                <dt>Release Notes</dt>
+                <dd><a href="4_1_release_notes.html">Ruby on Rails 4.1 Release Notes</a></dd>
+                <dd><a href="4_0_release_notes.html">Ruby on Rails 4.0 Release Notes</a></dd>
+                <dd><a href="3_2_release_notes.html">Ruby on Rails 3.2 Release Notes</a></dd>
+                <dd><a href="3_1_release_notes.html">Ruby on Rails 3.1 Release Notes</a></dd>
+                <dd><a href="3_0_release_notes.html">Ruby on Rails 3.0 Release Notes</a></dd>
+                <dd><a href="2_3_release_notes.html">Ruby on Rails 2.3 Release Notes</a></dd>
+                <dd><a href="2_2_release_notes.html">Ruby on Rails 2.2 Release Notes</a></dd>
+              </dl>
+          </div>
+        </li>
+        <li><a class="nav-item" href="contributing_to_ruby_on_rails.html">Contribute</a></li>
+        <li><a class="nav-item" href="credits.html">Credits</a></li>
+        <li class="guides-index guides-index-small">
+          <select class="guides-index-item nav-item">
+            <option value="index.html">Guides Index</option>
+              <optgroup label="Start Here">
+                  <option value="getting_started.html">Getting Started with Rails</option>
+              </optgroup>
+              <optgroup label="Models">
+                  <option value="active_record_basics.html">Active Record Basics</option>
+                  <option value="migrations.html">Rails Database Migrations</option>
+                  <option value="active_record_validations.html">Active Record Validations</option>
+                  <option value="active_record_callbacks.html">Active Record Callbacks</option>
+                  <option value="association_basics.html">Active Record Associations</option>
+                  <option value="active_record_querying.html">Active Record Query Interface</option>
+              </optgroup>
+              <optgroup label="Views">
+                  <option value="layouts_and_rendering.html">Layouts and Rendering in Rails</option>
+                  <option value="form_helpers.html">Action View Form Helpers</option>
+              </optgroup>
+              <optgroup label="Controllers">
+                  <option value="action_controller_overview.html">Action Controller Overview</option>
+                  <option value="routing.html">Rails Routing from the Outside In</option>
+              </optgroup>
+              <optgroup label="Digging Deeper">
+                  <option value="active_support_core_extensions.html">Active Support Core Extensions</option>
+                  <option value="i18n.html">Rails Internationalization API</option>
+                  <option value="action_mailer_basics.html">Action Mailer Basics</option>
+                  <option value="security.html">Securing Rails Applications</option>
+                  <option value="debugging_rails_applications.html">Debugging Rails Applications</option>
+                  <option value="configuring.html">Configuring Rails Applications</option>
+                  <option value="command_line.html">Rails Command Line Tools and Rake Tasks</option>
+                  <option value="asset_pipeline.html">Asset Pipeline</option>
+                  <option value="working_with_javascript_in_rails.html">Working with JavaScript in Rails</option>
+              </optgroup>
+              <optgroup label="Extending Rails">
+                  <option value="rails_on_rack.html">Rails on Rack</option>
+                  <option value="generators.html">Creating and Customizing Rails Generators</option>
+              </optgroup>
+              <optgroup label="Contributing to Ruby on Rails">
+                  <option value="contributing_to_ruby_on_rails.html">Contributing to Ruby on Rails</option>
+                  <option value="api_documentation_guidelines.html">API Documentation Guidelines</option>
+                  <option value="ruby_on_rails_guides_guidelines.html">Ruby on Rails Guides Guidelines</option>
+              </optgroup>
+              <optgroup label="Maintenance Policy">
+                  <option value="maintenance_policy.html">Maintenance Policy</option>
+              </optgroup>
+              <optgroup label="Release Notes">
+                  <option value="4_1_release_notes.html">Ruby on Rails 4.1 Release Notes</option>
+                  <option value="4_0_release_notes.html">Ruby on Rails 4.0 Release Notes</option>
+                  <option value="3_2_release_notes.html">Ruby on Rails 3.2 Release Notes</option>
+                  <option value="3_1_release_notes.html">Ruby on Rails 3.1 Release Notes</option>
+                  <option value="3_0_release_notes.html">Ruby on Rails 3.0 Release Notes</option>
+                  <option value="2_3_release_notes.html">Ruby on Rails 2.3 Release Notes</option>
+                  <option value="2_2_release_notes.html">Ruby on Rails 2.2 Release Notes</option>
+              </optgroup>
+          </select>
+        </li>
+      </ul>
+      </div>
+    </div>
+  </div>
+  <hr class="hide" />
+
+  <div id="feature">
+    <div class="wrapper">
+      <h2>Action Controller Overview</h2><p>In this guide you will learn how controllers work and how they fit into the request cycle in your application.</p><p>After reading this guide, you will know:</p>
+<ul>
+<li>How to follow the flow of a request through a controller.</li>
+<li>How to restrict parameters passed to your controller.</li>
+<li>Why and how to store data in the session or cookies.</li>
+<li>How to work with filters to execute code during request processing.</li>
+<li>How to use Action Controller&#39;s built-in HTTP authentication.</li>
+<li>How to stream data directly to the user&#39;s browser.</li>
+<li>How to filter sensitive parameters so they do not appear in the application&#39;s log.</li>
+<li>How to deal with exceptions that may be raised during request processing.</li>
+</ul>
+
+
+                <div id="subCol">
+            <h3 class="chapter"><img src="images/chapters_icon.gif" alt="" />Chapters</h3>
+            <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html><body><ol class="chapters">
+<li><a href="#what-does-a-controller-do-questionmark">What Does a Controller Do?</a></li>
+<li><a href="#controller-naming-convention">Controller Naming Convention</a></li>
+<li><a href="#methods-and-actions">Methods and Actions</a></li>
+<li>
+<a href="#parameters">Parameters</a>
+
+<ul>
+<li><a href="#hash-and-array-parameters">Hash and Array Parameters</a></li>
+<li><a href="#json-parameters">JSON parameters</a></li>
+<li><a href="#routing-parameters">Routing Parameters</a></li>
+<li><a href="#default-url-options"><code>default_url_options</code></a></li>
+<li><a href="#strong-parameters">Strong Parameters</a></li>
+</ul>
+</li>
+<li>
+<a href="#session">Session</a>
+
+<ul>
+<li><a href="#accessing-the-session">Accessing the Session</a></li>
+<li><a href="#the-flash">The Flash</a></li>
+</ul>
+</li>
+<li><a href="#cookies">Cookies</a></li>
+<li><a href="#rendering-xml-and-json-data">Rendering XML and JSON data</a></li>
+<li>
+<a href="#filters">Filters</a>
+
+<ul>
+<li><a href="#after-filters-and-around-filters">After Filters and Around Filters</a></li>
+<li><a href="#other-ways-to-use-filters">Other Ways to Use Filters</a></li>
+</ul>
+</li>
+<li><a href="#request-forgery-protection">Request Forgery Protection</a></li>
+<li>
+<a href="#the-request-and-response-objects">The Request and Response Objects</a>
+
+<ul>
+<li><a href="#the-request-object">The <code>request</code> Object</a></li>
+<li><a href="#the-response-object">The <code>response</code> Object</a></li>
+</ul>
+</li>
+<li>
+<a href="#http-authentications">HTTP Authentications</a>
+
+<ul>
+<li><a href="#http-basic-authentication">HTTP Basic Authentication</a></li>
+<li><a href="#http-digest-authentication">HTTP Digest Authentication</a></li>
+</ul>
+</li>
+<li>
+<a href="#streaming-and-file-downloads">Streaming and File Downloads</a>
+
+<ul>
+<li><a href="#sending-files">Sending Files</a></li>
+<li><a href="#restful-downloads">RESTful Downloads</a></li>
+<li><a href="#live-streaming-of-arbitrary-data">Live Streaming of Arbitrary Data</a></li>
+</ul>
+</li>
+<li>
+<a href="#log-filtering">Log Filtering</a>
+
+<ul>
+<li><a href="#parameters-filtering">Parameters Filtering</a></li>
+<li><a href="#redirects-filtering">Redirects Filtering</a></li>
+</ul>
+</li>
+<li>
+<a href="#rescue">Rescue</a>
+
+<ul>
+<li><a href="#the-default-500-and-404-templates">The Default 500 and 404 Templates</a></li>
+<li><a href="#rescue-from"><code>rescue_from</code></a></li>
+</ul>
+</li>
+<li><a href="#force-https-protocol">Force HTTPS protocol</a></li>
+</ol></body></html>
+
+          </div>
+
+    </div>
+  </div>
+
+  <div id="container">
+    <div class="wrapper">
+      <div id="mainCol">
+        <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html><body>
+<h3 id="what-does-a-controller-do-questionmark">1 What Does a Controller Do?</h3>
+<p>Action Controller is the C in MVC. After routing has determined which controller to use for a request, your controller is responsible for making sense of the request and producing the appropriate output. Luckily, Action Controller does most of the groundwork for you and uses smart conventions to make this as straightforward as possible.</p>
+<p>For most conventional <a href="http://en.wikipedia.org/wiki/Representational_state_transfer">RESTful</a> applications, the controller will receive the request (this is invisible to you as the developer), fetch or save data from a model and use a view to create HTML output. If your controller needs to do things a little differently, that's not a problem, this is just the most common way for a controller to work.</p>
+<p>A controller can thus be thought of as a middle man between models and views. It makes the model data available to the view so it can display that data to the user, and it saves or updates data from the user to the model.</p>
+<div class="note"><p>For more details on the routing process, see <a href="routing.html">Rails Routing from the Outside In</a>.</p></div>
+<h3 id="controller-naming-convention">2 Controller Naming Convention</h3>
+<p>The naming convention of controllers in Rails favors pluralization of the last word in the controller's name, although it is not strictly required (e.g. <code>ApplicationController</code>). For example, <code>ClientsController</code> is preferable to <code>ClientController</code>, <code>SiteAdminsController</code> is preferable to <code>SiteAdminController</code> or <code>SitesAdminsController</code>, and so on.</p>
+<p>Following this convention will allow you to use the default route generators (e.g. <code>resources</code>, etc) without needing to qualify each <code>:path</code> or <code>:controller</code>, and keeps URL and path helpers' usage consistent throughout your application. See <a href="layouts_and_rendering.html">Layouts &amp; Rendering Guide</a> for more details.</p>
+<div class="note"><p>The controller naming convention differs from the naming convention of models, which expected to be named in singular form.</p></div>
+<h3 id="methods-and-actions">3 Methods and Actions</h3>
+<p>A controller is a Ruby class which inherits from <code>ApplicationController</code> and has methods just like any other class. When your application receives a request, the routing will determine which controller and action to run, then Rails creates an instance of that controller and runs the method with the same name as the action.</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+class ClientsController &lt; ApplicationController
+  def new
+  end
+end
+
+</pre>
+</div>
+<p>As an example, if a user goes to <code>/clients/new</code> in your application to add a new client, Rails will create an instance of <code>ClientsController</code> and run the <code>new</code> method. Note that the empty method from the example above would work just fine because Rails will by default render the <code>new.html.erb</code> view unless the action says otherwise. The <code>new</code> method could make available to the view a <code>@client</code> instance variable by creating a new <code>Client</code>:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+def new
+  @client = Client.new
+end
+
+</pre>
+</div>
+<p>The <a href="layouts_and_rendering.html">Layouts &amp; Rendering Guide</a> explains this in more detail.</p>
+<p><code>ApplicationController</code> inherits from <code>ActionController::Base</code>, which defines a number of helpful methods. This guide will cover some of these, but if you're curious to see what's in there, you can see all of them in the API documentation or in the source itself.</p>
+<p>Only public methods are callable as actions. It is a best practice to lower the visibility of methods which are not intended to be actions, like auxiliary methods or filters.</p>
+<h3 id="parameters">4 Parameters</h3>
+<p>You will probably want to access data sent in by the user or other parameters in your controller actions. There are two kinds of parameters possible in a web application. The first are parameters that are sent as part of the URL, called query string parameters. The query string is everything after "?" in the URL. The second type of parameter is usually referred to as POST data. This information usually comes from an HTML form which has been filled in by the user. It's called POST data because it can only be sent as part of an HTTP POST request. Rails does not make any distinction between query string parameters and POST parameters, and both are available in the <code>params</code> hash in your controller:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+class ClientsController &lt; ApplicationController
+  # This action uses query string parameters because it gets run
+  # by an HTTP GET request, but this does not make any difference
+  # to the way in which the parameters are accessed. The URL for
+  # this action would look like this in order to list activated
+  # clients: /clients?status=activated
+  def index
+    if params[:status] == "activated"
+      @clients = Client.activated
+    else
+      @clients = Client.inactivated
+    end
+  end
+
+  # This action uses POST parameters. They are most likely coming
+  # from an HTML form which the user has submitted. The URL for
+  # this RESTful request will be "/clients", and the data will be
+  # sent as part of the request body.
+  def create
+    @client = Client.new(params[:client])
+    if @client.save
+      redirect_to @client
+    else
+      # This line overrides the default rendering behavior, which
+      # would have been to render the "create" view.
+      render "new"
+    end
+  end
+end
+
+</pre>
+</div>
+<h4 id="hash-and-array-parameters">4.1 Hash and Array Parameters</h4>
+<p>The <code>params</code> hash is not limited to one-dimensional keys and values. It can contain arrays and (nested) hashes. To send an array of values, append an empty pair of square brackets "[]" to the key name:</p>
+<div class="code_container">
+<pre class="brush: plain; gutter: false; toolbar: false">
+GET /clients?ids[]=1&amp;ids[]=2&amp;ids[]=3
+
+</pre>
+</div>
+<div class="note"><p>The actual URL in this example will be encoded as "/clients?ids%5b%5d=1&amp;ids%5b%5d=2&amp;ids%5b%5d=3" as "[" and "]" are not allowed in URLs. Most of the time you don't have to worry about this because the browser will take care of it for you, and Rails will decode it back when it receives it, but if you ever find yourself having to send those requests to the server manually you have to keep this in mind.</p></div>
+<p>The value of <code>params[:ids]</code> will now be <code>["1", "2", "3"]</code>. Note that parameter values are always strings; Rails makes no attempt to guess or cast the type.</p>
+<div class="note"><p>Values such as <code>[]</code>, <code>[nil]</code> or <code>[nil, nil, ...]</code> in <code>params</code> are replaced
+with <code>nil</code> for security reasons by default. See <a href="security.html#unsafe-query-generation">Security Guide</a>
+for more information.</p></div>
+<p>To send a hash you include the key name inside the brackets:</p>
+<div class="code_container">
+<pre class="brush: xml; gutter: false; toolbar: false">
+&lt;form accept-charset="UTF-8" action="/clients" method="post"&gt;
+  &lt;input type="text" name="client[name]" value="Acme" /&gt;
+  &lt;input type="text" name="client[phone]" value="12345" /&gt;
+  &lt;input type="text" name="client[address][postcode]" value="12345" /&gt;
+  &lt;input type="text" name="client[address][city]" value="Carrot City" /&gt;
+&lt;/form&gt;
+
+</pre>
+</div>
+<p>When this form is submitted, the value of <code>params[:client]</code> will be <code>{ "name" =&gt; "Acme", "phone" =&gt; "12345", "address" =&gt; { "postcode" =&gt; "12345", "city" =&gt; "Carrot City" } }</code>. Note the nested hash in <code>params[:client][:address]</code>.</p>
+<p>Note that the <code>params</code> hash is actually an instance of <code>ActiveSupport::HashWithIndifferentAccess</code>, which acts like a hash but lets you use symbols and strings interchangeably as keys.</p>
+<h4 id="json-parameters">4.2 JSON parameters</h4>
+<p>If you're writing a web service application, you might find yourself more comfortable accepting parameters in JSON format. If the "Content-Type" header of your request is set to "application/json", Rails will automatically convert your parameters into the <code>params</code> hash, which you can access as you would normally.</p>
+<p>So for example, if you are sending this JSON content:</p>
+<div class="code_container">
+<pre class="brush: plain; gutter: false; toolbar: false">
+{ "company": { "name": "acme", "address": "123 Carrot Street" } }
+
+</pre>
+</div>
+<p>You'll get <code>params[:company]</code> as <code>{ "name" =&gt; "acme", "address" =&gt; "123 Carrot Street" }</code>.</p>
+<p>Also, if you've turned on <code>config.wrap_parameters</code> in your initializer or calling <code>wrap_parameters</code> in your controller, you can safely omit the root element in the JSON parameter. The parameters will be cloned and wrapped in the key according to your controller's name by default. So the above parameter can be written as:</p>
+<div class="code_container">
+<pre class="brush: plain; gutter: false; toolbar: false">
+{ "name": "acme", "address": "123 Carrot Street" }
+
+</pre>
+</div>
+<p>And assume that you're sending the data to <code>CompaniesController</code>, it would then be wrapped in <code>:company</code> key like this:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+{ name: "acme", address: "123 Carrot Street", company: { name: "acme", address: "123 Carrot Street" } }
+
+</pre>
+</div>
+<p>You can customize the name of the key or specific parameters you want to wrap by consulting the <a href="http://api.rubyonrails.org/classes/ActionController/ParamsWrapper.html">API documentation</a></p>
+<div class="note"><p>Support for parsing XML parameters has been extracted into a gem named <code>actionpack-xml_parser</code></p></div>
+<h4 id="routing-parameters">4.3 Routing Parameters</h4>
+<p>The <code>params</code> hash will always contain the <code>:controller</code> and <code>:action</code> keys, but you should use the methods <code>controller_name</code> and <code>action_name</code> instead to access these values. Any other parameters defined by the routing, such as <code>:id</code> will also be available. As an example, consider a listing of clients where the list can show either active or inactive clients. We can add a route which captures the <code>:status</code> parameter in a "pretty" URL:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+get '/clients/:status' =&gt; 'clients#index', foo: 'bar'
+
+</pre>
+</div>
+<p>In this case, when a user opens the URL <code>/clients/active</code>, <code>params[:status]</code> will be set to "active". When this route is used, <code>params[:foo]</code> will also be set to "bar" just like it was passed in the query string. In the same way <code>params[:action]</code> will contain "index".</p>
+<h4 id="default-url-options">4.4 <code>default_url_options</code>
+</h4>
+<p>You can set global default parameters for URL generation by defining a method called <code>default_url_options</code> in your controller. Such a method must return a hash with the desired defaults, whose keys must be symbols:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+class ApplicationController &lt; ActionController::Base
+  def default_url_options
+    { locale: I18n.locale }
+  end
+end
+
+</pre>
+</div>
+<p>These options will be used as a starting point when generating URLs, so it's possible they'll be overridden by the options passed in <code>url_for</code> calls.</p>
+<p>If you define <code>default_url_options</code> in <code>ApplicationController</code>, as in the example above, it would be used for all URL generation. The method can also be defined in one specific controller, in which case it only affects URLs generated there.</p>
+<h4 id="strong-parameters">4.5 Strong Parameters</h4>
+<p>With strong parameters, Action Controller parameters are forbidden to
+be used in Active Model mass assignments until they have been
+whitelisted. This means you'll have to make a conscious choice about
+which attributes to allow for mass updating and thus prevent
+accidentally exposing that which shouldn't be exposed.</p>
+<p>In addition, parameters can be marked as required and flow through a
+predefined raise/rescue flow to end up as a 400 Bad Request with no
+effort.</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+class PeopleController &lt; ActionController::Base
+  # This will raise an ActiveModel::ForbiddenAttributes exception
+  # because it's using mass assignment without an explicit permit
+  # step.
+  def create
+    Person.create(params[:person])
+  end
+
+  # This will pass with flying colors as long as there's a person key
+  # in the parameters, otherwise it'll raise a
+  # ActionController::ParameterMissing exception, which will get
+  # caught by ActionController::Base and turned into that 400 Bad
+  # Request reply.
+  def update
+    person = current_account.people.find(params[:id])
+    person.update!(person_params)
+    redirect_to person
+  end
+
+  private
+    # Using a private method to encapsulate the permissible parameters
+    # is just a good pattern since you'll be able to reuse the same
+    # permit list between create and update. Also, you can specialize
+    # this method with per-user checking of permissible attributes.
+    def person_params
+      params.require(:person).permit(:name, :age)
+    end
+end
+
+</pre>
+</div>
+<h5 id="permitted-scalar-values">4.5.1 Permitted Scalar Values</h5>
+<p>Given</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+params.permit(:id)
+
+</pre>
+</div>
+<p>the key <code>:id</code> will pass the whitelisting if it appears in <code>params</code> and
+it has a permitted scalar value associated. Otherwise the key is going
+to be filtered out, so arrays, hashes, or any other objects cannot be
+injected.</p>
+<p>The permitted scalar types are <code>String</code>, <code>Symbol</code>, <code>NilClass</code>,
+<code>Numeric</code>, <code>TrueClass</code>, <code>FalseClass</code>, <code>Date</code>, <code>Time</code>, <code>DateTime</code>,
+<code>StringIO</code>, <code>IO</code>, <code>ActionDispatch::Http::UploadedFile</code> and
+<code>Rack::Test::UploadedFile</code>.</p>
+<p>To declare that the value in <code>params</code> must be an array of permitted
+scalar values map the key to an empty array:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+params.permit(id: [])
+
+</pre>
+</div>
+<p>To whitelist an entire hash of parameters, the <code>permit!</code> method can be
+used:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+params.require(:log_entry).permit!
+
+</pre>
+</div>
+<p>This will mark the <code>:log_entry</code> parameters hash and any subhash of it
+permitted. Extreme care should be taken when using <code>permit!</code> as it
+will allow all current and future model attributes to be
+mass-assigned.</p>
+<h5 id="nested-parameters">4.5.2 Nested Parameters</h5>
+<p>You can also use permit on nested parameters, like:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+params.permit(:name, { emails: [] },
+              friends: [ :name,
+                         { family: [ :name ], hobbies: [] }])
+
+</pre>
+</div>
+<p>This declaration whitelists the <code>name</code>, <code>emails</code> and <code>friends</code>
+attributes. It is expected that <code>emails</code> will be an array of permitted
+scalar values and that <code>friends</code> will be an array of resources with
+specific attributes : they should have a <code>name</code> attribute (any
+permitted scalar values allowed), a <code>hobbies</code> attribute as an array of
+permitted scalar values, and a <code>family</code> attribute which is restricted
+to having a <code>name</code> (any permitted scalar values allowed, too).</p>
+<h5 id="more-examples">4.5.3 More Examples</h5>
+<p>You want to also use the permitted attributes in the <code>new</code>
+action. This raises the problem that you can't use <code>require</code> on the
+root key because normally it does not exist when calling <code>new</code>:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+# using `fetch` you can supply a default and use
+# the Strong Parameters API from there.
+params.fetch(:blog, {}).permit(:title, :author)
+
+</pre>
+</div>
+<p><code>accepts_nested_attributes_for</code> allows you to update and destroy
+associated records. This is based on the <code>id</code> and <code>_destroy</code>
+parameters:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+# permit :id and :_destroy
+params.require(:author).permit(:name, books_attributes: [:title, :id, :_destroy])
+
+</pre>
+</div>
+<p>Hashes with integer keys are treated differently and you can declare
+the attributes as if they were direct children. You get these kinds of
+parameters when you use <code>accepts_nested_attributes_for</code> in combination
+with a <code>has_many</code> association:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+# To whitelist the following data:
+# {"book" =&gt; {"title" =&gt; "Some Book",
+#             "chapters_attributes" =&gt; { "1" =&gt; {"title" =&gt; "First Chapter"},
+#                                        "2" =&gt; {"title" =&gt; "Second Chapter"}}}}
+
+params.require(:book).permit(:title, chapters_attributes: [:title])
+
+</pre>
+</div>
+<h5 id="outside-the-scope-of-strong-parameters">4.5.4 Outside the Scope of Strong Parameters</h5>
+<p>The strong parameter API was designed with the most common use cases
+in mind. It is not meant as a silver bullet to handle all your
+whitelisting problems. However you can easily mix the API with your
+own code to adapt to your situation.</p>
+<p>Imagine a scenario where you have parameters representing a product
+name and a hash of arbitrary data associated with that product, and
+you want to whitelist the product name attribute but also the whole
+data hash. The strong parameters API doesn't let you directly
+whitelist the whole of a nested hash with any keys, but you can use
+the keys of your nested hash to declare what to whitelist:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+def product_params
+  params.require(:product).permit(:name, data: params[:product][:data].try(:keys))
+end
+
+</pre>
+</div>
+<h3 id="session">5 Session</h3>
+<p>Your application has a session for each user in which you can store small amounts of data that will be persisted between requests. The session is only available in the controller and the view and can use one of a number of different storage mechanisms:</p>
+<ul>
+<li>
+<code>ActionDispatch::Session::CookieStore</code> - Stores everything on the client.</li>
+<li>
+<code>ActionDispatch::Session::CacheStore</code> - Stores the data in the Rails cache.</li>
+<li>
+<code>ActionDispatch::Session::ActiveRecordStore</code> - Stores the data in a database using Active Record. (require <code>activerecord-session_store</code> gem).</li>
+<li>
+<code>ActionDispatch::Session::MemCacheStore</code> - Stores the data in a memcached cluster (this is a legacy implementation; consider using CacheStore instead).</li>
+</ul>
+<p>All session stores use a cookie to store a unique ID for each session (you must use a cookie, Rails will not allow you to pass the session ID in the URL as this is less secure).</p>
+<p>For most stores, this ID is used to look up the session data on the server, e.g. in a database table. There is one exception, and that is the default and recommended session store - the CookieStore - which stores all session data in the cookie itself (the ID is still available to you if you need it). This has the advantage of being very lightweight and it requires zero setup in a new application in order to use the session. The cookie data is cryptographically signed to make it tamper-proof. And it is also encrypted so anyone with access to it can't read its contents. (Rails will not accept it if it has been edited).</p>
+<p>The CookieStore can store around 4kB of data - much less than the others - but this is usually enough. Storing large amounts of data in the session is discouraged no matter which session store your application uses. You should especially avoid storing complex objects (anything other than basic Ruby objects, the most common example being model instances) in the session, as the server might not be able to reassemble them between requests, which will result in an error.</p>
+<p>If your user sessions don't store critical data or don't need to be around for long periods (for instance if you just use the flash for messaging), you can consider using <code>ActionDispatch::Session::CacheStore</code>. This will store sessions using the cache implementation you have configured for your application. The advantage of this is that you can use your existing cache infrastructure for storing sessions without requiring any additional setup or administration. The downside, of course, is that the sessions will be ephemeral and could disappear at any time.</p>
+<p>Read more about session storage in the <a href="security.html">Security Guide</a>.</p>
+<p>If you need a different session storage mechanism, you can change it in the <code>config/initializers/session_store.rb</code> file:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+# Use the database for sessions instead of the cookie-based default,
+# which shouldn't be used to store highly confidential information
+# (create the session table with "rails g active_record:session_migration")
+# YourApp::Application.config.session_store :active_record_store
+
+</pre>
+</div>
+<p>Rails sets up a session key (the name of the cookie) when signing the session data. These can also be changed in <code>config/initializers/session_store.rb</code>:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+# Be sure to restart your server when you modify this file.
+YourApp::Application.config.session_store :cookie_store, key: '_your_app_session'
+
+</pre>
+</div>
+<p>You can also pass a <code>:domain</code> key and specify the domain name for the cookie:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+# Be sure to restart your server when you modify this file.
+YourApp::Application.config.session_store :cookie_store, key: '_your_app_session', domain: ".example.com"
+
+</pre>
+</div>
+<p>Rails sets up (for the CookieStore) a secret key used for signing the session data. This can be changed in <code>config/secrets.yml</code></p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+# Be sure to restart your server when you modify this file.
+
+# Your secret key is used for verifying the integrity of signed cookies.
+# If you change this key, all old signed cookies will become invalid!
+
+# Make sure the secret is at least 30 characters and all random,
+# no regular words or you'll be exposed to dictionary attacks.
+# You can use `rake secret` to generate a secure secret key.
+
+# Make sure the secrets in this file are kept private
+# if you're sharing your code publicly.
+
+development:
+  secret_key_base: a75d...
+
+test:
+  secret_key_base: 492f...
+
+# Do not keep production secrets in the repository,
+# instead read values from the environment.
+production:
+  secret_key_base: &lt;%= ENV["SECRET_KEY_BASE"] %&gt;
+
+</pre>
+</div>
+<div class="note"><p>Changing the secret when using the <code>CookieStore</code> will invalidate all existing sessions.</p></div>
+<h4 id="accessing-the-session">5.1 Accessing the Session</h4>
+<p>In your controller you can access the session through the <code>session</code> instance method.</p>
+<div class="note"><p>Sessions are lazily loaded. If you don't access sessions in your action's code, they will not be loaded. Hence you will never need to disable sessions, just not accessing them will do the job.</p></div>
+<p>Session values are stored using key/value pairs like a hash:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+class ApplicationController &lt; ActionController::Base
+
+  private
+
+  # Finds the User with the ID stored in the session with the key
+  # :current_user_id This is a common way to handle user login in
+  # a Rails application; logging in sets the session value and
+  # logging out removes it.
+  def current_user
+    @_current_user ||= session[:current_user_id] &amp;&amp;
+      User.find_by(id: session[:current_user_id])
+  end
+end
+
+</pre>
+</div>
+<p>To store something in the session, just assign it to the key like a hash:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+class LoginsController &lt; ApplicationController
+  # "Create" a login, aka "log the user in"
+  def create
+    if user = User.authenticate(params[:username], params[:password])
+      # Save the user ID in the session so it can be used in
+      # subsequent requests
+      session[:current_user_id] = user.id
+      redirect_to root_url
+    end
+  end
+end
+
+</pre>
+</div>
+<p>To remove something from the session, assign that key to be <code>nil</code>:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+class LoginsController &lt; ApplicationController
+  # "Delete" a login, aka "log the user out"
+  def destroy
+    # Remove the user id from the session
+    @_current_user = session[:current_user_id] = nil
+    redirect_to root_url
+  end
+end
+
+</pre>
+</div>
+<p>To reset the entire session, use <code>reset_session</code>.</p>
+<h4 id="the-flash">5.2 The Flash</h4>
+<p>The flash is a special part of the session which is cleared with each request. This means that values stored there will only be available in the next request, which is useful for passing error messages etc.</p>
+<p>It is accessed in much the same way as the session, as a hash (it's a <a href="http://api.rubyonrails.org/classes/ActionDispatch/Flash/FlashHash.html">FlashHash</a> instance).</p>
+<p>Let's use the act of logging out as an example. The controller can send a message which will be displayed to the user on the next request:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+class LoginsController &lt; ApplicationController
+  def destroy
+    session[:current_user_id] = nil
+    flash[:notice] = "You have successfully logged out."
+    redirect_to root_url
+  end
+end
+
+</pre>
+</div>
+<p>Note that it is also possible to assign a flash message as part of the redirection. You can assign <code>:notice</code>, <code>:alert</code> or the general purpose <code>:flash</code>:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+redirect_to root_url, notice: "You have successfully logged out."
+redirect_to root_url, alert: "You're stuck here!"
+redirect_to root_url, flash: { referral_code: 1234 }
+
+</pre>
+</div>
+<p>The <code>destroy</code> action redirects to the application's <code>root_url</code>, where the message will be displayed. Note that it's entirely up to the next action to decide what, if anything, it will do with what the previous action put in the flash. It's conventional to display any error alerts or notices from the flash in the application's layout:</p>
+<div class="code_container">
+<pre class="brush: ruby; html-script: true; gutter: false; toolbar: false">
+&lt;html&gt;
+  &lt;!-- &lt;head/&gt; --&gt;
+  &lt;body&gt;
+    &lt;% flash.each do |name, msg| -%&gt;
+      &lt;%= content_tag :div, msg, class: name %&gt;
+    &lt;% end -%&gt;
+
+    &lt;!-- more content --&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+
+</pre>
+</div>
+<p>This way, if an action sets a notice or an alert message, the layout will display it automatically.</p>
+<p>You can pass anything that the session can store; you're not limited to notices and alerts:</p>
+<div class="code_container">
+<pre class="brush: ruby; html-script: true; gutter: false; toolbar: false">
+&lt;% if flash[:just_signed_up] %&gt;
+  &lt;p class="welcome"&gt;Welcome to our site!&lt;/p&gt;
+&lt;% end %&gt;
+
+</pre>
+</div>
+<p>If you want a flash value to be carried over to another request, use the <code>keep</code> method:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+class MainController &lt; ApplicationController
+  # Let's say this action corresponds to root_url, but you want
+  # all requests here to be redirected to UsersController#index.
+  # If an action sets the flash and redirects here, the values
+  # would normally be lost when another redirect happens, but you
+  # can use 'keep' to make it persist for another request.
+  def index
+    # Will persist all flash values.
+    flash.keep
+
+    # You can also use a key to keep only some kind of value.
+    # flash.keep(:notice)
+    redirect_to users_url
+  end
+end
+
+</pre>
+</div>
+<h5 id="flash-now">5.2.1 <code>flash.now</code>
+</h5>
+<p>By default, adding values to the flash will make them available to the next request, but sometimes you may want to access those values in the same request. For example, if the <code>create</code> action fails to save a resource and you render the <code>new</code> template directly, that's not going to result in a new request, but you may still want to display a message using the flash. To do this, you can use <code>flash.now</code> in the same way you use the normal <code>flash</code>:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+class ClientsController &lt; ApplicationController
+  def create
+    @client = Client.new(params[:client])
+    if @client.save
+      # ...
+    else
+      flash.now[:error] = "Could not save client"
+      render action: "new"
+    end
+  end
+end
+
+</pre>
+</div>
+<h3 id="cookies">6 Cookies</h3>
+<p>Your application can store small amounts of data on the client - called cookies - that will be persisted across requests and even sessions. Rails provides easy access to cookies via the <code>cookies</code> method, which - much like the <code>session</code> - works like a hash:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+class CommentsController &lt; ApplicationController
+  def new
+    # Auto-fill the commenter's name if it has been stored in a cookie
+    @comment = Comment.new(author: cookies[:commenter_name])
+  end
+
+  def create
+    @comment = Comment.new(params[:comment])
+    if @comment.save
+      flash[:notice] = "Thanks for your comment!"
+      if params[:remember_name]
+        # Remember the commenter's name.
+        cookies[:commenter_name] = @comment.author
+      else
+        # Delete cookie for the commenter's name cookie, if any.
+        cookies.delete(:commenter_name)
+      end
+      redirect_to @comment.article
+    else
+      render action: "new"
+    end
+  end
+end
+
+</pre>
+</div>
+<p>Note that while for session values you set the key to <code>nil</code>, to delete a cookie value you should use <code>cookies.delete(:key)</code>.</p>
+<p>Rails also provides a signed cookie jar and an encrypted cookie jar for storing
+sensitive data. The signed cookie jar appends a cryptographic signature on the
+cookie values to protect their integrity. The encrypted cookie jar encrypts the
+values in addition to signing them, so that they cannot be read by the end user.
+Refer to the <a href="http://api.rubyonrails.org/classes/ActionDispatch/Cookies.html">API documentation</a>
+for more details.</p>
+<p>These special cookie jars use a serializer to serialize the assigned values into
+strings and deserializes them into Ruby objects on read.</p>
+<p>You can specify what serializer to use:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Rails.application.config.action_dispatch.cookies_serializer = :json
+
+</pre>
+</div>
+<p>The default serializer for new applications is <code>:json</code>. For compatibility with
+old applications with existing cookies, <code>:marshal</code> is used when <code>serializer</code>
+option is not specified.</p>
+<p>You may also set this option to <code>:hybrid</code>, in which case Rails would transparently
+deserialize existing (<code>Marshal</code>-serialized) cookies on read and re-write them in
+the <code>JSON</code> format. This is useful for migrating existing applications to the
+<code>:json</code> serializer.</p>
+<p>It is also possible to pass a custom serializer that responds to <code>load</code> and
+<code>dump</code>:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Rails.application.config.action_dispatch.cookies_serializer = MyCustomSerializer
+
+</pre>
+</div>
+<p>When using the <code>:json</code> or <code>:hybrid</code> serializer, you should beware that not all
+Ruby objects can be serialized as JSON. For example, <code>Date</code> and <code>Time</code> objects
+will be serialized as strings, and <code>Hash</code>es will have their keys stringified.</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+class CookiesController &lt; ApplicationController
+  def set_cookie
+    cookies.encrypted[:expiration_date] = Date.tomorrow # =&gt; Thu, 20 Mar 2014
+    redirect_to action: 'read_cookie'
+  end
+
+  def read_cookie
+    cookies.encrypted[:expiration_date] # =&gt; "2014-03-20"
+  end
+end
+
+</pre>
+</div>
+<p>It's advisable that you only store simple data (strings and numbers) in cookies.
+If you have to store complex objects, you would need to handle the conversion
+manually when reading the values on subsequent requests.</p>
+<p>If you use the cookie session store, this would apply to the <code>session</code> and
+<code>flash</code> hash as well.</p>
+<h3 id="rendering-xml-and-json-data">7 Rendering XML and JSON data</h3>
+<p>ActionController makes it extremely easy to render <code>XML</code> or <code>JSON</code> data. If you've generated a controller using scaffolding, it would look something like this:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+class UsersController &lt; ApplicationController
+  def index
+    @users = User.all
+    respond_to do |format|
+      format.html # index.html.erb
+      format.xml  { render xml: @users}
+      format.json { render json: @users}
+    end
+  end
+end
+
+</pre>
+</div>
+<p>You may notice in the above code that we're using <code>render xml: @users</code>, not <code>render xml: @users.to_xml</code>. If the object is not a String, then Rails will automatically invoke <code>to_xml</code> for us.</p>
+<h3 id="filters">8 Filters</h3>
+<p>Filters are methods that are run before, after or "around" a controller action.</p>
+<p>Filters are inherited, so if you set a filter on <code>ApplicationController</code>, it will be run on every controller in your application.</p>
+<p>"Before" filters may halt the request cycle. A common "before" filter is one which requires that a user is logged in for an action to be run. You can define the filter method this way:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+class ApplicationController &lt; ActionController::Base
+  before_action :require_login
+
+  private
+
+  def require_login
+    unless logged_in?
+      flash[:error] = "You must be logged in to access this section"
+      redirect_to new_login_url # halts request cycle
+    end
+  end
+end
+
+</pre>
+</div>
+<p>The method simply stores an error message in the flash and redirects to the login form if the user is not logged in. If a "before" filter renders or redirects, the action will not run. If there are additional filters scheduled to run after that filter, they are also cancelled.</p>
+<p>In this example the filter is added to <code>ApplicationController</code> and thus all controllers in the application inherit it. This will make everything in the application require the user to be logged in in order to use it. For obvious reasons (the user wouldn't be able to log in in the first place!), not all controllers or actions should require this. You can prevent this filter from running before particular actions with <code>skip_before_action</code>:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+class LoginsController &lt; ApplicationController
+  skip_before_action :require_login, only: [:new, :create]
+end
+
+</pre>
+</div>
+<p>Now, the <code>LoginsController</code>'s <code>new</code> and <code>create</code> actions will work as before without requiring the user to be logged in. The <code>:only</code> option is used to only skip this filter for these actions, and there is also an <code>:except</code> option which works the other way. These options can be used when adding filters too, so you can add a filter which only runs for selected actions in the first place.</p>
+<h4 id="after-filters-and-around-filters">8.1 After Filters and Around Filters</h4>
+<p>In addition to "before" filters, you can also run filters after an action has been executed, or both before and after.</p>
+<p>"After" filters are similar to "before" filters, but because the action has already been run they have access to the response data that's about to be sent to the client. Obviously, "after" filters cannot stop the action from running.</p>
+<p>"Around" filters are responsible for running their associated actions by yielding, similar to how Rack middlewares work.</p>
+<p>For example, in a website where changes have an approval workflow an administrator could be able to preview them easily, just apply them within a transaction:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+class ChangesController &lt; ApplicationController
+  around_action :wrap_in_transaction, only: :show
+
+  private
+
+  def wrap_in_transaction
+    ActiveRecord::Base.transaction do
+      begin
+        yield
+      ensure
+        raise ActiveRecord::Rollback
+      end
+    end
+  end
+end
+
+</pre>
+</div>
+<p>Note that an "around" filter also wraps rendering. In particular, if in the example above, the view itself reads from the database (e.g. via a scope), it will do so within the transaction and thus present the data to preview.</p>
+<p>You can choose not to yield and build the response yourself, in which case the action will not be run.</p>
+<h4 id="other-ways-to-use-filters">8.2 Other Ways to Use Filters</h4>
+<p>While the most common way to use filters is by creating private methods and using *_action to add them, there are two other ways to do the same thing.</p>
+<p>The first is to use a block directly with the *_action methods. The block receives the controller as an argument, and the <code>require_login</code> filter from above could be rewritten to use a block:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+class ApplicationController &lt; ActionController::Base
+  before_action do |controller|
+    unless controller.send(:logged_in?)
+      flash[:error] = "You must be logged in to access this section"
+      redirect_to new_login_url
+    end
+  end
+end
+
+</pre>
+</div>
+<p>Note that the filter in this case uses <code>send</code> because the <code>logged_in?</code> method is private and the filter is not run in the scope of the controller. This is not the recommended way to implement this particular filter, but in more simple cases it might be useful.</p>
+<p>The second way is to use a class (actually, any object that responds to the right methods will do) to handle the filtering. This is useful in cases that are more complex and cannot be implemented in a readable and reusable way using the two other methods. As an example, you could rewrite the login filter again to use a class:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+class ApplicationController &lt; ActionController::Base
+  before_action LoginFilter
+end
+
+class LoginFilter
+  def self.before(controller)
+    unless controller.send(:logged_in?)
+      controller.flash[:error] = "You must be logged in to access this section"
+      controller.redirect_to controller.new_login_url
+    end
+  end
+end
+
+</pre>
+</div>
+<p>Again, this is not an ideal example for this filter, because it's not run in the scope of the controller but gets the controller passed as an argument. The filter class must implement a method with the same name as the filter, so for the <code>before_action</code> filter the class must implement a <code>before</code> method, and so on. The <code>around</code> method must <code>yield</code> to execute the action.</p>
+<h3 id="request-forgery-protection">9 Request Forgery Protection</h3>
+<p>Cross-site request forgery is a type of attack in which a site tricks a user into making requests on another site, possibly adding, modifying or deleting data on that site without the user's knowledge or permission.</p>
+<p>The first step to avoid this is to make sure all "destructive" actions (create, update and destroy) can only be accessed with non-GET requests. If you're following RESTful conventions you're already doing this. However, a malicious site can still send a non-GET request to your site quite easily, and that's where the request forgery protection comes in. As the name says, it protects from forged requests.</p>
+<p>The way this is done is to add a non-guessable token which is only known to your server to each request. This way, if a request comes in without the proper token, it will be denied access.</p>
+<p>If you generate a form like this:</p>
+<div class="code_container">
+<pre class="brush: ruby; html-script: true; gutter: false; toolbar: false">
+&lt;%= form_for @user do |f| %&gt;
+  &lt;%= f.text_field :username %&gt;
+  &lt;%= f.text_field :password %&gt;
+&lt;% end %&gt;
+
+</pre>
+</div>
+<p>You will see how the token gets added as a hidden field:</p>
+<div class="code_container">
+<pre class="brush: xml; gutter: false; toolbar: false">
+&lt;form accept-charset="UTF-8" action="/users/1" method="post"&gt;
+&lt;input type="hidden"
+       value="67250ab105eb5ad10851c00a5621854a23af5489"
+       name="authenticity_token"/&gt;
+&lt;!-- fields --&gt;
+&lt;/form&gt;
+
+</pre>
+</div>
+<p>Rails adds this token to every form that's generated using the <a href="form_helpers.html">form helpers</a>, so most of the time you don't have to worry about it. If you're writing a form manually or need to add the token for another reason, it's available through the method <code>form_authenticity_token</code>:</p>
+<p>The <code>form_authenticity_token</code> generates a valid authentication token. That's useful in places where Rails does not add it automatically, like in custom Ajax calls.</p>
+<p>The <a href="security.html">Security Guide</a> has more about this and a lot of other security-related issues that you should be aware of when developing a web application.</p>
+<h3 id="the-request-and-response-objects">10 The Request and Response Objects</h3>
+<p>In every controller there are two accessor methods pointing to the request and the response objects associated with the request cycle that is currently in execution. The <code>request</code> method contains an instance of <code>AbstractRequest</code> and the <code>response</code> method returns a response object representing what is going to be sent back to the client.</p>
+<h4 id="the-request-object">10.1 The <code>request</code> Object</h4>
+<p>The request object contains a lot of useful information about the request coming in from the client. To get a full list of the available methods, refer to the <a href="http://api.rubyonrails.org/classes/ActionDispatch/Request.html">API documentation</a>. Among the properties that you can access on this object are:</p>
+<table>
+<thead><tr>
+<th>Property of <code>request</code>
+</th>
+<th>Purpose</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>host</td>
+<td>The hostname used for this request.</td>
+</tr>
+<tr>
+<td>domain(n=2)</td>
+<td>The hostname's first <code>n</code> segments, starting from the right (the TLD).</td>
+</tr>
+<tr>
+<td>format</td>
+<td>The content type requested by the client.</td>
+</tr>
+<tr>
+<td>method</td>
+<td>The HTTP method used for the request.</td>
+</tr>
+<tr>
+<td>get?, post?, patch?, put?, delete?, head?</td>
+<td>Returns true if the HTTP method is GET/POST/PATCH/PUT/DELETE/HEAD.</td>
+</tr>
+<tr>
+<td>headers</td>
+<td>Returns a hash containing the headers associated with the request.</td>
+</tr>
+<tr>
+<td>port</td>
+<td>The port number (integer) used for the request.</td>
+</tr>
+<tr>
+<td>protocol</td>
+<td>Returns a string containing the protocol used plus "://", for example "http://".</td>
+</tr>
+<tr>
+<td>query_string</td>
+<td>The query string part of the URL, i.e., everything after "?".</td>
+</tr>
+<tr>
+<td>remote_ip</td>
+<td>The IP address of the client.</td>
+</tr>
+<tr>
+<td>url</td>
+<td>The entire URL used for the request.</td>
+</tr>
+</tbody>
+</table>
+<h5 id="path-parameters-query-parameters-and-request-parameters">10.1.1 <code>path_parameters</code>, <code>query_parameters</code>, and <code>request_parameters</code>
+</h5>
+<p>Rails collects all of the parameters sent along with the request in the <code>params</code> hash, whether they are sent as part of the query string or the post body. The request object has three accessors that give you access to these parameters depending on where they came from. The <code>query_parameters</code> hash contains parameters that were sent as part of the query string while the <code>request_parameters</code> hash contains parameters sent as part of the post body. The <code>path_parameters</code> hash contains parameters that were recognized by the routing as being part of the path leading to this particular controller and action.</p>
+<h4 id="the-response-object">10.2 The <code>response</code> Object</h4>
+<p>The response object is not usually used directly, but is built up during the execution of the action and rendering of the data that is being sent back to the user, but sometimes - like in an after filter - it can be useful to access the response directly. Some of these accessor methods also have setters, allowing you to change their values.</p>
+<table>
+<thead><tr>
+<th>Property of <code>response</code>
+</th>
+<th>Purpose</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>body</td>
+<td>This is the string of data being sent back to the client. This is most often HTML.</td>
+</tr>
+<tr>
+<td>status</td>
+<td>The HTTP status code for the response, like 200 for a successful request or 404 for file not found.</td>
+</tr>
+<tr>
+<td>location</td>
+<td>The URL the client is being redirected to, if any.</td>
+</tr>
+<tr>
+<td>content_type</td>
+<td>The content type of the response.</td>
+</tr>
+<tr>
+<td>charset</td>
+<td>The character set being used for the response. Default is "utf-8".</td>
+</tr>
+<tr>
+<td>headers</td>
+<td>Headers used for the response.</td>
+</tr>
+</tbody>
+</table>
+<h5 id="setting-custom-headers">10.2.1 Setting Custom Headers</h5>
+<p>If you want to set custom headers for a response then <code>response.headers</code> is the place to do it. The headers attribute is a hash which maps header names to their values, and Rails will set some of them automatically. If you want to add or change a header, just assign it to <code>response.headers</code> this way:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+response.headers["Content-Type"] = "application/pdf"
+
+</pre>
+</div>
+<p>Note: in the above case it would make more sense to use the <code>content_type</code> setter directly.</p>
+<h3 id="http-authentications">11 HTTP Authentications</h3>
+<p>Rails comes with two built-in HTTP authentication mechanisms:</p>
+<ul>
+<li>Basic Authentication</li>
+<li>Digest Authentication</li>
+</ul>
+<h4 id="http-basic-authentication">11.1 HTTP Basic Authentication</h4>
+<p>HTTP basic authentication is an authentication scheme that is supported by the majority of browsers and other HTTP clients. As an example, consider an administration section which will only be available by entering a username and a password into the browser's HTTP basic dialog window. Using the built-in authentication is quite easy and only requires you to use one method, <code>http_basic_authenticate_with</code>.</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+class AdminsController &lt; ApplicationController
+  http_basic_authenticate_with name: "humbaba", password: "5baa61e4"
+end
+
+</pre>
+</div>
+<p>With this in place, you can create namespaced controllers that inherit from <code>AdminsController</code>. The filter will thus be run for all actions in those controllers, protecting them with HTTP basic authentication.</p>
+<h4 id="http-digest-authentication">11.2 HTTP Digest Authentication</h4>
+<p>HTTP digest authentication is superior to the basic authentication as it does not require the client to send an unencrypted password over the network (though HTTP basic authentication is safe over HTTPS). Using digest authentication with Rails is quite easy and only requires using one method, <code>authenticate_or_request_with_http_digest</code>.</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+class AdminsController &lt; ApplicationController
+  USERS = { "lifo" =&gt; "world" }
+
+  before_action :authenticate
+
+  private
+
+    def authenticate
+      authenticate_or_request_with_http_digest do |username|
+        USERS[username]
+      end
+    end
+end
+
+</pre>
+</div>
+<p>As seen in the example above, the <code>authenticate_or_request_with_http_digest</code> block takes only one argument - the username. And the block returns the password. Returning <code>false</code> or <code>nil</code> from the <code>authenticate_or_request_with_http_digest</code> will cause authentication failure.</p>
+<h3 id="streaming-and-file-downloads">12 Streaming and File Downloads</h3>
+<p>Sometimes you may want to send a file to the user instead of rendering an HTML page. All controllers in Rails have the <code>send_data</code> and the <code>send_file</code> methods, which will both stream data to the client. <code>send_file</code> is a convenience method that lets you provide the name of a file on the disk and it will stream the contents of that file for you.</p>
+<p>To stream data to the client, use <code>send_data</code>:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+require "prawn"
+class ClientsController &lt; ApplicationController
+  # Generates a PDF document with information on the client and
+  # returns it. The user will get the PDF as a file download.
+  def download_pdf
+    client = Client.find(params[:id])
+    send_data generate_pdf(client),
+              filename: "#{client.name}.pdf",
+              type: "application/pdf"
+  end
+
+  private
+
+    def generate_pdf(client)
+      Prawn::Document.new do
+        text client.name, align: :center
+        text "Address: #{client.address}"
+        text "Email: #{client.email}"
+      end.render
+    end
+end
+
+</pre>
+</div>
+<p>The <code>download_pdf</code> action in the example above will call a private method which actually generates the PDF document and returns it as a string. This string will then be streamed to the client as a file download and a filename will be suggested to the user. Sometimes when streaming files to the user, you may not want them to download the file. Take images, for example, which can be embedded into HTML pages. To tell the browser a file is not meant to be downloaded, you can set the <code>:disposition</code> option to "inline". The opposite and default value for this option is "attachment".</p>
+<h4 id="sending-files">12.1 Sending Files</h4>
+<p>If you want to send a file that already exists on disk, use the <code>send_file</code> method.</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+class ClientsController &lt; ApplicationController
+  # Stream a file that has already been generated and stored on disk.
+  def download_pdf
+    client = Client.find(params[:id])
+    send_file("#{Rails.root}/files/clients/#{client.id}.pdf",
+              filename: "#{client.name}.pdf",
+              type: "application/pdf")
+  end
+end
+
+</pre>
+</div>
+<p>This will read and stream the file 4kB at the time, avoiding loading the entire file into memory at once. You can turn off streaming with the <code>:stream</code> option or adjust the block size with the <code>:buffer_size</code> option.</p>
+<p>If <code>:type</code> is not specified, it will be guessed from the file extension specified in <code>:filename</code>. If the content type is not registered for the extension, <code>application/octet-stream</code> will be used.</p>
+<div class="warning"><p>Be careful when using data coming from the client (params, cookies, etc.) to locate the file on disk, as this is a security risk that might allow someone to gain access to files they are not meant to.</p></div>
+<div class="info"><p>It is not recommended that you stream static files through Rails if you can instead keep them in a public folder on your web server. It is much more efficient to let the user download the file directly using Apache or another web server, keeping the request from unnecessarily going through the whole Rails stack.</p></div>
+<h4 id="restful-downloads">12.2 RESTful Downloads</h4>
+<p>While <code>send_data</code> works just fine, if you are creating a RESTful application having separate actions for file downloads is usually not necessary. In REST terminology, the PDF file from the example above can be considered just another representation of the client resource. Rails provides an easy and quite sleek way of doing "RESTful downloads". Here's how you can rewrite the example so that the PDF download is a part of the <code>show</code> action, without any streaming:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+class ClientsController &lt; ApplicationController
+  # The user can request to receive this resource as HTML or PDF.
+  def show
+    @client = Client.find(params[:id])
+
+    respond_to do |format|
+      format.html
+      format.pdf { render pdf: generate_pdf(@client) }
+    end
+  end
+end
+
+</pre>
+</div>
+<p>In order for this example to work, you have to add the PDF MIME type to Rails. This can be done by adding the following line to the file <code>config/initializers/mime_types.rb</code>:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+Mime::Type.register "application/pdf", :pdf
+
+</pre>
+</div>
+<div class="note"><p>Configuration files are not reloaded on each request, so you have to restart the server in order for their changes to take effect.</p></div>
+<p>Now the user can request to get a PDF version of a client just by adding ".pdf" to the URL:</p>
+<div class="code_container">
+<pre class="brush: plain; gutter: false; toolbar: false">
+GET /clients/1.pdf
+
+</pre>
+</div>
+<h4 id="live-streaming-of-arbitrary-data">12.3 Live Streaming of Arbitrary Data</h4>
+<p>Rails allows you to stream more than just files. In fact, you can stream anything
+you would like in a response object. The <code>ActionController::Live</code> module allows
+you to create a persistent connection with a browser. Using this module, you will
+be able to send arbitrary data to the browser at specific points in time.</p>
+<h5 id="incorporating-live-streaming">12.3.1 Incorporating Live Streaming</h5>
+<p>Including <code>ActionController::Live</code> inside of your controller class will provide
+all actions inside of the controller the ability to stream data. You can mix in
+the module like so:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+class MyController &lt; ActionController::Base
+  include ActionController::Live
+
+  def stream
+    response.headers['Content-Type'] = 'text/event-stream'
+    100.times {
+      response.stream.write "hello world\n"
+      sleep 1
+    }
+  ensure
+    response.stream.close
+  end
+end
+
+</pre>
+</div>
+<p>The above code will keep a persistent connection with the browser and send 100
+messages of <code>"hello world\n"</code>, each one second apart.</p>
+<p>There are a couple of things to notice in the above example. We need to make
+sure to close the response stream. Forgetting to close the stream will leave
+the socket open forever. We also have to set the content type to <code>text/event-stream</code>
+before we write to the response stream. This is because headers cannot be written
+after the response has been committed (when <code>response.committed</code> returns a truthy
+value), which occurs when you <code>write</code> or <code>commit</code> the response stream.</p>
+<h5 id="example-usage">12.3.2 Example Usage</h5>
+<p>Let's suppose that you were making a Karaoke machine and a user wants to get the
+lyrics for a particular song. Each <code>Song</code> has a particular number of lines and
+each line takes time <code>num_beats</code> to finish singing.</p>
+<p>If we wanted to return the lyrics in Karaoke fashion (only sending the line when
+the singer has finished the previous line), then we could use <code>ActionController::Live</code>
+as follows:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+class LyricsController &lt; ActionController::Base
+  include ActionController::Live
+
+  def show
+    response.headers['Content-Type'] = 'text/event-stream'
+    song = Song.find(params[:id])
+
+    song.each do |line|
+      response.stream.write line.lyrics
+      sleep line.num_beats
+    end
+  ensure
+    response.stream.close
+  end
+end
+
+</pre>
+</div>
+<p>The above code sends the next line only after the singer has completed the previous
+line.</p>
+<h5 id="streaming-considerations">12.3.3 Streaming Considerations</h5>
+<p>Streaming arbitrary data is an extremely powerful tool. As shown in the previous
+examples, you can choose when and what to send across a response stream. However,
+you should also note the following things:</p>
+<ul>
+<li>Each response stream creates a new thread and copies over the thread local
+variables from the original thread. Having too many thread local variables can
+negatively impact performance. Similarly, a large number of threads can also
+hinder performance.</li>
+<li>Failing to close the response stream will leave the corresponding socket open
+forever. Make sure to call <code>close</code> whenever you are using a response stream.</li>
+<li>WEBrick servers buffer all responses, and so including <code>ActionController::Live</code>
+will not work. You must use a web server which does not automatically buffer
+responses.</li>
+</ul>
+<h3 id="log-filtering">13 Log Filtering</h3>
+<p>Rails keeps a log file for each environment in the <code>log</code> folder. These are extremely useful when debugging what's actually going on in your application, but in a live application you may not want every bit of information to be stored in the log file.</p>
+<h4 id="parameters-filtering">13.1 Parameters Filtering</h4>
+<p>You can filter certain request parameters from your log files by appending them to <code>config.filter_parameters</code> in the application configuration. These parameters will be marked [FILTERED] in the log.</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+config.filter_parameters &lt;&lt; :password
+
+</pre>
+</div>
+<h4 id="redirects-filtering">13.2 Redirects Filtering</h4>
+<p>Sometimes it's desirable to filter out from log files some sensible locations your application is redirecting to.
+You can do that by using the <code>config.filter_redirect</code> configuration option:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+config.filter_redirect &lt;&lt; 's3.amazonaws.com'
+
+</pre>
+</div>
+<p>You can set it to a String, a Regexp, or an array of both.</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+config.filter_redirect.concat ['s3.amazonaws.com', /private_path/]
+
+</pre>
+</div>
+<p>Matching URLs will be marked as '[FILTERED]'.</p>
+<h3 id="rescue">14 Rescue</h3>
+<p>Most likely your application is going to contain bugs or otherwise throw an exception that needs to be handled. For example, if the user follows a link to a resource that no longer exists in the database, Active Record will throw the <code>ActiveRecord::RecordNotFound</code> exception.</p>
+<p>Rails' default exception handling displays a "500 Server Error" message for all exceptions. If the request was made locally, a nice traceback and some added information gets displayed so you can figure out what went wrong and deal with it. If the request was remote Rails will just display a simple "500 Server Error" message to the user, or a "404 Not Found" if there was a routing error or a record could not be found. Sometimes you might want to customize how these errors are caught and how they're displayed to the user. There are several levels of exception handling available in a Rails application:</p>
+<h4 id="the-default-500-and-404-templates">14.1 The Default 500 and 404 Templates</h4>
+<p>By default a production application will render either a 404 or a 500 error message. These messages are contained in static HTML files in the <code>public</code> folder, in <code>404.html</code> and <code>500.html</code> respectively. You can customize these files to add some extra information and layout, but remember that they are static; i.e. you can't use RHTML or layouts in them, just plain HTML.</p>
+<h4 id="rescue-from">14.2 <code>rescue_from</code>
+</h4>
+<p>If you want to do something a bit more elaborate when catching errors, you can use <code>rescue_from</code>, which handles exceptions of a certain type (or multiple types) in an entire controller and its subclasses.</p>
+<p>When an exception occurs which is caught by a <code>rescue_from</code> directive, the exception object is passed to the handler. The handler can be a method or a <code>Proc</code> object passed to the <code>:with</code> option. You can also use a block directly instead of an explicit <code>Proc</code> object.</p>
+<p>Here's how you can use <code>rescue_from</code> to intercept all <code>ActiveRecord::RecordNotFound</code> errors and do something with them.</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+class ApplicationController &lt; ActionController::Base
+  rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
+
+  private
+
+    def record_not_found
+      render plain: "404 Not Found", status: 404
+    end
+end
+
+</pre>
+</div>
+<p>Of course, this example is anything but elaborate and doesn't improve on the default exception handling at all, but once you can catch all those exceptions you're free to do whatever you want with them. For example, you could create custom exception classes that will be thrown when a user doesn't have access to a certain section of your application:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+class ApplicationController &lt; ActionController::Base
+  rescue_from User::NotAuthorized, with: :user_not_authorized
+
+  private
+
+    def user_not_authorized
+      flash[:error] = "You don't have access to this section."
+      redirect_to :back
+    end
+end
+
+class ClientsController &lt; ApplicationController
+  # Check that the user has the right authorization to access clients.
+  before_action :check_authorization
+
+  # Note how the actions don't have to worry about all the auth stuff.
+  def edit
+    @client = Client.find(params[:id])
+  end
+
+  private
+
+    # If the user is not authorized, just throw the exception.
+    def check_authorization
+      raise User::NotAuthorized unless current_user.admin?
+    end
+end
+
+</pre>
+</div>
+<div class="note"><p>Certain exceptions are only rescuable from the <code>ApplicationController</code> class, as they are raised before the controller gets initialized and the action gets executed. See Pratik Naik's <a href="http://m.onkey.org/2008/7/20/rescue-from-dispatching">article</a> on the subject for more information.</p></div>
+<h3 id="force-https-protocol">15 Force HTTPS protocol</h3>
+<p>Sometime you might want to force a particular controller to only be accessible via an HTTPS protocol for security reasons. You can use the <code>force_ssl</code> method in your controller to enforce that:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+class DinnerController
+  force_ssl
+end
+
+</pre>
+</div>
+<p>Just like the filter, you could also pass <code>:only</code> and <code>:except</code> to enforce the secure connection only to specific actions:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+class DinnerController
+  force_ssl only: :cheeseburger
+  # or
+  force_ssl except: :cheeseburger
+end
+
+</pre>
+</div>
+<p>Please note that if you find yourself adding <code>force_ssl</code> to many controllers, you may want to force the whole application to use HTTPS instead. In that case, you can set the <code>config.force_ssl</code> in your environment file.</p>
+</body></html>
+
+
+        <h3>Feedback</h3>
+        <p>
+          You're encouraged to help improve the quality of this guide.
+        </p>
+        <p>
+          Please contribute if you see any typos or factual errors.
+          To get started, you can read our <a href="http://edgeguides.rubyonrails.org/contributing_to_ruby_on_rails.html#contributing-to-the-rails-documentation">documentation contributions</a> section.
+        </p>
+        <p>
+          You may also find incomplete content, or stuff that is not up to date.
+          Please do add any missing documentation for master. Make sure to check
+          <a href="http://edgeguides.rubyonrails.org">Edge Guides</a> first to verify
+          if the issues are already fixed or not on the master branch.
+          Check the <a href="ruby_on_rails_guides_guidelines.html">Ruby on Rails Guides Guidelines</a>
+          for style and conventions.
+        </p>
+        <p>
+          If for whatever reason you spot something to fix but cannot patch it yourself, please
+          <a href="https://github.com/rails/rails/issues">open an issue</a>.
+        </p>
+        <p>And last but not least, any kind of discussion regarding Ruby on Rails
+          documentation is very welcome in the <a href="http://groups.google.com/group/rubyonrails-docs">rubyonrails-docs mailing list</a>.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="hide" />
+  <div id="footer">
+    <div class="wrapper">
+      <p>This work is licensed under a <a href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-Share Alike 3.0</a> License</p>
+<p>"Rails", "Ruby on Rails", and the Rails logo are trademarks of David Heinemeier Hansson. All rights reserved.</p>
+
+    </div>
+  </div>
+
+  <script type="text/javascript" src="javascripts/jquery.min.js"></script>
+  <script type="text/javascript" src="javascripts/responsive-tables.js"></script>
+  <script type="text/javascript" src="javascripts/guides.js"></script>
+  <script type="text/javascript" src="javascripts/syntaxhighlighter/shCore.js"></script>
+  <script type="text/javascript" src="javascripts/syntaxhighlighter/shBrushRuby.js"></script>
+  <script type="text/javascript" src="javascripts/syntaxhighlighter/shBrushXml.js"></script>
+  <script type="text/javascript" src="javascripts/syntaxhighlighter/shBrushSql.js"></script>
+  <script type="text/javascript" src="javascripts/syntaxhighlighter/shBrushPlain.js"></script>
+  <script type="text/javascript">
+    SyntaxHighlighter.all();
+    $(guidesIndex.bind);
+  </script>
+</body>
+</html>

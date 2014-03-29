@@ -1,0 +1,510 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<title>API Documentation Guidelines — Ruby on Rails Guides</title>
+<link rel="stylesheet" type="text/css" href="stylesheets/style.css" />
+<link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+
+<link rel="stylesheet" type="text/css" href="stylesheets/syntaxhighlighter/shCore.css" />
+<link rel="stylesheet" type="text/css" href="stylesheets/syntaxhighlighter/shThemeRailsGuides.css" />
+
+<link rel="stylesheet" type="text/css" href="stylesheets/fixes.css" />
+
+<link href="images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+</head>
+<body class="guide">
+  <div id="topNav">
+    <div class="wrapper">
+      <strong class="more-info-label">More at <a href="http://rubyonrails.org/">rubyonrails.org:</a> </strong>
+      <span class="red-button more-info-button">
+        More Ruby on Rails
+      </span>
+      <ul class="more-info-links s-hidden">
+        <li class="more-info"><a href="http://rubyonrails.org/">Overview</a></li>
+        <li class="more-info"><a href="http://rubyonrails.org/download">Download</a></li>
+        <li class="more-info"><a href="http://rubyonrails.org/deploy">Deploy</a></li>
+        <li class="more-info"><a href="https://github.com/rails/rails">Code</a></li>
+        <li class="more-info"><a href="http://rubyonrails.org/screencasts">Screencasts</a></li>
+        <li class="more-info"><a href="http://rubyonrails.org/documentation">Documentation</a></li>
+        <li class="more-info"><a href="http://rubyonrails.org/ecosystem">Ecosystem</a></li>
+        <li class="more-info"><a href="http://rubyonrails.org/community">Community</a></li>
+        <li class="more-info"><a href="http://weblog.rubyonrails.org/">Blog</a></li>
+      </ul>
+    </div>
+  </div>
+  <div id="header">
+    <div class="wrapper clearfix">
+      <h1><a href="index.html" title="Return to home page">Guides.rubyonrails.org</a></h1>
+      <ul class="nav">
+        <li><a class="nav-item" href="index.html">Home</a></li>
+        <li class="guides-index guides-index-large">
+          <a href="index.html" id="guidesMenu" class="guides-index-item nav-item">Guides Index</a>
+          <div id="guides" class="clearfix" style="display: none;">
+            <hr />
+              <dl class="L">
+                <dt>Start Here</dt>
+                <dd><a href="getting_started.html">Getting Started with Rails</a></dd>
+                <dt>Models</dt>
+                <dd><a href="active_record_basics.html">Active Record Basics</a></dd>
+                <dd><a href="migrations.html">Rails Database Migrations</a></dd>
+                <dd><a href="active_record_validations.html">Active Record Validations</a></dd>
+                <dd><a href="active_record_callbacks.html">Active Record Callbacks</a></dd>
+                <dd><a href="association_basics.html">Active Record Associations</a></dd>
+                <dd><a href="active_record_querying.html">Active Record Query Interface</a></dd>
+                <dt>Views</dt>
+                <dd><a href="layouts_and_rendering.html">Layouts and Rendering in Rails</a></dd>
+                <dd><a href="form_helpers.html">Action View Form Helpers</a></dd>
+                <dt>Controllers</dt>
+                <dd><a href="action_controller_overview.html">Action Controller Overview</a></dd>
+                <dd><a href="routing.html">Rails Routing from the Outside In</a></dd>
+              </dl>
+              <dl class="R">
+                <dt>Digging Deeper</dt>
+                <dd><a href="active_support_core_extensions.html">Active Support Core Extensions</a></dd>
+                <dd><a href="i18n.html">Rails Internationalization API</a></dd>
+                <dd><a href="action_mailer_basics.html">Action Mailer Basics</a></dd>
+                <dd><a href="security.html">Securing Rails Applications</a></dd>
+                <dd><a href="debugging_rails_applications.html">Debugging Rails Applications</a></dd>
+                <dd><a href="configuring.html">Configuring Rails Applications</a></dd>
+                <dd><a href="command_line.html">Rails Command Line Tools and Rake Tasks</a></dd>
+                <dd><a href="asset_pipeline.html">Asset Pipeline</a></dd>
+                <dd><a href="working_with_javascript_in_rails.html">Working with JavaScript in Rails</a></dd>
+                <dt>Extending Rails</dt>
+                <dd><a href="rails_on_rack.html">Rails on Rack</a></dd>
+                <dd><a href="generators.html">Creating and Customizing Rails Generators</a></dd>
+                <dt>Contributing to Ruby on Rails</dt>
+                <dd><a href="contributing_to_ruby_on_rails.html">Contributing to Ruby on Rails</a></dd>
+                <dd><a href="api_documentation_guidelines.html">API Documentation Guidelines</a></dd>
+                <dd><a href="ruby_on_rails_guides_guidelines.html">Ruby on Rails Guides Guidelines</a></dd>
+                <dt>Maintenance Policy</dt>
+                <dd><a href="maintenance_policy.html">Maintenance Policy</a></dd>
+                <dt>Release Notes</dt>
+                <dd><a href="4_1_release_notes.html">Ruby on Rails 4.1 Release Notes</a></dd>
+                <dd><a href="4_0_release_notes.html">Ruby on Rails 4.0 Release Notes</a></dd>
+                <dd><a href="3_2_release_notes.html">Ruby on Rails 3.2 Release Notes</a></dd>
+                <dd><a href="3_1_release_notes.html">Ruby on Rails 3.1 Release Notes</a></dd>
+                <dd><a href="3_0_release_notes.html">Ruby on Rails 3.0 Release Notes</a></dd>
+                <dd><a href="2_3_release_notes.html">Ruby on Rails 2.3 Release Notes</a></dd>
+                <dd><a href="2_2_release_notes.html">Ruby on Rails 2.2 Release Notes</a></dd>
+              </dl>
+          </div>
+        </li>
+        <li><a class="nav-item" href="contributing_to_ruby_on_rails.html">Contribute</a></li>
+        <li><a class="nav-item" href="credits.html">Credits</a></li>
+        <li class="guides-index guides-index-small">
+          <select class="guides-index-item nav-item">
+            <option value="index.html">Guides Index</option>
+              <optgroup label="Start Here">
+                  <option value="getting_started.html">Getting Started with Rails</option>
+              </optgroup>
+              <optgroup label="Models">
+                  <option value="active_record_basics.html">Active Record Basics</option>
+                  <option value="migrations.html">Rails Database Migrations</option>
+                  <option value="active_record_validations.html">Active Record Validations</option>
+                  <option value="active_record_callbacks.html">Active Record Callbacks</option>
+                  <option value="association_basics.html">Active Record Associations</option>
+                  <option value="active_record_querying.html">Active Record Query Interface</option>
+              </optgroup>
+              <optgroup label="Views">
+                  <option value="layouts_and_rendering.html">Layouts and Rendering in Rails</option>
+                  <option value="form_helpers.html">Action View Form Helpers</option>
+              </optgroup>
+              <optgroup label="Controllers">
+                  <option value="action_controller_overview.html">Action Controller Overview</option>
+                  <option value="routing.html">Rails Routing from the Outside In</option>
+              </optgroup>
+              <optgroup label="Digging Deeper">
+                  <option value="active_support_core_extensions.html">Active Support Core Extensions</option>
+                  <option value="i18n.html">Rails Internationalization API</option>
+                  <option value="action_mailer_basics.html">Action Mailer Basics</option>
+                  <option value="security.html">Securing Rails Applications</option>
+                  <option value="debugging_rails_applications.html">Debugging Rails Applications</option>
+                  <option value="configuring.html">Configuring Rails Applications</option>
+                  <option value="command_line.html">Rails Command Line Tools and Rake Tasks</option>
+                  <option value="asset_pipeline.html">Asset Pipeline</option>
+                  <option value="working_with_javascript_in_rails.html">Working with JavaScript in Rails</option>
+              </optgroup>
+              <optgroup label="Extending Rails">
+                  <option value="rails_on_rack.html">Rails on Rack</option>
+                  <option value="generators.html">Creating and Customizing Rails Generators</option>
+              </optgroup>
+              <optgroup label="Contributing to Ruby on Rails">
+                  <option value="contributing_to_ruby_on_rails.html">Contributing to Ruby on Rails</option>
+                  <option value="api_documentation_guidelines.html">API Documentation Guidelines</option>
+                  <option value="ruby_on_rails_guides_guidelines.html">Ruby on Rails Guides Guidelines</option>
+              </optgroup>
+              <optgroup label="Maintenance Policy">
+                  <option value="maintenance_policy.html">Maintenance Policy</option>
+              </optgroup>
+              <optgroup label="Release Notes">
+                  <option value="4_1_release_notes.html">Ruby on Rails 4.1 Release Notes</option>
+                  <option value="4_0_release_notes.html">Ruby on Rails 4.0 Release Notes</option>
+                  <option value="3_2_release_notes.html">Ruby on Rails 3.2 Release Notes</option>
+                  <option value="3_1_release_notes.html">Ruby on Rails 3.1 Release Notes</option>
+                  <option value="3_0_release_notes.html">Ruby on Rails 3.0 Release Notes</option>
+                  <option value="2_3_release_notes.html">Ruby on Rails 2.3 Release Notes</option>
+                  <option value="2_2_release_notes.html">Ruby on Rails 2.2 Release Notes</option>
+              </optgroup>
+          </select>
+        </li>
+      </ul>
+      </div>
+    </div>
+  </div>
+  <hr class="hide" />
+
+  <div id="feature">
+    <div class="wrapper">
+      <h2>API Documentation Guidelines</h2><p>This guide documents the Ruby on Rails API documentation guidelines.</p><p>After reading this guide, you will know:</p>
+<ul>
+<li>How to write effective prose for documentation purposes.</li>
+<li>Style guidelines for documenting different kinds of Ruby code.</li>
+</ul>
+
+
+                <div id="subCol">
+            <h3 class="chapter"><img src="images/chapters_icon.gif" alt="" />Chapters</h3>
+            <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html><body><ol class="chapters">
+<li><a href="#rdoc">RDoc</a></li>
+<li><a href="#wording">Wording</a></li>
+<li><a href="#english">English</a></li>
+<li><a href="#example-code">Example Code</a></li>
+<li><a href="#booleans">Booleans</a></li>
+<li><a href="#filenames">Filenames</a></li>
+<li>
+<a href="#fonts">Fonts</a>
+
+<ul>
+<li><a href="#fixed-width-font">Fixed-width Font</a></li>
+<li><a href="#regular-font">Regular Font</a></li>
+</ul>
+</li>
+<li><a href="#description-lists">Description Lists</a></li>
+<li><a href="#dynamically-generated-methods">Dynamically Generated Methods</a></li>
+</ol></body></html>
+
+          </div>
+
+    </div>
+  </div>
+
+  <div id="container">
+    <div class="wrapper">
+      <div id="mainCol">
+        <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html><body>
+<h3 id="rdoc">1 RDoc</h3>
+<p>The Rails API documentation is generated with RDoc. Please consult the documentation for help with the <a href="http://rdoc.rubyforge.org/RDoc/Markup.html">markup</a>, and also take into account these <a href="http://rdoc.rubyforge.org/RDoc/Parser/Ruby.html">additional directives</a>.</p>
+<h3 id="wording">2 Wording</h3>
+<p>Write simple, declarative sentences. Brevity is a plus: get to the point.</p>
+<p>Write in present tense: "Returns a hash that...", rather than "Returned a hash that..." or "Will return a hash that...".</p>
+<p>Start comments in upper case. Follow regular punctuation rules:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+# Declares an attribute reader backed by an internally-named
+# instance variable.
+def attr_internal_reader(*attrs)
+  ...
+end
+
+</pre>
+</div>
+<p>Communicate to the reader the current way of doing things, both explicitly and implicitly. Use the idioms recommended in edge. Reorder sections to emphasize favored approaches if needed, etc. The documentation should be a model for best practices and canonical, modern Rails usage.</p>
+<p>Documentation has to be concise but comprehensive. Explore and document edge cases. What happens if a module is anonymous? What if a collection is empty? What if an argument is nil?</p>
+<p>The proper names of Rails components have a space in between the words, like "Active Support". <code>ActiveRecord</code> is a Ruby module, whereas Active Record is an ORM. All Rails documentation should consistently refer to Rails components by their proper name, and if in your next blog post or presentation you remember this tidbit and take it into account that'd be phenomenal.</p>
+<p>Spell names correctly: Arel, Test::Unit, RSpec, HTML, MySQL, JavaScript, ERB. When in doubt, please have a look at some authoritative source like their official documentation.</p>
+<p>Use the article "an" for "SQL", as in "an SQL statement". Also "an SQLite database".</p>
+<p>Prefer wordings that avoid "you"s and "your"s. For example, instead of</p>
+<div class="code_container">
+<pre class="brush: plain; gutter: false; toolbar: false">
+If you need to use `return` statements in your callbacks, it is recommended that you explicitly define them as methods.
+
+</pre>
+</div>
+<p>use this style:</p>
+<div class="code_container">
+<pre class="brush: plain; gutter: false; toolbar: false">
+If `return` is needed it is recommended to explicitly define a method.
+
+</pre>
+</div>
+<p>That said, when using pronouns in reference to a hypothetical person, such as "a
+user with a session cookie", gender neutral pronouns (they/their/them) should be
+used. Instead of:</p>
+<ul>
+<li>he or she... use they.</li>
+<li>him or her... use them.</li>
+<li>his or her... use their.</li>
+<li>his or hers... use theirs.</li>
+<li>himself or herself... use themselves.</li>
+</ul>
+<h3 id="english">3 English</h3>
+<p>Please use American English (<em>color</em>, <em>center</em>, <em>modularize</em>, etc). See <a href="http://en.wikipedia.org/wiki/American_and_British_English_spelling_differences">a list of American and British English spelling differences here</a>.</p>
+<h3 id="example-code">4 Example Code</h3>
+<p>Choose meaningful examples that depict and cover the basics as well as interesting points or gotchas.</p>
+<p>Use two spaces to indent chunks of code--that is, for markup purposes, two spaces with respect to the left margin. The examples themselves should use <a href="contributing_to_ruby_on_rails.html#follow-the-coding-conventions">Rails coding conventions</a>.</p>
+<p>Short docs do not need an explicit "Examples" label to introduce snippets; they just follow paragraphs:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+# Converts a collection of elements into a formatted string by
+# calling +to_s+ on all elements and joining them.
+#
+#   Blog.all.to_formatted_s # =&gt; "First PostSecond PostThird Post"
+
+</pre>
+</div>
+<p>On the other hand, big chunks of structured documentation may have a separate "Examples" section:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+# ==== Examples
+#
+#   Person.exists?(5)
+#   Person.exists?('5')
+#   Person.exists?(name: "David")
+#   Person.exists?(['name LIKE ?', "%#{query}%"])
+
+</pre>
+</div>
+<p>The results of expressions follow them and are introduced by "# =&gt; ", vertically aligned:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+# For checking if a fixnum is even or odd.
+#
+#   1.even? # =&gt; false
+#   1.odd?  # =&gt; true
+#   2.even? # =&gt; true
+#   2.odd?  # =&gt; false
+
+</pre>
+</div>
+<p>If a line is too long, the comment may be placed on the next line:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+#   label(:post, :title)
+#   # =&gt; &lt;label for="post_title"&gt;Title&lt;/label&gt;
+#
+#   label(:post, :title, "A short title")
+#   # =&gt; &lt;label for="post_title"&gt;A short title&lt;/label&gt;
+#
+#   label(:post, :title, "A short title", class: "title_label")
+#   # =&gt; &lt;label for="post_title" class="title_label"&gt;A short title&lt;/label&gt;
+
+</pre>
+</div>
+<p>Avoid using any printing methods like <code>puts</code> or <code>p</code> for that purpose.</p>
+<p>On the other hand, regular comments do not use an arrow:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+#   polymorphic_url(record)  # same as comment_url(record)
+
+</pre>
+</div>
+<h3 id="booleans">5 Booleans</h3>
+<p>In predicates and flags prefer documenting boolean semantics over exact values.</p>
+<p>When "true" or "false" are used as defined in Ruby use regular font. The
+singletons <code>true</code> and <code>false</code> need fixed-width font. Please avoid terms like
+"truthy", Ruby defines what is true and false in the language, and thus those
+words have a technical meaning and need no substitutes.</p>
+<p>As a rule of thumb, do not document singletons unless absolutely necessary. That
+prevents artificial constructs like <code>!!</code> or ternaries, allows refactors, and the
+code does not need to rely on the exact values returned by methods being called
+in the implementation.</p>
+<p>For example:</p>
+<div class="code_container">
+<pre class="brush: plain; gutter: false; toolbar: false">
+`config.action_mailer.perform_deliveries` specifies whether mail will actually be delivered and is true by default
+
+</pre>
+</div>
+<p>the user does not need to know which is the actual default value of the flag,
+and so we only document its boolean semantics.</p>
+<p>An example with a predicate:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+# Returns true if the collection is empty.
+#
+# If the collection has been loaded
+# it is equivalent to &lt;tt&gt;collection.size.zero?&lt;/tt&gt;. If the
+# collection has not been loaded, it is equivalent to
+# &lt;tt&gt;collection.exists?&lt;/tt&gt;. If the collection has not already been
+# loaded and you are going to fetch the records anyway it is better to
+# check &lt;tt&gt;collection.length.zero?&lt;/tt&gt;.
+def empty?
+  if loaded?
+    size.zero?
+  else
+    @target.blank? &amp;&amp; !scope.exists?
+  end
+end
+
+</pre>
+</div>
+<p>The API is careful not to commit to any particular value, the method has
+predicate semantics, that's enough.</p>
+<h3 id="filenames">6 Filenames</h3>
+<p>As a rule of thumb, use filenames relative to the application root:</p>
+<div class="code_container">
+<pre class="brush: plain; gutter: false; toolbar: false">
+config/routes.rb            # YES
+routes.rb                   # NO
+RAILS_ROOT/config/routes.rb # NO
+
+</pre>
+</div>
+<h3 id="fonts">7 Fonts</h3>
+<h4 id="fixed-width-font">7.1 Fixed-width Font</h4>
+<p>Use fixed-width fonts for:</p>
+<ul>
+<li>Constants, in particular class and module names.</li>
+<li>Method names.</li>
+<li>Literals like <code>nil</code>, <code>false</code>, <code>true</code>, <code>self</code>.</li>
+<li>Symbols.</li>
+<li>Method parameters.</li>
+<li>File names.</li>
+</ul>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+class Array
+  # Calls +to_param+ on all its elements and joins the result with
+  # slashes. This is used by +url_for+ in Action Pack.
+  def to_param
+    collect { |e| e.to_param }.join '/'
+  end
+end
+
+</pre>
+</div>
+<div class="warning"><p>Using <code>+...+</code> for fixed-width font only works with simple content like
+ordinary method names, symbols, paths (with forward slashes), etc. Please use
+<code>&lt;tt&gt;...&lt;/tt&gt;</code> for everything else, notably class or module names with a
+namespace as in <code>&lt;tt&gt;ActiveRecord::Base&lt;/tt&gt;</code>.</p></div>
+<p>You can quickly test the RDoc output with the following command:</p>
+<div class="code_container">
+<pre class="brush: plain; gutter: false; toolbar: false">
+$ echo "+:to_param+" | rdoc --pipe
+#=&gt; &lt;p&gt;&lt;code&gt;:to_param&lt;/code&gt;&lt;/p&gt;
+
+</pre>
+</div>
+<h4 id="regular-font">7.2 Regular Font</h4>
+<p>When "true" and "false" are English words rather than Ruby keywords use a regular font:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+# Runs all the validations within the specified context.
+# Returns true if no errors are found, false otherwise.
+#
+# If the argument is false (default is +nil+), the context is
+# set to &lt;tt&gt;:create&lt;/tt&gt; if &lt;tt&gt;new_record?&lt;/tt&gt; is true,
+# and to &lt;tt&gt;:update&lt;/tt&gt; if it is not.
+#
+# Validations with no &lt;tt&gt;:on&lt;/tt&gt; option will run no
+# matter the context. Validations with # some &lt;tt&gt;:on&lt;/tt&gt;
+# option will only run in the specified context.
+def valid?(context = nil)
+  ...
+end
+
+</pre>
+</div>
+<h3 id="description-lists">8 Description Lists</h3>
+<p>In lists of options, parameters, etc. use a hyphen between the item and its description (reads better than a colon because normally options are symbols):</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+# * &lt;tt&gt;:allow_nil&lt;/tt&gt; - Skip validation if attribute is +nil+.
+
+</pre>
+</div>
+<p>The description starts in upper case and ends with a full stop-it's standard English.</p>
+<h3 id="dynamically-generated-methods">9 Dynamically Generated Methods</h3>
+<p>Methods created with <code>(module|class)_eval(STRING)</code> have a comment by their side with an instance of the generated code. That comment is 2 spaces away from the template:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+for severity in Severity.constants
+  class_eval &lt;&lt;-EOT, __FILE__, __LINE__
+    def #{severity.downcase}(message = nil, progname = nil, &amp;block)  # def debug(message = nil, progname = nil, &amp;block)
+      add(#{severity}, message, progname, &amp;block)                    #   add(DEBUG, message, progname, &amp;block)
+    end                                                              # end
+                                                                     #
+    def #{severity.downcase}?                                        # def debug?
+      #{severity} &gt;= @level                                          #   DEBUG &gt;= @level
+    end                                                              # end
+  EOT
+end
+
+</pre>
+</div>
+<p>If the resulting lines are too wide, say 200 columns or more, put the comment above the call:</p>
+<div class="code_container">
+<pre class="brush: ruby; gutter: false; toolbar: false">
+# def self.find_by_login_and_activated(*args)
+#   options = args.extract_options!
+#   ...
+# end
+self.class_eval %{
+  def self.#{method_id}(*args)
+    options = args.extract_options!
+    ...
+  end
+}
+
+</pre>
+</div>
+</body></html>
+
+
+        <h3>Feedback</h3>
+        <p>
+          You're encouraged to help improve the quality of this guide.
+        </p>
+        <p>
+          Please contribute if you see any typos or factual errors.
+          To get started, you can read our <a href="http://edgeguides.rubyonrails.org/contributing_to_ruby_on_rails.html#contributing-to-the-rails-documentation">documentation contributions</a> section.
+        </p>
+        <p>
+          You may also find incomplete content, or stuff that is not up to date.
+          Please do add any missing documentation for master. Make sure to check
+          <a href="http://edgeguides.rubyonrails.org">Edge Guides</a> first to verify
+          if the issues are already fixed or not on the master branch.
+          Check the <a href="ruby_on_rails_guides_guidelines.html">Ruby on Rails Guides Guidelines</a>
+          for style and conventions.
+        </p>
+        <p>
+          If for whatever reason you spot something to fix but cannot patch it yourself, please
+          <a href="https://github.com/rails/rails/issues">open an issue</a>.
+        </p>
+        <p>And last but not least, any kind of discussion regarding Ruby on Rails
+          documentation is very welcome in the <a href="http://groups.google.com/group/rubyonrails-docs">rubyonrails-docs mailing list</a>.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="hide" />
+  <div id="footer">
+    <div class="wrapper">
+      <p>This work is licensed under a <a href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-Share Alike 3.0</a> License</p>
+<p>"Rails", "Ruby on Rails", and the Rails logo are trademarks of David Heinemeier Hansson. All rights reserved.</p>
+
+    </div>
+  </div>
+
+  <script type="text/javascript" src="javascripts/jquery.min.js"></script>
+  <script type="text/javascript" src="javascripts/responsive-tables.js"></script>
+  <script type="text/javascript" src="javascripts/guides.js"></script>
+  <script type="text/javascript" src="javascripts/syntaxhighlighter/shCore.js"></script>
+  <script type="text/javascript" src="javascripts/syntaxhighlighter/shBrushRuby.js"></script>
+  <script type="text/javascript" src="javascripts/syntaxhighlighter/shBrushXml.js"></script>
+  <script type="text/javascript" src="javascripts/syntaxhighlighter/shBrushSql.js"></script>
+  <script type="text/javascript" src="javascripts/syntaxhighlighter/shBrushPlain.js"></script>
+  <script type="text/javascript">
+    SyntaxHighlighter.all();
+    $(guidesIndex.bind);
+  </script>
+</body>
+</html>
