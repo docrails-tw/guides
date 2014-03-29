@@ -19,4 +19,4 @@ pkg
 /railties/test/initializer/root/log
 /railties/doc
 /railties/tmp
-/guides/output
+/output
