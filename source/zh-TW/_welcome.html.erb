@@ -1,22 +1,20 @@
-<h2>Ruby on Rails Guides (<%= @edge ? @version[0, 7] : @version %>)</h2>
+<% @version = ENV['EDGE'].presence || 'master' %>
 
-<% if @edge %>
+<h2>Ruby on Rails 指南 (<%= @version %>)</h2>
+<br>
 <p>
-  These are <b>Edge Guides</b>, based on the current <a href="https://github.com/rails/rails/tree/<%= @version %>">master</a> branch.
+  這些指南基於 Rails 的 <a href="https://github.com/rails/rails/tree/<%= @version %>">master</a> 分支翻譯而成。
 </p>
 <p>
-  If you are looking for the ones for the stable version, please check
-  <a href="http://guides.rubyonrails.org">http://guides.rubyonrails.org</a> instead.
-</p>
-<% else %>
-<p>
-  These are the new guides for Rails 4.0 based on <a href="https://github.com/rails/rails/tree/<%= @version %>"><%= @version %></a>.
-  These guides are designed to make you immediately productive with Rails, and to help you understand how all of the pieces fit together.
-</p>
-<% end %>
-<p>
-  The guides for Rails 3.2.x are available at <a href="http://guides.rubyonrails.org/v3.2.17/">http://guides.rubyonrails.org/v3.2.17/</a>.
+  這些精心撰寫的指南讓您能快速上手，並幫助您快速了解 Rails 方方面面。
 </p>
 <p>
-  The guides for Rails 2.3.x are available at <a href="http://guides.rubyonrails.org/v2.3.11/">http://guides.rubyonrails.org/v2.3.11/</a>.
+  穩定版本的指南，請參考
+  <a href="http://guides.rubyonrails.org">http://guides.rubyonrails.org</a>。
+</p>
+<p>
+  3.2 系列的指南 <a href="http://guides.rubyonrails.org/v3.2.17/">http://guides.rubyonrails.org/v3.2.17/</a>。
+</p>
+<p>
+  2.3 系列的指南 <a href="http://guides.rubyonrails.org/v2.3.11/">http://guides.rubyonrails.org/v2.3.11/</a>。
 </p>

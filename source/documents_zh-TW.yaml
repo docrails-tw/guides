@@ -1,0 +1,194 @@
+-
+  name: 起步走
+  documents:
+    -
+      name: Rails 入門指南
+      url: getting_started.html
+      description: 從安裝到建立第一個應用程式所需知道的一切。
+-
+  name: Models
+  documents:
+    -
+      name: Active Record 基礎
+      url: active_record_basics.html
+      description: 本篇講解 Models、資料庫持久性以及 Active Record 模式。
+    -
+      name: Active Record 遷移
+      url: migrations.html
+      description: 本篇講解如何有條有理地使用 Active Record 來修改資料庫。
+    -
+      name: Active Record 驗證
+      url: active_record_validations.html
+      description: 本篇講解如何使用 Active Record 驗證功能。
+    -
+      name: Active Record 回呼
+      url: active_record_callbacks.html
+      description: 本篇講解如何使用 Active Record 回呼功能。
+    -
+      name: Active Record Associations
+      url: association_basics.html
+      description: 本篇講解 Active Record 所提供的關聯功能。
+    -
+      name: Active Record 查詢介面
+      url: active_record_querying.html
+      description: 本篇講解 Active Record 所提供的資料庫查詢介面。
+-
+  name: Views
+  documents:
+    -
+      name: Action View 綜覽
+      url: action_view_overview.html
+      description: 本篇介紹 Action View 以及常見的 View Helpers。
+      work_in_progress: true
+    -
+      name: Rails 算繪與版型
+      url: layouts_and_rendering.html
+      description: 本篇講解 Action Controller 與 Action View 基本的版型功能，包含了算繪、重定向、使用 `content_for` 區塊、以及 partial。
+    -
+      name: Action View 表單 Helpers
+      url: form_helpers.html
+      description: 本篇講解內建表單 Helpers 如何使用。
+-
+  name: Controllers
+  documents:
+    -
+      name: Action Controller 綜覽
+      url: action_controller_overview.html
+      description: 本篇講解 Controller 的工作原理，Controller 在 Request 週期所扮演的角色。內容包含 Session、Filter、Cookies、資料串流以及如何處理由 Request 發起的異常。
+    -
+      name: 細說 Rails 路由
+      url: routing.html
+      description: 本篇講解與使用者息息相關的路由功能。想了解如何使用 Rails 的路由，從這裡開始。
+-
+  name: 深入了解
+  documents:
+    -
+      name: Active Support 核心擴展
+      url: active_support_core_extensions.html
+      description: 本篇講解由 Active Support 定義的核心擴展功能。
+    -
+      name: Rails 國際化 API
+      url: i18n.html
+      description: 本篇講解如何國際化應用程式。將應用程式翻譯成多種語言、更改單複數規則、對不同的國家使用正確的日期格式等。
+    -
+      name: Action Mailer 基礎
+      url: action_mailer_basics.html
+      description: 本篇講解如何使用 Action Mailer 來收發信件。
+    -
+      name: 測試 Rails 應用程式
+      url: testing.html
+      work_in_progress: true
+      description: 本篇講解 Rails 裡的單元與功能性測試，從什麼是測試，解說到如何測試 API。
+    -
+      name: Rails 應用程式安全性
+      url: security.html
+      description: 本篇講解網路應用程式常見的安全問題，如何在 Rails 裡處理這些問題。
+    -
+      name: Rails 應用程式除錯
+      url: debugging_rails_applications.html
+      description: 本篇講解如何給 Rails 應用程式除錯。包含了多種除錯技巧、如何理解與了解程式碼背後究竟發生了什麼事。
+    -
+      name: 設定 Rails 應用程式
+      url: configuring.html
+      description: 本篇講解 Rails 應用程式的基本設定選項。
+    -
+      name: Rake 任務與 Rails 命令行工具
+      url: command_line.html
+      description: 本篇講解 Rails 提供的 Rake 任務與命令行功能。
+    -
+      name: Rails 快取
+      work_in_progress: true
+      url: caching_with_rails.html
+      description: 本篇講解 Rails 提供的多種快取技巧。
+    -
+      name: Asset Pipeline
+      url: asset_pipeline.html
+      description: 本篇講解 Asset Pipeline.
+    -
+      name: Rails 裡使用 JavaScript
+      url: working_with_javascript_in_rails.html
+      description: 本篇講解 Rails 內建的 Ajax 與 JavaScript 功能。
+    -
+      name: Engine 初上手
+      url: engines.html
+      description: This guide explains how to write a mountable engine.
+      work_in_progress: true
+    -
+      name: Rails 啟動過程
+      work_in_progress: true
+      url: initialization.html
+      description: 本篇解釋 Rails 內部的啟動過程。
+-
+  name: 擴充 Rails
+  documents:
+    -
+      name: 新建 Rails Plugins 的基礎
+      work_in_progress: true
+      url: plugins.html
+      description: 本篇講解如何開發 Plugin 來擴展 Rails 的功能。
+    -
+      name: Rails on Rack
+      url: rails_on_rack.html
+      description: 本篇講解 Rack 是如何與 Rails 整合，以及 Rails 如何與其它 Rack 元件的接口（interface）。
+    -
+      name: 客製與新建 Rails 產生器
+      url: generators.html
+      description: 本篇講解如何加入新的產生器、修改 Rails 內建的產生器。
+-
+  name: 貢獻至 Ruby on Rails
+  documents:
+    -
+      name: 貢獻至 Ruby on Rails
+      url: contributing_to_ruby_on_rails.html
+      description: Rails 不是“某個人”獨有的框架。本篇講解如何參與 Rails 開發。
+    -
+      name: API 文件準則
+      url: api_documentation_guidelines.html
+      description: 本篇記錄了撰寫 API 文件的準則。
+    -
+      name: Ruby on Rails 指南準則
+      url: ruby_on_rails_guides_guidelines.html
+      description: 本篇記錄了撰寫 Ruby on Rails 指南的準則。
+-
+  name: 維護方針
+  documents:
+    -
+      name: 維護方針
+      url: maintenance_policy.html
+      description: Ruby on Rails 目前官方支持的版本、何時發佈新版本。
+-
+  name: 發佈記
+  documents:
+    -
+      name: 升級 Ruby on Rails
+      url: upgrading_ruby_on_rails.html
+      work_in_progress: true
+      description: 本篇幫助您將應用程式升級至最新版本。
+    -
+      name: Ruby on Rails 4.1 發佈記
+      url: 4_1_release_notes.html
+      description: Rails 4.1 的發佈記。
+    -
+      name: Ruby on Rails 4.0 發佈記
+      url: 4_0_release_notes.html
+      description: Rails 4.0 的發佈記。
+    -
+      name: Ruby on Rails 3.2 發佈記
+      url: 3_2_release_notes.html
+      description: Rails 3.2 的發佈記。
+    -
+      name: Ruby on Rails 3.1 發佈記
+      url: 3_1_release_notes.html
+      description: Rails 3.1 的發佈記。
+    -
+      name: Ruby on Rails 3.0 發佈記
+      url: 3_0_release_notes.html
+      description: Rails 3.0 的發佈記。
+    -
+      name: Ruby on Rails 2.3 發佈記
+      url: 2_3_release_notes.html
+      description: Rails 2.3 的發佈記。
+    -
+      name: Ruby on Rails 2.2 發佈記
+      url: 2_2_release_notes.html
+      description: Rails 2.2 的發佈記。

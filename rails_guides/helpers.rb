@@ -15,7 +15,11 @@ module RailsGuides
     end
 
     def documents_by_section
-      @documents_by_section ||= YAML.load_file(File.expand_path('../../source/documents.yaml', __FILE__))
+      if ENV['GUIDES_LANGUAGE'] == 'zh-TW'
+        @documents_by_section ||= YAML.load_file(File.expand_path('../../source/documents_zh-TW.yaml', __FILE__))
+      else
+        @documents_by_section ||= YAML.load_file(File.expand_path('../../source/documents.yaml', __FILE__))
+      end
     end
 
     def documents_flat
