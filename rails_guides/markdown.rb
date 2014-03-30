@@ -39,7 +39,12 @@ module RailsGuides
             @node_ids[new_node_id] = duplicate_nodes
           end
 
-          dom_id = "#{nodes[-2][:id]}-#{dom_id}"
+          # Some headers may raise NoMethodError
+          begin
+            dom_id = "#{nodes[-2][:id]}-#{dom_id}"
+          rescue NoMethodError
+
+          end
         end
 
         @node_ids[dom_id] = nodes
