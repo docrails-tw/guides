@@ -1,5 +1,3 @@
-require 'action_view'
-
 module RailsGuides
   class Markdown
     class Renderer < Redcarpet::Render::HTML
