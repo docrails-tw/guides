@@ -25,7 +25,7 @@
       url: active_record_callbacks.html
       description: 本篇講解如何使用 Active Record 回呼功能。
     -
-      name: Active Record Associations
+      name: Active Record 關聯
       url: association_basics.html
       description: 本篇講解 Active Record 所提供的關聯功能。
     -
