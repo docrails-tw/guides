@@ -5,7 +5,7 @@ gem 'activesupport' , '~> 4.0.4'
 gem 'actionpack', '~> 4.0.4'
 
 group :doc do
-  gem 'redcarpet', '~> 2.2.2'
+  gem 'redcarpet'
   gem 'w3c_validators'
 end
 
