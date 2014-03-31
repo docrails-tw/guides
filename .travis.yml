@@ -3,3 +3,5 @@ cache: bundler
 install: bundle install --jobs 4
 rvm:
   - 2.1.1
+notifications:
+  email: false
