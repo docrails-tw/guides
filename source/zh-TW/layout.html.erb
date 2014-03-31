@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-TW" lang="zh-TW">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -25,9 +25,9 @@
   <% end %>
   <div id="topNav">
     <div class="wrapper">
-      <strong class="more-info-label">More at <a href="http://rubyonrails.org/">rubyonrails.org:</a> </strong>
+      <strong class="more-info-label">更多內容 <a href="http://rubyonrails.org/">rubyonrails.org:</a> </strong>
       <span class="red-button more-info-button">
-        More Ruby on Rails
+        更多內容
       </span>
       <ul class="more-info-links s-hidden">
         <li class="more-info"><a href="http://rubyonrails.org/">綜覽</a></li>
@@ -44,11 +44,11 @@
   </div>
   <div id="header">
     <div class="wrapper clearfix">
-      <h1><a href="index.html" title="Return to home page">Guides.rubyonrails.org</a></h1>
+      <h1><a href="index.html" title="回首頁">Guides.rubyonrails.org</a></h1>
       <ul class="nav">
-        <li><a class="nav-item" href="index.html">Home</a></li>
+        <li><a class="nav-item" href="index.html">首頁</a></li>
         <li class="guides-index guides-index-large">
-          <a href="index.html" id="guidesMenu" class="guides-index-item nav-item">Guides Index</a>
+          <a href="index.html" id="guidesMenu" class="guides-index-item nav-item">指南目錄</a>
           <div id="guides" class="clearfix" style="display: none;">
             <hr />
             <% ['L', 'R'].each do |position| %>
@@ -63,11 +63,11 @@
             <% end %>
           </div>
         </li>
-        <li><a class="nav-item" href="contributing_to_ruby_on_rails.html">Contribute</a></li>
-        <li><a class="nav-item" href="credits.html">Credits</a></li>
+        <li><a class="nav-item" href="contributing_to_ruby_on_rails.html">貢獻</a></li>
+        <li><a class="nav-item" href="credits.html">致謝</a></li>
         <li class="guides-index guides-index-small">
           <select class="guides-index-item nav-item">
-            <option value="index.html">Guides Index</option>
+            <option value="index.html">指南目錄</option>
             <% docs_for_menu.each do |section| %>
               <optgroup label="<%= section['name'] %>">
                 <% finished_documents(section['documents']).each do |document| %>
@@ -101,23 +101,13 @@
           鼓勵您幫忙改善指南的品質。
         </p>
         <p>
-          Please contribute if you see any typos or factual errors.
-          To get started, you can read our <%= link_to 'documentation contributions', 'http://edgeguides.rubyonrails.org/contributing_to_ruby_on_rails.html#contributing-to-the-rails-documentation' %> section.
+          如發現任何錯誤之處，歡迎修正。開始貢獻前，您可以先閱讀我們的<%= link_to '貢獻指南：文件', 'http://edgeguides.rubyonrails.org/contributing_to_ruby_on_rails.html#contributing-to-the-rails-documentation' %>。
         </p>
+        <p>翻譯如有錯誤，深感抱歉，歡迎 <%= link_to 'Fork', 'https://github.com/docrails-tw/guides/fork' %> 修正，或至此處<%= link_to '回報', 'https://github.com/docsrails-tw/guides/issues' %>。</p>
         <p>
-          You may also find incomplete content, or stuff that is not up to date.
-          Please do add any missing documentation for master. Make sure to check
-          <%= link_to 'Edge Guides','http://edgeguides.rubyonrails.org' %> first to verify
-          if the issues are already fixed or not on the master branch.
-          Check the <%= link_to 'Ruby on Rails Guides Guidelines', 'ruby_on_rails_guides_guidelines.html' %>
-          for style and conventions.
+          您可能發現文章有未完成或過時的內容。請先檢查 <%= link_to 'Edge Guides','http://edgeguides.rubyonrails.org' %> 來確定問題在 master 是否已經修掉了。再上 master 補上缺少的文件。內容參考 <%= link_to 'Ruby on Rails 指南準則', 'ruby_on_rails_guides_guidelines.html' %>來了解行文風格。
         </p>
-        <p>
-          If for whatever reason you spot something to fix but cannot patch it yourself, please
-          <%= link_to 'open an issue', 'https://github.com/rails/rails/issues' %>.
-        </p>
-        <p>And last but not least, any kind of discussion regarding Ruby on Rails
-          documentation is very welcome in the <%= link_to 'rubyonrails-docs mailing list', 'http://groups.google.com/group/rubyonrails-docs' %>.
+        <p>最後，任何關於 Ruby on Rails 文件的討論，歡迎至<%= link_to 'rubyonrails-docs 郵件論壇', 'http://groups.google.com/group/rubyonrails-docs' %>。
         </p>
       </div>
     </div>
