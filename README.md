@@ -16,19 +16,19 @@ Otherwise you will have to pass in every time. Or make an alias.
 
 Specify 3 repo's local path.
 
-1. rails/rails
+1. [rails/rails](https://github.com/rails/rails)
 
 For pulling latest English guides.
 
-2. docrails-tw/guides
+2. [docrails-tw/guides](https://github.com/docrails-tw/guides)
 
 For working on translation.
 
-3. docrails-tw/docrails-tw.github.io
+3. [docrails-tw/docrails-tw.github.io](https://github.com/docrails-tw/docrails-tw.github.io)
 
 For deploying.
 
-By default their default path is:
+By default they are under a `BASE_LOCATION = `~/doc/rails-guides-translation/`:
 
 * `~/doc/rails-guides-translation/rails`
 
@@ -36,13 +36,21 @@ By default their default path is:
 
 * `~/doc/rails-guides-translation/docrails-tw.github.io`, respectively.
 
-You could change their location in `Rakefile`.
+```sh
+mkdir ~/doc/rails-guides-translation
+cd ~/doc/rails-guides-translation
+git clone git@github.com:rails/rails.git
+git clone git@github.com:docrails-tw/guides.git
+git clone https://github.com/docrails-tw/docrails-tw.github.io
+```
+
+If you use a different base location, you will need to change its location in `Rakefile`.
 
 ## Generate HTML
 
 `rake guides:generate`
 
-By default it will lazy generate, only generate what changes. pass `ALL=1` to make it generate everything. pass `GUIDES_LANGUAGE=zh-TW` to generate guides of `zh-TW` locale.
+By default it will lazy generate, only generates what changes. pass `ALL=1` to make it generate everything. pass `GUIDES_LANGUAGE=zh-TW` to generate guides of `zh-TW` locale.
 
 ## Preview
 
