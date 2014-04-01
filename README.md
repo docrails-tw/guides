@@ -16,7 +16,7 @@ Otherwise you will have to pass in every time. Or make an alias.
 
 Specify 3 repo's local path.
 
-1. [rails/rails](https://github.com/rails/rails)
+1. [rails/rails][rails]
 
 For pulling latest English guides.
 
@@ -118,3 +118,6 @@ Always fork and makes a topic branch!
 
 This work is licensed under a [Creative Commons Attribution-ShareAlike 3.0 License](http://creativecommons.org/licenses/by-sa/3.0/).
 
+The code are under [MIT license](http://opensource.org/licenses/MIT), copied with minor modifications from [rails/rails][rails]
+
+[rails]: https://github.com/rails/rails
