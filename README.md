@@ -28,7 +28,7 @@ For working on translation.
 
 For deploying.
 
-By default they are under a `BASE_LOCATION = `~/doc/rails-guides-translation/`:
+By default they are under a `BASE_LOCATION = ~/doc/rails-guides-translation/`:
 
 * `~/doc/rails-guides-translation/rails`
 
