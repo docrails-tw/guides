@@ -28,7 +28,7 @@ For working on translation.
 
 For deploying.
 
-By default they are under a `BASE_LOCATION = ~/doc/rails-guides-translation/`:
+By default they are under a `BASE_PATH = ~/doc/rails-guides-translation/`:
 
 * `~/doc/rails-guides-translation/rails`
 
@@ -44,7 +44,17 @@ git clone git@github.com:docrails-tw/guides.git
 git clone https://github.com/docrails-tw/docrails-tw.github.io
 ```
 
-If you use a different base location, you will need to change its location in `Rakefile`.
+If you trust me, use this script:
+
+curl:
+
+ruby <(curl -L https://raw.githubusercontent.com/docrails-tw/guides/master/install.rb)
+
+wget:
+
+ruby <(wget --no-check-certificate https://raw.githubusercontent.com/docrails-tw/guides/master/install.rb)
+
+If you use a different base location, you will need to change `BASE_PATH`'s location in `Rakefile`.
 
 ## Generate HTML
 
@@ -86,7 +96,7 @@ or you could update all guides at once:
 
 ## Before you make a Pull Request
 
-Make sure Travis-CI is passing.
+Make sure Travis-CI is passing. Chinese text and English text has space between each other.
 
 ## Deploy
 
@@ -99,3 +109,7 @@ Do not worry. Just fix it and deploy again. Deploy often, deploy early.
 ## Contribute
 
 Always fork and makes a topic branch!
+
+## License
+
+CC BY-SA 3.0
