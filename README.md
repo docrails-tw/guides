@@ -78,8 +78,6 @@ English guides live in `source/`.
 
 Traditional Chinese guides live in `source/zh-TW`.
 
-The latest guide are here: https://github.com/rails/rails/tree/master/guides/source
-
 ### 1. Start from scratch
 
 **UPDATE BOTH** English and Traditional Chinese guides first. Then start to translate.
@@ -116,4 +114,7 @@ Always fork and makes a topic branch!
 
 ## License
 
-CC BY-SA 3.0
+![CC-BY-SA](CC-BY-SA.png)
+
+This work is licensed under a [Creative Commons Attribution-ShareAlike 3.0 License](http://creativecommons.org/licenses/by-sa/3.0/).
+
