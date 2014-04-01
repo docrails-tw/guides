@@ -48,11 +48,15 @@ If you trust me, use this script:
 
 curl:
 
+```sh
 ruby <(curl -L https://raw.githubusercontent.com/docrails-tw/guides/master/install.rb)
+```
 
 wget:
 
+```sh
 ruby <(wget --no-check-certificate https://raw.githubusercontent.com/docrails-tw/guides/master/install.rb)
+```
 
 If you use a different base location, you will need to change `BASE_PATH`'s location in `Rakefile`.
 
