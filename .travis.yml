@@ -1,6 +1,8 @@
 language: ruby
 cache: bundler
 install: bundle install --jobs 4
+env:
+  - GUIDES_LANGUAGE=zh-TW
 rvm:
   - 2.1.1
 notifications:
