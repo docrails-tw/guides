@@ -50,7 +50,7 @@ end
 
 basic_thor_shell = Thor::Shell::Basic.new
 
-if basic_thor_shell.yes? 'Do you want to change default base path? (~/doc/rails-guides-translation) (y/N)'
+if basic_thor_shell.yes? 'Do you want to change default base path? (~/docs/rails-guides-translation) (y/N)'
   basic_thor_shell.say 'this is the location to clone rails/rails, docrails-tw/guides, docrails-tw/docrails-tw.github.io'
   new_base_path = basic_thor_shell.ask("Where would you like to store those repositories?\n", path: true)
   if new_base_path.empty?
@@ -60,7 +60,7 @@ if basic_thor_shell.yes? 'Do you want to change default base path? (~/doc/rails-
   end
   base_path_change = true
 else
-  BASE_PATH = Pathname('~/doc/rails-guides-translation')
+  BASE_PATH = Pathname('~/docs/rails-guides-translation')
 end
 
 unless File.exist? BASE_PATH
@@ -98,7 +98,7 @@ end
 if base_path_change && has_guides_repo
   rakefile_path = (BASE_PATH + 'guides' + 'Rakefile').expand_path
   IO.write(rakefile_path, File.open(rakefile_path) do |f|
-      f.read.gsub!("BASE_PATH = '~/doc/rails-guides-translations'", "BASE_PATH = #{BASE_PATH}")
+      f.read.gsub!("BASE_PATH = '~/docs/rails-guides-translations'", "BASE_PATH = #{BASE_PATH}")
     end
   )
 end
