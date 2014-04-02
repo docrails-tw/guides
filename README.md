@@ -4,47 +4,7 @@
 
 Translation is based on the master branch of [rails/rails](https://github.com/rails/rails).
 
-## Setup
-
-Add environment variable to your shell startup file.
-
-```bash
-GUIDES_LANGUAGE='zh-TW'
-```
-
-Otherwise you will have to pass in every time. Or make an alias.
-
-Specify 3 repo's local path.
-
-1. [rails/rails][rails]
-
-For pulling latest English guides.
-
-2. [docrails-tw/guides](https://github.com/docrails-tw/guides)
-
-For working on translation.
-
-3. [docrails-tw/docrails-tw.github.io](https://github.com/docrails-tw/docrails-tw.github.io)
-
-For deploying.
-
-By default they are under a `BASE_PATH = ~/docs/rails-guides-translations/`:
-
-* `~/docs/rails-guides-translations/rails`
-
-* `~/docs/rails-guides-translations/guides`
-
-* `~/docs/rails-guides-translations/docrails-tw.github.io`, respectively.
-
-```sh
-mkdir ~/doc/rails-guides-translation
-cd ~/doc/rails-guides-translation
-git clone git@github.com:rails/rails.git
-git clone git@github.com:docrails-tw/guides.git
-git clone https://github.com/docrails-tw/docrails-tw.github.io
-```
-
-If you trust me, use this script:
+## Install
 
 curl:
 
@@ -58,19 +18,31 @@ wget:
 ruby <(wget --no-check-certificate https://raw.githubusercontent.com/docrails-tw/guides/master/install.rb)
 ```
 
-If you use a different base location, you will need to change `BASE_PATH`'s location in `Rakefile`.
+What does above script do?
 
-## Generate HTML
+Clone 3 repo under same folder.
 
-`rake guides:generate`
+* 1. [rails/rails][rails]
 
-By default it will lazy generate, only generates what changes. pass `ALL=1` to make it generate everything. pass `GUIDES_LANGUAGE=zh-TW` to generate guides of `zh-TW` locale.
+For pulling latest English guides.
 
-## Preview
+* 2. [docrails-tw/guides](https://github.com/docrails-tw/guides)
+
+For working on translation.
+
+* 3. [docrails-tw/docrails-tw.github.io](https://github.com/docrails-tw/docrails-tw.github.io)
+
+For deploying.
 
 ```sh
-open output/zh-TW/index.html
+mkdir ~/docs/rails-guides-translations
+cd ~/docs/rails-guides-translations
+git clone git@github.com:rails/rails.git
+git clone git@github.com:docrails-tw/guides.git
+git clone https://github.com/docrails-tw/docrails-tw.github.io
 ```
+
+If you use a different base location, you will need to change `BASE_PATH`'s location in `Rakefile`. Defaults to `~/docs/rails-guides-translations`
 
 ## Workflow
 
@@ -96,17 +68,37 @@ or you could update all guides at once:
 
 **UPDATE** the english guide first, see the English diff, adds up missing translation or updates.
 
+## Generate HTML
+
+`rake guides:generate`
+
+By default it will lazy generate, only generates what changes. pass `ALL=1` to make it generate everything. pass `GUIDES_LANGUAGE=zh-TW` to generate guides of `zh-TW` locale.
+
+## Preview
+
+```sh
+open output/zh-TW/index.html
+```
+
 ## Before you make a Pull Request
 
-Make sure Travis-CI is passing. Chinese text and English text has space between each other.
+Generate and preview on local. Make sure everything is okay. Chinese text and English text MUST has a space between each other.
+
+### Travis-CI
+
+Travis-CI will run this command:
+
+```
+GUIDES_LANGUAGE=zh-TW rake
+```
+
+Make sure no errors occur before you open a Pull Request :D.
 
 ## Deploy
 
+When your Pull Request got merged on master. It's time to deploy!
+
 `rake guides:deploy`
-
-## Something went wrong after deploy?
-
-Do not worry. Just fix it and deploy again. Deploy often, deploy early.
 
 ## Contribute
 
