@@ -24,15 +24,15 @@ What does above script do?
 
 Clone 3 repos under a same folder (it will gently ask you where you would like to put these repos).
 
-* 1. [rails/rails][rails]
+* 1 - [rails/rails][rails]
 
   For pulling latest English guides.
 
-* 2. [docrails-tw/guides](https://github.com/docrails-tw/guides)
+* 2 - [docrails-tw/guides](https://github.com/docrails-tw/guides)
 
   For working on translation.
 
-* 3. [docrails-tw/docrails-tw.github.io](https://github.com/docrails-tw/docrails-tw.github.io)
+* 3 - [docrails-tw/docrails-tw.github.io](https://github.com/docrails-tw/docrails-tw.github.io)
 
   For deploying.
 
