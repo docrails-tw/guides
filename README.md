@@ -6,6 +6,8 @@ Translation is based on the master branch of [rails/rails](https://github.com/ra
 
 ## Install
 
+**DO THIS** If you want to work on Rails Guides Translation. If you just want to fix translation error. See [Fix Bugs in Translation](#fix-bugs-in-translation).
+
 curl:
 
 ```sh
@@ -20,19 +22,19 @@ ruby <(wget --no-check-certificate https://raw.githubusercontent.com/docrails-tw
 
 What does above script do?
 
-Clone 3 repo under same folder.
+Clone 3 repos under a same folder (it will gently ask you where you would like to put these repos).
 
 * 1. [rails/rails][rails]
 
-For pulling latest English guides.
+  For pulling latest English guides.
 
 * 2. [docrails-tw/guides](https://github.com/docrails-tw/guides)
 
-For working on translation.
+  For working on translation.
 
 * 3. [docrails-tw/docrails-tw.github.io](https://github.com/docrails-tw/docrails-tw.github.io)
 
-For deploying.
+  For deploying.
 
 ```sh
 mkdir ~/docs/rails-guides-translations
@@ -44,13 +46,19 @@ git clone https://github.com/docrails-tw/docrails-tw.github.io
 
 If you use a different base location, you will need to change `BASE_PATH`'s location in `Rakefile`. Defaults to `~/docs/rails-guides-translations`
 
-## Workflow
+### Fix bugs in translation
+
+**DO NOT** Clone this repo, use a topic branch. Fix the translation error in `source/zh-TW`, then send a Pull Request. Or open an issue someone will fix it.
+
+## Workflow for Translator
+
+**YOU NEED TO RUN THE INSTALL SCRIPT FIRST**.
 
 English guides live in `source/`.
 
 Traditional Chinese guides live in `source/zh-TW`.
 
-### 1. Start from scratch
+### 1. Start a new Translation
 
 **UPDATE BOTH** English and Traditional Chinese guides first. Then start to translate.
 
@@ -60,13 +68,19 @@ or you could update all guides at once:
 
 `rake guides:update_guides` but **DO NOT** checks out the guides that you're not editing in version control.
 
-### 2. Fix bugs in translation
+When your translation is finished, generate, preview locally then send a Pull Request.
 
-**DO NOT** update the guide in English, just fix the translation error in `source/zh-TW`.
-
-### 3. Update an obsolete translation
+### 2. Update an obsolete translation
 
 **UPDATE** the english guide first, see the English diff, adds up missing translation or updates.
+
+`rake guides:update_guide [name_of_the_guide]`
+
+or you could update all guides at once:
+
+`rake guides:update_guides` but **DO NOT** checks out the guides that you're not editing in version control.
+
+When your translation is finished, generate, preview locally then send a Pull Request.
 
 ## Generate HTML
 
@@ -75,6 +89,8 @@ or you could update all guides at once:
 By default it will lazy generate, only generates what changes. pass `ALL=1` to make it generate everything. pass `GUIDES_LANGUAGE=zh-TW` to generate guides of `zh-TW` locale.
 
 ## Preview
+
+After generation, just open it:
 
 ```sh
 open output/zh-TW/index.html
