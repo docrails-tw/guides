@@ -1,10 +1,55 @@
+BASE_PATH = Pathname('~/doc/rails-guides-translation')
+
+RAILS_PATH  = BASE_PATH + 'rails'
+GUIDES_PATH = BASE_PATH + 'guides'
+PAGES_PATH  = BASE_PATH + 'docrails-tw.github.io'
+
+RAILS_GUIDE_SOURCE_PATH = RAILS_PATH + 'guides/source/'
+
+def update_rails_repo!
+  `cd #{RAILS_PATH} && git pull`
+end
+
+task :sanity_checks do
+  abort("Abort. please clone the rails/rails repo under #{BASE_PATH}") if !File.exist? RAILS_PATH.expand_path
+  abort("Abort. please clone the docrails-tw/guides repo under #{BASE_PATH}") if !File.exist? GUIDES_PATH.expand_path
+  abort("Abort. please clone the docrails-tw/docrails-tw.github.io repo under #{BASE_PATH}") if !File.exist? PAGES_PATH.expand_path
+end
+
 namespace :guides do
 
   desc 'Generate guides (for authors), use ONLY=foo to process just "foo.md"'
   task :generate => 'generate:html'
 
-  namespace :generate do
+  task :deploy => :sanity_checks do
+    `cd #{GUIDES_PATH} && ALL=1 GUIDES_LANGUAGE=zh-TW rake guides:generate`
+    `cp -a #{GUIDES_PATH}/output/zh-TW/ #{PAGES_PATH}/`
+    puts 'Deploy Complete. : )'
+  end
 
+  desc 'Update a given English guide'
+  task :update_guide => :sanity_checks do
+    guide_to_be_updated = ARGV.last
+    guide_path = RAILS_GUIDE_SOURCE_PATH + guide_to_be_updated
+
+    if File.exist? guide_path.expand_path
+      `cp #{guide_path} #{GUIDES_PATH}/source`
+      puts "Update: #{guide_path} Complete. : )"
+    else
+      `ls #{guide_path}`
+    end
+
+    task guide_to_be_updated.to_sym do; end
+  end
+
+  desc 'Update all English guides'
+  task :update_guides => :sanity_checks do
+    update_rails_repo!
+    `cp -a #{RAILS_GUIDE_SOURCE_PATH}*.md #{GUIDES_PATH}/source/`
+    puts 'Update all English Guides. : D'
+  end
+
+  namespace :generate do
     desc "Generate HTML guides"
     task :html do
       ENV["WARN_BROKEN_LINKS"] = "1" # authors can't disable this
@@ -75,6 +120,5 @@ Examples:
 end
 
 task :default do
-  ENV['GUIDES_LANGUAGE'] = 'zh-TW'
   Rake::Task['guides:generate'].invoke
 end
