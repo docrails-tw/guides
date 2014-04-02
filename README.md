@@ -1,4 +1,4 @@
-# Rails 4 Official Guide: Traditional Chinese
+# Edge Rails Guide Translation: Traditional Chinese [READ ONLINE](http://docrails-tw.github.io)
 
 [![Build Status](https://travis-ci.org/docrails-tw/guides.svg?branch=master)](https://travis-ci.org/docrails-tw/guides)
 
