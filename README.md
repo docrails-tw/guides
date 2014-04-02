@@ -28,13 +28,13 @@ For working on translation.
 
 For deploying.
 
-By default they are under a `BASE_PATH = ~/doc/rails-guides-translation/`:
+By default they are under a `BASE_PATH = ~/docs/rails-guides-translations/`:
 
-* `~/doc/rails-guides-translation/rails`
+* `~/docs/rails-guides-translations/rails`
 
-* `~/doc/rails-guides-translation/guides`
+* `~/docs/rails-guides-translations/guides`
 
-* `~/doc/rails-guides-translation/docrails-tw.github.io`, respectively.
+* `~/docs/rails-guides-translations/docrails-tw.github.io`, respectively.
 
 ```sh
 mkdir ~/doc/rails-guides-translation
@@ -86,7 +86,7 @@ Traditional Chinese guides live in `source/zh-TW`.
 
 or you could update all guides at once:
 
-`rake guides:update_guide` but **DO NOT** checks out the guides that you're not editing in version control.
+`rake guides:update_guides` but **DO NOT** checks out the guides that you're not editing in version control.
 
 ### 2. Fix bugs in translation
 

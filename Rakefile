@@ -1,4 +1,4 @@
-BASE_PATH = Pathname('~/doc/rails-guides-translation')
+BASE_PATH = Pathname('~/docs/rails-guides-translations')
 
 RAILS_PATH  = BASE_PATH + 'rails'
 GUIDES_PATH = BASE_PATH + 'guides'
