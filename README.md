@@ -48,15 +48,17 @@ If you use a different base location, you will need to change `BASE_PATH`'s loca
 
 ### Fix bugs in translation
 
-**DO NOT** Clone this repo, use a topic branch. Fix the translation error in `source/zh-TW`, then send a Pull Request. Or open an issue someone will fix it.
+Clone this repo, use a topic branch. Fix the translation error in `source/zh-TW`, then send a Pull Request. Or open an issue then someone may fix it.
 
 ## Workflow for Translator
 
 **YOU NEED TO RUN THE INSTALL SCRIPT FIRST**.
 
-English guides live in `source/`.
+After installation, now you have `rails`, `guides`, `docrails-tw.github.io` repos. `rails` is to get the latest source documents. `docrails-tw.github.io` is for hosting static html & css. `guides` is where you work on translation.
 
-Traditional Chinese guides live in `source/zh-TW`.
+English guides live in `guides/source/`.
+
+Traditional Chinese guides live in `guides/source/zh-TW`.
 
 ### 1. Start a new Translation
 
@@ -66,7 +68,7 @@ Traditional Chinese guides live in `source/zh-TW`.
 
 or you could update all guides at once:
 
-`rake guides:update_guides` but **DO NOT** checks out the guides that you're not editing in version control.
+`rake guides:update_guides` but **DO NOT** check out the guides that you're not editing in version control.
 
 When your translation is finished, generate, preview locally then send a Pull Request.
 
