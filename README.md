@@ -50,6 +50,8 @@ If you use a different base location, you will need to change `BASE_PATH`'s loca
 
 Clone this repo, use a topic branch. Fix the translation error in `source/zh-TW`, then send a Pull Request. Or open an issue then someone may fix it.
 
+If the error is not a translation error and latest guide: edgeguides.rubyonrails.org haven't fixed it. Then you could clone the `rails/rails` repo. Fix it then send a Pull Request to `rails/rails`. Make sure you've read this [Contributing to the Rails Documentation](http://edgeguides.rubyonrails.org/contributing_to_ruby_on_rails.html#contributing-to-the-rails-documentation) first.
+
 ## Workflow for Translator
 
 **YOU NEED TO RUN THE INSTALL SCRIPT FIRST**.
