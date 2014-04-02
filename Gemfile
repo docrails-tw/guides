@@ -10,3 +10,5 @@ group :doc do
 end
 
 gem 'rake', '~> 10.2.2'
+
+gem 'thor'
