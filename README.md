@@ -11,7 +11,7 @@ Translation is based on the master branch of [rails/rails](https://github.com/ra
 curl:
 
 ```sh
-ruby <(curl -L https://raw.githubusercontent.com/docrails-tw/guides/master/install.rb)
+ruby <(curl -sSL https://raw.githubusercontent.com/docrails-tw/guides/master/install.rb)
 ```
 
 wget:
