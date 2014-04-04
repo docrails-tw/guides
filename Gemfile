@@ -1,14 +1,12 @@
 source 'https://rubygems.org'
 
-gem 'activesupport' , '~> 4.0.4'
+gem 'activesupport'
 
-gem 'actionpack', '~> 4.0.4'
+gem 'actionpack'
 
 group :doc do
   gem 'redcarpet'
   gem 'w3c_validators'
 end
 
-gem 'rake', '~> 10.2.2'
-
-gem 'thor'
+gem 'rake'
