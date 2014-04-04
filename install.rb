@@ -19,7 +19,7 @@ end
 
 def clone_rails!
   return if File.exist?((BASE_PATH + 'rails').expand_path)
-  # `git clone git@github.com:rails/rails.git`
+  `git clone git@github.com:rails/rails.git`
 end
 
 def clone_guides!
