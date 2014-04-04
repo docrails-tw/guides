@@ -1,4 +1,4 @@
-<% @version = ENV['EDGE'].presence || 'master' %>
+<% @version = ENV['EDGE'].presence[0..6] || 'master' %>
 
 <h2>Ruby on Rails 指南 (<%= @version %>)</h2>
 <br>
