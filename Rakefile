@@ -48,7 +48,7 @@ namespace :guides do
       `ls #{guide_path}`
     end
 
-    # treat rake that ARGV.last is a task :P
+    # trick rake that ARGV.last is a task :P
     task guide_to_be_updated.to_sym do; end
   end
 
