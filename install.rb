@@ -1,9 +1,15 @@
 require 'fileutils'
 require 'pathname'
-require 'thor'
 
-has_guides_repo  = false
-base_path_change = false
+# ========== Helpers ==========
+
+def base_path_change?
+  BASE_PATH == '~/docs/rails-guides-translation' ? false : true
+end
+
+def has_guides_repo?(base_path)
+  File.directory?((BASE_PATH + 'guides').expand_path)
+end
 
 def clone_all!
   clone_rails!
@@ -13,15 +19,12 @@ end
 
 def clone_rails!
   return if File.exist?((BASE_PATH + 'rails').expand_path)
-  `git clone git@github.com:rails/rails.git`
+  # `git clone git@github.com:rails/rails.git`
 end
 
 def clone_guides!
-  if File.exist?((BASE_PATH + 'guides').expand_path)
-    has_guides_repo = true
-  else
-    `git clone git@github.com:docrails-tw/guides.git`
-  end
+  return if File.exist?((BASE_PATH + 'guides').expand_path)
+  `git clone git@github.com:docrails-tw/guides.git`
 end
 
 def clone_rails_guides_github_pages!
@@ -46,29 +49,37 @@ def clone_by_option!(option)
   end
 end
 
-# ========================================
+def yes? msg
+  puts msg
+  response = gets.chomp
+  /yes|y/i.match(response).nil? ? false : true
+end
 
-basic_thor_shell = Thor::Shell::Basic.new
+def ask msg
+  puts msg
+  gets.chomp
+end
 
-if basic_thor_shell.yes? 'Do you want to change default base path? (~/docs/rails-guides-translation) (y/N)'
-  basic_thor_shell.say 'this is the location to clone rails/rails, docrails-tw/guides, docrails-tw/docrails-tw.github.io'
-  new_base_path = basic_thor_shell.ask("Where would you like to store those repositories?\n", path: true)
+# ========== End of Helpers ==========
+
+if yes? 'Do you want to change default base path? (~/docs/rails-guides-translation) (y/N)'
+  puts 'this is the location to clone rails/rails, docrails-tw/guides, docrails-tw/docrails-tw.github.io'
+  new_base_path = ask("Where would you like to store those repositories?")
   if new_base_path.empty?
     BASE_PATH = Pathname('./')
   else
     BASE_PATH = Pathname(new_base_path)
   end
-  base_path_change = true
 else
   BASE_PATH = Pathname('~/docs/rails-guides-translation')
 end
 
 unless File.exist? BASE_PATH
-  basic_thor_shell.say "Create directories #{BASE_PATH}"
+  puts "Create directories #{BASE_PATH}"
   FileUtils.mkdir_p(BASE_PATH.expand_path)
 end
 
-clone_option = basic_thor_shell.ask(<<CLONE_MSG)
+clone_option = ask(<<CLONE_MSG)
   1. rails/rails
   2. docrails-tw/guides
   3. docrails-tw/docrails-tw.github.io
@@ -83,26 +94,25 @@ print "Parsing Cloning options......\r"
 $stdout.flush
 sleep 0.5
 print "Parsing Cloning options.........OK!\n"
+
 FileUtils.cd(BASE_PATH.expand_path) do
-  parsed_option = clone_option.scan(/\d+/)
-  if parsed_option.empty?
+  multiple_options = clone_option.scan(/\d+/)
+  if multiple_options.empty?
     clone_by_option!(clone_option)
   else # 1+2 or 1,2 or ...
-    parsed_option.each do |opt|
+    multiple_options.each do |opt|
       clone_by_option!(opt)
     end
   end
-end
 
-# Replace Rakefile BASE_PATH
-if base_path_change && has_guides_repo
-  rakefile_path = (BASE_PATH + 'guides' + 'Rakefile').expand_path
-  IO.write(rakefile_path, File.open(rakefile_path) do |f|
-      f.read.gsub!("BASE_PATH = '~/docs/rails-guides-translations'", "BASE_PATH = #{BASE_PATH}")
-    end
-  )
-end
+  if base_path_change? && has_guides_repo?(BASE_PATH)
+    puts 'cp guides/BASE_PATH.example guides/BASE_PATH'
+    `cp guides/BASE_PATH.example guides/BASE_PATH`
 
-basic_thor_shell.say "You need to clone the docrails-tw/guides under #{BASE_PATH}, then change the BASE_PATH in /guides/Rakefile" if base_path_change && !has_guides_repo
+    puts 'Writing new base path.....'
+    IO.write((BASE_PATH + 'guides' + 'BASE_PATH').expand_path, BASE_PATH.to_s)
+  end
+end
 
 puts 'Installation Complete!'
+puts "Your repos are at #{BASE_PATH} ^_^..."

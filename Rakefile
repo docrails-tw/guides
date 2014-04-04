@@ -1,4 +1,4 @@
-BASE_PATH = Pathname('~/docs/rails-guides-translations')
+BASE_PATH = Pathname(IO.readlines('./BASE_PATH').first.chomp)
 
 RAILS_PATH  = BASE_PATH + 'rails'
 GUIDES_PATH = BASE_PATH + 'guides'
