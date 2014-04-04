@@ -23,13 +23,14 @@ namespace :guides do
 
   desc 'Deploy generated guides to github pages repository'
   task :deploy => :sanity_checks do
-    sha1 = FileUtils.cd(RAILS_PATH.expand_path) { 'git rev-parse HEAD' }
+    FileUtils.cd(RAILS_PATH.expand_path) { @sha1 = `git rev-parse HEAD` }
 
-    ENV['EDGE'] = sha1
+    ENV['EDGE'] = @sha1
     ENV['ALL']  = '1'
     ENV['GUIDES_LANGUAGE'] = 'zh-TW'
     Rake::Task['guides:generate:html'].invoke
 
+    # the dot will copy contents under a folder, instead of copy the folder.
     FileUtils.cp_r("#{GUIDES_PATH.expand_path}/output/zh-TW/.", PAGES_PATH.expand_path)
 
     puts 'Deploy Complete. : )'
@@ -47,6 +48,7 @@ namespace :guides do
       `ls #{guide_path}`
     end
 
+    # treat rake that ARGV.last is a task :P
     task guide_to_be_updated.to_sym do; end
   end
 
