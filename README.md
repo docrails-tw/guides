@@ -11,7 +11,7 @@ Translation is based on the master branch of [rails/rails](https://github.com/ra
 curl:
 
 ```sh
-ruby <(curl -sSL https://raw.githubusercontent.com/docrails-tw/guides/master/install.rb)
+ruby -e "$(curl -sSL https://raw.githubusercontent.com/docrails-tw/guides/master/install.rb)"
 ```
 
 wget:
@@ -42,9 +42,11 @@ cd ~/docs/rails-guides-translations
 git clone git@github.com:rails/rails.git
 git clone git@github.com:docrails-tw/guides.git
 git clone https://github.com/docrails-tw/docrails-tw.github.io
+cd guides
+cp BASE_PATH.example BASE_PATH
 ```
 
-If you use a different base location, you will need to change `BASE_PATH`'s location in `Rakefile`. Defaults to `~/docs/rails-guides-translations`
+If you use a different base location, you will need to change the location in `BASE_PATH` file. Defaults to `~/docs/rails-guides-translations`
 
 ### Fix bugs in translation
 
