@@ -11,13 +11,13 @@ Translation is based on the master branch of [rails/rails](https://github.com/ra
 curl:
 
 ```sh
-ruby -e "$(curl -sSL https://raw.githubusercontent.com/docrails-tw/guides/master/install.rb)"
+ruby -e "$(curl -sSL https://rawgithub.com/docrails-tw/guides/master/install.rb)"
 ```
 
 wget:
 
 ```sh
-ruby <(wget --no-check-certificate https://raw.githubusercontent.com/docrails-tw/guides/master/install.rb)
+ruby <(wget --no-check-certificate https://rawgithub.com/docrails-tw/guides/master/install.rb -O -)
 ```
 
 What does above script do?
