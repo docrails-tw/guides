@@ -27,11 +27,11 @@
     -
       name: Active Record 關聯
       url: association_basics.html
-      description: 本篇講解 Active Record 所提供的關聯功能。
+      description: 本篇講解如何使用 Active Record 的關聯功能。
     -
-      name: Active Record 查詢介面
+      name: Active Record 查詢
       url: active_record_querying.html
-      description: 本篇講解 Active Record 所提供的資料庫查詢介面。
+      description: 本篇講解如何使用 Active Record 的資料庫查詢功能。
 -
   name: Views
   documents:
