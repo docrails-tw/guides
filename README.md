@@ -92,7 +92,7 @@ When your translation is finished, generate, preview locally then send a Pull Re
 
 `rake guides:generate`
 
-By default it will lazy generate, only generates what changes. pass `ALL=1` to make it generate everything. pass `GUIDES_LANGUAGE=zh-TW` to generate guides of `zh-TW` locale.
+By default it will lazy generate, only generates what changes. pass `ALL=1` to make it generate everything. Pass `GUIDES_LANGUAGE=zh-TW` to generate guides of `zh-TW` locale. Pass `RAILS_VERSION` to specify latest commit sha-1 (defaults to `local`).
 
 ## Preview
 
