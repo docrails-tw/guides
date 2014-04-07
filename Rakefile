@@ -10,6 +10,12 @@ def update_rails_repo!
   FileUtils.cd(RAILS_PATH.expand_path) { `git pull upstream master` }
 end
 
+def get_rails_latest_sha1
+  sha1 = nil
+  FileUtils.cd(RAILS_PATH.expand_path) { sha1 = `git rev-parse HEAD` }
+  sha1[0, 7]
+end
+
 task :sanity_checks do
   abort("Abort. please clone the rails/rails repo under #{BASE_PATH}") if !File.exist? RAILS_PATH.expand_path
   abort("Abort. please clone the docrails-tw/guides repo under #{BASE_PATH}") if !File.exist? GUIDES_PATH.expand_path
@@ -23,9 +29,9 @@ namespace :guides do
 
   desc 'Deploy generated guides to github pages repository'
   task :deploy => :sanity_checks do
-    FileUtils.cd(RAILS_PATH.expand_path) { @sha1 = `git rev-parse HEAD` }
 
-    ENV['EDGE'] = @sha1
+
+    ENV['RAILS_VERSION'] = get_rails_latest_sha1
     ENV['ALL']  = '1'
     ENV['GUIDES_LANGUAGE'] = 'zh-TW'
     Rake::Task['guides:generate:html'].invoke
@@ -67,6 +73,7 @@ namespace :guides do
     desc "Generate HTML guides"
     task :html do
       ENV["WARN_BROKEN_LINKS"] = "1" # authors can't disable this
+      ENV['RAILS_VERSION'] = get_rails_latest_sha1
       ruby "rails_guides.rb"
     end
 
