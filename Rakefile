@@ -7,7 +7,7 @@ PAGES_PATH  = BASE_PATH + 'docrails-tw.github.io'
 RAILS_GUIDE_SOURCE_PATH = RAILS_PATH + 'guides/source/'
 
 def update_rails_repo!
-  `cd #{RAILS_PATH} && git pull`
+  FileUtils.cd(RAILS_PATH.expand_path) { `git pull upstream master` }
 end
 
 task :sanity_checks do
@@ -38,6 +38,8 @@ namespace :guides do
 
   desc 'Update a given English guide'
   task :update_guide => :sanity_checks do
+    update_rails_repo!
+
     guide_to_be_updated = ARGV.last
     guide_path = (RAILS_GUIDE_SOURCE_PATH + guide_to_be_updated).expand_path
 
