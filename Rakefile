@@ -73,7 +73,6 @@ namespace :guides do
     desc "Generate HTML guides"
     task :html do
       ENV["WARN_BROKEN_LINKS"] = "1" # authors can't disable this
-      ENV['RAILS_VERSION'] = get_rails_latest_sha1
       ruby "rails_guides.rb"
     end
 
