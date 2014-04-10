@@ -111,7 +111,7 @@
     -
       name: Engine 初上手
       url: engines.html
-      description: This guide explains how to write a mountable engine.
+      description: 本篇講解如何撰寫可嵌入至應用程式的 Engine。
       work_in_progress: true
     -
       name: Rails 啟動過程
