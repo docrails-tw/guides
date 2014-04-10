@@ -111,7 +111,7 @@ alias deploy_to_pages="rake guides:deploy"
 alias gen="rake guides:generate GUIDES_LANGUAGE=zh-TW"
 alias genall="rake guides:generate ALL=1 GUIDES_LANGUAGE=zh-TW"
 alias update_guide="rake guides:update_guide"
-alias update_all="rake guides:update_guides"
+alias update_all_guides="rake guides:update_guides"
 ```
 
 ## Before you make a Pull Request
