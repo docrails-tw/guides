@@ -1,146 +1,95 @@
-Active Record Basics
+Active Record 基礎
 ====================
 
-This guide is an introduction to Active Record.
+本篇介紹 Active Record。
 
-After reading this guide, you will know:
+讀完本篇，您將了解：
 
-* What Object Relational Mapping and Active Record are and how they are used in
-  Rails.
-* How Active Record fits into the Model-View-Controller paradigm.
-* How to use Active Record models to manipulate data stored in a relational
-  database.
-* Active Record schema naming conventions.
-* The concepts of database migrations, validations and callbacks.
+* 物件關係映射（Object Relational Mapping）與 Active Record 是什麼，以及如何在 Rails 使用它們。
+* Active Record 如何融入 MVC 範式。
+* 如何使用 Active Record Model 來處理存在關聯式資料庫的資料。
+* Active Record 資料庫綱要的命名慣例。
+* 資料庫遷移、驗證與回呼的概念。
 
 --------------------------------------------------------------------------------
 
-What is Active Record?
-----------------------
+Active Record 是什麼？
+-----------------------
 
-Active Record is the M in [MVC](getting_started.html#the-mvc-architecture) - the
-model - which is the layer of the system responsible for representing business
-data and logic. Active Record facilitates the creation and use of business
-objects whose data requires persistent storage to a database. It is an
-implementation of the Active Record pattern which itself is a description of an
-Object Relational Mapping system.
+Active Record 是 [MVC](getting_started.html#the-mvc-architecture) 的 M（Model），表現商業邏輯與資料的層級。Active Record 負責新增與操作需要持久存在資料庫裡的資料。Active Record 本身是物件關聯映射（Object Relational Mapping）系統的描述，以 Active Record 模式實作。
 
-### The Active Record Pattern
+### Active Record 模式
 
-[Active Record was described by Martin Fowler](http://www.martinfowler.com/eaaCatalog/activeRecord.html)
-in his book _Patterns of Enterprise Application Architecture_. In
-Active Record, objects carry both persistent data and behavior which
-operates on that data. Active Record takes the opinion that ensuring
-data access logic is part of the object will educate users of that
-object on how to write to and read from the database.
+Active Record 模式出自 Martin Fowler 在其書：《Patterns of Enterprise Application Architecture》中[所描述的 Active Record](http://www.martinfowler.com/eaaCatalog/activeRecord.html)。在 Active Record 模式裡，物件擁有持久化的資料與行為，Active Record 確保存取資料的邏輯是物件的一部分，進而教導使用者如何將物件寫入於讀出資料庫。
 
-### Object Relational Mapping
+### 物件關聯映射
 
-Object-Relational Mapping, commonly referred to as its abbreviation ORM, is
-a technique that connects the rich objects of an application to tables in
-a relational database management system. Using ORM, the properties and
-relationships of the objects in an application can be easily stored and
-retrieved from a database without writing SQL statements directly and with less
-overall database access code.
+物件關聯映射，通常縮寫為 ORM。是一種技巧，將應用程式中複雜的物件，對應到關聯式資料庫管理系統中的資料表。使用 ORM，可以輕鬆儲存物件的特性與關係，取出來的時候也不需要撰寫 SQL 語句，總體上減少了與資料庫存取有關的程式碼。
 
-### Active Record as an ORM Framework
+### Active Record 作為 ORM 框架
 
-Active Record gives us several mechanisms, the most important being the ability
-to:
+Active Record 賦予我們許多功能，最重要幾個是：
 
-* Represent models and their data.
-* Represent associations between these models.
-* Represent inheritance hierarchies through related models.
-* Validate models before they get persisted to the database.
-* Perform database operations in an object-oriented fashion.
+* 表示 Model 與資料。
+* 表示 Model 之間的關係。
+* 表示相關 Model 之間的繼承關係。
+* 持久化資料存入資料庫的驗證。
+* 以物件導向的風格操作資料庫。
 
-Convention over Configuration in Active Record
+Active Record 中的慣例勝於設定
 ----------------------------------------------
 
-When writing applications using other programming languages or frameworks, it
-may be necessary to write a lot of configuration code. This is particularly true
-for ORM frameworks in general. However, if you follow the conventions adopted by
-Rails, you'll need to write very little configuration (in some case no
-configuration at all) when creating Active Record models. The idea is that if
-you configure your applications in the very same way most of the time then this
-should be the default way. Thus, explicit configuration would be needed
-only in those cases where you can't follow the standard convention.
+使用其它程式語言撰寫應用程式時，可能會需要寫許多與設定有關的程式碼。大多數的 ORM 框架都是這樣。然而如果依循 Rails 的慣例，新建 Active Record Model 便只需要非常少的設定（某些情況甚至無需設定）。背後的概念是，如果多數時候大家都這麼設定應用程式，那這應該是預設的設定方式。因此，再無法遵循標準慣例的情況下，才需要額外設定。
 
-### Naming Conventions
+### 命名慣例
 
-By default, Active Record uses some naming conventions to find out how the
-mapping between models and database tables should be created. Rails will
-pluralize your class names to find the respective database table. So, for
-a class `Book`, you should have a database table called **books**. The Rails
-pluralization mechanisms are very powerful, being capable to pluralize (and
-singularize) both regular and irregular words. When using class names composed
-of two or more words, the model class name should follow the Ruby conventions,
-using the CamelCase form, while the table name must contain the words separated
-by underscores. Examples:
+Active Record 預設使用某種命名慣例來找出 Model 與資料表的對應關係。Rails 會將類別名稱轉成複數來找到對應的資料表。所以 `Book` 類對應的資料表便叫做 `books`。Rails 單複數轉換機制非常強大，能從單數轉複數、複數轉單數，單字的單複數形的不規則轉換，都能正確處理。類別名稱由兩個以上的單字組成時，Model 名稱應要遵循 Ruby 的命名慣例，採用駝峰式命名，而資料表名稱必須採用底線分隔。例子：
 
-* Database Table - Plural with underscores separating words (e.g., `book_clubs`).
-* Model Class - Singular with the first letter of each word capitalized (e.g.,
-`BookClub`).
+* 資料表 - 複數形，由底線分隔多個單字。
+* Model 類別 - 單數形，第一個字母大寫。
 
-| Model / Class | Table / Schema |
-| ------------- | -------------- |
-| `Post`        | `posts`        |
-| `LineItem`    | `line_items`   |
-| `Deer`        | `deers`        |
-| `Mouse`       | `mice`         |
-| `Person`      | `people`       |
+    | Model / Class | Table / Schema |
+    | ------------- | -------------- |
+    | `Post`        | `posts`        |
+    | `LineItem`    | `line_items`   |
+    | `Deer`        | `deers`        |
+    | `Mouse`       | `mice`         |
+    | `Person`      | `people`       |
 
 
-### Schema Conventions
+### 資料庫綱要慣例
 
-Active Record uses naming conventions for the columns in database tables,
-depending on the purpose of these columns.
+Active Record 資料表欄位的命名慣例，取決於欄位的用途
 
-* **Foreign keys** - These fields should be named following the pattern
-  `singularized_table_name_id` (e.g., `item_id`, `order_id`). These are the
-  fields that Active Record will look for when you create associations between
-  your models.
-* **Primary keys** - By default, Active Record will use an integer column named
-  `id` as the table's primary key. When using [Active Record
-  Migrations](migrations.html) to create your tables, this column will be
-  automatically created.
+* **外鍵** - 應用資料表的單數形加上 `_id` 來命名，比如 `item_id`, `order_id`。Active Record 會在你建立 Model 之間的關聯時，尋找這種形式的欄位 `singularized_table_name_id`。
 
-There are also some optional column names that will add additional features
-to Active Record instances:
+* **主鍵** -  Active Record 預設會使用一個叫做 `id` 的整數欄位，作為資料表的主鍵。採用 [Active Record
+  遷移](migrations.html) 來建立資料表時，這個欄位會自動產生。
 
-* `created_at` - Automatically gets set to the current date and time when the
-  record is first created.
-* `updated_at` - Automatically gets set to the current date and time whenever
-  the record is updated.
-* `lock_version` - Adds [optimistic
-  locking](http://api.rubyonrails.org/classes/ActiveRecord/Locking.html) to
-  a model.
-* `type` - Specifies that the model uses [Single Table
-  Inheritance](http://api.rubyonrails.org/classes/ActiveRecord/Base.html#label-Single+table+inheritance).
-* `(association_name)_type` - Stores the type for
-  [polymorphic associations](association_basics.html#polymorphic-associations).
-* `(table_name)_count` - Used to cache the number of belonging objects on
-  associations. For example, a `comments_count` column in a `Post` class that
-  has many instances of `Comment` will cache the number of existent comments
-  for each post.
+以下是某些選擇性的欄位名稱，會加入更多功能到 Active Record 實例：
 
-NOTE: While these column names are optional, they are in fact reserved by Active Record. Steer clear of reserved keywords unless you want the extra functionality. For example, `type` is a reserved keyword used to designate a table using Single Table Inheritance (STI). If you are not using STI, try an analogous keyword like "context", that may still accurately describe the data you are modeling.
+* `created_at` - 記錄首次建立時自動設定此欄位為當下的日期與時間。
+* `updated_at` - 無論何時更新記錄時，會自動設定此欄位為當下的日期與時間。
+* `lock_version` - 加入 [optimistic
+  locking](http://api.rubyonrails.org/classes/ActiveRecord/Locking.html) 功能至 Model。
+* `type` - 表示 Model 開啟了[單表繼承](http://api.rubyonrails.org/classes/ActiveRecord/Base.html#label-Single+table+inheritance)功能。
+* `(association_name)_type` - 儲存
+  [多態關聯](association_basics.html#polymorphic-associations) 所需的類型資料。
+* `(table_name)_count` - 用來快取關聯物件的數量。舉例來說，`Post` Model 的 `comments_count` 便會為每篇文章快取評論的數量。
 
-Creating Active Record Models
+NOTE: 雖然這些欄位名稱是選擇性的，但實際上是 Active Record 的保留字。如果要使用這些額外的功能，不要將這些保留字作為他用。比如，`type` 是用來設計單表繼承的資料表。如果沒有使用 STI 功能，試試用個類似的名稱如，“context” 來描述您在建模的資料。
+
+新增 Active Record Models
 -----------------------------
 
-It is very easy to create Active Record models. All you have to do is to
-subclass the `ActiveRecord::Base` class and you're good to go:
+新增 Active Record Model 非常簡單。只需要建立一個 `ActiveRecord::Base` 的子類別即可：
 
 ```ruby
 class Product < ActiveRecord::Base
 end
 ```
 
-This will create a `Product` model, mapped to a `products` table at the
-database. By doing this you'll also have the ability to map the columns of each
-row in that table with the attributes of the instances of your model. Suppose
-that the `products` table was created using an SQL sentence like:
+便會新增一個 `Product` Model，對應到資料庫的 `products` 表。資料表當中的每一列，皆會對應到 Model 實例的屬性。假設 `products` 以下面的 SQL 語句新建而成：
 
 ```sql
 CREATE TABLE products (
@@ -150,8 +99,7 @@ CREATE TABLE products (
 );
 ```
 
-Following the table schema above, you would be able to write code like the
-following:
+按照上述的資料表綱要，可以寫出如下程式碼：
 
 ```ruby
 p = Product.new
@@ -159,15 +107,12 @@ p.name = "Some Book"
 puts p.name # "Some Book"
 ```
 
-Overriding the Naming Conventions
+覆寫命名慣例
 ---------------------------------
 
-What if you need to follow a different naming convention or need to use your
-Rails application with a legacy database? No problem, you can easily override
-the default conventions.
+那要是需要不同於 Active Record 所提供的命名慣例怎麼辦？或者是 Rails 應用程式使用的資料來自老舊的資料庫？沒問題，覆寫預設的慣例非常簡單。
 
-You can use the `ActiveRecord::Base.table_name=` method to specify the table
-name that should be used:
+可以使用 `ActiveRecord::Base.table_name=` 方法來指定對應的資料表名稱：
 
 ```ruby
 class Product < ActiveRecord::Base
@@ -175,9 +120,7 @@ class Product < ActiveRecord::Base
 end
 ```
 
-If you do so, you will have to define manually the class name that is hosting
-the fixtures (class_name.yml) using the `set_fixture_class` method in your test
-definition:
+如果修改了資料表的名稱，在測試裡會需要使用 `set_fixture_class` 來手動定義 fixture 的類別名稱。
 
 ```ruby
 class FunnyJoke < ActiveSupport::TestCase
@@ -187,8 +130,7 @@ class FunnyJoke < ActiveSupport::TestCase
 end
 ```
 
-It's also possible to override the column that should be used as the table's
-primary key using the `ActiveRecord::Base.primary_key=` method:
+覆寫資料表中的欄位也是有可能的，比如使用 `ActiveRecord::Base.primary_key=` 方法將修改主鍵的名稱
 
 ```ruby
 class Product < ActiveRecord::Base
@@ -196,27 +138,23 @@ class Product < ActiveRecord::Base
 end
 ```
 
-CRUD: Reading and Writing Data
+CRUD：讀寫資料
 ------------------------------
 
-CRUD is an acronym for the four verbs we use to operate on data: **C**reate,
-**R**ead, **U**pdate and **D**elete. Active Record automatically creates methods
-to allow an application to read and manipulate data stored within its tables.
+CRUD 是四種資料操作的簡稱：**C**reate,
+**R**ead, **U**pdate and **D**elete，分別是新增、讀取、更新與刪除。Active Record 自動為應用程式新增處理資料表所需要的方法。
 
-### Create
+### 新增 Create
 
-Active Record objects can be created from a hash, a block or have their
-attributes manually set after creation. The `new` method will return a new
-object while `create` will return the object and save it to the database.
+Active Record 物件可以從 Hash、區塊（blcok）中建立出來，或者是建立後再設定也可以。`new` 方法回傳一個新的物件，而 `create` 會會傳新物件並存入資料庫。
 
-For example, given a model `User` with attributes of `name` and `occupation`,
-the `create` method call will create and save a new record into the database:
+舉個例子，`User` Model 有 `name` 與 `occupation` 屬性，以下是用 `create` 方法在資料庫新增一筆記錄的例子：
 
 ```ruby
 user = User.create(name: "David", occupation: "Code Artist")
 ```
 
-Using the `new` method, an object can be instantiated without being saved:
+使用 `new` 方法，物件會實例化出來，但不會儲存：
 
 ```ruby
 user = User.new
@@ -224,10 +162,9 @@ user.name = "David"
 user.occupation = "Code Artist"
 ```
 
-A call to `user.save` will commit the record to the database.
+呼叫 `user.save` 會將該筆記錄存入資料庫。
 
-Finally, if a block is provided, both `create` and `new` will yield the new
-object to that block for initialization:
+最後，使用區塊的例子，會將 User.new 實例化出來的物件放入區塊裡，對個別屬性作設定：
 
 ```ruby
 user = User.new do |u|
@@ -236,10 +173,9 @@ user = User.new do |u|
 end
 ```
 
-### Read
+### 讀取 Read
 
-Active Record provides a rich API for accessing data within a database. Below
-are a few examples of different data access methods provided by Active Record.
+Active Record 提供了豐富的 API 來存取資料庫裡的資料。下面是 Active Record 所提供的幾個資料存取方法用例：
 
 ```ruby
 # return a collection with all users
@@ -261,13 +197,12 @@ david = User.find_by(name: 'David')
 users = User.where(name: 'David', occupation: 'Code Artist').order('created_at DESC')
 ```
 
-You can learn more about querying an Active Record model in the [Active Record
-Query Interface](active_record_querying.html) guide.
+關於對 Active Record Model 做查詢的內容，請參考 [Active Record
+Query Interface](active_record_querying.html)。
 
-### Update
+### 更新 Update
 
-Once an Active Record object has been retrieved, its attributes can be modified
-and it can be saved to the database.
+一旦 Active Record 物件被取出來了，就可以對屬性修改，再存回資料庫。
 
 ```ruby
 user = User.find_by(name: 'David')
@@ -275,47 +210,34 @@ user.name = 'Dave'
 user.save
 ```
 
-A shorthand for this is to use a hash mapping attribute names to the desired
-value, like so:
+修改屬性再儲存有簡寫方式，使用 Hash 來對應要修改的屬性，如下所示：
 
 ```ruby
 user = User.find_by(name: 'David')
 user.update(name: 'Dave')
 ```
 
-This is most useful when updating several attributes at once. If, on the other
-hand, you'd like to update several records in bulk, you may find the
-`update_all` class method useful:
+一次更新多個屬性時用這招最有效。若是要批量更新多筆記錄，可以使用類別方法：`update_all`：
 
 ```ruby
 User.update_all "max_login_attempts = 3, must_change_password = 'true'"
 ```
 
-### Delete
+### 刪除 Delete
 
-Likewise, once retrieved an Active Record object can be destroyed which removes
-it from the database.
+既然可以取出 Active Record 物件做更新，同樣也可以將其從資料庫移除。
 
 ```ruby
 user = User.find_by(name: 'David')
 user.destroy
 ```
 
-Validations
+驗證
 -----------
 
-Active Record allows you to validate the state of a model before it gets written
-into the database. There are several methods that you can use to check your
-models and validate that an attribute value is not empty, is unique and not
-already in the database, follows a specific format and many more.
+Active Record 允許您在資料被存入資料庫之前，驗證資料的狀態。驗證有許多方法，比如可以檢查屬性的值是不是空的、是不是唯一的、資料庫裡是不是已經有一份？每種檢查方法有特定的書寫格式。
 
-Validation is a very important issue to consider when persisting to database, so
-the methods `create`, `save` and `update` take it into account when
-running: they return `false` when validation fails and they didn't actually
-perform any operation on database. All of these have a bang counterpart (that
-is, `create!`, `save!` and `update!`), which are stricter in that
-they raise the exception `ActiveRecord::RecordInvalid` if validation fails.
-A quick example to illustrate:
+驗證是在把持久化資料存入資料庫前，需要審慎思量的問題。跟資料存入資料庫有關的三個方法 `create`、`save` 以及 `update`，在呼叫時會進行驗證。當這三個方法回傳值為 `false` 時，驗證失敗，將不會對資料庫進行任何操作。上述三個方法皆有對應的 BANG 方法：`create!`、`save!` 以及 `update!`，這比原本的方法更嚴格些，一旦失敗會直接拋出 `ActiveRecord::RecordInvalid` 的異常。用個簡單例子來說明：
 
 ```ruby
 class User < ActiveRecord::Base
@@ -326,25 +248,18 @@ User.create  # => false
 User.create! # => ActiveRecord::RecordInvalid: Validation failed: Name can't be blank
 ```
 
-You can learn more about validations in the [Active Record Validations
-guide](active_record_validations.html).
+了解更多關於驗證的內容，請參考：[Active Record Validations
+guide](active_record_validations.html)。
 
-Callbacks
----------
+回呼（Callbacks）
+-------------------
 
-Active Record callbacks allow you to attach code to certain events in the
-life-cycle of your models. This enables you to add behavior to your models by
-transparently executing code when those events occur, like when you create a new
-record, update it, destroy it and so on. You can learn more about callbacks in
-the [Active Record Callbacks guide](active_record_callbacks.html).
+Active Record 回呼允許您在 Model 生命週期裡對特定事件附加程式碼。這使您可以在特定事件發生時，執行特定的程式碼。比如向資料庫新增、更新、刪除某筆記錄等。了解更多關於回呼的內容，請參考：[Active Record Callbacks](active_record_callbacks.html)
 
-Migrations
+遷移
 ----------
 
-Rails provides a domain-specific language for managing a database schema called
-migrations. Migrations are stored in files which are executed against any
-database that Active Record supports using `rake`. Here's a migration that
-creates a table:
+Rails 提供了用來處理資料庫綱要的 DSL，稱為“遷移”。遷移存在檔案裡，可以對 Active Record 支持的任何資料庫，透過 `rake` 執行。以下是如何新建一張資料表：
 
 ```ruby
 class CreatePublications < ActiveRecord::Migration
@@ -364,10 +279,6 @@ class CreatePublications < ActiveRecord::Migration
 end
 ```
 
-Rails keeps track of which files have been committed to the database and
-provides rollback features. To actually create the table, you'd run `rake db:migrate`
-and to roll it back, `rake db:rollback`.
+Rails 持續追蹤提交到資料庫的檔案，並提供回滾功能。要真正的建立一張資料表，需要執行：`rake db:migrate`；要回滾則是執行：`rake db:rollback`。
 
-Note that the above code is database-agnostic: it will run in MySQL,
-PostgreSQL, Oracle and others. You can learn more about migrations in the
-[Active Record Migrations guide](migrations.html).
+注意以上的程式碼適用於任何資料庫，不管是 Oracle、PostgreSQL、MySQL 都可以。了解更多關於遷移的內容，請參考 [Active Record Migrations](migrations.html)。
