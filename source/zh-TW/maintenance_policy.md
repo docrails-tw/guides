@@ -1,56 +1,41 @@
-Maintenance Policy for Ruby on Rails
+Ruby on Rails 維護方針
 ====================================
 
-Support of the Rails framework is divided into four groups: New features, bug
-fixes, security issues, and severe security issues. They are handled as
-follows, all versions in x.y.z format
+Rails 框架的維護方針分成四個部分：新功能、Bug 修復、安全問題、重大安全問題。
+
+以下分別解釋，版本號皆採 `x.y.z` 格式。
 
 --------------------------------------------------------------------------------
 
-New Features
+新功能
 ------------
 
-New features are only added to the master branch and will not be made available
-in point releases.
+新功能只會合併到 master 分支，不會更新至小版本。
 
-Bug Fixes
----------
+Bug 修復
+------------
 
-Only the latest release series will receive bug fixes. When enough bugs are
-fixed and its deemed worthy to release a new gem, this is the branch it happens
-from.
+只有最新的發行版會修 bug。當修 bug 到了一定程度時，便會發佈新版本。
 
-**Currently included series:** 4.0.z
+**會修 bug 的版本： `4.1.z`、`4.0.z`**
 
-Security Issues
+安全問題
 ---------------
 
-The current release series and the next most recent one will receive patches
-and new versions in case of a security issue.
+只有前一個與當前發行版會修復安全問題。比如 `4.0.0` 出了個安全問題，會給 `4.0.0` 版本打上安全性補丁，
+即刻發佈 `4.0.1`，並會把 `4.0.1` 會加至 `4-0-stable`。
 
-These releases are created by taking the last released version, applying the
-security patches, and releasing. Those patches are then applied to the end of
-the x-y-stable branch. For example, a theoretical 1.2.3 security release would
-be built from 1.2.2, and then added to the end of 1-2-stable. This means that
-security releases are easy to upgrade to if you're running the latest version
-of Rails.
+**目前會修安全問題的版本：`4.1.z`、`4.0.z`**
 
-**Currently included series:** 4.0.z, 3.2.z
-
-Severe Security Issues
+重大安全問題
 ----------------------
 
-For severe security issues we will provide new versions as above, and also the
-last major release series will receive patches and new versions. The
-classification of the security issue is judged by the core team.
+重大安全問題會如上所述發佈新版本，還會修復上個版本。安全問題的重要性由 Rails 核心成員決定。
 
-**Currently included series:** 4.0.z, 3.2.z
+**目前會修重大安全問題的版本：`4.1.z`、`4.0.z`**
 
-Unsupported Release Series
+不再支援的發行版
 --------------------------
 
-When a release series is no longer supported, it's your own responsibility to
-deal with bugs and security issues. We may provide backports of the fixes and
-publish them to git, however there will be no new versions released. If you are
-not comfortable maintaining your own versions, you should upgrade to a
-supported version.
+當我們不再支援某個發行版時，安全問題與 bug 得自行處理。我們可能會在 GitHub 提供向下相容的 bug 修復，
+但不會發佈新版本。如果無法自己維護，建議升級至新版本。
