@@ -104,7 +104,10 @@ open output/zh-TW/index.html
 
 ## Aliases
 
+Put in your startup file (`.bash_profile` or ...):
+
 ```bash
+alias deploy_to_pages="rake guides:deploy"
 alias gen="rake guides:generate GUIDES_LANGUAGE=zh-TW"
 alias genall="rake guides:generate ALL=1 GUIDES_LANGUAGE=zh-TW"
 alias update_guide="rake guides:update_guide"
