@@ -192,3 +192,10 @@
       name: Ruby on Rails 2.2 發佈記
       url: 2_2_release_notes.html
       description: Rails 2.2 的發佈記。
+# -
+#   name: 關於 Rails 指南翻譯
+#   documents:
+#     -
+#       name: 翻譯術語
+#       url: translation_terms.html
+#       description: 翻譯所使用的術語。
