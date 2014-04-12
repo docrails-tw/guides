@@ -29,7 +29,7 @@ module RailsGuides
 
       def engine
         @engine ||= Redcarpet::Markdown.new(Renderer, {
-          no_intra_emphasis: false,
+          no_intra_emphasis: true,
           fenced_code_blocks: true,
           autolink: true,
           strikethrough: true,

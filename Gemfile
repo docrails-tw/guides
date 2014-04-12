@@ -5,7 +5,7 @@ gem 'activesupport'
 gem 'actionpack'
 
 group :doc do
-  gem 'redcarpet'
+  gem 'redcarpet', github: 'vmg/redcarpet'
   gem 'w3c_validators'
 end
 

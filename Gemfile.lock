@@ -1,3 +1,9 @@
+GIT
+  remote: git://github.com/vmg/redcarpet.git
+  revision: 18913a94bca5be95dd12dff4496c7f536525a4f0
+  specs:
+    redcarpet (3.1.1)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -27,7 +33,6 @@ GEM
     rack-test (0.6.2)
       rack (>= 1.0)
     rake (10.2.2)
-    redcarpet (3.1.1)
     thread_safe (0.3.1)
       atomic (>= 1.1.7, < 2)
     tzinfo (0.3.39)
@@ -42,5 +47,5 @@ DEPENDENCIES
   actionpack
   activesupport
   rake
-  redcarpet
+  redcarpet!
   w3c_validators
