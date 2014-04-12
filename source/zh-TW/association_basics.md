@@ -705,10 +705,10 @@ c.first_name == o.customer.first_name # => true
 
 每種關聯皆會試著自動找到對應的關聯，並根據關聯名稱來合理地設定 `:inverse_of` 選項。多數使用標準名稱的關聯都會自動設定。但使用了以下選項的關聯，則無法自動設定：
 
-* :conditions
-* :through
-* :polymorphic
-* :foreign_key
+* `:conditions`
+* `:through`
+* `:polymorphic`
+* `:foreign_key`
 
 關聯完整參考手冊
 ------------------------------
