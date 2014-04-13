@@ -24,7 +24,7 @@ class Order < ActiveRecord::Base
 end
 ```
 
-為顧客加一筆訂單：
+為顧客建筆新訂單：
 
 ```ruby
 @order = Order.create(order_date: Time.now, customer_id: @customer.id)
@@ -40,7 +40,7 @@ end
 @customer.destroy
 ```
 
-有了 Active Record 關聯，可以透過告訴 Rails Model 之間的關聯，來精簡上例。以下是簡化後的程式碼：
+有了 Active Record 關聯，可以透過告訴 Rails，Model 之間的關聯，來精簡上例。以下是簡化後的程式碼：
 
 ```ruby
 class Customer < ActiveRecord::Base
@@ -64,7 +64,7 @@ end
 @customer.destroy
 ```
 
-了解各種關聯的用途，請閱讀本篇下一節。下一節介紹關聯種類、各種關聯的秘訣與小技巧，本篇最後是 Rails 關聯的選項與方法的完整參考手冊。
+要了解各種關聯的用途，請閱讀下一節。下一節介紹關聯種類、各種關聯的秘訣與小技巧。本篇最後一節是 Rails 各種關聯的可用選項與方法的完整參考手冊。
 
 關聯種類
 -------------------------
@@ -82,7 +82,7 @@ end
 
 ### `belongs_to` 關聯
 
-`belongs_to` 關聯建立兩個 Model 之間的一對一關係。`belongs_to` 關聯宣告一個 Model 實例屬於另一個 Model 實例。舉例來說，應用程式有顧客與訂單兩個 Model，每筆訂單只屬於一位顧客，訂單 Model 便如此宣告：
+`belongs_to` 關聯建立兩個 Model 之間的一對一關係。`belongs_to` 關聯宣告一個 Model 實例，屬於另一個 Model 實例。舉例來說，應用程式有顧客與訂單兩個 Model，每筆訂單只屬於一位顧客，訂單 Model 便如此宣告：
 
 ```ruby
 class Order < ActiveRecord::Base
@@ -94,7 +94,7 @@ end
 
 NOTE: `belongs_to` 宣告**必須**使用單數形式。上例若使用複數形式，會報 `"uninitialized constant Order::Customers"` 錯誤。這是因為 Rails 自動從關聯名稱推斷出類別名稱。關聯名稱錯用複數，推斷出來的類別名稱自然也錯了。
 
-上例對應的遷移看起來會像是：
+上例對應的遷移（Migration）看起來會像是：
 
 ```ruby
 class CreateOrders < ActiveRecord::Migration
@@ -115,7 +115,7 @@ end
 
 ### `has_one` 關聯
 
-`has_one` 關聯建立兩個 Model 之間的一對一關係，但語義與結果不同。`has_one` 關聯宣告一個 Model 實例，含有（或持有）另一個 Model 實例。舉例來說，每個供應商在應用程式裡只有一個帳號，供應商 Model 便如此宣告：
+`has_one` 關聯建立兩個 Model 之間的一對一關係，但語義和結果與 `belongs_to` 不同。`has_one` 關聯宣告一個 Model 實例，含有（或持有）另一個 Model 實例。舉例來說，每個供應商在應用程式裡只有一個帳號，供應商 Model 便如此宣告：
 
 ```ruby
 class Supplier < ActiveRecord::Base
@@ -146,7 +146,7 @@ end
 
 ### `has_many` 關聯
 
-`has_many` 關聯建立兩個 Model 之間的一對多關係。通常 `has_many` 另一邊對應的是 `belongs_to` 關聯。`has_many` 關聯宣告一個 Model 實例有零個或多個另一個 Model 實例。舉例來說，應用程式有顧客與訂單兩個 Model，顧客可有多筆訂單，訂單 Model 便如此宣告：
+`has_many` 關聯建立兩個 Model 之間的一對多關係。通常 `has_many` 另一邊對應的是 `belongs_to` 關聯。`has_many` 關聯宣告一個 Model 實例，有零個或多個另一個 Model 實例。舉例來說，應用程式有顧客與訂單兩個 Model，顧客可有多筆訂單，訂單 Model 便如此宣告：
 
 ```ruby
 class Customer < ActiveRecord::Base
@@ -179,7 +179,7 @@ end
 
 ### `has_many :through` 關聯
 
-`has_many :through` 關聯通常用來建立兩個 Model 之間的多對多關係。`has_many :through` 關聯__透過（through）__第三個 Model，宣告一個 Model 實例可有零個或多個另一個 Model 實例。舉個醫療的例子，“病患”需要__透過__“預約”來見“物理治療師”。相對應的宣告如下：
+`has_many :through` 關聯通常用來建立兩個 Model 之間的多對多關係。`has_many :through` 關聯__透過（through）__第三個 Model，宣告一個 Model 實例，可有零個或多個另一個 Model 實例。舉個醫療的例子，“病患”需要__透過__“預約”來見“物理治療師”。相對應的宣告如下：
 
 ```ruby
 class Physician < ActiveRecord::Base
@@ -231,9 +231,9 @@ end
 physician.patients = patients
 ```
 
-會為新建立的關聯物件建立 Join Model，如果刪除了其中一個物件，也會刪除對應的資料庫記錄。
+會為新建立的關聯物件建立連接 Model，如果刪除了其中一個物件，也會刪除對應的資料庫記錄。
 
-WARNING: 自動刪除連接 Model 會直接執行，不會觸發任何 destroy 回呼。
+WARNING: 連接 Model 會自動刪除、直接執行，不會觸發任何 `destroy` 回呼。
 
 `has_many :through` 關聯在簡化巢狀的 `has_many` 關聯很有用。比如文件有多個章節、段落。想要簡單地從文件取得所有段落，可以這麼寫：
 
@@ -261,7 +261,7 @@ end
 
 ### `has_one :through` 關聯
 
-`has_one :through` 關聯建立兩個 Model 之間的一對一關係。`has_one :through` 關聯__透過（through）__第三個 Model，宣告一個 Model 實例可有另一個 Model 實例。舉例來說，供應商有一個帳號，每個帳號有帳號歷史，則供應商 Model 看起來像是：
+`has_one :through` 關聯建立兩個 Model 之間的一對一關係。`has_one :through` 關聯__透過（through）__第三個 Model，宣告一個 Model 實例，可有另一個 Model 實例。舉例來說，供應商有一個帳號，每個帳號有帳號歷史，相對應的宣告如下：
 
 ```ruby
 class Supplier < ActiveRecord::Base
@@ -308,7 +308,7 @@ end
 
 ### `has_and_belongs_to_many` 關聯
 
-`has_and_belongs_to_many` 關聯建立兩個 Model 之間__直接的__多對多關係。舉例來說，應用程式有組件（Assembly），組件下有部件（Part），可以如此宣告：
+`has_and_belongs_to_many` 關聯建立兩個 Model 之間，__直接的__多對多關係。舉例來說，應用程式有組件（Assembly），組件下有部件（Part），可以如此宣告：
 
 ```ruby
 class Assembly < ActiveRecord::Base
@@ -420,7 +420,7 @@ end
 
 ### 多型關聯
 
-一種更進階的關聯用法是__多型關聯__。使用多型關聯，單個關聯裡，Model 可屬於多個 Model。舉例來說，圖片 Model 可屬於員工或產品 Model。以下是如何宣告：
+一種更進階的關聯用法是__多型關聯__。使用多型關聯，單個關聯裡，Model 可屬於多個 Model。舉例來說，圖片 Model 可屬於員工或產品 Model。相對應的宣告如下：
 
 ```ruby
 class Picture < ActiveRecord::Base
@@ -438,7 +438,7 @@ end
 
 可以把多型的 `belongs_to` 宣告想成是一個介面，任何 Model 皆可使用的介面。在 `Employee` Model，可以透過 `@employee.pictures` 來取出所有圖片。同樣的，在 `Product` Model 亦然：`@product.pictures`。
 
-如果有一個 `Picture` Model 的實例，可以使用 `@picture.imageable` 看擁有這張圖片的是誰（父物件）。但首先需要先在遷移裡宣告外鍵（`*_id`）與類型（`*_type`）欄位，`*_type` 宣告此 Model 擁有多型介面：
+如果有一個 `Picture` Model 的實例，可以使用 `@picture.imageable` 看擁有這張圖片的是誰（父物件）。但首先需要先在遷移裡，加入外鍵（`*_id`）與類型（`*_type`）欄位。`*_type` 類型欄位用來宣告此 Model 擁有多型介面：
 
 ```ruby
 class CreatePictures < ActiveRecord::Migration
@@ -471,7 +471,7 @@ end
 
 ### 自連接
 
-在設計資料 Model 時會發現，有的 Model 自己與自己有關係。舉例來說，可能會想把員工資料通通存在一張資料表，但又要能夠追蹤像是經理或下屬之間的關係。這種情況可以使用自連接（Self join）關聯：
+在設計資料 Model 時會發現，有時會需要自己與自己有關係的 Model。舉例來說，可能會想把員工資料通通存在一張資料表，但又要能夠追蹤像是經理或下屬之間的關係。這種情況可以使用自連接（Self join）關聯：
 
 ```ruby
 class Employee < ActiveRecord::Base
@@ -532,7 +532,7 @@ customer.orders(true).empty? # 捨棄快取的訂單，重新去資料庫取出�
 
 ### 更新資料庫綱要
 
-關聯非常非常有用，但沒什麼神奇的。為關聯維護對應的資料庫綱要是您的責任。不同關聯需要做的事不同。對於 `belongs_to` 關聯來說，需要建立外鍵；對於 `has_and_belongs_to_many` 則需要建立適當的連接資料表。
+關聯非常非常有用，但沒什麼神奇的。為關聯維護對應的資料庫綱要是開發者的責任。不同關聯需要做的事不同。對於 `belongs_to` 關聯來說，需要建立外鍵；對於 `has_and_belongs_to_many` 則需要建立適當的連接資料表。
 
 #### 為 `belongs_to` 關聯建立外鍵
 
@@ -544,7 +544,7 @@ class Order < ActiveRecord::Base
 end
 ```
 
-這個宣告需要在訂單資料表建立適當的外鍵才有效：
+仍需要在訂單資料表，建立適當的外鍵才有效：
 
 ```ruby
 class CreateOrders < ActiveRecord::Migration
@@ -558,11 +558,11 @@ class CreateOrders < ActiveRecord::Migration
 end
 ```
 
-若在建立 Model 之後才宣告關聯，記得使用 `add_column` 遷移來提供所需的外鍵。
+若在建立 Model 之後才宣告關聯，記得使用 `add_column` 遷移，來提供所需的外鍵。
 
 #### 為 `has_and_belongs_to_many` 關聯建立連接資料表
 
-如果建立了 `has_and_belongs_to_many` 關聯，需要明確的建一張連接表。除非資料表已在 `:join_table` 選項中指定，否則 Active Record 會以關聯的類別名稱，依照辭典順序先後來命名這張連接資料表。假設 `Customer` 與 `Order` Model 預設的連接表名稱是 `customers_orders`，因為在詞法序當中，`c` 的地位高於 `o`。
+如果建立了 `has_and_belongs_to_many` 關聯，需要明確的建一張連接表。除非資料表已在 `:join_table` 選項中指定，否則 Active Record 會以關聯的類別名稱，依照詞法先後順序來命名這張連接資料表。假設有 `Customer` 與 `Order` Model ，則預設的連接表名稱是 `customers_orders`，因為在詞法順序當中，`c` 的地位高於 `o`。
 
 WARNING: Model 名稱的優先順序使用 `String` 的 `<` 來計算。若字串不一樣長，比較最短長度時，兩個字串是相等的。但長字串詞法地位高於短字串。舉例來說，你可能認為 `paper_boxes` 與 `papers` 這兩個資料表產生的連接表名稱是 `papers_paper_boxes`，因為 `paper_boxes` 比 `papers` 長。但實際上是 `paper_boxes_papers`，因為在常見的編碼裡，`_` 的詞法地位高於 `s`。
 
@@ -591,7 +591,7 @@ class CreateAssembliesPartsJoinTable < ActiveRecord::Migration
 end
 ```
 
-`create_table` 傳入 `id: false` 因為資料表無需表示一個 Model。這張資料表只是為了讓關聯可以正常工作。如果你發現 `has_and_belongs_to_many` 關聯出現任何奇怪的行為，像是 ID 錯位、ID 衝突，很可能就是因為忘記去掉主鍵。
+`create_table` 傳入 `id: false` 是因為，資料表無需表示一個 Model。這張資料表只是為了讓關聯可以正常工作。如果發現 `has_and_belongs_to_many` 關聯，出現任何奇怪的行為，像是 ID 錯位、ID 衝突，很可能就是因為忘記去掉主鍵。
 
 ### 控制關聯作用域
 
@@ -630,7 +630,7 @@ module MyApplication
 end
 ```
 
-要將不同命名空間下的 Model 關聯起來，可以在宣告關聯時指定完整的類別名稱：
+要將不同命名空間下的 Model 關聯起來，可以在宣告關聯時，指定完整的類別名稱：
 
 ```ruby
 module MyApplication
@@ -674,7 +674,7 @@ c.first_name = 'Manny'
 c.first_name == o.customer.first_name # => false
 ```
 
-只所以會這樣的原因是，`c` 與 `o.customer` 在記憶體裡是表示相同資料的兩種表示，改了一個不會自動改另一個。Active Record 提供了 `inverse_of` 選項，用來通知 Rails 關聯之間的關係：
+之所以會這樣的原因是，`c` 與 `o.customer` 在記憶體裡是表示相同資料的兩種表示，改了一個不會自動改另一個。Active Record 提供了 `inverse_of` 選項，用來通知 Rails 關聯之間的關係：
 
 ```ruby
 class Customer < ActiveRecord::Base
@@ -686,7 +686,7 @@ class Order < ActiveRecord::Base
 end
 ```
 
-加上了 `inverse_of` 後，Active Record 只會載入一個顧客物件，避免資料的不一致，並提高應用程式的效率：
+加上了 `inverse_of` 後，Active Record 只會載入一個顧客物件，除了避免資料的不一致，還能提高應用程式的效率：
 
 ```ruby
 c = Customer.first
