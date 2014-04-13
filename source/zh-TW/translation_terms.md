@@ -5,145 +5,181 @@
 
 按照字母順序排序。
 
-## 保留原文不譯
+保留原文不譯
+------------
 
-### Action
+* Action
 
-### Controller
+* Model
 
-### Helper
+* View
 
-### Method
+* Controller
 
-### Model
-
-### token
+* Token
 
 token 通常是由英數字組成的字串，做身分識別之用，如：
 
 OAuth 的 Access Token。
 
-### View
+翻譯術語
+------------
 
-## 翻譯術語
+A
+------
 
-## A
+* Accessor 存取器
 
-### Accessor 存取器
+* Application 應用程式
 
-### Application 應用程式
+* Association 關聯
 
-### Association 關聯
+* Association Proxy 關聯代理
 
-### Association Proxy 關聯代理
+B
+------
 
-## B
 
+C
+------
 
-## C
+* Callback 回呼
 
-### Cache 快取
+* Cache 快取
 
-### Code 程式碼
+* Code 程式碼
 
-### Commit 提交
+* Commit 提交
 
-### Computer 計算機
+* Computer 計算機
 
 亦作電腦。
 
-## D
+D
+------
 
 
-## E
+E
+------
 
 
-## F
+F
+------
 
 
-## G
+G
+------
 
 
-## H
+H
+------
 
 
-## I
+I
+------
 
 
-## J
+J
+------
 
-## Join Table 連接表
+* Join 連接
 
-## Join Table 連接資料表
+* Join Table 連接表
 
-## K
+* Join Table 連接資料表
+
+K
+------
 
 
-## L
+L
+------
 
 
-## M
+M
+------
 
-### Macro 宏
+* Macro 宏
 
-## N
+* Migration 遷移
 
-## O
+N
+------
 
-### Object 物件
+* nesting 巢狀的
 
-## P
+* nested 巢狀的
 
-### Program (n.) 程式
+O
+------
 
-### Program (v.) 編程
+* Object 物件
+
+* Option 選項
+
+方法所接受的選項。
+
+P
+------
+
+* Program (n.) 程式
+
+* Program (v.) 編程
 
 編寫程式，取編寫的編，程式的程來代表。
 
-## Q
+Q
+------
 
 
 
-## R
+R
+------
 
-### Repository 原碼庫。
+* Repository 原碼庫。
 
 Repository 在生活中有倉庫的意思，在版本控制的世界裡，通常我們將原始碼提交到 Repository。
 
 所以叫做原碼庫。
 
-### Request 請求
+* Request 請求
 
 為 HTTP 協議裡的專有名詞，HTTP Request。
 
-### Response 回應
+* Response 回應
 
 為 HTTP 協議裡的專有名詞，HTTP Response。
 
 
-## S
+S
+------
 
-### Self-Join 自連接
+* Self-Join 自連接
 
-## T
+T
+------
 
-### Table 資料表
+* Table 資料表
 
-## U
-
-
-## V
-
-
-## W
+U
+------
 
 
-## X
+V
+------
 
 
-## Y
+W
+------
 
 
-## Z
+X
+------
 
 
+Y
+------
+
+
+Z
+------
