@@ -31,6 +31,10 @@ OAuth 的 Access Token。
 
 ### Application 應用程式
 
+### Association 關聯
+
+### Association Proxy 關聯代理
+
 ## B
 
 
@@ -66,6 +70,9 @@ OAuth 的 Access Token。
 
 ## J
 
+## Join Table 連接表
+
+## Join Table 連接資料表
 
 ## K
 
@@ -114,6 +121,7 @@ Repository 在生活中有倉庫的意思，在版本控制的世界裡，通常
 
 ## S
 
+### Self-Join 自連接
 
 ## T
 
