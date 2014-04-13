@@ -6,8 +6,13 @@ module RailsGuides
       link = content_tag(:a, :href => url) { name }
       result = content_tag(:dt, link)
 
+
       if options[:work_in_progress]
-        result << content_tag(:dd, 'Work in progress', :class => 'work-in-progress')
+        result << content_tag(:dd, '撰寫中', :class => 'work-in-progress')
+      end
+
+      if options[:needs_translation]
+        result << content_tag(:dd, '待翻譯', :class => 'work-in-progress')
       end
 
       result << content_tag(:dd, capture(&block))
@@ -23,7 +28,7 @@ module RailsGuides
     end
 
     def documents_flat
-      documents_by_section.flat_map {|section| section['documents']}
+      documents_by_section.flat_map { |section| section['documents'] }
     end
 
     def finished_documents(documents)
