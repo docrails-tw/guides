@@ -1759,13 +1759,13 @@ person.posts << post unless person.posts.include?(post)
 
 若想給 `has_many` 關聯賦物件而不儲存，使用 `collection.build` 方法。
 
-### `has_and_belongs_to_many` Association Reference
+### `has_and_belongs_to_many` 關聯參考手冊
 
-The `has_and_belongs_to_many` association creates a many-to-many relationship with another model. In database terms, this associates two classes via an intermediate join table that includes foreign keys referring to each of the classes.
+`has_and_belongs_to_many` 關聯建立兩個 Model 之間的多對多關係。用資料庫的術語解釋，透過直接的連接資料表將兩個 Model 關聯起來，連接資料表記錄了兩個類別的外鍵。
 
-#### Methods Added by `has_and_belongs_to_many`
+#### `has_and_belongs_to_many` 關聯新增的方法
 
-When you declare a `has_and_belongs_to_many` association, the declaring class automatically gains 16 methods related to the association:
+宣告 `has_and_belongs_to_many` 關聯時，宣告的類別獲得 16 個關聯方法：
 
 * `collection(force_reload = false)`
 * `collection<<(object, ...)`
@@ -1784,7 +1784,7 @@ When you declare a `has_and_belongs_to_many` association, the declaring class au
 * `collection.create(attributes = {})`
 * `collection.create!(attributes = {})`
 
-In all of these methods, `collection` is replaced with the symbol passed as the first argument to `has_and_belongs_to_many`, and `collection_singular` is replaced with the singularized version of that symbol. For example, given the declaration:
+以上所有方法，`collection` 會換成作為第一個參數傳給 `has_and_belongs_to_many` 的符號。而 `collection_singular` 會換成第一個參數傳給 `has_and_belongs_to_many` 的符號的單數形式。比如：
 
 ```ruby
 class Part < ActiveRecord::Base
@@ -1792,7 +1792,7 @@ class Part < ActiveRecord::Base
 end
 ```
 
-Each instance of the part model will have these methods:
+現在每個 `Part` Model 的實例會有這些方法：
 
 ```ruby
 assemblies(force_reload = false)
@@ -1813,16 +1813,16 @@ assemblies.create(attributes = {})
 assemblies.create!(attributes = {})
 ```
 
-##### Additional Column Methods
+##### 額外的欄位方法
 
-If the join table for a `has_and_belongs_to_many` association has additional columns beyond the two foreign keys, these columns will be added as attributes to records retrieved via that association. Records returned with additional attributes will always be read-only, because Rails cannot save changes to those attributes.
+若 `has_and_belongs_to_many` 關聯的連接資料表除了外鍵外，還有其他欄位時，這些欄位會新增到取出的關聯裡，變成關聯的屬性。這些額外的欄位是唯讀的，因為 Rails 無從得知如何儲存這些屬性的變動。
 
-WARNING: The use of extra attributes on the join table in a `has_and_belongs_to_many` association is deprecated. If you require this sort of complex behavior on the table that joins two models in a many-to-many relationship, you should use a `has_many :through` association instead of `has_and_belongs_to_many`.
 
+WARNING: 在 `has_and_belongs_to_many` 關聯的連接資料表裡使用額外的欄位已棄用。若多對多關係需要如此複雜的行為，應該使用 `has_many :through 關聯。.
 
 ##### `collection(force_reload = false)`
 
-The `collection` method returns an array of all of the associated objects. If there are no associated objects, it returns an empty array.
+`collection` 會回傳包含所有關聯物件的陣列。沒有關聯物件時，回傳空陣列。
 
 ```ruby
 @assemblies = @part.assemblies
@@ -1830,27 +1830,27 @@ The `collection` method returns an array of all of the associated objects. If th
 
 ##### `collection<<(object, ...)`
 
-The `collection<<` method adds one or more objects to the collection by creating records in the join table.
+`collection<<` 方法透過在連接資料表裡新增記錄，來新增一個或多個物件至集合。
 
 ```ruby
 @part.assemblies << @assembly1
 ```
 
-NOTE: This method is aliased as `collection.concat` and `collection.push`.
+NOTE: 這個方法是 `collection.concat` 與 `collection.push` 的別名。
 
 ##### `collection.delete(object, ...)`
 
-The `collection.delete` method removes one or more objects from the collection by deleting records in the join table. This does not destroy the objects.
+`collection.delete` 方法透過刪除連接資料表中的記錄，來移除集合中一個或多個物件。但並不會刪除關聯物件。
 
 ```ruby
 @part.assemblies.delete(@assembly1)
 ```
 
-WARNING: This does not trigger callbacks on the join records.
+WARNING: 不會觸發連接資料表記錄的回呼。
 
 ##### `collection.destroy(object, ...)`
 
-The `collection.destroy` method removes one or more objects from the collection by running `destroy` on each record in the join table, including running callbacks. This does not destroy the objects.
+`collection.destroy` 方法透過對連接資料表的物件呼叫 `destroy`，包含回呼，來移除集合中一個或多個物件。但並不會刪除關聯物件。
 
 ```ruby
 @part.assemblies.destroy(@assembly1)
@@ -1858,11 +1858,11 @@ The `collection.destroy` method removes one or more objects from the collection 
 
 ##### `collection=objects`
 
-The `collection=` method makes the collection contain only the supplied objects, by adding and deleting as appropriate.
+`collection=` 方法更改集合內容，根據提供的物件來決定要刪除還是新增。
 
 ##### `collection_singular_ids`
 
-The `collection_singular_ids` method returns an array of the ids of the objects in the collection.
+`collection_singular_ids` 方法回傳集合陣列中各物件的 ID。
 
 ```ruby
 @assembly_ids = @part.assembly_ids
@@ -1870,15 +1870,15 @@ The `collection_singular_ids` method returns an array of the ids of the objects 
 
 ##### `collection_singular_ids=ids`
 
-The `collection_singular_ids=` method makes the collection contain only the objects identified by the supplied primary key values, by adding and deleting as appropriate.
+`collection_singular_ids=` 方法更改集合擁有物件的 ID，根據所提供的主鍵值來決定要刪除還是新增。
 
 ##### `collection.clear`
 
-The `collection.clear` method removes every object from the collection by deleting the rows from the joining table. This does not destroy the associated objects.
+`collection.clear` 方法透過刪除連接資料表的列來移除集合中的所有物件。但並不會刪除關聯物件。
 
 ##### `collection.empty?`
 
-The `collection.empty?` method returns `true` if the collection does not contain any associated objects.
+`collection.empty?` 方法在集合沒有任何關聯物件時回傳 `true`。
 
 ```ruby
 <% if @part.assemblies.empty? %>
@@ -1888,7 +1888,7 @@ The `collection.empty?` method returns `true` if the collection does not contain
 
 ##### `collection.size`
 
-The `collection.size` method returns the number of objects in the collection.
+`collection.size` 方法回傳集合中物件的數量。
 
 ```ruby
 @assembly_count = @part.assemblies.size
@@ -1896,7 +1896,7 @@ The `collection.size` method returns the number of objects in the collection.
 
 ##### `collection.find(...)`
 
-The `collection.find` method finds objects within the collection. It uses the same syntax and options as `ActiveRecord::Base.find`. It also adds the additional condition that the object must be in the collection.
+`collection.find` 方法在集合中查詢物件。語法和選項與 `ActiveRecord::Base.find` 相同。同時加入了另外一條條件，物件必須在集合裡。
 
 ```ruby
 @assembly = @part.assemblies.find(1)
@@ -1904,7 +1904,7 @@ The `collection.find` method finds objects within the collection. It uses the sa
 
 ##### `collection.where(...)`
 
-The `collection.where` method finds objects within the collection based on the conditions supplied but the objects are loaded lazily meaning that the database is queried only when the object(s) are accessed. It also adds the additional condition that the object must be in the collection.
+`collection.where` 方法根據提供的條件來查找物件，預設是惰性載入，僅在需要用到物件才會去資料庫做查詢。同時加入了另外一條條件，物件必須在集合裡。
 
 ```ruby
 @new_assemblies = @part.assemblies.where("created_at > ?", 2.days.ago)
@@ -1912,11 +1912,11 @@ The `collection.where` method finds objects within the collection based on the c
 
 ##### `collection.exists?(...)`
 
-The `collection.exists?` method checks whether an object meeting the supplied conditions exists in the collection. It uses the same syntax and options as `ActiveRecord::Base.exists?`.
+`collection.exists?` 方法依提供的條件檢查物件存在集合裡。語法和選項與 `ActiveRecord::Base.exists?` 相同。
 
 ##### `collection.build(attributes = {})`
 
-The `collection.build` method returns a new object of the associated type. This object will be instantiated from the passed attributes, and the link through the join table will be created, but the associated object will _not_ yet be saved.
+`collection.build` 方法回傳一個或多個新關聯物件。這些物件由傳入的屬性來初始化，自動在連接資料表建立新記錄，並設定好外鍵。但關聯物件__仍未儲存至資料庫__。
 
 ```ruby
 @assembly = @part.assemblies.build({assembly_name: "Transmission housing"})
@@ -1924,7 +1924,7 @@ The `collection.build` method returns a new object of the associated type. This 
 
 ##### `collection.create(attributes = {})`
 
-The `collection.create` method returns a new object of the associated type. This object will be instantiated from the passed attributes, the link through the join table will be created, and, once it passes all of the validations specified on the associated model, the associated object _will_ be saved.
+`collection.create` 方法回傳關聯類型的新物件。 這個物件透過傳入的屬性來初始化，自動在連接資料表建立新記錄，並設定好外鍵。一旦通過所有 Model 的驗證規則時，便把此關聯物件存入資料庫。
 
 ```ruby
 @assembly = @part.assemblies.create({assembly_name: "Transmission housing"})
@@ -1932,11 +1932,11 @@ The `collection.create` method returns a new object of the associated type. This
 
 ##### `collection.create!(attributes = {})`
 
-Does the same as `collection.create`, but raises `ActiveRecord::RecordInvalid` if the record is invalid.
+與 `collection.create` 方法相同，但在驗證失敗時會拋出 `ActiveRecord::RecordInvalid` 異常。
 
-#### Options for `has_and_belongs_to_many`
+#### `has_and_belongs_to_many` 關聯可用選項
 
-While Rails uses intelligent defaults that will work well in most situations, there may be times when you want to customize the behavior of the `has_and_belongs_to_many` association reference. Such customizations can easily be accomplished by passing options when you create the association. For example, this association uses two such options:
+Rails 聰明的預設設定足夠應付多數場景，但總會有需要客製化 `has_and_belongs_to_many` 關聯行為的時候。這種時候透過傳入選項，以及建立關聯時傳入作用域區塊便可輕易完成。舉例來說，下面的關聯使用了兩個選項：
 
 ```ruby
 class Parts < ActiveRecord::Base
@@ -1945,7 +1945,7 @@ class Parts < ActiveRecord::Base
 end
 ```
 
-The `has_and_belongs_to_many` association supports these options:
+`has_and_belongs_to_many` 關聯支援以下選項：
 
 * `:association_foreign_key`
 * `:autosave`
@@ -1957,9 +1957,9 @@ The `has_and_belongs_to_many` association supports these options:
 
 ##### `:association_foreign_key`
 
-By convention, Rails assumes that the column in the join table used to hold the foreign key pointing to the other model is the name of that model with the suffix `_id` added. The `:association_foreign_key` option lets you set the name of the foreign key directly:
+依照慣例，Rails 假定連接資料表的外鍵名稱為 Model 名稱加上 `_id` 後綴。`association_foreign_key` 可以直接修改外鍵名稱：
 
-TIP: The `:foreign_key` and `:association_foreign_key` options are useful when setting up a many-to-many self-join. For example:
+TIP: `:foreign_key` 與 `:association_foreign_key` 選項在設定自連接的多對多關係時很有用，譬如：
 
 ```ruby
 class User < ActiveRecord::Base
@@ -1972,11 +1972,11 @@ end
 
 ##### `:autosave`
 
-If you set the `:autosave` option to `true`, Rails will save any loaded members and destroy members that are marked for destruction whenever you save the parent object.
+若 `autosave` 選項為 `true`，Rails 會在儲存父物件時，自動保存子物件。如子物件標記為刪除，也會在儲存時自動刪除。
 
 ##### `:class_name`
 
-If the name of the other model cannot be derived from the association name, you can use the `:class_name` option to supply the model name. For example, if a part has many assemblies, but the actual name of the model containing assemblies is `Gadget`, you'd set things up this way:
+如果關聯 Model 名稱推論不出來時，可以使用 `:class_name` 選項來指定。舉例來說，部件屬於組件，但組件的 Model 名是 `Gadget`，則可以這麼指定：
 
 ```ruby
 class Parts < ActiveRecord::Base
@@ -1986,7 +1986,7 @@ end
 
 ##### `:foreign_key`
 
-By convention, Rails assumes that the column in the join table used to hold the foreign key pointing to this model is the name of this model with the suffix `_id` added. The `:foreign_key` option lets you set the name of the foreign key directly:
+Rails 的外鍵慣例是關聯的 Model 名稱加上 `_id` 後綴。`:foreign_key` 選項可以修改外鍵名稱：
 
 ```ruby
 class User < ActiveRecord::Base
@@ -1999,15 +1999,15 @@ end
 
 ##### `:join_table`
 
-If the default name of the join table, based on lexical ordering, is not what you want, you can use the `:join_table` option to override the default.
+資料連接表的名稱，基於詞法序推出。若想變更名稱可使用 `:join_table` 選項來覆蓋掉預設值。
 
 ##### `:validate`
 
-If you set the `:validate` option to `false`, then associated objects will not be validated whenever you save this object. By default, this is `true`: associated objects will be validated when this object is saved.
+若 `:validate` 設為 `false`，則關聯物件會在儲存時觸發驗證。預設為 `true`，會在儲存物件時驗證關聯物件。
 
-#### Scopes for `has_and_belongs_to_many`
+#### `has_and_belongs_to_many` 的作用域
 
-There may be times when you wish to customize the query used by `has_and_belongs_to_many`. Such customizations can be achieved via a scope block. For example:
+有時候可能想客製化 `has_and_belongs_to_many` 使用的查詢語句。可以透過傳入作用域區塊來達到，比如：
 
 ```ruby
 class Parts < ActiveRecord::Base
@@ -2015,7 +2015,7 @@ class Parts < ActiveRecord::Base
 end
 ```
 
-You can use any of the standard [querying methods](active_record_querying.html) inside the scope block. The following ones are discussed below:
+作用域區塊裡可以使用任何標準的[查詢方法](/active_record_querying.html)。以下分別介紹這幾個方法：
 
 * `where`
 * `extending`
@@ -2030,7 +2030,7 @@ You can use any of the standard [querying methods](active_record_querying.html) 
 
 ##### `where`
 
-The `where` method lets you specify the conditions that the associated object must meet.
+`where` 方法指定關聯物件必須滿足的條件。
 
 ```ruby
 class Parts < ActiveRecord::Base
@@ -2039,7 +2039,7 @@ class Parts < ActiveRecord::Base
 end
 ```
 
-You can also set conditions via a hash:
+條件也可透過 Hash 指定：
 
 ```ruby
 class Parts < ActiveRecord::Base
@@ -2048,15 +2048,15 @@ class Parts < ActiveRecord::Base
 end
 ```
 
-If you use a hash-style `where`, then record creation via this association will be automatically scoped using the hash. In this case, using `@parts.assemblies.create` or `@parts.assemblies.build` will create orders where the `factory` column has the value "Seattle".
+若使用了 Hash 風格的 `where` 選項，產生出來的記錄會自動使用 Hash 的作用域。上例中，使用 `@parts.assemblies.create` 或 `@parts.assemblies.build` 會建立出 `factory` 欄位為 `'Seattle'` 的訂單。
 
 ##### `extending`
 
-The `extending` method specifies a named module to extend the association proxy. Association extensions are discussed in detail <a href="#association-extensions">later in this guide</a>.
+`extending` 方法指定一個模組名稱，用來擴充關聯代理（association proxy）。 擴充關聯[之後](#擴充關聯)會詳細介紹。
 
 ##### `group`
 
-The `group` method supplies an attribute name to group the result set by, using a `GROUP BY` clause in the finder SQL.
+`group` 方法提供一個屬性名稱，用在 SQL 的 `GROUP BY` 子句裡，用來對結果做分組。
 
 ```ruby
 class Parts < ActiveRecord::Base
@@ -2066,11 +2066,11 @@ end
 
 ##### `includes`
 
-You can use the `includes` method to specify second-order associations that should be eager-loaded when this association is used.
+`includes` 方法用來指定需要 Eager Loading 的第二層關聯。看看下面這個例子：
 
 ##### `limit`
 
-The `limit` method lets you restrict the total number of objects that will be fetched through an association.
+`limit` 方法可限制透過關聯取出物件的數量。
 
 ```ruby
 class Parts < ActiveRecord::Base
@@ -2081,11 +2081,11 @@ end
 
 ##### `offset`
 
-The `offset` method lets you specify the starting offset for fetching objects via an association. For example, if you set `offset(11)`, it will skip the first 11 records.
+`offset` 方法可指定開始從關聯取出物件的偏移量。比如 `-> { offset(11) }` 會忽略前 11 個物件。
 
 ##### `order`
 
-The `order` method dictates the order in which associated objects will be received (in the syntax used by an SQL `ORDER BY` clause).
+`order` 方法指定關聯物件取出後的排序方式（語法為 SQL 的 `ORDER BY` 子句）。
 
 ```ruby
 class Parts < ActiveRecord::Base
@@ -2096,38 +2096,37 @@ end
 
 ##### `readonly`
 
-If you use the `readonly` method, then the associated objects will be read-only when retrieved via the association.
+如果設定了 `readonly` 選項，則關聯物件取出時為唯讀。
 
 ##### `select`
 
-The `select` method lets you override the SQL `SELECT` clause that is used to retrieve data about the associated objects. By default, Rails retrieves all columns.
+`select` 方法可以覆寫用來取出關聯的 `SELECT` 子句。預設會取出所有欄位。
 
 ##### `uniq`
 
-Use the `uniq` method to remove duplicates from the collection.
+`uniq` 方法用來移除集合裡重複的物件。
 
-#### When are Objects Saved?
+#### 物件何時被儲存？
 
-When you assign an object to a `has_and_belongs_to_many` association, that object is automatically saved (in order to update the join table). If you assign multiple objects in one statement, then they are all saved.
+把物件賦值給 `has_and_belongs_to_many` 關聯會自動儲存物件（因為要更新資料連接表）。一次賦值多個物件，所有的物件都會被儲存。
 
-If any of these saves fails due to validation errors, then the assignment statement returns `false` and the assignment itself is cancelled.
+如果驗證失敗時，則賦值的敘述句會回傳 `false`，賦值也會被取消。
 
-If the parent object (the one declaring the `has_and_belongs_to_many` association) is unsaved (that is, `new_record?` returns `true`) then the child objects are not saved when they are added. All unsaved members of the association will automatically be saved when the parent is saved.
+若父物件（有 `has_and_belongs_to_many` 的 Model）尚未儲存（`new_record?` 回傳 `true`），則不會儲存子物件。只有在父物件儲存時，才會儲存子物件。
 
-If you want to assign an object to a `has_and_belongs_to_many` association without saving the object, use the `collection.build` method.
+若想給 `has_and_belongs_to_many` 關聯賦物件而不儲存，使用 `collection.build` 方法。
 
 ### 關聯回呼
 
-Normal callbacks hook into the life cycle of Active Record objects, allowing you to work with those objects at various points. For example, you can use a `:before_save` callback to cause something to happen just before an object is saved.
+一般回呼會介入 Active Record 物件的生命週期，允許在不同的時間點，對這些物件做處理。舉例來說，可以使用 `:before_save` 回呼在物件儲存前做處理。
 
-Association callbacks are similar to normal callbacks, but they are triggered by events in the life cycle of a collection. There are four available association callbacks:
-
+關聯的回呼與一般回呼類似，但是由集合生命週期的事件觸發。有四種可用的關聯回呼：
 * `before_add`
 * `after_add`
 * `before_remove`
 * `after_remove`
 
-You define association callbacks by adding options to the association declaration. For example:
+宣告關聯時新增選項來定義關聯回呼，比如：
 
 ```ruby
 class Customer < ActiveRecord::Base
@@ -2139,9 +2138,9 @@ class Customer < ActiveRecord::Base
 end
 ```
 
-Rails passes the object being added or removed to the callback.
+Rails 將新增或刪除的物件傳入回呼裡。
 
-You can stack callbacks on a single event by passing them as an array:
+單一事件可觸發多個回呼，以陣列形式指定多個回呼：
 
 ```ruby
 class Customer < ActiveRecord::Base
@@ -2158,11 +2157,11 @@ class Customer < ActiveRecord::Base
 end
 ```
 
-If a `before_add` callback throws an exception, the object does not get added to the collection. Similarly, if a `before_remove` callback throws an exception, the object does not get removed from the collection.
+若 `:before_add` 回呼拋出異常，則物件不會加入至集合裡。同樣地，若 `:before_remove` 回呼拋出異常，則物件不會從集合裡移除。
 
 ### 擴充關聯
 
-You're not limited to the functionality that Rails automatically builds into association proxy objects. You can also extend these objects through anonymous modules, adding new finders, creators, or other methods. For example:
+不必侷限於 Rails 給關聯代理物件所加入的功能。可以透過匿名模組、加入新的查詢方法、建立物件的新方法或其他方法給關聯物件擴充功能，比如：
 
 ```ruby
 class Customer < ActiveRecord::Base
@@ -2174,7 +2173,7 @@ class Customer < ActiveRecord::Base
 end
 ```
 
-If you have an extension that should be shared by many associations, you can use a named extension module. For example:
+若是有功能可讓許多關聯共享，可以使用命名的擴充模組，比如：
 
 ```ruby
 module FindRecentExtension
@@ -2192,8 +2191,8 @@ class Supplier < ActiveRecord::Base
 end
 ```
 
-Extensions can refer to the internals of the association proxy using these three attributes of the `proxy_association` accessor:
+擴充功能可以參照到關聯代理的內部，透過使用以下三個 `proxy_association` 的存取器：
 
-* `proxy_association.owner` returns the object that the association is a part of.
-* `proxy_association.reflection` returns the reflection object that describes the association.
-* `proxy_association.target` returns the associated object for `belongs_to` or `has_one`, or the collection of associated objects for `has_many` or `has_and_belongs_to_many`.
+* `proxy_association.owner`：回傳關聯物件的擁有者。
+* `proxy_association.reflection`：回傳描述關聯的反射物件（reflection object）。
+* `proxy_association.target`：回傳 `belongs_to` 或 `has_one` 的關聯物件，或是 `has_many` 或 `has_and_belongs_to_many` 的關聯物件集合。
