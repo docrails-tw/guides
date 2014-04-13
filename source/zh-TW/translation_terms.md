@@ -78,6 +78,8 @@ H
 I
 ------
 
+* instance 實體
+* instance variable 實體變數
 
 J
 ------

@@ -80,13 +80,13 @@ Finder 方法有：
 * `uniq`
 * `where`
 
-以上方法皆會回傳一個 `ActiveRecord::Relation` 實例。
+以上方法皆會回傳一個 `ActiveRecord::Relation` 實體。
 
 `Model.find(options)` 的主要操作可以總結如下：
 
 * 將傳入的參數轉換成對應的 SQL 語句。
 * 執行 SQL 語句，去資料庫取回對應的結果。
-* 將每個查詢結果，根據適當的 Model 實例化出 Ruby 物件。
+* 將每個查詢結果，根據適當的 Model 實體化出 Ruby 物件。
 * 有 `after_find` 回呼的話，執行它們。
 
 ### 取出單一物件
@@ -582,7 +582,7 @@ Client.select("viewable_by, locked")
 SELECT viewable_by, locked FROM clients
 ```
 
-要小心使用 `select`。因為實例化出來的物件僅有所選欄位。如果試圖存取不存在的欄位，會得到 `ActiveModel::MissingAttributeError` 異常：
+要小心使用 `select`。因為實體化出來的物件僅有所選欄位。如果試圖存取不存在的欄位，會得到 `ActiveModel::MissingAttributeError` 異常：
 
 ```bash
 ActiveModel::MissingAttributeError: missing attribute: <attribute>
@@ -915,7 +915,7 @@ Item.transaction do
 end
 ```
 
-如果已經有 Model 的實例，使用以下寫法，可以將操作包在 transaction 裡，並同時獲得鎖：
+如果已經有 Model 的實體，使用以下寫法，可以將操作包在 transaction 裡，並同時獲得鎖：
 
 ```ruby
 item = Item.first
@@ -1424,11 +1424,11 @@ Client.find_by_sql("SELECT * FROM clients
   ORDER clients.created_at desc")
 ```
 
-`find_by_sql` 提供自定查詢的簡單方式，並會將取出的物件實例化。
+`find_by_sql` 提供自定查詢的簡單方式，並會將取出的物件實體化。
 
 ### `select_all`
 
-`find_by_sql` 有個類似的方法：`connection#select_all`。 `select_all` 會使用自定的 SQL 語句從資料庫取出物件，但不會實例化物件。會回傳一個 `ActiveRecord::Result` 物件，可以使用 `to_ary` 或 `to_hash` 將 `ActiveRecord::Result` 轉成陣列，每筆記錄皆是陣列裡的一個 Hash。
+`find_by_sql` 有個類似的方法：`connection#select_all`。 `select_all` 會使用自定的 SQL 語句從資料庫取出物件，但不會實體化物件。會回傳一個 `ActiveRecord::Result` 物件，可以使用 `to_ary` 或 `to_hash` 將 `ActiveRecord::Result` 轉成陣列，每筆記錄皆是陣列裡的一個 Hash。
 
 ```ruby
 Client.connection.select_all("SELECT * FROM clients WHERE id = '1'")

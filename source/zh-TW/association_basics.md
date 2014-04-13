@@ -82,7 +82,7 @@ end
 
 ### `belongs_to` 關聯
 
-`belongs_to` 關聯建立兩個 Model 之間的一對一關係。`belongs_to` 關聯宣告一個 Model 實例，屬於另一個 Model 實例。舉例來說，應用程式有顧客與訂單兩個 Model，每筆訂單只屬於一位顧客，訂單 Model 便如此宣告：
+`belongs_to` 關聯建立兩個 Model 之間的一對一關係。`belongs_to` 關聯宣告一個 Model 實體，屬於另一個 Model 實體。舉例來說，應用程式有顧客與訂單兩個 Model，每筆訂單只屬於一位顧客，訂單 Model 便如此宣告：
 
 ```ruby
 class Order < ActiveRecord::Base
@@ -115,7 +115,7 @@ end
 
 ### `has_one` 關聯
 
-`has_one` 關聯建立兩個 Model 之間的一對一關係，但語義和結果與 `belongs_to` 不同。`has_one` 關聯宣告一個 Model 實例，含有（或持有）另一個 Model 實例。舉例來說，每個供應商在應用程式裡只有一個帳號，供應商 Model 便如此宣告：
+`has_one` 關聯建立兩個 Model 之間的一對一關係，但語義和結果與 `belongs_to` 不同。`has_one` 關聯宣告一個 Model 實體，含有（或持有）另一個 Model 實體。舉例來說，每個供應商在應用程式裡只有一個帳號，供應商 Model 便如此宣告：
 
 ```ruby
 class Supplier < ActiveRecord::Base
@@ -146,7 +146,7 @@ end
 
 ### `has_many` 關聯
 
-`has_many` 關聯建立兩個 Model 之間的一對多關係。通常 `has_many` 另一邊對應的是 `belongs_to` 關聯。`has_many` 關聯宣告一個 Model 實例，有零個或多個另一個 Model 實例。舉例來說，應用程式有顧客與訂單兩個 Model，顧客可有多筆訂單，訂單 Model 便如此宣告：
+`has_many` 關聯建立兩個 Model 之間的一對多關係。通常 `has_many` 另一邊對應的是 `belongs_to` 關聯。`has_many` 關聯宣告一個 Model 實體，有零個或多個另一個 Model 實體。舉例來說，應用程式有顧客與訂單兩個 Model，顧客可有多筆訂單，訂單 Model 便如此宣告：
 
 ```ruby
 class Customer < ActiveRecord::Base
@@ -179,7 +179,7 @@ end
 
 ### `has_many :through` 關聯
 
-`has_many :through` 關聯通常用來建立兩個 Model 之間的多對多關係。`has_many :through` 關聯__透過（through）__第三個 Model，宣告一個 Model 實例，可有零個或多個另一個 Model 實例。舉個醫療的例子，“病患”需要__透過__“預約”來見“物理治療師”。相對應的宣告如下：
+`has_many :through` 關聯通常用來建立兩個 Model 之間的多對多關係。`has_many :through` 關聯__透過（through）__第三個 Model，宣告一個 Model 實體，可有零個或多個另一個 Model 實體。舉個醫療的例子，“病患”需要__透過__“預約”來見“物理治療師”。相對應的宣告如下：
 
 ```ruby
 class Physician < ActiveRecord::Base
@@ -261,7 +261,7 @@ end
 
 ### `has_one :through` 關聯
 
-`has_one :through` 關聯建立兩個 Model 之間的一對一關係。`has_one :through` 關聯__透過（through）__第三個 Model，宣告一個 Model 實例，可有另一個 Model 實例。舉例來說，供應商有一個帳號，每個帳號有帳號歷史，相對應的宣告如下：
+`has_one :through` 關聯建立兩個 Model 之間的一對一關係。`has_one :through` 關聯__透過（through）__第三個 Model，宣告一個 Model 實體，可有另一個 Model 實體。舉例來說，供應商有一個帳號，每個帳號有帳號歷史，相對應的宣告如下：
 
 ```ruby
 class Supplier < ActiveRecord::Base
@@ -438,7 +438,7 @@ end
 
 可以把多型的 `belongs_to` 宣告想成是一個介面，任何 Model 皆可使用的介面。在 `Employee` Model，可以透過 `@employee.pictures` 來取出所有圖片。同樣的，在 `Product` Model 亦然：`@product.pictures`。
 
-如果有一個 `Picture` Model 的實例，可以使用 `@picture.imageable` 看擁有這張圖片的是誰（父物件）。但首先需要先在遷移裡，加入外鍵（`*_id`）與類型（`*_type`）欄位。`*_type` 類型欄位用來宣告此 Model 擁有多型介面：
+如果有一個 `Picture` Model 的實體，可以使用 `@picture.imageable` 看擁有這張圖片的是誰（父物件）。但首先需要先在遷移裡，加入外鍵（`*_id`）與類型（`*_type`）欄位。`*_type` 類型欄位用來宣告此 Model 擁有多型介面：
 
 ```ruby
 class CreatePictures < ActiveRecord::Migration
@@ -528,7 +528,7 @@ customer.orders(true).empty? # 捨棄快取的訂單，重新去資料庫取出�
 
 ### 避免命名衝突
 
-關聯名稱不可隨意使用。因為在建立關聯時，會新增與關聯名稱相同的方法。若是關聯名稱與 `ActiveRecord::Base` 的實例方法相同時，關聯新增的方法會覆蓋掉 `ActiveRecord::Base` 的實例方法。比如 `attributes` 或 `connection` 是不好的關聯名稱。
+關聯名稱不可隨意使用。因為在建立關聯時，會新增與關聯名稱相同的方法。若是關聯名稱與 `ActiveRecord::Base` 的實體方法相同時，關聯新增的方法會覆蓋掉 `ActiveRecord::Base` 的實體方法。比如 `attributes` 或 `connection` 是不好的關聯名稱。
 
 ### 更新資料庫綱要
 
@@ -737,7 +737,7 @@ class Order < ActiveRecord::Base
 end
 ```
 
-現在每個 `Order` Model 的實例會有這些方法：
+現在每個 `Order` Model 的實體會有這些方法：
 
 ```ruby
 customer
@@ -1044,7 +1044,7 @@ class Supplier < ActiveRecord::Base
 end
 ```
 
-現在每個 `Supplier` Model 的實例會有這些方法：
+現在每個 `Supplier` Model 的實體會有這些方法：
 
 ```ruby
 account
@@ -1288,7 +1288,7 @@ end
 ### `has_many` 關聯參考手冊
 
 `has_many` 關聯建立兩個 Model 之間的一對多關係。用資料庫的術語解釋，宣告 `
-has_many` 的這個類別沒有外鍵。外鍵在與之關聯的類別，參照到這個類別的實例。
+has_many` 的這個類別沒有外鍵。外鍵在與之關聯的類別，參照到這個類別的實體。
 
 #### `has_many` 關聯新增的方法
 
@@ -1319,7 +1319,7 @@ class Customer < ActiveRecord::Base
 end
 ```
 
-現在每個 `Customer` Model 的實例會有這些方法：
+現在每個 `Customer` Model 的實體會有這些方法：
 
 ```ruby
 orders(force_reload = false)
@@ -1792,7 +1792,7 @@ class Part < ActiveRecord::Base
 end
 ```
 
-現在每個 `Part` Model 的實例會有這些方法：
+現在每個 `Part` Model 的實體會有這些方法：
 
 ```ruby
 assemblies(force_reload = false)

@@ -43,7 +43,7 @@ Person.create(name: nil).valid? # => false
 
 ### 驗證何時發生？
 
-Active Record 物件有兩種：一種對應到資料庫的列、另一種沒有。當新建一個新的物件時，比如使用 `new` 方法，物件此時並不屬於資料庫。一旦對物件呼叫 `save`，則物件會存入對應的資料表裡。Active Record 使用 `new_record?` 這個實例方法來決定物件是否已存在資料庫。看看下面這個簡單的 Active Record 類別：
+Active Record 物件有兩種：一種對應到資料庫的列、另一種沒有。當新建一個新的物件時，比如使用 `new` 方法，物件此時並不屬於資料庫。一旦對物件呼叫 `save`，則物件會存入對應的資料表裡。Active Record 使用 `new_record?` 這個實體方法來決定物件是否已存在資料庫。看看下面這個簡單的 Active Record 類別：
 
 ```ruby
 class Person < ActiveRecord::Base
@@ -112,9 +112,9 @@ Person.create(name: "John Doe").valid? # => true
 Person.create(name: nil).valid? # => false
 ```
 
-Active Record 做完驗證後，所有找到的錯誤都可透過 `errors.messages` 這個實例方法來存取，會回傳錯誤集合。就定義來說，物件做完驗證後，錯誤集合為空才是有效的。
+Active Record 做完驗證後，所有找到的錯誤都可透過 `errors.messages` 這個實體方法來存取，會回傳錯誤集合。就定義來說，物件做完驗證後，錯誤集合為空才是有效的。
 
-注意到用 `new` 實例化出來的物件，即便有錯誤也不會說，因為 `new` 不會觸發任何驗證。
+注意到用 `new` 實體化出來的物件，即便有錯誤也不會說，因為 `new` 不會觸發任何驗證。
 
 ```ruby
 class Person < ActiveRecord::Base
@@ -506,9 +506,9 @@ class Person < ActiveRecord::Base
 end
 ```
 
-注意自己寫的這個驗證類別（上例為 `GoodnessValidator`），在應用程式生命週期內**只會實例化一次**，而不是每次驗證時就實例化一次。所以使用實例變數時要很小心。
+注意自己寫的這個驗證類別（上例為 `GoodnessValidator`），在應用程式生命週期內**只會實體化一次**，而不是每次驗證時就實體化一次。所以使用實體變數時要很小心。
 
-如果驗證類別足夠複雜的話，需要用到實例變數，可以用純 Ruby 物件（Plain Old Ruby Object, PORO） 來取代：
+如果驗證類別足夠複雜的話，需要用到實體變數，可以用純 Ruby 物件（Plain Old Ruby Object, PORO） 來取代：
 
 ```ruby
 class Person < ActiveRecord::Base
@@ -780,7 +780,7 @@ end
 
 ### `errors`
 
-此方法回傳 `ActiveModel::Errors` 類別的實例，包含了所有的錯誤。屬性名稱為鍵，值為由錯誤訊息字串組成的陣列，
+此方法回傳 `ActiveModel::Errors` 類別的實體，包含了所有的錯誤。屬性名稱為鍵，值為由錯誤訊息字串組成的陣列，
 
 ```ruby
 class Person < ActiveRecord::Base
@@ -920,7 +920,7 @@ person.errors.size # => 0
 
 然而，Rails 大量豐富的驗證方法，自己寫一個顯示錯誤的 View Helper 也不難。當使用 Scaffold 產生時，Rails 會在 `_form.html.erb` 加入一些 ERB，用來產生 Model 的完整錯誤清單。
 
-假設我們有個 Model 存在實例變數 `@post` 裡，View 則可以這麼寫：
+假設我們有個 Model 存在實體變數 `@post` 裡，View 則可以這麼寫：
 
 ```ruby
 <% if @post.errors.any? %>

@@ -66,7 +66,7 @@ Active Record 資料表欄位的命名慣例，取決於欄位的用途
 * **主鍵** -  Active Record 預設會使用一個叫做 `id` 的整數欄位，作為資料表的主鍵。採用 [Active Record
   遷移](migrations.html) 來建立資料表時，這個欄位會自動產生。
 
-以下是某些選擇性的欄位名稱，會加入更多功能到 Active Record 實例：
+以下是某些選擇性的欄位名稱，會加入更多功能到 Active Record 實體：
 
 * `created_at` - 記錄首次建立時自動設定此欄位為當下的日期與時間。
 * `updated_at` - 無論何時更新記錄時，會自動設定此欄位為當下的日期與時間。
@@ -89,7 +89,7 @@ class Product < ActiveRecord::Base
 end
 ```
 
-便會新增一個 `Product` Model，對應到資料庫的 `products` 表。資料表當中的每一列，皆會對應到 Model 實例的屬性。假設 `products` 以下面的 SQL 語句新建而成：
+便會新增一個 `Product` Model，對應到資料庫的 `products` 表。資料表當中的每一列，皆會對應到 Model 實體的屬性。假設 `products` 以下面的 SQL 語句新建而成：
 
 ```sql
 CREATE TABLE products (
@@ -154,7 +154,7 @@ Active Record 物件可以從 Hash、區塊（blcok）中建立出來，或者�
 user = User.create(name: "David", occupation: "Code Artist")
 ```
 
-使用 `new` 方法，物件會實例化出來，但不會儲存：
+使用 `new` 方法，物件會實體化出來，但不會儲存：
 
 ```ruby
 user = User.new
@@ -164,7 +164,7 @@ user.occupation = "Code Artist"
 
 呼叫 `user.save` 會將該筆記錄存入資料庫。
 
-最後，使用區塊的例子，會將 User.new 實例化出來的物件放入區塊裡，對個別屬性作設定：
+最後，使用區塊的例子，會將 User.new 實體化出來的物件放入區塊裡，對個別屬性作設定：
 
 ```ruby
 user = User.new do |u|
