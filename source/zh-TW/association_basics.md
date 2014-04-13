@@ -890,7 +890,7 @@ TIP: 所有情況下，Rails 都不會幫您建立外鍵。需要自己在遷移
 
 ##### `:inverse_of`
 
-`:inverse_of` 選項指定 `belongs_to` 另一端的 `has_many` 或 `has_one` 關聯名稱。無法與 `:polymorphic` 同時使用。
+`:inverse_of` 選項指定 `belongs_to` 關聯另一端的關聯名稱。無法與 `:polymorphic` 同時使用。
 
 ```ruby
 class Customer < ActiveRecord::Base
@@ -952,7 +952,7 @@ end
 
 ##### `where`
 
-`where` 方法指定關聯物件需要滿足的條件。
+`where` 方法指定關聯物件必須滿足的條件。
 
 ```ruby
 class Order < ActiveRecord::Base
@@ -979,7 +979,7 @@ class Customer < ActiveRecord::Base
 end
 ```
 
-若需要頻繁地從流水線裡取出顧客（`@line_item.order.customer`），那麼在 `LineItem` 的 `belongs_to` 關聯裡載入顧客，會讓程式更有效率：
+若需要頻繁地從流水線裡取出顧客（`@line_item.order.customer`），那麼在 `LineItem` 的 `belongs_to` 關聯裡載入顧客，程式會更有效率：
 
 ```ruby
 class LineItem < ActiveRecord::Base
@@ -1020,15 +1020,15 @@ end
 
 #### 物件何時被儲存？
 
-給 `belongs_to` 關聯賦一個物件不會儲存該物件，也不會儲存關聯的物件。
+把物件賦值給 `belongs_to` 關聯不會自動儲存物件，也不會儲存關聯的物件。
 
 ### `has_one` 關聯參考手冊
 
-The `has_one` association creates a one-to-one match with another model. In database terms, this association says that the other class contains the foreign key. If this class contains the foreign key, then you should use `belongs_to` instead.
+`has_one` 關聯建立兩個 Model 之間的一對一關係。用資料庫的術語解釋，宣告 `has_one` 的這個類別沒有外鍵。若外鍵在這個類別，則應該使用 `belongs_to` 才是。
 
-#### Methods Added by `has_one`
+#### `has_one` 關聯新增的方法
 
-When you declare a `has_one` association, the declaring class automatically gains five methods related to the association:
+宣告 `has_one` 關聯時，宣告的類別獲得五個關聯方法：
 
 * `association(force_reload = false)`
 * `association=(associate)`
@@ -1036,7 +1036,7 @@ When you declare a `has_one` association, the declaring class automatically gain
 * `create_association(attributes = {})`
 * `create_association!(attributes = {})`
 
-In all of these methods, `association` is replaced with the symbol passed as the first argument to `has_one`. For example, given the declaration:
+以上所有方法，`association` 會換成作為第一個參數傳給 `has_one` 的符號。比如：
 
 ```ruby
 class Supplier < ActiveRecord::Base
@@ -1044,7 +1044,7 @@ class Supplier < ActiveRecord::Base
 end
 ```
 
-Each instance of the `Supplier` model will have these methods:
+現在每個 `Supplier` Model 的實例會有這些方法：
 
 ```ruby
 account
@@ -1054,21 +1054,21 @@ create_account
 create_account!
 ```
 
-NOTE: When initializing a new `has_one` or `belongs_to` association you must use the `build_` prefix to build the association, rather than the `association.build` method that would be used for `has_many` or `has_and_belongs_to_many` associations. To create one, use the `create_` prefix.
+NOTE: 在初始化 `has_one` 或 `belongs_to` 關聯時，必須使用 `build_` 前綴的方法來新建關聯，而不是使用 `has_many` 或 `has_and_belongs_to_many` 關聯的 `association.build` 方法。要建立並存入資料庫，則使用 `create_` 前綴的方法。
 
 ##### `association(force_reload = false)`
 
-The `association` method returns the associated object, if any. If no associated object is found, it returns `nil`.
+關聯物件存在時，`association` 方法回傳關聯物件。沒有找到關聯物件時，回傳 `nil`。
 
 ```ruby
 @account = @supplier.account
 ```
 
-If the associated object has already been retrieved from the database for this object, the cached version will be returned. To override this behavior (and force a database read), pass `true` as the `force_reload` argument.
+如果關聯物件已從資料庫取出，則會回傳此物件的快取版本。要強制重新從資料庫讀取，將 `force_reload` 參數設為 `true`。
 
 ##### `association=(associate)`
 
-The `association=` method assigns an associated object to this object. Behind the scenes, this means extracting the primary key from this object and setting the associate object's foreign key to the same value.
+`association=` 方法指定關聯的物件。背後的工作原理是，把物件的外鍵欄位設成關聯物件的主鍵。
 
 ```ruby
 @supplier.account = @account
@@ -1076,7 +1076,7 @@ The `association=` method assigns an associated object to this object. Behind th
 
 ##### `build_association(attributes = {})`
 
-The `build_association` method returns a new object of the associated type. This object will be instantiated from the passed attributes, and the link through its foreign key will be set, but the associated object will _not_ yet be saved.
+`build_association` 方法回傳關聯類型的新物件。這個物件透過傳入的屬性來初始化，同時會自動設定外鍵。但關聯物件__仍未儲存至資料庫__。
 
 ```ruby
 @account = @supplier.build_account(terms: "Net 30")
@@ -1084,7 +1084,7 @@ The `build_association` method returns a new object of the associated type. This
 
 ##### `create_association(attributes = {})`
 
-The `create_association` method returns a new object of the associated type. This object will be instantiated from the passed attributes, the link through its foreign key will be set, and, once it passes all of the validations specified on the associated model, the associated object _will_ be saved.
+`create_association` 方法回傳關聯類型的新物件。 這個物件透過傳入的屬性來初始化，同時會自動設定外鍵。一旦通過所有 Model 的驗證規則時，便把此關聯物件存入資料庫。
 
 ```ruby
 @account = @supplier.create_account(terms: "Net 30")
@@ -1092,11 +1092,11 @@ The `create_association` method returns a new object of the associated type. Thi
 
 ##### `create_association!(attributes = {})`
 
-Does the same as `create_association` above, but raises `ActiveRecord::RecordInvalid` if the record is invalid.
+與 `create_association` 方法相同，但在驗證失敗時會拋出 `ActiveRecord::RecordInvalid` 異常。
 
-#### Options for `has_one`
+#### `has_one` 關聯可用選項
 
-While Rails uses intelligent defaults that will work well in most situations, there may be times when you want to customize the behavior of the `has_one` association reference. Such customizations can easily be accomplished by passing options when you create the association. For example, this association uses two such options:
+Rails 聰明的預設設定足夠應付多數場景，但總會有需要客製化 `has_one` 關聯行為的時候。這種時候透過傳入選項，以及建立關聯時傳入作用域區塊便可輕易完成。舉例來說，下面的關聯使用了兩個選項：
 
 ```ruby
 class Supplier < ActiveRecord::Base
@@ -1104,7 +1104,7 @@ class Supplier < ActiveRecord::Base
 end
 ```
 
-The `has_one` association supports these options:
+`has_one` 關聯支援以下選項：
 
 * `:as`
 * `:autosave`
@@ -1120,15 +1120,15 @@ The `has_one` association supports these options:
 
 ##### `:as`
 
-Setting the `:as` option indicates that this is a polymorphic association. Polymorphic associations were discussed in detail <a href="#polymorphic-associations">earlier in this guide</a>.
+設定 `:as` 選項表示這是一個多型關聯。多型關聯在[前面已詳細介紹過](#多型關聯)。
 
 ##### `:autosave`
 
-If you set the `:autosave` option to `true`, Rails will save any loaded members and destroy members that are marked for destruction whenever you save the parent object.
+若 `autosave` 選項為 `true`，Rails 會在儲存父物件時，自動保存子物件。如子物件標記為刪除，也會在儲存時自動刪除。
 
 ##### `:class_name`
 
-If the name of the other model cannot be derived from the association name, you can use the `:class_name` option to supply the model name. For example, if a supplier has an account, but the actual name of the model containing accounts is `Billing`, you'd set things up this way:
+如果關聯 Model 名稱推論不出來時，可以使用 `:class_name` 選項來指定。舉例來說，訂單屬於顧客，但顧客的 Model 名是 `Billing`，則可以這麼指定：
 
 ```ruby
 class Supplier < ActiveRecord::Base
@@ -1138,23 +1138,19 @@ end
 
 ##### `:dependent`
 
-Controls what happens to the associated object when its owner is destroyed:
+在刪除關聯物件擁有者時該如何處理關聯對象：
 
-* `:destroy` causes the associated object to also be destroyed
-* `:delete` causes the associated object to be deleted directly from the database (so callbacks will not execute)
-* `:nullify` causes the foreign key to be set to `NULL`. Callbacks are not executed.
-* `:restrict_with_exception` causes an exception to be raised if there is an associated record
-* `:restrict_with_error` causes an error to be added to the owner if there is an associated object
+* `:destroy`：同時刪除關聯物件。
+* `:delete`：直接將關聯物件從資料庫刪除，不會執行回呼。
+* `:nullify` 把外鍵設為 `nil`，不會執行回呼。
+* `:restrict_with_exception` 有關聯物件的話，向擁有者拋出異常。
+* `:restrict_with_error` 有關聯物件的話，向擁有者拋出錯誤。
 
-It's necessary not to set or leave `:nullify` option for those associations
-that have `NOT NULL` database constraints. If you don't set `dependent` to
-destroy such associations you won't be able to change the associated object
-because initial associated object foreign key will be set to unallowed `NULL`
-value.
+若在資料庫設定了 `NOT NULL` 約束條件，則不要使用 `:nullify`。此時若沒有把 `:dependent` 設為 `destroy`，會無法修改關聯物件，因為原本關聯物件的外鍵會被設為不允許的 `NULL`。
 
 ##### `:foreign_key`
 
-By convention, Rails assumes that the column used to hold the foreign key on the other model is the name of this model with the suffix `_id` added. The `:foreign_key` option lets you set the name of the foreign key directly:
+Rails 的外鍵慣例是關聯的 Model 名稱加上 `_id` 後綴。`:foreign_key` 選項可以修改外鍵名稱：
 
 ```ruby
 class Supplier < ActiveRecord::Base
@@ -1162,15 +1158,15 @@ class Supplier < ActiveRecord::Base
 end
 ```
 
-TIP: In any case, Rails will not create foreign key columns for you. You need to explicitly define them as part of your migrations.
+TIP: 所有情況下，Rails 都不會幫您建立外鍵。需要自己在遷移中明確定義外鍵。
 
 ##### `:inverse_of`
 
-The `:inverse_of` option specifies the name of the `belongs_to` association that is the inverse of this association. Does not work in combination with the `:through` or `:as` options.
+`:inverse_of` 選項指定 `has_one` 關聯另一端的關聯名稱。無法與 `:through` 或 `:as` 同時使用。
 
 ```ruby
 class Supplier < ActiveRecord::Base
-  has_one :account, inverse_of: :supplier
+  has_one :account, : :supplier
 end
 
 class Account < ActiveRecord::Base
@@ -1180,27 +1176,27 @@ end
 
 ##### `:primary_key`
 
-By convention, Rails assumes that the column used to hold the primary key of this model is `id`. You can override this and explicitly specify the primary key with the `:primary_key` option.
+Rails 的主鍵慣例是 `id`。可以使用 `:primary_key` 選項來修改主鍵名稱。
 
 ##### `:source`
 
-The `:source` option specifies the source association name for a `has_one :through` association.
+`:source` 選項給 `has_one :through` 關聯指定來源關聯名稱。
 
 ##### `:source_type`
 
-The `:source_type` option specifies the source association type for a `has_one :through` association that proceeds through a polymorphic association.
+`:source_type` 選項給透過多型關聯的 `has_one :through` 關聯指定來源類型。
 
 ##### `:through`
 
-The `:through` option specifies a join model through which to perform the query. `has_one :through` associations were discussed in detail <a href="#the-has-one-through-association">earlier in this guide</a>.
+`:through` 選項用來下查詢的連接表。`has_one :through` 關聯在[前面已詳細介紹過](#has_one-:through-關聯)。
 
 ##### `:validate`
 
-If you set the `:validate` option to `true`, then associated objects will be validated whenever you save this object. By default, this is `false`: associated objects will not be validated when this object is saved.
+若 `:validate` 設為 `true`，則關聯物件會在儲存時觸發驗證。預設為 `false`，儲存物件時不會驗證關聯物件。
 
-#### Scopes for `has_one`
+#### `has_one` 的作用域
 
-There may be times when you wish to customize the query used by `has_one`. Such customizations can be achieved via a scope block. For example:
+有時候可能想客製化 `has_one` 使用的查詢語句。可以透過傳入作用域區塊來達到，比如：
 
 ```ruby
 class Supplier < ActiveRecord::Base
@@ -1208,7 +1204,7 @@ class Supplier < ActiveRecord::Base
 end
 ```
 
-You can use any of the standard [querying methods](active_record_querying.html) inside the scope block. The following ones are discussed below:
+作用域區塊裡可以使用任何標準的[查詢方法](/active_record_querying.html)。以下分別介紹這幾個方法：
 
 * `where`
 * `includes`
@@ -1217,7 +1213,7 @@ You can use any of the standard [querying methods](active_record_querying.html) 
 
 ##### `where`
 
-The `where` method lets you specify the conditions that the associated object must meet.
+`where` 方法指定關聯物件必須滿足的條件。
 
 ```ruby
 class Supplier < ActiveRecord::Base
@@ -1227,7 +1223,7 @@ end
 
 ##### `includes`
 
-You can use the `includes` method to specify second-order associations that should be eager-loaded when this association is used. For example, consider these models:
+`includes` 方法用來指定需要 Eager Loading 的第二層關聯。看看下面這個例子：
 
 ```ruby
 class Supplier < ActiveRecord::Base
@@ -1244,7 +1240,7 @@ class Representative < ActiveRecord::Base
 end
 ```
 
-If you frequently retrieve representatives directly from suppliers (`@supplier.account.representative`), then you can make your code somewhat more efficient by including representatives in the association from suppliers to accounts:
+若需要頻繁地從供應商裡取出代表人（`@supplier.account.representative`），那麼在 `Supplier` 的 `has_one` 關聯裡載入代表人，程式會更有效率：
 
 ```ruby
 class Supplier < ActiveRecord::Base
@@ -1263,15 +1259,15 @@ end
 
 ##### `readonly`
 
-If you use the `readonly` method, then the associated object will be read-only when retrieved via the association.
+如果設定了 `readonly` 選項，則關聯物件取出時為唯讀。
 
 ##### `select`
 
-The `select` method lets you override the SQL `SELECT` clause that is used to retrieve data about the associated object. By default, Rails retrieves all columns.
+`select` 方法可以覆寫用來取出關聯的 `SELECT` 子句。預設會取出所有欄位。
 
-#### Do Any Associated Objects Exist?
+#### 檢查關聯對象是否存在?
 
-You can see if any associated objects exist by using the `association.nil?` method:
+使用 `association.nil?` 來檢查關聯物件是否存在：
 
 ```ruby
 if @supplier.account.nil?
@@ -1279,21 +1275,21 @@ if @supplier.account.nil?
 end
 ```
 
-#### When are Objects Saved?
+#### 物件何時被儲存？
 
-When you assign an object to a `has_one` association, that object is automatically saved (in order to update its foreign key). In addition, any object being replaced is also automatically saved, because its foreign key will change too.
+把物件賦值給 `has_one` 關聯會自動儲存物件（因為要更新外鍵）。除此之外，用來賦值的物件也會自動儲存，因為外鍵變了。
 
-If either of these saves fails due to validation errors, then the assignment statement returns `false` and the assignment itself is cancelled.
+如果驗證失敗時，則賦值的敘述句會回傳 `false`，賦值也會被取消。
 
-If the parent object (the one declaring the `has_one` association) is unsaved (that is, `new_record?` returns `true`) then the child objects are not saved. They will automatically when the parent object is saved.
+若父物件（有 `has_one` 的 Model）尚未儲存（`new_record?` 回傳 `true`），則不會儲存子物件。只有在父物件儲存時，才會儲存子物件。
 
-If you want to assign an object to a `has_one` association without saving the object, use the `association.build` method.
+若想給 `has_one` 關聯賦物件而不儲存，使用 `association.build` 方法。
 
-### `has_many` Association Reference
+### `has_many` 關聯參考手冊
 
 The `has_many` association creates a one-to-many relationship with another model. In database terms, this association says that the other class will have a foreign key that refers to instances of this class.
 
-#### Methods Added by `has_many`
+#### `has_many` 關聯新增的方法
 
 When you declare a `has_many` association, the declaring class automatically gains 16 methods related to the association:
 
@@ -2135,7 +2131,7 @@ If the parent object (the one declaring the `has_and_belongs_to_many` associatio
 
 If you want to assign an object to a `has_and_belongs_to_many` association without saving the object, use the `collection.build` method.
 
-### Association Callbacks
+### 關聯回呼
 
 Normal callbacks hook into the life cycle of Active Record objects, allowing you to work with those objects at various points. For example, you can use a `:before_save` callback to cause something to happen just before an object is saved.
 
@@ -2179,7 +2175,7 @@ end
 
 If a `before_add` callback throws an exception, the object does not get added to the collection. Similarly, if a `before_remove` callback throws an exception, the object does not get removed from the collection.
 
-### Association Extensions
+### 擴充關聯
 
 You're not limited to the functionality that Rails automatically builds into association proxy objects. You can also extend these objects through anonymous modules, adding new finders, creators, or other methods. For example:
 
