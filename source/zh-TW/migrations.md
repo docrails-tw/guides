@@ -1,23 +1,23 @@
 Active Record 遷移
 ========================
 
-Migration，遷移。Active Record 眾多功能之一，可與時俱進的[管理資料庫綱要](http://en.wikipedia.org/wiki/Schema_migration)。最棒的是 Migration 提供了簡潔的 Ruby DSL，無需寫純 SQL，便能變更資料表。
+Migration，遷移。Active Record 眾多功能之一，可與時俱進的[管理資料庫綱要](http://en.wikipedia.org/wiki/Schema_migration)。最棒的是遷移提供了簡潔的 Ruby DSL，無需寫純 SQL，便能變更資料表。
 
 讀完本篇，您將了解：
 
 * 使用產生遷移的產生器。
 * Active Record 提供用來操作資料庫的方法。
-* 撰寫 Rake 任務來管理資料庫的 schema 與遷移檔案。
-* 遷移與 schema.rb 的關係。
+* 撰寫 Rake 任務來管理資料庫綱要與遷移檔案。
+* 遷移與 `db/schema.rb` 的關係。
 
 綜覽
 --------------------
 
-遷移是一種簡單、一致、方便[與時俱進管理資料庫綱要]()的方法。遷移使用 Ruby DSL，而不用手寫 SQL，適用於所有資料庫。
+遷移是一種簡單、一致、方便[與時俱進管理資料庫綱要](http://en.wikipedia.org/wiki/Schema_migration)的方法。遷移使用 Ruby DSL，而不用手寫 SQL，適用於所有資料庫。
 
 每筆遷移都可想成是資料庫的新版本。資料庫綱要一開始什麼也沒有，每筆遷移慢慢得往資料庫裡增刪資料表、欄位、記錄等。Active Record 知道如何依時間順序更新資料庫綱要，從資料庫歷史的何處開始都可以，都能前往最新版本。此外，Active Record 也會更新 `db/schema.rb` 檔案，與最新的資料庫結構保持同步。
 
-來看個範例 Migration：
+來看個範例遷移檔案：
 
 ```ruby
 class CreateProducts < ActiveRecord::Migration
@@ -33,12 +33,6 @@ end
 ```
 
 `create_table :products do |t|` 新增了一張 `products` 的資料表，有 `name` （類型是字串）、`description`（類型是 text）的欄位。也會自動新增主鍵（`id`）（遷移裡看不到），所有 Active Record Model 的預設主鍵名稱都叫做 `id`。`timestamps` 宏新稱了兩個欄位， `created_at` 與 `updated_at`，Active Record 會負責處理特殊欄位（主鍵、時間戳章），無需自己處理。
-
-
-Migration 是前進下一關，那回到上一關叫做什麼？ __Rollback，回滾。__
-
-當我們回滾剛剛的 Migration，Active Record 會自動幫你移除這個 table。有些資料庫支援 transaction （事務），改變 Schema 的 Migration 會包在事務裡
-。不支援事務的資料庫，無法 Rollback 到上一個版本，則你得自己手動 Rollback。
 
 注意到我們定義了一個 `change` 方法，內容填入時間往前時期望的變動。在這筆遷移執行之前，資料庫裡還沒有資料表。遷移之後資料表便建出來了。Active Record 知道如何倒回這筆遷移：若我們回滾這筆遷移，Active Record 會把該資料表刪除。
 
@@ -79,13 +73,12 @@ class ChangeProductsPrice < ActiveRecord::Migration
 end
 ```
 
-建立 Migration
+建立遷移
 --------------------
 
-### 新增獨立的 Migration
+### 新建獨立的遷移
 
 遷移檔案存在 `db/migrate` 目錄，一個檔案對應一筆遷移。檔名以 `YYYYMMDDHHMMSS_create_products.rb` 形式命名：
-
 
 `YYYYMMDDHHMMSS_migration_name.rb`，前面的 `YYYYMMDDHHMMSS` 是 UTC 格式的時間戳章，接著是底線，底線後面是該筆遷移的名稱。遷移類別以駝峰形式命名，會對應到 `_migration_name`。舉例來說 `20140916204300_create_products.rb` 會定義出 `CreateProducts` 這樣的類別名稱。而 `20121027111111_add_details_to_products.rb` 則會定義出 `AddDetailsToProducts` 這樣的類別名稱。Rails 根據時間戳章決定執行的先後順序。若是從別的應用程式複製過來的遷移檔案，或是自己產生的遷移，要注意執行的順序。
 
@@ -104,7 +97,7 @@ class AddPartNumberToProducts < ActiveRecord::Migration
 end
 ```
 
-Migration 名稱若是 `AddXXXToYYY` 或 `RemoveXXXFromYYY`，之後接一系列的欄位名稱與類型。則會自動幫你產生 `add_column` 或 `remove_column`：
+在命令行輸入的遷移名稱若是 `AddXXXToYYY` 或 `RemoveXXXFromYYY`，之後接一系列的欄位名稱與類型。則會自動產生 `add_column` 或 `remove_column`：
 
 
 ```bash
@@ -210,7 +203,7 @@ class AddUserRefToProducts < ActiveRecord::Migration
 end
 ```
 
-會給 Product 表，產生一個 `user_id` 欄位並加上索引。
+會給 Product 資料表，產生一個 `user_id` 欄位並加上索引。
 
 若傳給產生器的遷移名稱，名稱部分包含 `JoinTable`，則會建出連接表：
 
@@ -239,7 +232,7 @@ Model 與鷹架產生器新建 Model 時，也會建立遷移。這個遷移檔�
 $ rails generate model Product name:string description:text
 ```
 
-會產生如下的 Migration：
+會產生如下的遷移檔案：
 
 ```ruby
 class CreateProducts < ActiveRecord::Migration
@@ -274,7 +267,7 @@ end
 $ rails generate migration AddDetailsToProducts 'price:decimal{5,2}' supplier:references{polymorphic}
 ```
 
-會產生如下的 Migration：
+會產生如下的遷移檔案：
 
 ```ruby
 class AddDetailsToProducts < ActiveRecord::Migration
@@ -382,11 +375,6 @@ Product.connection.execute('UPDATE `products` SET `price`=`free` WHERE 1')
 （傳入 `change_table` 區塊物件可用的方法有那些）
 
 ### 使用 `change` 方法
-
-The `change` method is the primary way of writing migrations. It works for the
-majority of cases, where Active Record knows how to reverse the migration
-automatically. Currently, the `change` method supports only these migration
-definitions:
 
 撰寫遷移檔案主要用 `change` 方法，適用於大多數情況，多數 Active Record 知道如何執行逆操作的情況。以下是目前 `change` 方法裡所支援的方法：
 
@@ -570,107 +558,55 @@ Rails 提供了一組 Rake 任務，用來執行特定的遷移。
 $ rake db:migrate VERSION=20080906120000
 ```
 
-If version 20080906120000 is greater than the current version (i.e., it is
-migrating upwards), this will run the `change` (or `up`) method
-on all migrations up to and
-including 20080906120000, and will not execute any later migrations. If
-migrating downwards, this will run the `down` method on all the migrations
-down to, but not including, 20080906120000.
+若版本 `20080906120000` 大於目前版本，則會執行 `change`（或 `up`）方法，遷移到 `20080906120000`（包含）。若版本 `20080906120000` 小於目前版本，則會對版本小於 `20080906120000` （不包含）的遷移執行 `down` 方法。
 
 ### 回滾
 
-最常見的就是回滾上一個 task。假設你犯了個錯誤，並想修正。可以：
-
-A common task is to rollback the last migration. For example, if you made a
-mistake in it and wish to correct it. Rather than tracking down the version
-number associated with the previous migration you can run:
+最常見的任務便是回滾前次遷移。假設你犯了個錯誤，並想修正。與其找出前次的版本再執行，可以直接：
 
 ```bash
 $ rake db:rollback
 ```
 
-會回退一個 Migration。可以指定要回退幾步，使用 `STEP` 參數
-
-This will rollback the latest migration, either by reverting the `change`
-method or by running the `down` method. If you need to undo
-several migrations you can provide a `STEP` parameter:
+會取消上次的 `change` 操作，或是執行 `down` 方法，來回滾上一次遷移。可以指定要回滾幾步，使用 `STEP` 參數
 
 ```bash
 $ rake db:rollback STEP=3
 ```
 
-會取消前 3 次 migrations。
+會回滾前 3 次遷移。
 
-`db:migrate:redo` 用來回退、接著再一次 `rake db:migrate`，同樣接受 `STEP` 參數：
-
-will revert the last 3 migrations.
-
-The `db:migrate:redo` task is a shortcut for doing a rollback and then migrating
-back up again. As with the `db:rollback` task, you can use the `STEP` parameter
-if you need to go more than one version back, for example:
+`db:migrate:redo` 用來回滾、接著再遷移一次。同樣接受 `STEP` 參數，比如往前回滾 3 次，再遷移：
 
 ```bash
 $ rake db:migrate:redo STEP=3
 ```
 
-這些操作用 `db:migrate` 都辦得到，只是方便你使用而已。
-
-
-Neither of these Rake tasks do anything you could not do with `db:migrate`. They
-are simply more convenient, since you do not need to explicitly specify the
-version to migrate to.
+這些操作用 `db:migrate` 都辦得到，只是方便你使用而已，因為不用特別指定要遷移或是回滾的版本號。
 
 ### 設定資料庫
 
-The `rake db:setup` 會新建資料庫、載入 schema、並用種子資料來初始化資料庫。
-
-The `rake db:setup` task will create the database, load the schema and initialize
-it with the seed data.
+The `rake db:setup` 會新建資料庫、載入資料庫綱要、並用種子資料來初始化資料庫。
 
 ### 重置資料庫
 
-`rake db:reset` 會將資料庫 drop 掉，並重新恢復。
+`rake db:reset` 會將資料庫移除，再重新建立。等同於 `rake db:drop db:setup`。
 
-`rake db:reset` ＝ `rake db:drop db:setup`。
-
-__注意！__ 這跟執行所有的 Migration 不一樣。這只會用 `schema.rb` 裡的內容來操作。如果 Migration 不能回退， `rake db:reset` 也是派不上用場的！了解更多參考 [schema dumping and you](#7-schema-dumping-與你)。
-
-The `rake db:reset` task will drop the database and set it up again. This is
-functionally equivalent to `rake db:drop db:setup`.
-
-NOTE: This is not the same as running all the migrations. It will only use the
-contents of the current `schema.rb` file. If a migration can't be rolled back,
-`rake db:reset` may not help you. To find out more about dumping the schema see
-[Schema Dumping and You](#schema-dumping-and-you) section.
+NOTE: 這與執行所有的遷移不一樣。這只會用 `schema.rb` 裡的內容來操作。如果遷移不能回滾，`rake db:reset` 也是派不上用場的。了解更多請參考[導出資料庫綱要](#導出資料庫綱要)。
 
 ### 執行特定的遷移
 
-用 `db:migrate:up` 或 `db:migrate:down` tasks，並指定版本：
-
-If you need to run a specific migration up or down, the `db:migrate:up` and
-`db:migrate:down` tasks will do that. Just specify the appropriate version and
-the corresponding migration will have its `change`, `up` or `down` method
-invoked, for example:
+如想執行特定的遷移，可以用 `db:migrate:up` 或 `db:migrate:down`。只需要指定特定的版本，就會根據版本去呼叫 `change`、`up` 或 `down` 方法，比如：
 
 ```bash
 $ rake db:migrate:up VERSION=20080906120000
 ```
 
-會執行在 `20080906120000` 版本之前的 Migration 裡面的 `change`、`up` 方法。若已經遷移過了，則 Active Record 不會執行。
-
-will run the 20080906120000 migration by running the `change` method (or the
-`up` method). This task will
-first check whether the migration is already performed and will do nothing if
-Active Record believes that it has already been run.
+會執行版本大於 `20080906120000` 的遷移裡面的 `change`、`up` 方法。若已經遷移過了，則 Active Record 不會執行。
 
 ### 在不同環境下執行遷移
 
-默認 `rake db:migrate` 會在 `development` 環境下執行。可以通過指定 `RAILS_ENV` 來指定運行的環境，比如在 `test` 環境下：
-
-By default running `rake db:migrate` will run in the `development` environment.
-To run migrations against another environment you can specify it using the
-`RAILS_ENV` environment variable while running the command. For example to run
-migrations against the `test` environment you could run:
+默認 `rake db:migrate` 會在 `development` 環境下執行。可以通過指定 `RAILS_ENV` 來指定執行的環境，比如要在 `test` 環境下執行：
 
 ```bash
 $ rake db:migrate RAILS_ENV=test
@@ -678,10 +614,7 @@ $ rake db:migrate RAILS_ENV=test
 
 ### 修改遷移執行中的輸出
 
-Migration 通常會告訴你他們幹了什麼，並花了多長時間。建立 table 及加 index 的輸出可能像是這樣：
-
-By default migrations tell you exactly what they're doing and how long it took.
-A migration creating a table and adding an index might produce output like this
+遷移通常會回報它做了什麼，花了多長時間。建立資料表及加上索引的輸出可能會像是：
 
 ```bash
 ==  CreateProducts: migrating =================================================
@@ -690,16 +623,13 @@ A migration creating a table and adding an index might produce output like this
 ==  CreateProducts: migrated (0.0028s) ========================================
 ```
 
-Migration 提供了幾個方法讓你控制輸出訊息：
-
-
-Several methods are provided in migrations that allow you to control all this:
+遷移提供了幾個方法來控制輸出訊息：
 
 | 方法                  | 目的
 | :-------------------- | :-------
 | suppress_messages    | 接受區塊作為參數，區塊內指名的代碼不會產生輸出。
 | say                  | 接受一個訊息字串，並輸出該字串。第二個參數可以用來指定要不要縮排。
-| say_with_time        | 同上，但會附上區塊的執行時間。若區塊返回整數，會假定該整數是受影響的 row 的數量。
+| say_with_time        | 同上，但會附上區塊的執行時間。若區塊返回整數，會假定該整數是受影響列的數量。
 
 舉例來說，這個遷移：
 
@@ -739,59 +669,34 @@ end
 ==  CreateProducts: migrated (10.0054s) =======================================
 ```
 
-如果想 Active Record 完全不要輸出訊息，執行 `rake db:migrate VERBOSE=false`。
-
-If you want Active Record to not output anything, then running `rake db:migrate
-VERBOSE=false` will suppress all output.
+如果想 Active Record 完全不要輸出訊息，則執行 `rake db:migrate VERBOSE=false` 即可，會消音所有訊息。
 
 ## 修改現有的遷移
 
-有時候 Migration 可能會寫錯。修正過來之後，要先執行 `rake db:rollback`，再執行 `rake db:migrate`。
+有時候遷移可能會寫錯。已經執行過的遷移，不能修改遷移再執行一次：Rails 會認為這次遷移已經執行過了，修改已執行的遷移不會生效。要先執行 `rake db:rollback`，編輯遷移檔案，接著再次執行 `rake db:migrate`。
 
-編輯現有的 Migration 不太好，因為會增加一起開發的人更多工作量。尤其是 Migration 已經上 production，應該要寫個新的 Migration，來達成你想完成的事情。
+通常不太推薦修改現有的遷移，因為會增加同事更多工作量。尤其是遷移已經上線了（production），應該要寫個新的遷移，執行需要的修改，來達成想完成的事情。修改新建的遷移（尚未提交至版本管理）是相對無害的。
 
-`revert` 方法用來寫新的 Migration 取消先前的 Migration 很有用。
+`revert` 方法用來寫新的遷移，取消先前的遷移的場景很有用。參考[取消之前的遷移](#取消前次遷移)小節。
 
-Occasionally you will make a mistake when writing a migration. If you have
-already run the migration then you cannot just edit the migration and run the
-migration again: Rails thinks it has already run the migration and so will do
-nothing when you run `rake db:migrate`. You must rollback the migration (for
-example with `rake db:rollback`), edit your migration and then run
-`rake db:migrate` to run the corrected version.
+導出資料庫綱要
+----------------
 
-In general, editing existing migrations is not a good idea. You will be
-creating extra work for yourself and your co-workers and cause major headaches
-if the existing version of the migration has already been run on production
-machines. Instead, you should write a new migration that performs the changes
-you require. Editing a freshly generated migration that has not yet been
-committed to source control (or, more generally, which has not been propagated
-beyond your development machine) is relatively harmless.
+### 資料庫綱要檔案有什麼用
 
-The `revert` method can be helpful when writing a new migration to undo
-previous migrations in whole or in part
-(see [Reverting Previous Migrations](#reverting-previous-migrations) above).
+遷移是會變的，不會反映出當下的資料庫結構。要確定資料庫的結構，還是看資料庫綱要檔案： `db/schema.rb` 最可靠，或是由 Active Record 導生的 SQL 檔案。`db/schema.rb` 與 SQL 是用來表示資料庫目前的狀態，兩個檔案不可以修改。
 
-## Schema Dumping 與你
+依靠重新執行所有的遷移，來部署新的應用程式，不可靠又容易出錯。最簡單的辦法是把資料庫的結構檔案，加載到資料庫裡。
 
-### Schema 有什麼用
+舉例來說，這便是測試資料庫如何產生的過程：導出目前的開發資料庫（導出成 `db/schema.rb` 或 `db/structure.sql`），接著載入至測試資料庫。
 
-Migrations，是可以變化的，要確定資料庫的 schema，還是看 `db/schema.rb` 最可靠，或是由 Active Record 產生的 SQL 檔案。`db/schema.rb` 與 SQL 都是用來表示資料庫目前的狀態，不要修改這兩個檔案。
+若想了解 Active Record object 有什麼屬性。Model 裡沒有寫，屬性散佈在多個遷移檔案裡，但所有的屬性都總結在資料庫綱要檔案了。如果想要在 Model 裡看到所有的屬性資訊，有一個 [annotate_models](https://github.com/ctran/annotate_models) RubyGem，自動在 Model 檔案最上方加註解，使用資料庫綱要檔案，來記錄每個 Model 有的屬性。
 
-依靠 Migration 來佈署新的 app 是不可靠而且容易出錯的。最簡單的辦法是把 `db/schema.rb` 加載到資料庫裡。
+### 導出資料庫綱要的種類
 
-舉例來說吧，這便是測試資料庫如何產生的過程：dump 目前的開發資料庫，dump 成 `db/schema.rb` 或是 `db/structure.sql`，並載入至測試資料庫。
+有兩種方式可以導出資料庫綱要。可以在 `config/application.rb` 檔案裡，使用 `config.active_record.schema_format` 來設定，值可以是 `:sql` 或 `:ruby`。
 
-若想了解 Active Record object 有什麼屬性，直接看 Schema 檔案是很有用的。因為屬性總是透過 Migration 添加，要追蹤這些 Migration 不容易，但最後的結果都總結在 schema 檔案裡。
-
-[annotate_models](https://github.com/ctran/annotate_models) Gem 自動替你在每個 model 最上方，添加或更新註解，描述每個 model 屬性的註解。
-
-### Schema Dump 的種類
-
-兩種方式來 dump schema。可在 `config/application.rb` 來設定：
-
-`config.active_record.schema_format`，可以是 `:sql` 或 `:ruby`。
-
-如果選擇用 `:ruby`，則 schema 會儲存在 `db/schema.rb`。打開這個檔案，你會看到像是下面的 Migration：
+如果選擇用 `:ruby`，則資料庫綱要檔案會儲存在 `db/schema.rb`。打開這個檔案，會發現這像是一個很大的遷移檔案：
 
 ```ruby
 ActiveRecord::Schema.define(version: 20080906171750) do
@@ -811,30 +716,31 @@ ActiveRecord::Schema.define(version: 20080906171750) do
 end
 ```
 
-許多情況下，這便是資料庫裡有的東西。這個檔案是檢查資料庫之後，用 `create_table`、`add_index` 這些 helper 來表示資料庫的結構。由於這獨立於資料庫，可以加載到任何 Active Record 所支援的資料庫。如果你的 app 要執行許多資料庫的時候，這點非常有用。
+多數情況下，這便是資料庫裡有的東西。這個檔案是檢查資料庫之後，用 `create_table`、`add_index` 這些 helper 來表示資料庫的結構。這與使用何種資料庫無關，可以加載到任何 Active Record 所支援的資料庫。如果應用程式要發佈到多種資料庫的時候，這個檔案非常有用。
 
-但有好有壞：`db/schema.rb` 不能表達資料庫特有的功能，像是 foreign key constraints、triggers、或是 stored procedures。在 Migration 可以執行任何 SQL 語句，但 schema dumper 不能從這些 SQL 語句裡重建出資料庫。如果要執行自訂的 SQL，記得將 schema 格式設定為 `:sql`。
+但魚與熊掌不可兼得：`db/schema.rb` 不能表達資料庫特有的功能，像是外鍵約束、觸發器（triggers）、或是儲存過程（stored procedure）。但是在遷移裡可以執行任何自訂的 SQL 語句，但資料庫綱要的程式，無法從資料庫重建出這些 SQL 語句。如果要執行自訂的 SQL，記得將資料庫綱要的導出格式設定為 `:sql`。
 
-與其使用 Active Record 提供的 schema dumper，可以用資料庫專門的工具。透過 `db:structure:dump` 任務來導出 `db/structure.sql`。舉例來說，PostgreSQL 使用 `pg_dump`。MySQL 只不過是多張表的 `SHOW CREATE TABLE` 的結果。
+與其使用 Active Record 提供的資料庫綱要導出程式，可以用特定資料庫的導出工具（透過 `db:structure:dump` 任務來導出 `db/structure.sql`）。舉例來說，PostgreSQL 使用 `pg_dump` 這個工具來導出 SQL。而 MySQL 呢，資料庫綱要只不過是多張資料表的 `SHOW CREATE TABLE` 的結果。
 
-載入這些 schema ，不過是執行裡面的 SQL 語句。定義上來說，這可以完美拷貝一份資料庫的結構。但使用 `:sql` schema 格式，便不能從一種 RDBMS 資料庫，切換到另一種 RDBMS 資料庫了。
+載入這些 `:sql` 格式的綱要檔案，不過是執行裡面的 SQL 語句而已。定義上來說，會建立一份資料庫結構的完美複本。但使用 `:sql` 綱要格式的話，便不能從一種 RDBMS 資料庫，切換到另一種 RDBMS 資料庫了。
 
-### Schema Dumps 與版本管理
+### 導出資料庫綱要與版本管理
 
-因為 schema dumps 是資料庫 schema 最完整的來源，強烈建議你將 schema 用版本管理來追蹤。
+因為導出的資料庫綱要檔案，是資料庫結構最權威的來源，強烈建議將資料庫綱要檔案加到版本管理裡。
 
-## Active Record 與 Referential Integrity
-
-Active Record 認為事情要在 model 裡處理好，不是在資料庫。也是因為這個原因，像是 trigger 或 foreign key constraints 這種牽涉到資料庫的事情不常使用
-
-`validates :foreign_key, uniqueness: true` 是整合資料的一種方法。`:dependet` 選項讓 model 可以自動 destroy 與其關聯的資料。有人認為這種操作不能保證 referential integrity，要在資料庫解決才是。
-
-雖然 Active Record 沒有直接提供任何工具來解決這件事，但你可以用 `execute` 方法來執行 SQL 語句，也可以使用像是 [foreigner](https://github.com/matthuhiggins/foreigner) 這種 Gem。Foreigner 給  Active Record 加入 foreign key 的支援（包含在 `db/schema.rb` dumping foreign key。）
-
-Migrations 與 Seed Data
+Active Record 與參照完整性
 ----------------------------
 
-有些人使用 Migration 來加資料到資料庫：
+Active Record 認為事情要在 model 裡處理好，而不是在資料庫。也是因為這個原因，像是觸發器或外鍵約束，這種需要在資料庫實作的功能，不常使用。
+
+像 `validates :foreign_key, uniqueness: true` 這樣的驗證，是加強資料整合性的方法之一。`:dependet` 選項讓 Model 可以自動刪除關聯的資料。某些人認為像是這種操作，以及所有在應用程式層級執行的操作，無法保證參照的完整性，要跟外鍵約束一樣，放在資料庫解決才是。
+
+雖然 Active Record 沒有直接提供任何工具來解決這件事，但可以用 `execute` 方法來執行任何的 SQL 語句，也可以使用像是 [foreigner](https://github.com/matthuhiggins/foreigner) 這種 RubyGem。Foreigner 給 Active Record 加入外鍵的支援（支援導出外鍵到 `db/schema.rb`）。
+
+遷移與種子資料
+----------------------------
+
+有些人使用遷移來給資料庫新增資料：
 
 ```ruby
 class AddInitialProducts < ActiveRecord::Migration
@@ -850,7 +756,7 @@ class AddInitialProducts < ActiveRecord::Migration
 end
 ```
 
-但 Rails 有 “seeds” 這個功能，應該這麼用才對。在 `db/seeds.rb` 填入 Ruby 代碼，執行 `rake db:seed` 即可：
+但 Rails 有 “seeds” 這個功能，應該這麼用這個來給資料庫新增初始資料才對。用起來非常簡單，在 `db/seeds.rb` 寫些 Ruby，執行 `rake db:seed` 即可：
 
 ```ruby
 5.times do |i|
@@ -858,4 +764,4 @@ end
 end
 ```
 
-這個辦法比用 Migration 來建立資料到空的資料庫好。
+這樣比用遷移來設定新應用程式的資料庫簡潔許多。

@@ -53,9 +53,17 @@ C
 
 * Cache 快取
 
+* Class 類別
+
+Ruby 的 `Class`
+
 * CamelCase 駝峰形式
 
 * Code 程式碼
+
+* Column 欄位
+
+資料庫的欄位
 
 * Commit 提交
 
@@ -63,9 +71,24 @@ C
 
 亦作電腦。
 
+* Copy 複本
+
 D
 ------
 
+* Database 資料庫
+
+* Database Schema 資料庫綱要
+
+通常指的是 Rails `db/schema.rb` 檔案。也有資料庫結構的意思。
+
+* DDL Transaction DDL 交易
+
+[Transactional DDL in PostgreSQL: A Competitive Analysis - PostgreSQL wiki](https://wiki.postgresql.org/wiki/Transactional_DDL_in_PostgreSQL:_A_Competitive_Analysis)
+
+* Drop 刪除
+
+刪除整個資料庫、刪除整張資料表。
 
 E
 ------
@@ -74,6 +97,13 @@ E
 F
 ------
 
+* Foreign Key 外鍵
+
+* Foreign Key Constraint 外鍵約束
+
+資料庫特有的功能之一。
+
+* File 檔案
 
 G
 ------
@@ -86,8 +116,15 @@ H
 I
 ------
 
-* instance 實體
-* instance variable 實體變數
+* Index 索引
+
+給資料庫欄位加上索引，提高檢索時的效率。
+
+* Instance 實體
+
+* Instance variable 實體變數
+
+* Integrity 完整性
 
 J
 ------
@@ -147,10 +184,20 @@ P
 Q
 ------
 
+* Query 查詢
 
+* Query String 查詢字串
+
+URL 的一部分。後面以 `?` 定義的變數。
+
+`http://server/program/path/?query_string`
 
 R
 ------
+
+* Rake Task Rake 任務
+
+* Referential Integrity 參照完整性
 
 * Repository 原碼庫。
 
@@ -166,7 +213,7 @@ Repository 在生活中有倉庫的意思，在版本控制的世界裡，通常
 
 * Rollback 回滾
 
-資料庫往前回滾，很生動吧。
+資料庫恢復至以前的狀態。
 
 S
 ------
@@ -177,18 +224,36 @@ S
 
 目前官方已經不推薦使用鷹架，自己建立文件才能更好的掌握 Rails（尤其是新手）。
 
+* Seed Data 種子資料
+
+資料庫的初始資料，通常寫在 `db/seeds.rb` 檔案裡。
+
 * Self-Join 自連接
+
+* Stored Procedure 儲存過程
+
+在資料庫先寫好程式，供外部程式呼叫。
+
+http://zh.wikipedia.org/wiki/%E5%AD%98%E5%82%A8%E7%A8%8B%E5%BA%8F
 
 T
 ------
 
 * Table 資料表
 
+* Task 任務
+
+Rake 任務。
+
 * Transaction 交易
+
+可逆的資料庫操作。
 
 * Type 類型
 
-一般我們說，你喜歡哪種類型的女生呀？我喜歡____類型的。用已經有的中文來表示。
+* Trigger 觸發器
+
+資料庫特有的功能之一。
 
 U
 ------
