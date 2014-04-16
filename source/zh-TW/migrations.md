@@ -84,29 +84,18 @@ end
 
 ### 新增獨立的 Migration
 
-__Migration 存在那裡？__
+遷移檔案存在 `db/migrate` 目錄，一個檔案對應一筆遷移。檔名以 `YYYYMMDDHHMMSS_create_products.rb` 形式命名：
 
-`db/migrate` 目錄下。
 
-__Migration 檔名規則？__
+`YYYYMMDDHHMMSS_migration_name.rb`，前面的 `YYYYMMDDHHMMSS` 是 UTC 格式的時間戳章，接著是底線，底線後面是該筆遷移的名稱。遷移類別以駝峰形式命名，會對應到 `_migration_name`。舉例來說 `20140916204300_create_products.rb` 會定義出 `CreateProducts` 這樣的類別名稱。而 `20121027111111_add_details_to_products.rb` 則會定義出 `AddDetailsToProducts` 這樣的類別名稱。Rails 根據時間戳章決定執行的先後順序。若是從別的應用程式複製過來的遷移檔案，或是自己產生的遷移，要注意執行的順序。
 
-`YYYYMMDDHHMMSS_migration_name.rb`，前面的 `YYYYMMDDHHMMSS` 是 UTC 格式的時間戳章，後面接的是該 Migration 的名稱（前例 `migration_name.rb`）。Migration 的類別是用駝峰形式（CamelCased）定義的，會對應到檔名。
-
-舉個例子：
-
-`20130916204300_create_products.rb` 會定義出 `CreateProducts` 這樣的類別名稱。
-
-`20121027111111_add_details_to_products.rb` 會定義出 `AddDetailsToProducts` 這樣的類別名稱。
-
-__Rails 根據時間戳章決定運行先後順序。__
-
-__怎麼產生 Migration?__
+當然了，計算時間戳章很難，所以 Active Record 提供了產生器，幫您處理好時間戳的問題：
 
 ```bash
 $ rails generate migration AddPartNumberToProducts
 ```
 
-會產生出空的 Migration：
+會產生出空的遷移檔案，遷移的類別名稱已經取好了：
 
 ```ruby
 class AddPartNumberToProducts < ActiveRecord::Migration
@@ -115,7 +104,8 @@ class AddPartNumberToProducts < ActiveRecord::Migration
 end
 ```
 
-Migration 名稱有兩個常見的形式：`AddXXXToYYY`、`RemoveXXXFromYYY`，之後接一系列的欄位名稱＋類型。則會自動幫你產生 `add_column`：
+Migration 名稱若是 `AddXXXToYYY` 或 `RemoveXXXFromYYY`，之後接一系列的欄位名稱與類型。則會自動幫你產生 `add_column` 或 `remove_column`：
+
 
 ```bash
 $ rails generate migration AddPartNumberToProducts part_number:string
@@ -130,8 +120,6 @@ class AddPartNumberToProducts < ActiveRecord::Migration
   end
 end
 ```
-
-當你 rollback 的時候，Rails 會自動幫你 `remove_column`。
 
 給欄位加上索引（index）也是很簡單的：
 
@@ -183,13 +171,13 @@ class AddDetailsToProducts < ActiveRecord::Migration
 end
 ```
 
-剛剛已經講過兩個常見的 Migration 命名形式：`AddXXXToYYY`、`RemoveXXXFromYYY`，還有 `CreateXXX` 這種：
+剛剛已經看過兩種常見的遷移命名形式：`AddXXXToYYY`、`RemoveXXXFromYYY`，還有 `CreateXXX` 這種，後面接欄位名與類型：
 
 ```bash
 $ rails generate migration CreateProducts name:string part_number:string
 ```
 
-會新建 table 及欄位：
+則會新建 table 及欄位：
 
 ```ruby
 class CreateProducts < ActiveRecord::Migration
@@ -202,12 +190,14 @@ class CreateProducts < ActiveRecord::Migration
 end
 ```
 
-不過 Rails 產生的 Migration 不是不能改的，可以按需更改。
+Rails 產生的遷移檔案不過是個開始，可以透過編輯 `db/migrate/YYYYMMDDHHMMSS_add_details_to_products.rb` 檔案，根據需求修改。
 
-欄位類型還有一種叫做 `references` （＝ `belongs_to`）：
+還有一種欄位類型叫做 `references`（＝ `belongs_to`）：
 
 ```bash
 $ rails generate migration AddUserRefToProducts user:references
+# 等同於
+$ rails generate migration AddUserRefToProducts user:belongs_to
 ```
 
 會產生
@@ -220,9 +210,9 @@ class AddUserRefToProducts < ActiveRecord::Migration
 end
 ```
 
-會針對 Product 表，產生一個 `user_id` 欄位並加上索引。
+會給 Product 表，產生一個 `user_id` 欄位並加上索引。
 
-__產生 Join Table?__
+若傳給產生器的遷移名稱，名稱部分包含 `JoinTable`，則會建出連接表：
 
 ```bash
 rails g migration CreateJoinTableCustomerProduct customer product
@@ -243,7 +233,7 @@ end
 
 ### Model 產生器
 
-看看 `rails generate model` 會產生出來的 Migration 例子，比如：
+Model 與鷹架產生器新建 Model 時，也會建立遷移。這個遷移檔案會包含建立相關資料表的步驟。若進一步告訴 Rails 所需的欄位，欄位也會加入至遷移檔案裡。舉例來說，執行：
 
 ```bash
 $ rails generate model Product name:string description:text
@@ -264,19 +254,11 @@ class CreateProducts < ActiveRecord::Migration
 end
 ```
 
+可以接著給產生出來的遷移檔案新增欄位。
 
-`rails generate model Product` 後面可接無限個欄位名及類型。
+### 支援的類型修飾符
 
-__Active Record 支援的欄位類型有哪些？__
-
-> `:primary_key`, `:string`, `:text`, <br>
-> `:integer`, `:float`, `:decimal`, <br>
-> `:datetime`, `:timestamp`, `:time`, <br>
-> `:date`, `:binary`, `:boolean`, `:references`
-
-### 類型修飾符
-
-類型後面還可加修飾符（modifiers），支持下列修飾符：
+類型後面還可加修飾符（modifiers），放在大括號裡。可以使用以下修飾符：
 
 |修飾符         |說明                                           |
 |:-------------|:---------------------------------------------|
@@ -286,7 +268,7 @@ __Active Record 支援的欄位類型有哪些？__
 |`:polymorphic`| 給 `belongs_to` association 加上 `type` 欄位。|
 |`:null`       | 欄位允不允許 `NULL` 值。|
 
-舉例來說
+舉例來說，執行：
 
 ```bash
 $ rails generate migration AddDetailsToProducts 'price:decimal{5,2}' supplier:references{polymorphic}
@@ -297,18 +279,20 @@ $ rails generate migration AddDetailsToProducts 'price:decimal{5,2}' supplier:re
 ```ruby
 class AddDetailsToProducts < ActiveRecord::Migration
   def change
-    add_column :products, :price, precision: 5, scale: 2
+    add_column :products, :price, :decimal, precision: 5, scale: 2
     add_reference :products, :supplier, polymorphic: true, index: true
   end
 end
 ```
 
-撰寫 Migration
+撰寫遷移
 ------------------
 
-### 產生 Table
+使用產生器建立出遷移檔案之後，開工的時候到了！
 
-`create_table`，通常用 `rails generate model` 或是 `rails generate scaffold` 的時候會自動產生 Migration，裡面就帶有 `create_table`，比如 `rails g model product name:string`：
+### 建立資料表
+
+`create_table` 是最基礎的方法之一，通常 `rails generate model` 或 `rails generate scaffold` 便會自動產生出來。常見用途：
 
 ```ruby
 create_table :products do |t|
@@ -316,7 +300,9 @@ create_table :products do |t|
 end
 ```
 
-`create_table` 預設會產生主鍵（`id`），可以給主鍵換名字。用 `:primary_key`，或者是不要主鍵，可以傳入 `id: false`。要傳入資料庫相關的選項，可以用 `:options`
+會建立一張 `products` 資料表，有著 `name` 欄位（以及看不見的主鍵 `id`）。
+
+`create_table` 預設會產生主鍵（`id`），可以用 `:primary_key` 選項來修改主鍵的名字（記得更新對應的 Model）。或者是完全不要主鍵，可以傳入 `id: false` 選項。資料庫特定的選項，可以傳給 `:options`
 
 ```ruby
 create_table :products, options: "ENGINE=BLACKHOLE" do |t|
@@ -324,34 +310,35 @@ create_table :products, options: "ENGINE=BLACKHOLE" do |t|
 end
 ```
 
-會在產生出來的 SQL 語句，加上 `ENGINE=BLACKHOLE`。
+會在用來建立資料表的 SQL 語句，附上 `ENGINE=BLACKHOLE`（使用 MySQL 預設是 `ENGINE=InnoDB`）。
 
-更多可查閱 [create_table](http://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html#method-i-create_table) API。
+更多細節可查閱 [create_table](http://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html#method-i-create_table) API。
 
+### 建立連接資料表
 
-### 產生 Join Table
-
-`create_join_table` 會產生 HABTM (HasAndBelongsToMany) join table。常見的應用場景：
+`create_join_table` 會建立一張 HABTM (`has_and_belongs_to_many`)連接表。常見的應用場景：
 
 ```ruby
 create_join_table :products, :categories
 ```
 
-會產生一個 `categories_products` 表，有著 `category_id` 與 `product_id` 欄位。這些欄位的預設選項是 `null: false`，可以在 `:column_options` 裡改為 `true`：
+會建立一張 `categories_products` 資料表，有著 `category_id` 與 `product_id` 欄位。這些欄位的預設選項是 `null: false`，可以在 `:column_options` 修改預設值：
 
 ```ruby
 create_join_table :products, :categories, column_options: {null: true}
 ```
 
-可以更改 join table 的名字，使用 `table_name:` 選項：
+會建立 `product_id` 與 `category_id` 欄位，配上 `null: true` 選項。
+
+若要修改連接資料表的名字，使用 `table_name:` 選項：
 
 ```ruby
 create_join_table :products, :categories, table_name: :categorization
 ```
 
-便會產生出 `categorization` 表，一樣有 `category_id` 與 `product_id`。
+便會產生出 `categorization` 資料表，一樣有 `category_id` 與 `product_id`。
 
-`create_join_table` 也接受區塊，可以用來加索引、或是新增更多欄位：
+`create_join_table` 也接受區塊，可以用來加索引（預設不會加）、或用來新增更多欄位：
 
 ```ruby
 create_join_table :products, :categories do |t|
@@ -360,9 +347,9 @@ create_join_table :products, :categories do |t|
 end
 ```
 
-### 變更 Table
+### 修改資料表
 
-`change_table` 用來變更已存在的 table。
+`change_table` 用來修改已存在的資料表。使用方式與 `create_table` 雷同，但傳入區塊的物件有更多方法可用。
 
 ```ruby
 change_table :products do |t|
@@ -377,26 +364,31 @@ end
 
 ### Helpers 不夠用怎麼辦
 
-Active Record 提供的 Helper 無法完成你想做的事情時，可以使用 `execute` 方法來執行任何 SQL 語句：
+Active Record 提供的 Helper 不夠用的時候，可以使用 `execute` 方法來執行任何 SQL 語句：
 
 ```ruby
 Product.connection.execute('UPDATE `products` SET `price`=`free` WHERE 1')
 ```
 
-每個方法的更多細節與範例，請查閱 API 文件，特別是：
+關於每個方法的更多細節與範例，請查閱 API 文件，特別是：
 
 [`ActiveRecord::ConnectionAdapters::SchemaStatements`](http://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html)
-(which provides the methods available in the `change`, `up` and `down` methods)
+（在 `change`, `up` and `down` 裡可用的方法有那些）
 
 [`ActiveRecord::ConnectionAdapters::TableDefinition`](http://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/TableDefinition.html)
-(which provides the methods available on the object yielded by `create_table`)
+（傳入 `create_table` 區塊物件可用的方法有那些）
 
 [`ActiveRecord::ConnectionAdapters::Table`](http://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/Table.html)
-(which provides the methods available on the object yielded by `change_table`).
+（傳入 `change_table` 區塊物件可用的方法有那些）
 
 ### 使用 `change` 方法
 
-撰寫 Migration 主要用 `change`，大多數情況 Active Record 知道如何執行逆操作。下面是 Active Record 可以自動產生逆操作的方法：
+The `change` method is the primary way of writing migrations. It works for the
+majority of cases, where Active Record knows how to reverse the migration
+automatically. Currently, the `change` method supports only these migration
+definitions:
+
+撰寫遷移檔案主要用 `change` 方法，適用於大多數情況，多數 Active Record 知道如何執行逆操作的情況。以下是目前 `change` 方法裡所支援的方法：
 
 * `add_column`
 * `add_index`
@@ -414,11 +406,11 @@ Product.connection.execute('UPDATE `products` SET `price`=`free` WHERE 1')
 
 `change_table` 也是可逆的，只要傳給 `change_table` 的區塊沒有呼叫 `change`、`change_default` 或是 `remove` 即可。
 
-如果你想有更多的靈活性，可以使用 `reversible` 或是撰寫 `up`、`down` 方法。
+如果想使用其它的方法，可以使用 `reversible` 或是撰寫 `up`、`down` 方法，而不是使用 `change`。
 
 ### 使用 `reversible`
 
-複雜的 Migration Active Record 可能不知道怎麼變回來。這時候可以使用 `reversible`：
+需要處理 Active Record 不知道怎麼變回來的複雜遷移時，可以使用 `reversible` 方法來指定遷移時要做什麼（`up`），回滾時要做什麼（`down`），比如：
 
 ```ruby
 class ExampleMigration < ActiveRecord::Migration
@@ -448,18 +440,19 @@ class ExampleMigration < ActiveRecord::Migration
     add_column :users, :home_page_url, :string
     rename_column :users, :email, :email_address
   end
+end
 ```
 
-使用 `reversible` 會確保執行順序的正確性。若你做了不可逆的操作，比如刪除資料。Active Record 會在執行 `down` 區塊時，raise 一個 `ActiveRecord::IrreversibleMigration`。
+使用 `reversible` 會確保執行順序的正確性。上例的遷移取消時（回滾），`down` 區塊會在 `home_page_url` 欄位移除前，以及 `products` 資料表刪除前，執行 `down` 區塊裡的內容。
 
+
+有時候遷移做了怎麼樣都不可逆的操作，比如，可能是刪除資料。這種情況下，Active Record 會在試著取消遷移時，拋出一個 `ActiveRecord::IrreversibleMigration`，表示無法恢復先前的操作。
 
 ### 使用 `up`、`down` 方法
 
-可以不用 `change` 撰寫 Migration，使用經典的 `up`、`down` 寫法。
+可以不用 `change` 來撰寫遷移，而使用經典的 `up`、`down` 寫法。
 
-`up` 撰寫 migrate、`down` 撰寫 rollback。兩個操作要可以互相抵消。舉例來說，`up` 建了一個 table，`down` 就要 `drop` 那個 table。
-
-上面使用 `reversible` 可以用 `up`＋`down` 改寫：
+`up` 撰寫對資料庫綱要的變化（遷移）、`down` 撰寫取消 `up` 操作的操作（回滾）。兩個操作要可以互相抵消。舉例來說，`up` 建了一張資料表，則 `down` 便要 `drop` 該張資料表。取消遷移時最好依照遷移時的反序執行。上例使用 `reversible` 可以用 `up`＋`down` 改寫：
 
 ```ruby
 class ExampleMigration < ActiveRecord::Migration
@@ -494,11 +487,11 @@ class ExampleMigration < ActiveRecord::Migration
 end
 ```
 
-如果 Migration 是不可逆的操作，要在 `down` raise 一個 `ActiveRecord::IrreversibleMigration`。
+如果遷移是不可逆的操作，要在 `down` 拋出一個 `ActiveRecord::IrreversibleMigration`。這樣子別的開發者試圖要取消遷移時，便會顯示這個遷移無法取消的錯誤訊息。
 
-### 取消之前的 Migration
+### 取消之前的遷移
 
-用 `revert` 來取消先前的 Migration：
+Active Record 提供了回滾遷移的方法：`revert`
 
 ```ruby
 require_relative '2012121212_example_migration'
@@ -514,7 +507,7 @@ class FixupExampleMigration < ActiveRecord::Migration
 end
 ```
 
-`revert` 方法也接受區塊，可以只取消部份的 Migration。看看這個例子（取消 `ExampleMigration`）：
+`revert` 方法也接受區塊，具體取消的操作寫在區塊裡，這在只取消部份的遷移的場景下很有用。舉個例子，假設 `ExampleMigration` 已經遷移了，之後覺得還是序列化產品清單（下例的 `product_list`）好了，於是要取消遷移，可以這麼寫：
 
 ```ruby
 class SerializeProductListMigration < ActiveRecord::Migration
@@ -560,39 +553,47 @@ class SerializeProductListMigration < ActiveRecord::Migration
 end
 ```
 
-上面這個 Migration 也可以不用 `revert` 寫成。
+同樣的遷移也可以不用 `revert` 處理，但會需要多做幾個步驟。把 `create_table` 與 `reversible` 順序對換，`create_table` 換成 `drop_table`，最後對換 `up` `down` 裡的程式碼。其實這就是 `revert` 做的事。
 
-把 `create_table` 與 `reversible` 順序對換，`create_table` 換成 `drop_table`，最後對換 `up` `down`。
+## 執行遷移
 
-這其實就是 `revert` 做的事。
+Rails 提供了一組 Rake 任務，用來執行特定的遷移。
 
-## 執行 Migrations
+第一個相關會用到的 Rake 任務是 `rake db:migrate`。`rake db:migrate` 任務最簡單的形式，不過是尚未執行的遷移裡面的 `change` 或 `up` 方法。若所有的遷移都執行完畢了便離開，否則按照時間戳的順序進行遷移。
 
-Rails 提供了許多 Rake 任務用來執行 Migration。
+有點要注意的是，執行 `db:migrate` 也會執行 `db:schema:dump`，會更新 `db/schema.rb` 來反映出當下的資料庫結構。
 
-有點要注意的是，執行 `db:migrate` 也會執行 `db:schema:dump`，會幫你更新 `db/schema.rb` 來反映出當下的資料庫結構。
+如果指定了目標版本，Active Record 會執行目標版本之前所有的遷移。目標版本的名稱是遷移名前綴的 UTC 時間戳章，比如 `20080906120000`：
 
-如果指定了 target 版本，Active Record 會執行版本之前所有的 Migration。target 名稱是 Migration 前面的 UTC 時間戳章（包含 20080906120000）：
 
 ```bash
 $ rake db:migrate VERSION=20080906120000
 ```
 
-```bash
-$ rake db:rollback VERSION=20080906120000
-```
-
-會從最新的版本，執行 `down` 方法到 `20080906120000` 但不包含（`20080906120000`）
+If version 20080906120000 is greater than the current version (i.e., it is
+migrating upwards), this will run the `change` (or `up`) method
+on all migrations up to and
+including 20080906120000, and will not execute any later migrations. If
+migrating downwards, this will run the `down` method on all the migrations
+down to, but not including, 20080906120000.
 
 ### 回滾
 
 最常見的就是回滾上一個 task。假設你犯了個錯誤，並想修正。可以：
+
+A common task is to rollback the last migration. For example, if you made a
+mistake in it and wish to correct it. Rather than tracking down the version
+number associated with the previous migration you can run:
 
 ```bash
 $ rake db:rollback
 ```
 
 會回退一個 Migration。可以指定要回退幾步，使用 `STEP` 參數
+
+This will rollback the latest migration, either by reverting the `change`
+method or by running the `down` method. If you need to undo
+several migrations you can provide a `STEP` parameter:
 
 ```bash
 $ rake db:rollback STEP=3
@@ -602,15 +603,29 @@ $ rake db:rollback STEP=3
 
 `db:migrate:redo` 用來回退、接著再一次 `rake db:migrate`，同樣接受 `STEP` 參數：
 
+will revert the last 3 migrations.
+
+The `db:migrate:redo` task is a shortcut for doing a rollback and then migrating
+back up again. As with the `db:rollback` task, you can use the `STEP` parameter
+if you need to go more than one version back, for example:
+
 ```bash
 $ rake db:migrate:redo STEP=3
 ```
 
 這些操作用 `db:migrate` 都辦得到，只是方便你使用而已。
 
+
+Neither of these Rake tasks do anything you could not do with `db:migrate`. They
+are simply more convenient, since you do not need to explicitly specify the
+version to migrate to.
+
 ### 設定資料庫
 
 The `rake db:setup` 會新建資料庫、載入 schema、並用種子資料來初始化資料庫。
+
+The `rake db:setup` task will create the database, load the schema and initialize
+it with the seed data.
 
 ### 重置資料庫
 
@@ -620,9 +635,22 @@ The `rake db:setup` 會新建資料庫、載入 schema、並用種子資料來�
 
 __注意！__ 這跟執行所有的 Migration 不一樣。這只會用 `schema.rb` 裡的內容來操作。如果 Migration 不能回退， `rake db:reset` 也是派不上用場的！了解更多參考 [schema dumping and you](#7-schema-dumping-與你)。
 
-### 執行特定的 Migration
+The `rake db:reset` task will drop the database and set it up again. This is
+functionally equivalent to `rake db:drop db:setup`.
+
+NOTE: This is not the same as running all the migrations. It will only use the
+contents of the current `schema.rb` file. If a migration can't be rolled back,
+`rake db:reset` may not help you. To find out more about dumping the schema see
+[Schema Dumping and You](#schema-dumping-and-you) section.
+
+### 執行特定的遷移
 
 用 `db:migrate:up` 或 `db:migrate:down` tasks，並指定版本：
+
+If you need to run a specific migration up or down, the `db:migrate:up` and
+`db:migrate:down` tasks will do that. Just specify the appropriate version and
+the corresponding migration will have its `change`, `up` or `down` method
+invoked, for example:
 
 ```bash
 $ rake db:migrate:up VERSION=20080906120000
@@ -630,17 +658,30 @@ $ rake db:migrate:up VERSION=20080906120000
 
 會執行在 `20080906120000` 版本之前的 Migration 裡面的 `change`、`up` 方法。若已經遷移過了，則 Active Record 不會執行。
 
-### 在不同環境下執行 Migration
+will run the 20080906120000 migration by running the `change` method (or the
+`up` method). This task will
+first check whether the migration is already performed and will do nothing if
+Active Record believes that it has already been run.
+
+### 在不同環境下執行遷移
 
 默認 `rake db:migrate` 會在 `development` 環境下執行。可以通過指定 `RAILS_ENV` 來指定運行的環境，比如在 `test` 環境下：
+
+By default running `rake db:migrate` will run in the `development` environment.
+To run migrations against another environment you can specify it using the
+`RAILS_ENV` environment variable while running the command. For example to run
+migrations against the `test` environment you could run:
 
 ```bash
 $ rake db:migrate RAILS_ENV=test
 ```
 
-### 修改執行中 Migration 的輸出
+### 修改遷移執行中的輸出
 
 Migration 通常會告訴你他們幹了什麼，並花了多長時間。建立 table 及加 index 的輸出可能像是這樣：
+
+By default migrations tell you exactly what they're doing and how long it took.
+A migration creating a table and adding an index might produce output like this
 
 ```bash
 ==  CreateProducts: migrating =================================================
@@ -651,13 +692,16 @@ Migration 通常會告訴你他們幹了什麼，並花了多長時間。建立 
 
 Migration 提供了幾個方法讓你控制輸出訊息：
 
+
+Several methods are provided in migrations that allow you to control all this:
+
 | 方法                  | 目的
 | :-------------------- | :-------
 | suppress_messages    | 接受區塊作為參數，區塊內指名的代碼不會產生輸出。
 | say                  | 接受一個訊息字串，並輸出該字串。第二個參數可以用來指定要不要縮排。
 | say_with_time        | 同上，但會附上區塊的執行時間。若區塊返回整數，會假定該整數是受影響的 row 的數量。
 
-舉例來說：
+舉例來說，這個遷移：
 
 ```ruby
 class CreateProducts < ActiveRecord::Migration
@@ -697,13 +741,35 @@ end
 
 如果想 Active Record 完全不要輸出訊息，執行 `rake db:migrate VERBOSE=false`。
 
-## 修改現有的 Migrations
+If you want Active Record to not output anything, then running `rake db:migrate
+VERBOSE=false` will suppress all output.
+
+## 修改現有的遷移
 
 有時候 Migration 可能會寫錯。修正過來之後，要先執行 `rake db:rollback`，再執行 `rake db:migrate`。
 
 編輯現有的 Migration 不太好，因為會增加一起開發的人更多工作量。尤其是 Migration 已經上 production，應該要寫個新的 Migration，來達成你想完成的事情。
 
 `revert` 方法用來寫新的 Migration 取消先前的 Migration 很有用。
+
+Occasionally you will make a mistake when writing a migration. If you have
+already run the migration then you cannot just edit the migration and run the
+migration again: Rails thinks it has already run the migration and so will do
+nothing when you run `rake db:migrate`. You must rollback the migration (for
+example with `rake db:rollback`), edit your migration and then run
+`rake db:migrate` to run the corrected version.
+
+In general, editing existing migrations is not a good idea. You will be
+creating extra work for yourself and your co-workers and cause major headaches
+if the existing version of the migration has already been run on production
+machines. Instead, you should write a new migration that performs the changes
+you require. Editing a freshly generated migration that has not yet been
+committed to source control (or, more generally, which has not been propagated
+beyond your development machine) is relatively harmless.
+
+The `revert` method can be helpful when writing a new migration to undo
+previous migrations in whole or in part
+(see [Reverting Previous Migrations](#reverting-previous-migrations) above).
 
 ## Schema Dumping 與你
 
