@@ -3,7 +3,7 @@ Active Record 驗證
 
 本篇教您如何使用 Active Record 的驗證功能，在資料存入資料庫前，驗證物件的狀態。
 
-讀完本篇後，您將學會：
+讀完本篇，您將了解：
 
 * 如何使用 Active Record 內建的驗證 Helpers。
 * 如何新建自己的驗證方法。
