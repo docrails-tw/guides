@@ -17,7 +17,6 @@
       name: Active Record 遷移
       url: migrations.html
       description: 本篇講解如何有條有理地使用 Active Record 來修改資料庫。
-      needs_translation: true
     -
       name: Active Record 驗證
       url: active_record_validations.html
