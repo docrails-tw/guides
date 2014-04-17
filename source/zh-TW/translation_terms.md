@@ -63,9 +63,13 @@ Ruby 的 `Class`
 
 * Column 欄位
 
-資料庫的欄位
+資料庫的欄位。
 
 * Commit 提交
+
+版本管理世界的用詞。`git commit`。
+
+* Conditional 條件式
 
 * Computer 計算機
 
@@ -80,7 +84,7 @@ D
 
 * Database Schema 資料庫綱要
 
-通常指的是 Rails `db/schema.rb` 檔案。也有資料庫結構的意思。
+通常指的是 Rails `db/schema.rb` 檔案。有時也有資料庫結構的意思。
 
 * DDL Transaction DDL 交易
 
@@ -93,6 +97,8 @@ D
 E
 ------
 
+* exception 異常
+
 
 F
 ------
@@ -104,6 +110,10 @@ F
 資料庫特有的功能之一。
 
 * File 檔案
+
+* Finder Methods 查詢方法
+
+指得是 Active Record 所提供的查詢方法，如 `find`、`first、`find_by` 等。
 
 G
 ------
@@ -123,6 +133,10 @@ I
 * Instance 實體
 
 * Instance variable 實體變數
+
+* Instantiate 實體化
+
+指 `Class.new`。
 
 * Integrity 完整性
 
@@ -175,6 +189,10 @@ O
 P
 ------
 
+* Predicate 謂詞
+
+謂詞，回傳真或假的條件式，比如 `Array#empty?`。
+
 * Program (n.) 程式
 
 * Program (v.) 編程
@@ -195,9 +213,17 @@ URL 的一部分。後面以 `?` 定義的變數。
 R
 ------
 
+* Raise 拋出
+
+拋出異常、拋出錯誤。
+
 * Rake Task Rake 任務
 
 * Referential Integrity 參照完整性
+
+* Record 記錄
+
+資料庫裡的紀錄。
 
 * Repository 原碼庫。
 
