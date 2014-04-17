@@ -3,7 +3,7 @@ Active Record 關聯
 
 本篇介紹 Active Record 的關聯功能。
 
-讀完本篇，您將學會
+讀完本篇，您將了解：
 
 * 如何宣告 Active Record Model 之間的關聯。
 * 如何理解 Active Record 的各種關聯。

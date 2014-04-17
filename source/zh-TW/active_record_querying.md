@@ -3,12 +3,12 @@ Active Record 查詢
 
 本篇詳細介紹各種用 Active Record 多種從資料庫取出資料的方法。
 
-讀完本篇，您將學到：
+讀完本篇，您將了解：
 
 * 如何使用各種方法與條件來取出資料庫記錄（record）。
 * 如何排序、取出某幾個屬性、分組、其它用來找出資料庫記錄的特性。
 * 如何使用 Eager load 來減少資料庫查詢的次數。
-* 如何使用 Active Record 動態的 Finder 方法。
+* 如何使用 Active Record 動態的查詢方法。
 * 如何檢查特定的資料庫記錄是否存在。
 * 如何在 Active Record Model 裡做各式計算。
 * 如何對 Active Record Relation 使用 `EXPLAIN`。
