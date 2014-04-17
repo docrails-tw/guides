@@ -14,7 +14,7 @@ Active Record 回呼
 物件的生命週期
 ---------------------
 
-Rails 應用程式常見的操作裡，物件可以被新建、更新與刪除。Active Record 提供了掛載機制到物件的生命週期裡，用來控制應用程式與資料。
+Rails 應用程式常見的操作裡，物件可以被新建、更新與刪除。Active Record 提供了掛載機制，可以掛載事件到物件的生命週期裡，用來控制應用程式與資料。
 
 回呼允許你在物件狀態前後，觸發特定的邏輯。
 
@@ -25,7 +25,7 @@ Rails 應用程式常見的操作裡，物件可以被新建、更新與刪除�
 
 ### 註冊回呼
 
-為了要使用可用的回呼，需先註冊要使用的回呼。可以使用一般的方法，或是宏風格的方法來註冊回呼：
+需要先註冊方可使用回呼。註冊回呼可以使用一般的方法或是宏風格的方法：
 
 ```ruby
 class User < ActiveRecord::Base
@@ -54,7 +54,7 @@ class User < ActiveRecord::Base
 end
 ```
 
-回呼也可只針對生命週期裡特定的事件：
+回呼也可只針對 Active Record 物件生命週期裡特定的事件觸發：
 
 ```ruby
 class User < ActiveRecord::Base
@@ -74,12 +74,12 @@ class User < ActiveRecord::Base
 end
 ```
 
-通常會把回呼方法會宣告為 `protected` 或 `private` 方法。若是 `public` 方法，則有可能會在 Model 外被呼叫，違反了物件封裝的精神。
+通常會把回呼方法宣告為 `protected` 或 `private` 方法。若是 `public` 方法，有可能會在 Model 外被呼叫，則違反了物件封裝的精神。
 
 可用的回呼
 -------------------
 
-以下是 Active Record 可用的回呼，依照__按照執行順序排序__：
+以下是 Active Record 可用的回呼，__依照執行順序排序__：
 
 ### 新建物件
 
@@ -120,7 +120,7 @@ WARNING: `after_save` 在 `create` 與 `update` 都會執行。但不論回呼�
 
 無論何時從資料庫取出 Active Record 物件時，如果同時使用了 `after_find` 與 `after_initialize`，會先呼叫 `after_find`。
 
-`after_initialize` 與 `after_find` 沒有對應的 `before_*`。註冊方法與一般的回呼相同。
+`after_initialize` 與 `after_find` 沒有對應的 `before_*`。`after_initialize` 與 `after_find` 註冊的方法與一般回呼相同。
 
 ```ruby
 class User < ActiveRecord::Base
@@ -252,14 +252,14 @@ NOTE: 這些查詢方法是 Active Record 給每個屬性動態產生的，參�
 
 為 Model 註冊新的回呼時，回呼便會加入佇列裡等待執行。這個佇列包含了所有需要執行的驗證、回呼以及資料庫操作。
 
-整條回呼鏈（Callback Chain）被包在一個交易裡。如果有任何的 `before_*` 回呼方法回傳 `false` 或拋出異常，則執行鏈會被終止，並回滾取消此次交易。而 `after_*` 回呼則需要拋出異常才可取消交易。
+整條回呼鏈（Callback Chain）被包在一筆交易（Transaction）裡。如果有任何的 `before_*` 回呼方法回傳 `false` 或拋出異常，則執行鏈會被終止，並回滾取消此次交易。而 `after_*` 回呼則需要拋出異常才可取消交易。
 
 WARNING: 即便回呼鏈已終止，任何非 `ActiveRecord::Rollback` 的異常會在回呼鏈終止時被 Rails 重複拋出。拋出非 `ActiveRecord::Rollback` 可能會導致不期望收到異常的方法像是 `save` 與 `update` 執行異常（通常會回傳 `true` 或 `false`）。
 
 關聯回呼
 --------------------------
 
-回呼也可穿透 Model 之間的關係，甚至可以透過關聯來定義。舉個例子，假設使用者有許多文章，使用者的文章應在刪除使用者時一併刪除。讓我們在與 `User` Model 相關聯的 `Post` Model 裡加入 `after_destroy` 回呼：
+回呼也可穿透 Model 之間的關係，甚至可以透過關聯來定義。舉個例子，假設使用者有許多文章，使用者的文章應在刪除使用者時一併刪除。可以在與 `User` Model 相關聯的 `Post` Model 裡加入 `after_destroy` 回呼：
 
 ```ruby
 class User < ActiveRecord::Base
@@ -286,11 +286,11 @@ Post destroyed
 條件式回呼
 ----------------------
 
-回呼和驗證一樣，也可以在滿足給定條件才執行。條件透過 `:if`、`:unless` 選項指定，接受 `Symbol`、`String`、`Proc` 或 `Array`。當回呼滿足某條件才執行時，請用 `:if`；回呼不滿足某條件才執行時，請用 `:unless`。
+回呼和驗證一樣，也可以在滿足給定條件時才執行。條件透過 `:if`、`:unless` 選項指定，接受 `Symbol`、`String`、`Proc` 或 `Array`。當回呼滿足某條件則執行時，請用 `:if`；回呼不滿足某條件則執行時，請用 `:unless`。
 
 ###  使用符號指定 `:if` 與 `:unless`
 
-`:if` 與 `:unless` 選項使用符號時，符號代表呼叫回呼前，所要執行的謂詞方法名稱。當使用 `:if` 選項時，若謂詞方法回傳 `false`，則不會執行回呼；當使用 `:unless` 選項時，則是 `true` 不會執行回呼。使用符號是最常見的選項。這種註冊回呼的方式，可以使用多個謂詞方法來決定是否要執行回呼。
+`:if` 與 `:unless` 選項傳入符號（Symbol）時，符號代表執行回呼前，所要呼叫的謂詞方法名稱。當使用 `:if` 選項時，若謂詞方法回傳 `false`，則不會執行回呼；當使用 `:unless` 選項時，則是 `true` 不會執行回呼。使用符號是最常見。這種註冊回呼的方式，還可以使用多個謂詞方法來決定是否要執行回呼。
 
 ```ruby
 class Order < ActiveRecord::Base
@@ -300,7 +300,7 @@ end
 
 ### 使用字串指定 `:if` 與 `:unless`
 
-傳入的字串將會使用 `eval` 求值，所以字串必須是合法的 Ruby 程式碼。應該只在要代表某個簡短條件下再使用字串：
+傳入的字串將會使用 `eval` 求值，所以字串必須是合法的 Ruby 程式碼。應該只在條件夠簡短的情況下再使用字串：
 
 ```ruby
 class Order < ActiveRecord::Base
@@ -310,7 +310,7 @@ end
 
 ### 使用 `Proc` 指定 `:if` 與 `:unless`
 
-最後，使用 `Proc` 物件來指定 `:if` 與 `:unless` 也可以，適合撰寫簡短驗證方法的場景下使用，通常是單行：
+最後，也可以使用 `Proc` 物件來指定 `:if` 與 `:unless`，適合撰寫簡短驗證方法的場景下使用，通常是單行：
 
 ```ruby
 class Order < ActiveRecord::Base
@@ -333,7 +333,7 @@ end
 回呼類別
 ------------------
 
-有時某個回呼可能別的 Model 也可重複使用，可以封裝成類別。Active Record 使封裝回呼方法到類別裡格外簡單，重用便更容易了。
+若某個回呼別的 Model 也可重複使用，此時便可把回呼封裝成類別。Active Record 使封裝回呼方法到類別裡格外簡單，重用便更容易了。
 
 以下是個範例。我們建立一個 `PictureFile` Model，並註冊一個 `after_destroy` 回呼：
 
@@ -347,7 +347,7 @@ class PictureFileCallbacks
 end
 ```
 
-回呼在類別裡宣告時（如上），回呼方法會收到 Model 物件作為參數。回呼類別在 Model 裡使用方式如下：
+回呼在類別裡宣告時（如上），回呼方法會收到 Model 實體（`picture_file`）作為參數。回呼類別在 Model 裡的使用方式如下：
 
 ```ruby
 class PictureFile < ActiveRecord::Base
@@ -355,7 +355,7 @@ class PictureFile < ActiveRecord::Base
 end
 ```
 
-注意我們需要建立一個新的 `PictureFileCallbacks` 新的實體，因為回呼寫在 `PictureFileCallbacks` 類裡是實體方法。若回呼使用到了實體變數的情況下特別有用。但通常回呼宣告成類別方法更合理：
+注意我們需要建立一個新的 `PictureFileCallbacks` 實體，因為回呼寫在 `PictureFileCallbacks` 類裡是實體方法。這在回呼使用到了實體變數的場景下特別有用。但通常回呼宣告成類別方法更合理：
 
 ```ruby
 class PictureFileCallbacks
@@ -380,9 +380,9 @@ end
 交易回呼
 --------------------
 
-完成資料庫交易操作時會觸發兩個條件式回呼：`after_commit` 與 `after_rollback`。這些回呼與 `after_save` 回呼非常類似，不同點在於 `after_commit` 是在提交到資料庫後執行，而 `after_rollback` 則是在資料庫回滾後執行。當 Active Record Model 需要與資料庫交易之外的外部系統互動時，這兩個回呼非常有用。
+完成資料庫交易操作時會觸發兩個條件式回呼：`after_commit` 與 `after_rollback`。它們與 `after_save` 回呼非常類似，不同點在於 `after_commit` 是提交到資料庫後才執行，而 `after_rollback` 則是在資料庫回滾後執行。當 Active Record Model 需要與資料庫交易之外的外部系統互動時，這兩個回呼非常有用。
 
-舉個例子，上例 `PictureFile` Model 需要在某個特定記錄刪除後，刪除一個檔案。若 `after_destroy` 之後拋出任何異常，則交易取消。但檔案卻被刪除了，Model 會處於一種不一致的狀態。舉例來說，假設下例的 `picture_file_2` 不是合法的檔案，`save!` 會拋出一個錯誤。
+舉個例子，上例 `PictureFile` Model 需要在某個特定記錄刪除後，刪除一個檔案。若 `after_destroy` 拋出任何異常，則交易取消。但檔案卻被刪除了，Model 會處於一種不一致的狀態。舉例來說，假設下例的 `picture_file_2` 不是合法的檔案，`save!` 會拋出一個錯誤。
 
 ```ruby
 PictureFile.transaction do
