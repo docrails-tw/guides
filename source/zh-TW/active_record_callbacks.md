@@ -380,10 +380,6 @@ end
 交易回呼
 --------------------
 
-在資料庫交易完成操作時，有兩個回呼會被觸發，分別是 `after_commit` 與 `after_rollback`。這倆與 `after_save` 類似，只是他們在資料庫完成操作，比如 commit 或 roll back 後才觸發，這在 Active Record Model 需要與外部系統互動時很有用。
-
-舉例來說，前面 `PictureFile` 的例子，需要在某個對應的 record 摧毀後再刪除圖片。如果 `after_destroy` 回呼之後有拋出異常，則會 roll back（因為 Model 操作都包在交易裡，），但此時圖片卻被刪掉了。比如 `picture_file_2` `save!` 時拋出異常：
-
 完成資料庫交易操作時會觸發兩個條件式回呼：`after_commit` 與 `after_rollback`。這些回呼與 `after_save` 回呼非常類似，不同點在於 `after_commit` 是在提交到資料庫後執行，而 `after_rollback` 則是在資料庫回滾後執行。當 Active Record Model 需要與資料庫交易之外的外部系統互動時，這兩個回呼非常有用。
 
 舉個例子，上例 `PictureFile` Model 需要在某個特定記錄刪除後，刪除一個檔案。若 `after_destroy` 之後拋出任何異常，則交易取消。但檔案卻被刪除了，Model 會處於一種不一致的狀態。舉例來說，假設下例的 `picture_file_2` 不是合法的檔案，`save!` 會拋出一個錯誤。
