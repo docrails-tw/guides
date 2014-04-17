@@ -25,7 +25,6 @@
       name: Active Record 回呼
       url: active_record_callbacks.html
       description: 本篇講解如何使用 Active Record 回呼功能。
-      needs_translation: true
     -
       name: Active Record 關聯
       url: association_basics.html
