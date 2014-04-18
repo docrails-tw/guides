@@ -58,7 +58,7 @@
     -
       name: Action Controller 綜覽
       url: action_controller_overview.html
-      description: 本篇講解 Controller 的工作原理，Controller 在 Request 週期所扮演的角色。內容包含 Session、Filter、Cookies、資料串流以及如何處理由 Request 發起的異常。
+      description: 本篇講解 Controller 的工作原理，Controller 在請求週期所扮演的角色。內容包含 Session、濾動器、Cookies、資料串流以及如何處理由請求所發起的異常。
     -
       name: Rails 路由：由表入裡
       url: routing.html
