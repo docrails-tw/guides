@@ -1,16 +1,12 @@
 翻譯術語
 ===================
 
-有更好的譯法，請告訴我，感謝。
-
-盡量按照字母順序排序。
+更好的譯法，請不吝指教，感謝。
 
 歡迎加入新詞條。
 
 保留原文不譯
 ------------
-
-* Action
 
 * Model
 
@@ -18,11 +14,21 @@
 
 * Controller
 
+* Cookie
+
+* Session
+
 * Token
 
 token 通常是由英數字組成的字串，做身分識別之用，如：
 
 OAuth 的 Access Token。
+
+* URL
+
+通常是翻譯成網址。
+
+* Web
 
 翻譯術語
 ------------
@@ -31,6 +37,14 @@ A
 ------
 
 * Accessor 存取器
+
+* Action 動作
+
+* Authentication 認證
+
+* Auxiliary Methods 輔助方法
+
+使用者認證。
 
 * Adapter 連接器
 
@@ -103,6 +117,10 @@ E
 F
 ------
 
+* Flash 提示訊息
+
+* Flash Message 提示訊息
+
 * Foreign Key 外鍵
 
 * Foreign Key Constraint 外鍵約束
@@ -114,6 +132,16 @@ F
 * Finder Methods 查詢方法
 
 指得是 Active Record 所提供的查詢方法，如 `find`、`first、`find_by` 等。
+
+* Filter 濾動器
+
+    * Before Filter 前置濾動器
+    * Around Filter 前後濾動器
+    * After Filter 後置濾動器
+
+* Filter Methods 濾動方法
+
+通常電子學的世界裡，我們有濾波器，給定輸入（以波的形式），經濾波器處理，再輸出，得名濾波器。但在 Rails 的世界裡，`before_filter` 總是用來過濾“動作”，或是在動作前執行程式。所以我用“濾動”這個詞。
 
 G
 ------
@@ -152,10 +180,14 @@ J
 K
 ------
 
+* Key 鍵
+
+Hash 的鍵。`{ "foo" => "bar" }` Hash 有一鍵為 `"foo"`，對應的值為 `"bar"`。
 
 L
 ------
 
+* Layout 版型
 
 M
 ------
@@ -170,8 +202,12 @@ M
 
 * Modifier 修飾符
 
+* Middleware 中間件
+
 N
 ------
+
+* Namespace 命名空間
 
 * Nesting 巢狀的
 
@@ -188,6 +224,8 @@ O
 
 P
 ------
+
+* Path 路徑
 
 * Predicate 謂詞
 
@@ -231,11 +269,11 @@ Repository 在生活中有倉庫的意思，在版本控制的世界裡，通常
 
 * Request 請求
 
-為 HTTP 協議裡的專有名詞，HTTP Request。
+為 HTTP 協定裡的專有名詞，HTTP Request。
 
-* Response 回應
+* Response 響應
 
-為 HTTP 協議裡的專有名詞，HTTP Response。
+為 HTTP 協定裡的專有名詞，HTTP Response。
 
 * Rollback 回滾
 
@@ -250,9 +288,15 @@ S
 
 目前官方已經不推薦使用鷹架，自己建立文件才能更好的掌握 Rails（尤其是新手）。
 
+* Scalar Value 純量值
+
+* Scalar Types 純量類型
+
 * Seed Data 種子資料
 
 資料庫的初始資料，通常寫在 `db/seeds.rb` 檔案裡。
+
+* Serialize 序列化
 
 * Self-Join 自連接
 
@@ -262,6 +306,12 @@ S
 
 http://zh.wikipedia.org/wiki/%E5%AD%98%E5%82%A8%E7%A8%8B%E5%BA%8F
 
+* Stream 串流
+
+* Streaming 串流
+
+* Strong Parameters 核可參數
+
 T
 ------
 
@@ -270,6 +320,8 @@ T
 * Task 任務
 
 Rake 任務。
+
+* Template 模版
 
 * Transaction 交易
 
@@ -292,6 +344,7 @@ V
 W
 ------
 
+* Web Service Web 服務
 
 X
 ------
