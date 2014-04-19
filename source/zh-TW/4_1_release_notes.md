@@ -525,7 +525,7 @@ Active Support
 
 * `blank?` and `present?` 會返回 singleton。 ([Commit](https://github.com/rails/rails/commit/126dc47665c65cd129967cbd8a5926dddd0aa514))
 
-* 新的設定： `I18n.enforce_available_locales` 預設是 `true`。代表 `I18n` 會確保所有傳入的 locale 都預先在 `available_locales` 裡聲明。 [PR#13341](https://github.com/rails/rails/pull/13341)
+* 新的設定： `I18n.enforce_available_locales` 預設是 `true`。代表 `I18n` 會確保所有傳入的 locale 都預先在 `available_locales` 裡宣告。 [PR#13341](https://github.com/rails/rails/pull/13341)
 
 * 引入 `Module#concerning`：一種自然、輕量級的方式來拆分 Class 內的職責。[Commit](https://github.com/rails/rails/commit/1eee0ca6de975b42524105a59e0521d18b38ab81)
 

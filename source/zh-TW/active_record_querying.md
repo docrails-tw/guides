@@ -420,7 +420,7 @@ WARNING: 條件是純字串可能有 SQL injection 的風險。舉例來說，`C
 Client.where("orders_count = ?", params[:orders])
 ```
 
-Active Record 會將 `?` 換成 `params[:orders]` 做查詢。也可聲明多個條件，條件式後的元素，對應到條件裡的每個 `?`。
+Active Record 會將 `?` 換成 `params[:orders]` 做查詢。也可宣告多個條件，條件式後的元素，對應到條件裡的每個 `?`。
 
 ```ruby
 Client.where("orders_count = ? AND locked = ?", params[:orders], false)
@@ -568,7 +568,7 @@ Client.order("orders_count ASC").order("created_at DESC")
 
 `Model.find` 預設會使用 `select *` 取出所有的欄位。
 
-只要取某些欄位的話，可以透過 `select` 方法來聲明。
+只要取某些欄位的話，可以透過 `select` 方法來宣告。
 
 比如，只要 `viewable_by` 與 `locked` 欄位：
 
@@ -1011,7 +1011,7 @@ SELECT posts.* FROM posts
 
 用白話解釋是：“依分類來回傳文章物件，且文章至少有一則評論”。有多則評論的文章將會出現很多次。
 
-#### 連接一層巢狀關聯
+#### 連接一層嵌套關聯
 
 ```ruby
 Post.joins(comments: :guest)
@@ -1027,7 +1027,7 @@ SELECT posts.* FROM posts
 
 用白話解釋是：“回傳所有有訪客評論的文章”。
 
-#### 連接多層巢狀關聯
+#### 連接多層嵌套關聯
 
 ```ruby
 Category.joins(posts: [{comments: :guest}, :tags])
@@ -1052,7 +1052,7 @@ time_range = (Time.now.midnight - 1.day)..Time.now.midnight
 Client.joins(:orders).where('orders.created_at' => time_range)
 ```
 
-另一種更簡潔的寫法是使用巢狀 Hash：
+另一種更簡潔的寫法是使用嵌套 Hash：
 
 ```ruby
 time_range = (Time.now.midnight - 1.day)..Time.now.midnight
@@ -1105,7 +1105,7 @@ SELECT addresses.* FROM addresses
 
 ### Eager Loading 多個關聯
 
-使用 `Model.find` 與 `includes` 方法，Active Record 可以 Eager Load 任意數量的關聯。關聯可以以陣列、Hash 或是巢狀 Hash（內有陣列、Hash）形式指定。
+使用 `Model.find` 與 `includes` 方法，Active Record 可以 Eager Load 任意數量的關聯。關聯可以以陣列、Hash 或是嵌套 Hash（內有陣列、Hash）形式指定。
 
 #### 陣列有多個關聯
 
@@ -1115,7 +1115,7 @@ Post.includes(:category, :comments)
 
 會加載所有文章，以及每篇文章的類別與評論。
 
-#### 巢狀關聯 Hash
+#### 嵌套關聯 Hash
 
 ```ruby
 Category.includes(posts: [{comments: :guest}, :tags]).find(1)
