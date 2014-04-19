@@ -26,7 +26,7 @@ Rails 出廠內建 CoffeeScript，故以下的例子皆以 CoffeeScript 撰寫�
 
 以下是用 CoffeeScript 使用 jQuery 發送 Ajax 請求的例子：
 
-```javascript
+```coffeescript
 $.ajax(url: "/test").done (html) ->
   $("#results").append html
 ```
@@ -54,7 +54,7 @@ Rails 使用一種叫做 “[Unobtrusive JavaScript][ujs]” （縮寫為 UJS）
 
 尷尬吧？可以將 JavaScript 抽離出來，並用 CoffeeScript 改寫：
 
-```javascript
+```coffeescript
 paintIt = (element, backgroundColor, textColor) ->
   element.style.backgroundColor = backgroundColor
   if textColor?
@@ -77,7 +77,7 @@ paintIt = (element, backgroundColor, textColor) ->
 
 很不 DRY 啊。可以使用事件來簡化。給每個連結加上 `data-*` 屬性，接著給每個連結的 click 事件，加上一個處理函數：
 
-```javascript
+```coffeescript
 paintIt = (element, backgroundColor, textColor) ->
   element.style.backgroundColor = backgroundColor
   if textColor?
@@ -135,7 +135,7 @@ Rails 的 “Ajax 幫助方法” 實際上分成用 JavaScript 所寫的幫助�
 
 除了產生出來的 `<form>` 之外，可能還想在提交成功與失敗做某些處理。可以透過 `ajax:success` 與 `ajax:error` 事件，在提交成功與失敗時，來附加內容至 DOM：
 
-```javascript
+```coffeescript
 $(document).ready ->
   $("#new_post").on("ajax:success", (e, data, status, xhr) ->
     $("#new_post").append xhr.responseText
@@ -187,7 +187,7 @@ $(document).ready ->
 
 再寫一點 CoffeeScript：
 
-```javascript
+```coffeescript
 $ ->
   $("a[data-remote]").on "ajax:success", (e, data, status, xhr) ->
     alert "The post was deleted."
@@ -308,7 +308,7 @@ gem 'turbolinks'
 
 並在 CoffeeScript Manifest 檔案（`app/assets/javascripts/application.js`）裡加入：
 
-```javascript
+```coffeescript
 //= require turbolinks
 ```
 
@@ -322,19 +322,19 @@ gem 'turbolinks'
 
 撰寫 CoffeeScript 時，通常會想在頁面加載時做某些處理，搭配 jQuery，通常會寫出像是下面的程式碼：
 
-```javascript
+```coffeescript
 $(document).ready ->
   alert "page has loaded!"
 ```
 
 而 Turbolinks 覆寫了頁面加載邏輯，依賴 `$(document).ready` 的程式碼不會被執行。必須改寫成：
 
-```javascript
+```coffeescript
 $(document).on "page:change", ->
   alert "page has loaded!"
 ```
 
-關於更多細節，其他可以綁定的事件等，參考 [Turbolinks 的 README](https://github.com/rails/turbolinks/blob/master/README.md)。
+關於更多細節，其他可以綁定的事件等，參考 [Turbolinks 的讀我文件](https://github.com/rails/turbolinks/blob/master/README.md)。
 
 其他資源
 ------------------------
