@@ -114,7 +114,7 @@ end
 
 WARNING: `after_save` 在 `create` 與 `update` 都會執行。但不論回呼註冊的順序為何，`after_save` 總是在更為具體的 `after_create` 與 `after_update` 之後執行。
 
-### `after_initialize` and `after_find`
+### `after_initialize` 與 `after_find`
 
 不管是實體化 Active Record 物件，還是從資料庫裡讀出記錄時，都會呼叫 `after_initialize`。使用 `after_initialize` 比覆蓋 Active Record 的 `initialize` 方法好多了。
 
