@@ -262,7 +262,7 @@ class UsersController < ApplicationController
 
 `index` 頁面上半部列出用戶，下半部提供新建用戶的表單。
 
-下面的表單會呼叫 `Users` Controller 的 `create` 動作。因為表單有 `remote: true` 這個選項，請求會使用 Ajax Post 到 Users Controller，等待 Controller 回應 JavaScript。處理這個請求的 `create` 動作會像是：
+下面的表單會呼叫 `Users` Controller 的 `create` 動作。因為表單有 `remote: true` 這個選項，請求會使用 Ajax POST 到 `Users` Controller，等待 Controller 回應 JavaScript。處理這個請求的 `create` 動作會像是：
 
 ```ruby
   # app/controllers/users_controller.rb
@@ -292,13 +292,11 @@ $("<%= escape_javascript(render @user) %>").appendTo("#users");
 Turbolinks
 ---------------
 
-Rails 4 出廠內建 [Turbolinks RubyGem](https://github.com/rails/turbolinks)。
-
-Turbolinks 使用了 Ajax 技術，可以加速頁面的渲染。
+Rails 4 出廠內建 [Turbolinks RubyGem](https://github.com/rails/turbolinks)。Turbolinks 使用了 Ajax 技術，可以加速頁面的渲染。
 
 ### Turbolinks 工作原理
 
-Turbolinks 給頁面上所有的 `a` 標籤添加了一個 click 處理函數。如果瀏覽器支援 [PushState][ps]，Turbolinks 會利用 PushState 來改變 URL，發送 Ajax 請求，替換 `<body>` 的內容。
+Turbolinks 給頁面上所有的 `a` 標籤添加了一個 click 處理函數。如果瀏覽器支援 [PushState][ps]，Turbolinks 會對頁面發出 Ajax 請求，解析伺服器回過來的響應，把頁面整個 `<body>` 用響應回傳的 `<body>` 換掉。接著 Turbolinks 會利用 PushState 把 URL 換成正確的，看起來就像重新整理一樣，仍保有漂亮的 URL。
 
 啟用 Turbolinks 只需在 `Gemfile` 加入：
 
@@ -312,7 +310,7 @@ gem 'turbolinks'
 //= require turbolinks
 ```
 
-連結要禁用 Turbolinks，給該連結加上 `data-no-turbolink` 屬性即可：
+若有些連結要禁用 Turbolinks，給該連結加上 `data-no-turbolink` 屬性即可：
 
 ```html
 <a href="..." data-no-turbolink>No turbolinks here</a>.
@@ -320,14 +318,14 @@ gem 'turbolinks'
 
 ### 頁面變化的事件
 
-撰寫 CoffeeScript 時，通常會想在頁面加載時做某些處理，搭配 jQuery，通常會寫出像是下面的程式碼：
+撰寫 CoffeeScript 時，通常會想在頁面加載時做些處理，搭配 jQuery，通常會寫出像是下面的程式碼：
 
 ```coffeescript
 $(document).ready ->
   alert "page has loaded!"
 ```
 
-而 Turbolinks 覆寫了頁面加載邏輯，依賴 `$(document).ready` 的程式碼不會被執行。必須改寫成：
+而 Turbolinks 覆寫了頁面加載邏輯，依賴 `$(document).ready` 事件的程式碼不會被觸發。若是寫了類似上例的程式碼，必須改寫成：
 
 ```coffeescript
 $(document).on "page:change", ->
