@@ -120,10 +120,9 @@
       description: 本篇講解 Asset Pipeline。
       needs_translation: true
     -
-      name: Rails 裡使用 JavaScript
+      name: 在 Rails 使用 JavaScript
       url: working_with_javascript_in_rails.html
       description: 本篇講解 Rails 內建的 Ajax 與 JavaScript 功能。
-      needs_translation: true
     -
       name: Engine 初上手
       url: engines.html

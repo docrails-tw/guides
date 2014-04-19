@@ -56,6 +56,10 @@ A
 
 * Association Proxy 關聯代理
 
+* Attribute 屬性
+
+Model 的屬性、HTML 的屬性。
+
 B
 ------
 
@@ -149,6 +153,10 @@ G
 
 H
 ------
+
+* Handler 處理函數
+
+JavaScript 給元素綁定的函數。
 
 
 I
@@ -340,6 +348,7 @@ U
 V
 ------
 
+* Vanilla JavaScript 純 JavaScript
 
 W
 ------
