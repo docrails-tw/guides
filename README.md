@@ -142,7 +142,7 @@ Always fork and makes a topic branch!
 
 ![CC-BY-SA](CC-BY-SA.png)
 
-This work is licensed under a [Creative Commons Attribution-ShareAlike 3.0 License](http://creativecommons.org/licenses/by-sa/3.0/).
+This work is licensed under a [Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/).
 
 The code are under [MIT license](http://opensource.org/licenses/MIT), copied with minor modifications from [rails/rails][rails].
 
