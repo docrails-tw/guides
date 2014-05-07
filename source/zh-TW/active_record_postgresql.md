@@ -1,25 +1,23 @@
-Active Record and PostgreSQL
+Active Record PostgreSQL
 ============================
 
-This guide covers PostgreSQL specific usage of Active Record.
+本篇介紹 Active Record PostgreSQL 的具體用法。
 
-In order to use the PostgreSQL adapter you need to have at least version 8.2
-installed. Older versions are not supported.
+PostgreSQL 的最低版本要求為 8.2。舊版不支援。
 
-To get started with PostgreSQL have a look at the
-[configuring Rails guide](configuring.html#configuring-a-postgresql-database).
-It describes how to properly setup Active Record for PostgreSQL.
+開始使用 PostgreSQL 之前，請先看看[如何為 Active Record 設定 PostgreSQL 資料庫](configuring.html#configuring-a-postgresql-database)。
 
-Datatypes
+--------------------------------------------------------------------------------
+
+資料類型
 ---------
 
-PostgreSQL offers a number of specific datatypes. Following is a list of types,
-that are supported by the PostgreSQL adapter.
+PostgreSQL 提供許多具體的資料類型。以下是 PostgreSQL 連接器所支援的類型列表。
 
 ### Bytea
 
-* [type definition](http://www.postgresql.org/docs/9.3/static/datatype-binary.html)
-* [functions and operators](http://www.postgresql.org/docs/9.3/static/functions-binarystring.html)
+* [類型定義](http://www.postgresql.org/docs/9.3/static/datatype-binary.html)
+* [函數與運算元](http://www.postgresql.org/docs/9.3/static/functions-binarystring.html)
 
 ```ruby
 # db/migrate/20140207133952_create_documents.rb
@@ -31,15 +29,15 @@ end
 class Document < ActiveRecord::Base
 end
 
-# Usage
+# 用途
 data = File.read(Rails.root + "tmp/output.pdf")
 Document.create payload: data
 ```
 
 ### Array
 
-* [type definition](http://www.postgresql.org/docs/9.3/static/arrays.html)
-* [functions and operators](http://www.postgresql.org/docs/9.3/static/functions-array.html)
+* [類型定義](http://www.postgresql.org/docs/9.3/static/arrays.html)
+* [函數與運算元](http://www.postgresql.org/docs/9.3/static/functions-array.html)
 
 ```ruby
 # db/migrate/20140207133952_create_books.rb
@@ -53,7 +51,7 @@ end
 class Book < ActiveRecord::Base
 end
 
-# Usage
+# 用途
 Book.create title: "Brave New World",
             tags: ["fantasy", "fiction"],
             ratings: [4, 5]
@@ -70,7 +68,7 @@ Book.where("array_length(ratings, 1) >= 3")
 
 ### Hstore
 
-* [type definition](http://www.postgresql.org/docs/9.3/static/hstore.html)
+* [類型定義](http://www.postgresql.org/docs/9.3/static/hstore.html)
 
 ```ruby
 # db/migrate/20131009135255_create_profiles.rb
@@ -84,7 +82,7 @@ end
 class Profile < ActiveRecord::Base
 end
 
-# Usage
+# 用途
 Profile.create(settings: { "color" => "blue", "resolution" => "800x600" })
 
 profile = Profile.first
@@ -99,10 +97,10 @@ profile.settings_will_change!
 profile.save!
 ```
 
-### Json
+### JSON
 
-* [type definition](http://www.postgresql.org/docs/9.3/static/datatype-json.html)
-* [functions and operators](http://www.postgresql.org/docs/9.3/static/functions-json.html)
+* [類型定義](http://www.postgresql.org/docs/9.3/static/datatype-json.html)
+* [函數與運算元](http://www.postgresql.org/docs/9.3/static/functions-json.html)
 
 ```ruby
 # db/migrate/20131220144913_create_events.rb
@@ -114,22 +112,22 @@ end
 class Event < ActiveRecord::Base
 end
 
-# Usage
+# 用途
 Event.create(payload: { kind: "user_renamed", change: ["jack", "john"]})
 
 event = Event.first
 event.payload # => {"kind"=>"user_renamed", "change"=>["jack", "john"]}
 
-## Query based on JSON document
+## 基於 JSON 文件的查詢
 Event.where("payload->'kind' = ?", "user_renamed")
 ```
 
-### Range Types
+### Range 類型
 
-* [type definition](http://www.postgresql.org/docs/9.3/static/rangetypes.html)
-* [functions and operators](http://www.postgresql.org/docs/9.3/static/functions-range.html)
+* [類型定義](http://www.postgresql.org/docs/9.3/static/rangetypes.html)
+* [函數與運算元](http://www.postgresql.org/docs/9.3/static/functions-range.html)
 
-This type is mapped to Ruby [`Range`]() objects.
+此類型對應到 Ruby 的 [`Range`] 物件
 
 ```ruby
 # db/migrate/20130923065404_create_events.rb
@@ -141,16 +139,16 @@ end
 class Event < ActiveRecord::Base
 end
 
-# Usage
+# 用途
 Event.create(duration: Date.new(2014, 2, 11)..Date.new(2014, 2, 12))
 
 event = Event.first
 event.duration # => Tue, 11 Feb 2014...Thu, 13 Feb 2014
 
-## All Events on a given date
+## 找出特定日期的所有活動
 Event.where("duration @> ?::date", Date.new(2014, 2, 12))
 
-## Working with range bounds
+## 使用 range bounds
 event = Event.
   select("lower(duration) AS starts_at").
   select("upper(duration) AS ends_at").first
@@ -159,12 +157,11 @@ event.starts_at # => Tue, 11 Feb 2014
 event.ends_at # => Thu, 13 Feb 2014
 ```
 
-### Composite Types
+### 複合類型
 
-* [type definition](http://www.postgresql.org/docs/9.3/static/rowtypes.html)
+* [類型定義](http://www.postgresql.org/docs/9.3/static/rowtypes.html)
 
-Currently there is no special support for composite types. They are mapped to as
-normal text columns:
+複合類型映射到一般的 `text` 欄位。
 
 ```sql
 CREATE TYPE full_address AS
@@ -191,7 +188,7 @@ end
 class Contact < ActiveRecord::Base
 end
 
-# Usage
+# 用途
 Contact.create address: "(Paris,Champs-Élysées)"
 contact = Contact.first
 contact.address # => "(Paris,Champs-Élysées)"
@@ -199,12 +196,11 @@ contact.address = "(Paris,Rue Basse)"
 contact.save!
 ```
 
-### Enumerated Types
+### 枚舉類型
 
-* [type definition](http://www.postgresql.org/docs/9.3/static/datatype-enum.html)
+* [類型定義](http://www.postgresql.org/docs/9.3/static/datatype-enum.html)
 
-Currently there is no special support for enumerated types. They are mapped as
-normal text columns:
+枚舉類型映射到一般的 `text` 欄位。
 
 ```ruby
 # db/migrate/20131220144913_create_events.rb
@@ -219,7 +215,7 @@ end
 class Article < ActiveRecord::Base
 end
 
-# Usage
+# 用途
 Article.create status: "draft"
 article = Article.first
 article.status # => "draft"
@@ -230,8 +226,8 @@ article.save!
 
 ### UUID
 
-* [type definition](http://www.postgresql.org/docs/9.3/static/datatype-uuid.html)
-* [generator functions](http://www.postgresql.org/docs/9.3/static/uuid-ossp.html)
+* [類型定義](http://www.postgresql.org/docs/9.3/static/datatype-uuid.html)
+* [產生器函數](http://www.postgresql.org/docs/9.3/static/uuid-ossp.html)
 
 
 ```ruby
@@ -244,7 +240,7 @@ end
 class Revision < ActiveRecord::Base
 end
 
-# Usage
+# 用途
 Revision.create identifier: "A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A11"
 
 revision = Revision.first
@@ -253,8 +249,8 @@ revision.identifier # => "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
 
 ### Bit String Types
 
-* [type definition](http://www.postgresql.org/docs/9.3/static/datatype-bit.html)
-* [functions and operators](http://www.postgresql.org/docs/9.3/static/functions-bitstring.html)
+* [類型定義](http://www.postgresql.org/docs/9.3/static/datatype-bit.html)
+* [函數與運算元](http://www.postgresql.org/docs/9.3/static/functions-bitstring.html)
 
 ```ruby
 # db/migrate/20131220144913_create_users.rb
@@ -266,7 +262,7 @@ end
 class User < ActiveRecord::Base
 end
 
-# Usage
+# 用途
 User.create settings: "01010011"
 user = User.first
 user.settings # => "(Paris,Champs-Élysées)"
@@ -275,24 +271,22 @@ user.settings # => 10101111
 user.save!
 ```
 
-### Network Address Types
+### 網路位址類型
 
-* [type definition](http://www.postgresql.org/docs/9.3/static/datatype-net-types.html)
+* [類型定義](http://www.postgresql.org/docs/9.3/static/datatype-net-types.html)
 
-The types `inet` and `cidr` are mapped to Ruby [`IPAddr`]() objects. The
-`macaddr` type is mapped to normal text.
+`inet` 與 `cidr` 類型映射到 Ruby 的 [`IPAddr`] 物件。`macaddr` 類型映射到一般的 `text` 欄位。
 
-### Geometric Types
+### 幾何類型
 
-* [type definition](http://www.postgresql.org/docs/9.3/static/datatype-geometric.html)
+* [類型定義](http://www.postgresql.org/docs/9.3/static/datatype-geometric.html)
 
 All geometric types are mapped to normal text.
 
-
-UUID Primary Keys
+UUID 主鍵
 -----------------
 
-NOTE: you need to enable the `uuid-ossp` extension to generate UUIDs.
+NOTE: 需要啟用 `uuid-ossp` 擴充功能才可以產生 UUID。
 
 ```ruby
 # db/migrate/20131220144913_create_devices.rb
@@ -305,12 +299,12 @@ end
 class Device < ActiveRecord::Base
 end
 
-# Usage
+# 用途
 device = Device.create
 device.id # => "814865cd-5a1d-4771-9306-4268f188fe9e"
 ```
 
-Full Text Search
+全文搜索
 ----------------
 
 ```ruby
@@ -326,10 +320,10 @@ execute "CREATE INDEX documents_idx ON documents USING gin(to_tsvector('english'
 class Document < ActiveRecord::Base
 end
 
-# Usage
+# 用途
 Document.create(title: "Cats and Dogs", body: "are nice!")
 
-## all documents matching 'cat & dog'
+## 所有匹配 `cat & dog` 的文件
 Document.where("to_tsvector('english', title || ' ' || body) @@ to_tsquery(?)",
                  "cat & dog")
 ```
