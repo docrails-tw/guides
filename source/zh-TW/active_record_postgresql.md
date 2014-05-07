@@ -127,7 +127,7 @@ Event.where("payload->'kind' = ?", "user_renamed")
 * [類型定義](http://www.postgresql.org/docs/9.3/static/rangetypes.html)
 * [函數與運算元](http://www.postgresql.org/docs/9.3/static/functions-range.html)
 
-此類型對應到 Ruby 的 [`Range`] 物件
+此類型映射到 Ruby 的 [`Range`](http://www.ruby-doc.org/core-2.1.1/Range.html) 物件
 
 ```ruby
 # db/migrate/20130923065404_create_events.rb
@@ -275,7 +275,7 @@ user.save!
 
 * [類型定義](http://www.postgresql.org/docs/9.3/static/datatype-net-types.html)
 
-`inet` 與 `cidr` 類型映射到 Ruby 的 [`IPAddr`] 物件。`macaddr` 類型映射到一般的 `text` 欄位。
+`inet` 與 `cidr` 類型映射到 Ruby 的 [`IPAddr`](http://www.ruby-doc.org/stdlib-2.1.1/libdoc/ipaddr/rdoc/IPAddr.html) 物件。`macaddr` 類型映射到一般的 `text` 欄位。
 
 ### 幾何類型
 
