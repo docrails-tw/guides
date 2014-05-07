@@ -14,7 +14,7 @@ PostgreSQL 的最低版本要求為 8.2。舊版不支援。
 
 PostgreSQL 提供許多具體的資料類型。以下是 PostgreSQL 連接器所支援的類型列表。
 
-### Bytea
+### Bytea 類型
 
 * [類型定義](http://www.postgresql.org/docs/9.3/static/datatype-binary.html)
 * [函數與運算元](http://www.postgresql.org/docs/9.3/static/functions-binarystring.html)
@@ -34,7 +34,7 @@ data = File.read(Rails.root + "tmp/output.pdf")
 Document.create payload: data
 ```
 
-### Array
+### 陣列類型
 
 * [類型定義](http://www.postgresql.org/docs/9.3/static/arrays.html)
 * [函數與運算元](http://www.postgresql.org/docs/9.3/static/functions-array.html)
@@ -66,7 +66,7 @@ Book.where("tags @> ARRAY[?]::varchar[]", ["fantasy", "fiction"])
 Book.where("array_length(ratings, 1) >= 3")
 ```
 
-### Hstore
+### Hstore 類型
 
 * [類型定義](http://www.postgresql.org/docs/9.3/static/hstore.html)
 
@@ -97,7 +97,7 @@ profile.settings_will_change!
 profile.save!
 ```
 
-### JSON
+### JSON 類型
 
 * [類型定義](http://www.postgresql.org/docs/9.3/static/datatype-json.html)
 * [函數與運算元](http://www.postgresql.org/docs/9.3/static/functions-json.html)
@@ -224,7 +224,7 @@ article.status = "published"
 article.save!
 ```
 
-### UUID
+### UUID 類型
 
 * [類型定義](http://www.postgresql.org/docs/9.3/static/datatype-uuid.html)
 * [產生器函數](http://www.postgresql.org/docs/9.3/static/uuid-ossp.html)
@@ -247,7 +247,7 @@ revision = Revision.first
 revision.identifier # => "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
 ```
 
-### Bit String Types
+### 位元字串類型
 
 * [類型定義](http://www.postgresql.org/docs/9.3/static/datatype-bit.html)
 * [函數與運算元](http://www.postgresql.org/docs/9.3/static/functions-bitstring.html)
