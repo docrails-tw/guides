@@ -10,6 +10,14 @@ To get started with PostgreSQL have a look at the
 [configuring Rails guide](configuring.html#configuring-a-postgresql-database).
 It describes how to properly setup Active Record for PostgreSQL.
 
+After reading this guide, you will know:
+
+* How to use PostgreSQL's datatypes.
+* How to use UUID primary keys.
+* How to implement full text search with PostgreSQL.
+
+--------------------------------------------------------------------------------
+
 Datatypes
 ---------
 
@@ -99,7 +107,7 @@ profile.settings_will_change!
 profile.save!
 ```
 
-### Json
+### JSON
 
 * [type definition](http://www.postgresql.org/docs/9.3/static/datatype-json.html)
 * [functions and operators](http://www.postgresql.org/docs/9.3/static/functions-json.html)
@@ -129,7 +137,7 @@ Event.where("payload->'kind' = ?", "user_renamed")
 * [type definition](http://www.postgresql.org/docs/9.3/static/rangetypes.html)
 * [functions and operators](http://www.postgresql.org/docs/9.3/static/functions-range.html)
 
-This type is mapped to Ruby [`Range`]() objects.
+This type is mapped to Ruby [`Range`](http://www.ruby-doc.org/core-2.1.1/Range.html) objects.
 
 ```ruby
 # db/migrate/20130923065404_create_events.rb
@@ -279,8 +287,35 @@ user.save!
 
 * [type definition](http://www.postgresql.org/docs/9.3/static/datatype-net-types.html)
 
-The types `inet` and `cidr` are mapped to Ruby [`IPAddr`]() objects. The
+The types `inet` and `cidr` are mapped to Ruby [`IPAddr`](http://www.ruby-doc.org/stdlib-2.1.1/libdoc/ipaddr/rdoc/IPAddr.html) objects. The
 `macaddr` type is mapped to normal text.
+
+```ruby
+# db/migrate/20140508144913_create_devices.rb
+create_table(:devices, force: true) do |t|
+  t.inet 'ip'
+  t.cidr 'network'
+  t.macaddr 'address'
+end
+
+# app/models/device.rb
+class Device < ActiveRecord::Base
+end
+
+# Usage
+macbook = Device.create(ip: "192.168.1.12",
+                        network: "192.168.2.0/24",
+                        address: "32:01:16:6d:05:ef")
+
+macbook.ip
+# => #<IPAddr: IPv4:192.168.1.12/255.255.255.255>
+
+macbook.network
+# => #<IPAddr: IPv4:192.168.2.0/255.255.255.0>
+
+macbook.address
+# => "32:01:16:6d:05:ef"
+```
 
 ### Geometric Types
 

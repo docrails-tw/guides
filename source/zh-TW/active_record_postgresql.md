@@ -277,6 +277,33 @@ user.save!
 
 `inet` 與 `cidr` 類型映射到 Ruby 的 [`IPAddr`](http://www.ruby-doc.org/stdlib-2.1.1/libdoc/ipaddr/rdoc/IPAddr.html) 物件。`macaddr` 類型映射到一般的 `text` 欄位。
 
+```ruby
+# db/migrate/20140508144913_create_devices.rb
+create_table(:devices, force: true) do |t|
+  t.inet 'ip'
+  t.cidr 'network'
+  t.macaddr 'address'
+end
+
+# app/models/device.rb
+class Device < ActiveRecord::Base
+end
+
+# Usage
+macbook = Device.create(ip: "192.168.1.12",
+                        network: "192.168.2.0/24",
+                        address: "32:01:16:6d:05:ef")
+
+macbook.ip
+# => #<IPAddr: IPv4:192.168.1.12/255.255.255.255>
+
+macbook.network
+# => #<IPAddr: IPv4:192.168.2.0/255.255.255.0>
+
+macbook.address
+# => "32:01:16:6d:05:ef"
+```
+
 ### 幾何類型
 
 * [類型定義](http://www.postgresql.org/docs/9.3/static/datatype-geometric.html)
