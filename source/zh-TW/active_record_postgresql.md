@@ -229,7 +229,6 @@ article.save!
 * [類型定義](http://www.postgresql.org/docs/9.3/static/datatype-uuid.html)
 * [產生器函數](http://www.postgresql.org/docs/9.3/static/uuid-ossp.html)
 
-
 ```ruby
 # db/migrate/20131220144913_create_revisions.rb
 create_table :revisions do |t|
@@ -308,7 +307,7 @@ macbook.address
 
 * [類型定義](http://www.postgresql.org/docs/9.3/static/datatype-geometric.html)
 
-All geometric types are mapped to normal text.
+幾何類型映射到一般的 `text` 欄位。
 
 UUID 主鍵
 -----------------
