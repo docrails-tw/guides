@@ -96,7 +96,7 @@ end
 
 ### Hash 與陣列參數
 
-`params` Hash 不侷限於一維的 Hash，可以是巢狀結構，裡面可存陣列或巢狀的 Hash。
+`params` Hash 不侷限於一維的 Hash，可以是嵌套結構，裡面可存陣列或嵌套的 Hash。
 
 若想以陣列形式來傳遞參數，在鍵的名稱後方附加 `[]` 即可，如下所示：
 
@@ -133,7 +133,7 @@ NOTE: `params` 裡像是 `[]`、`[nil]` 或是 `[nil, nil, ...]` 基於安全考
 }`
 ```
 
-注意 `params[:client][:address]` 是巢狀的 Hash 結構。
+注意 `params[:client][:address]` 是嵌套的 Hash 結構。
 
 `params` Hash 其實是 `ActiveSupport::HashWithIndifferentAccess` 的實體。`ActiveSupport::HashWithIndifferentAccess` 與一般 Hash 類似，不同之處是取出 Hash 的值時，鍵可以用字串與符號，即 `params[:foo]` 等同於 `params["foo"]`。
 
@@ -266,9 +266,9 @@ params.require(:log_entry).permit!
 
 `params` 裡的 `:log_entry` hash 以及裡面所有的子 Hash 此時都允許做大量賦值。**使用 `permit!` 要非常小心**，因為這允許了 Model 所有的屬性，都可以做大量賦值，要是之後 Model 新增了 `admin` 屬性而沒注意到 `permit!`，可能就會出問題了。
 
-#### 巢狀參數
+#### 嵌套參數
 
-要允許巢狀參數做大量賦值，比如：
+要允許嵌套參數做大量賦值，比如：
 
 ```ruby
 params.permit(:name, { emails: [] },

@@ -40,6 +40,8 @@ A
 
 * Action 動作
 
+* Anchor 錨點
+
 * Authentication 認證
 
 * Auxiliary Methods 輔助方法
@@ -63,6 +65,7 @@ Model 的屬性、HTML 的屬性。
 B
 ------
 
+* Bound Parameters 綁定參數
 
 C
 ------
@@ -78,6 +81,10 @@ Ruby 的 `Class`
 * CamelCase 駝峰形式
 
 * Code 程式碼
+
+* Collection Action 集合動作
+
+* Collection Route 集合路由
 
 * Column 欄位
 
@@ -111,6 +118,8 @@ D
 * Drop 刪除
 
 刪除整個資料庫、刪除整張資料表。
+
+* Dynamic Segments 動態片段
 
 E
 ------
@@ -150,6 +159,7 @@ F
 G
 ------
 
+* Globbing 通配符號
 
 H
 ------
@@ -158,6 +168,9 @@ H
 
 JavaScript 給元素綁定的函數。
 
+* Helpers 輔助方法
+
+* Host 主機
 
 I
 ------
@@ -212,14 +225,20 @@ M
 
 * Middleware 中間件
 
+* member action 成員動作
+
+* member route 成員路由
+
 N
 ------
 
 * Namespace 命名空間
 
-* Nesting 巢狀的
+* Named Helpers 具名輔助方法
 
-* Nested 巢狀的
+* Nesting 嵌套的
+
+* Nested 嵌套的
 
 O
 ------
@@ -235,6 +254,8 @@ P
 
 * Path 路徑
 
+* Port 埠口
+
 * Predicate 謂詞
 
 謂詞，回傳真或假的條件式，比如 `Array#empty?`。
@@ -243,7 +264,7 @@ P
 
 * Program (v.) 編程
 
-編寫程式，取編寫的編，程式的程來代表。
+編寫程式，取編寫的編，程式的程來代表。亦作寫程式。
 
 Q
 ------
@@ -265,11 +286,15 @@ R
 
 * Rake Task Rake 任務
 
-* Referential Integrity 參照完整性
-
 * Record 記錄
 
 資料庫裡的紀錄。
+
+* Redirection
+
+轉址。
+
+* Referential Integrity 參照完整性
 
 * Repository 原碼庫。
 
@@ -279,6 +304,10 @@ Repository 在生活中有倉庫的意思，在版本控制的世界裡，通常
 
 為 HTTP 協定裡的專有名詞，HTTP Request。
 
+* Resource routing 資源式路由
+
+* Resource 資源
+
 * Response 響應
 
 為 HTTP 協定裡的專有名詞，HTTP Response。
@@ -286,6 +315,10 @@ Repository 在生活中有倉庫的意思，在版本控制的世界裡，通常
 * Rollback 回滾
 
 資料庫恢復至以前的狀態。
+
+* Router 路由器
+
+指得是以 [Journey](https://github.com/rails/journey) 所實作的路由器。
 
 S
 ------
@@ -304,9 +337,19 @@ S
 
 資料庫的初始資料，通常寫在 `db/seeds.rb` 檔案裡。
 
-* Serialize 序列化
+* Segment 片段
+
+* Segment Constraints 片段約束
 
 * Self-Join 自連接
+
+* Serialize 序列化
+
+* Shallow Nesting 淺層嵌套
+
+* Singular resource 單數資源
+
+* Static Segments 靜態片段
 
 * Stored Procedure 儲存過程
 
@@ -354,6 +397,8 @@ W
 ------
 
 * Web Service Web 服務
+
+* Wildcard 通配符號
 
 X
 ------

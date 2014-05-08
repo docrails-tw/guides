@@ -235,7 +235,7 @@ physician.patients = patients
 
 WARNING: 連接 Model 會自動刪除、直接執行，不會觸發任何 `destroy` 回呼。
 
-`has_many :through` 關聯在簡化巢狀的 `has_many` 關聯很有用。比如文件有多個章節、段落。想要簡單地從文件取得所有段落，可以這麼寫：
+`has_many :through` 關聯在簡化嵌套的 `has_many` 關聯很有用。比如文件有多個章節、段落。想要簡單地從文件取得所有段落，可以這麼寫：
 
 ```ruby
 class Document < ActiveRecord::Base
