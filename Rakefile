@@ -39,6 +39,12 @@ namespace :guides do
     # the dot will copy contents under a folder, instead of copy the folder.
     FileUtils.cp_r("#{GUIDES_PATH.expand_path}/output/zh-TW/.", PAGES_PATH.expand_path)
 
+    Dir.chdir(PAGES_PATH.expand_path) do
+      `git add -A .`
+      `git commit -m '#{%Q[Site updated @ #{Time.now.strftime("%a %b %-m %H:%M:%S %Z %Y")}]}'`
+      `git push origin master`
+    end
+
     puts 'Deploy Complete. : )'
   end
 
