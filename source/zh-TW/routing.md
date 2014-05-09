@@ -77,7 +77,7 @@ DELETE /photos/17
 resources :photos
 ```
 
-Rails 會將請求分派給 `photos` Controller 的 `destroy` 方法，且 `params` 裡有 `{ id: '17' }` 參數。
+Rails 會將請求分派給 `PhotosController` 的 `destroy` 方法，且 `params` 裡有 `{ id: '17' }` 參數。
 
 ### CRUD、HTTP 動詞以及動作
 
