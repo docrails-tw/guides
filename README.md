@@ -52,7 +52,7 @@ If you use a different base location, you will need to change the location in `B
 
 Clone this repo, use a topic branch. Fix the translation error in `source/zh-TW`, then send a Pull Request. Or open an issue then someone may fix it.
 
-If the error is not a translation error and latest guide: http://edgeguides.rubyonrails.org haven't fixed it. Then you could clone the `rails/rails` repo. Fix it then send a Pull Request to `rails/rails`. Make sure you've read the [Contributing to the Rails Documentation](http://edgeguides.rubyonrails.org/contributing_to_ruby_on_rails.html#contributing-to-the-rails-documentation) first. TL;DR. Word wrap to 80 chars and add `[ci skip]` in commit message for documentation changes.
+If the error is not a translation error and latest guide: http://edgeguides.rubyonrails.org haven't fixed it. Then you could clone the `rails/rails` repo. Fix it then send a Pull Request to `rails/rails`. Make sure you've read the [Contributing to the Rails Documentation](http://edgeguides.rubyonrails.org/contributing_to_ruby_on_rails.html#contributing-to-the-rails-documentation) first. TL;DR. Word wrap to 80 chars and add `[ci skip]` in commit message for documentation changes. Please consult the [translation terms](http://rails.ruby.tw/translation_terms.html) while updating the text.
 
 ## Workflow for Translator
 
@@ -74,6 +74,8 @@ or you could update all guides at once:
 
 `rake guides:update_guides` but **DO NOT** check out the guides that you're not editing in version control.
 
+Please add the terms you used to [translation terms](http://rails.ruby.tw/translation_terms.html).
+
 When your translation is finished, generate, preview locally then send a Pull Request.
 
 ### 2. Update an obsolete translation
@@ -85,6 +87,8 @@ When your translation is finished, generate, preview locally then send a Pull Re
 or you could update all guides at once:
 
 `rake guides:update_guides` but **DO NOT** checks out the guides that you're not editing in version control.
+
+Please consult the [translation terms](http://rails.ruby.tw/translation_terms.html) for uniform translation.
 
 When your translation is finished, generate, preview locally then send a Pull Request.
 
@@ -127,6 +131,10 @@ GUIDES_LANGUAGE=zh-TW rake
 ```
 
 Make sure no errors occur before you open a Pull Request :D.
+
+## Translation Terms
+
+I compiled a [translation terms](http://rails.ruby.tw/translation_terms.html) list during translation process. If you have any suggestions or find anything wrong, feel free to open an issue.
 
 ## Deploy
 
