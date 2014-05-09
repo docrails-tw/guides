@@ -1,20 +1,26 @@
 Active Model Basics
-===================
+====================
 
-This guide should provide you with all you need to get started using model classes. Active Model allows for Action Pack helpers to interact with non-Active Record models. Active Model also helps building custom ORMs for use outside of the Rails framework.
+本篇教你如何開始使用 Model。 Active Model 允許 Action Pack 輔助方法與不是 Active Record 的 Model 類別來做互動。Active Model 也允許在 Rails 框架之外自己造 ORM。
 
-After reading this guide, you will know:
+讀完本篇，您將了解：
+
+* `AttributeMethods` 模組
+* `Callbacks` 模組
+* `Conversion` 模組
+* `Dirty` 模組
+* `Validations` 模組
 
 --------------------------------------------------------------------------------
 
-Introduction
-------------
+Active Model 簡介
+---------------------
 
-Active Model is a library containing various modules used in developing frameworks that need to interact with the Rails Action Pack library. Active Model provides a known set of interfaces for usage in classes. Some of modules are explained below.
+Active Model 是一個函式庫，由許多用來與 Action Pack 互動的模組組成。以下簡單介紹幾個 Active Model 的模組。
 
 ### AttributeMethods
 
-The AttributeMethods module can add custom prefixes and suffixes on methods of a class. It is used by defining the prefixes and suffixes and which methods on the object will use them.
+用來給方法加上前綴或後綴。
 
 ```ruby
 class Person
@@ -43,9 +49,9 @@ person.reset_age     # 0
 person.age_highest?  # false
 ```
 
-### Callbacks
+### 回呼
 
-Callbacks gives Active Record style callbacks. This provides an ability to define callbacks which run at appropriate times. After defining callbacks, you can wrap them with before, after and around custom methods.
+Active Record 風格的回呼。讓我們可以在運行期定義回呼。定義回呼後便有 `before_*`、`after_*` 與 `around_*` 方法可用。
 
 ```ruby
 class Person
@@ -69,7 +75,7 @@ end
 
 ### Conversion
 
-If a class defines `persisted?` and `id` methods, then you can include the `Conversion` module in that class and call the Rails conversion methods on objects of that class.
+如果一個類別有定義 `persisted?` 與 `id` 方法，則你可引入 `Conversion` 模組，並對此類別的物件呼叫 Rails 的 conversion 方法（`to_model`、`to_key`、`to_param`）。
 
 ```ruby
 class Person
@@ -92,7 +98,7 @@ person.to_param            # => nil
 
 ### Dirty
 
-An object becomes dirty when it has gone through one or more changes to its attributes and has not been saved. This gives the ability to check whether an object has been changed or not. It also has attribute based accessor methods. Let's consider a Person class with attributes `first_name` and `last_name`:
+物件有一個或多個改動，卻未儲存，則稱物件變“dirty”了。這讓我們可以檢查物件是否有變動。以下是 `Person` 類別，有 `first_name` 與 `last_name` 這兩個屬性：
 
 ```ruby
 require 'active_model'
@@ -126,7 +132,7 @@ class Person
 end
 ```
 
-#### Querying object directly for its list of all changed attributes.
+#### 查詢物件修改過屬性的列表
 
 ```ruby
 person = Person.new
@@ -150,6 +156,8 @@ person.changes # => {"first_name"=>[nil, "First Name"]}
 
 #### Attribute based accessor methods
 
+檢查 `first_name` 這個屬性是否有變動，`first_name_changed?`：
+
 Track whether the particular attribute has been changed or not.
 
 ```ruby
@@ -158,12 +166,15 @@ person.first_name # => "First Name"
 person.first_name_changed? # => true
 ```
 
+檢查屬性上一次的數值：
 Track what was the previous value of the attribute.
 
 ```ruby
 # attr_name_was accessor
 person.first_name_was # => "First Name"
 ```
+
+檢查屬性上次與當前的值，有變化回傳 Array，沒變化回傳 `nil`：
 
 Track both previous and current value of the changed attribute. Returns an array if changed, else returns nil.
 
@@ -173,9 +184,9 @@ person.first_name_change # => [nil, "First Name"]
 person.last_name_change # => nil
 ```
 
-### Validations
+### 驗證
 
-Validations module adds the ability to class objects to validate them in Active Record style.
+給類別加入 Active Record 風格的驗證功能：
 
 ```ruby
 class Person

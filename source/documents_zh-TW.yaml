@@ -6,6 +6,11 @@
       url: getting_started.html
       description: 從安裝到建立第一個應用程式所需知道的一切。
       needs_translation: true
+    -
+      name: Active Model 基礎
+      url: active_model_basics.html
+      description: Rails Model 的基礎知識：Active Model。
+      work_in_progress: true
 -
   name: Models
   documents:

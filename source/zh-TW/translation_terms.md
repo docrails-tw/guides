@@ -234,11 +234,13 @@ M
 
 * Modifier 修飾符
 
+* Module 模組
+
 * Middleware 中間件
 
-* member action 成員動作
+* Member action 成員動作
 
-* member route 成員路由
+* Member route 成員路由
 
 N
 ------
