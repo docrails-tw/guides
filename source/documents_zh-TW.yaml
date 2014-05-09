@@ -151,7 +151,7 @@
     -
       name: Rails on Rack
       url: rails_on_rack.html
-      description: 本篇介紹 Rack 是如何與 Rails 整合，以及 Rails 如何與其它 Rack 套件的接口（interface）。
+      description: 本篇介紹 Rack 如何與 Rails 整合，以及如何與其他 Rack 組件互動。
     -
       name: 客製與新建 Rails 產生器
       url: generators.html
