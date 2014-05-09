@@ -8,7 +8,7 @@ module RailsGuides
 
 
       if options[:work_in_progress]
-        result << content_tag(:dd, '撰寫中', :class => 'work-in-progress')
+        result << content_tag(:dd, '原文撰寫中', :class => 'work-in-progress')
       end
 
       if options[:needs_translation]
