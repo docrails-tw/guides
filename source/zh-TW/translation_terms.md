@@ -1,9 +1,11 @@
 翻譯術語
 ===================
 
+參考了[ihower](http://ihower.tw/rails3/translation.html)以及 ETBlue 的[翻譯詞彙表](https://docs.google.com/spreadsheet/ccc?key=0AkNsS2a-Qx8ZdDJzTUlNeVlvRy1BYnZDUnRjZUpWWGc&hl=en#gid=0)。
+
 更好的譯法，請不吝指教，感謝。
 
-歡迎加入新詞條。
+歡迎加入新術語。
 
 保留原文不譯
 ------------
@@ -115,6 +117,8 @@ D
 
 [Transactional DDL in PostgreSQL: A Competitive Analysis - PostgreSQL wiki](https://wiki.postgresql.org/wiki/Transactional_DDL_in_PostgreSQL:_A_Competitive_Analysis)
 
+* Debug 除錯
+
 * Drop 刪除
 
 刪除整個資料庫、刪除整張資料表。
@@ -125,7 +129,6 @@ E
 ------
 
 * exception 異常
-
 
 F
 ------
@@ -168,6 +171,8 @@ H
 
 JavaScript 給元素綁定的函數。
 
+* Header 標頭
+
 * Helpers 輔助方法
 
 * Host 主機
@@ -186,6 +191,12 @@ I
 * Instantiate 實體化
 
 指 `Class.new`。
+
+* Interface 介面、接口
+
+UI => 介面
+
+API => 接口
 
 * Integrity 完整性
 
@@ -265,6 +276,8 @@ P
 * Program (v.) 編程
 
 編寫程式，取編寫的編，程式的程來代表。亦作寫程式。
+
+* Protocol 協定
 
 Q
 ------
