@@ -7,6 +7,12 @@ PostgreSQL 的最低版本要求為 8.2。舊版不支援。
 
 開始使用 PostgreSQL 之前，請先看看[如何為 Active Record 設定 PostgreSQL 資料庫](configuring.html#configuring-a-postgresql-database)。
 
+讀完本篇，您將了解：
+
+* 如何使用 PostgreSQL 的資料類型。
+* 如何使用 UUID 主鍵。
+* 如何在 PostgreSQL 實作全文搜索。
+
 --------------------------------------------------------------------------------
 
 資料類型
@@ -356,3 +362,60 @@ Document.where("to_tsvector('english', title || ' ' || body) @@ to_tsquery(?)",
 
 Views
 -----
+
+
+* [建立 View](http://www.postgresql.org/docs/9.3/static/sql-createview.html)
+
+假設需要處理老舊的資料庫，資料表如下：
+```
+rails_pg_guide=# \d "TBL_ART"
+                                        Table "public.TBL_ART"
+   Column   |            Type             |                         Modifiers
+------------+-----------------------------+------------------------------------------------------------
+ INT_ID     | integer                     | not null default nextval('"TBL_ART_INT_ID_seq"'::regclass)
+ STR_TITLE  | character varying           |
+ STR_STAT   | character varying           | default 'draft'::character varying
+ DT_PUBL_AT | timestamp without time zone |
+ BL_ARCH    | boolean                     | default false
+Indexes:
+    "TBL_ART_pkey" PRIMARY KEY, btree ("INT_ID")
+```
+
+這張資料表完全沒有遵循 Rails 的慣例。
+因為簡單的 PostgreSQL View 預設便可以更新了，可以像下面這樣包起來：
+
+```ruby
+# db/migrate/20131220144913_create_articles_view.rb
+execute <<-SQL
+CREATE VIEW articles AS
+  SELECT "INT_ID" AS id,
+         "STR_TITLE" AS title,
+         "STR_STAT" AS status,
+         "DT_PUBL_AT" AS published_at,
+         "BL_ARCH" AS archived
+  FROM "TBL_ART"
+  WHERE "BL_ARCH" = 'f'
+  SQL
+
+# app/models/article.rb
+class Article < ActiveRecord::Base
+  self.primary_key = "id"
+  def archive!
+    update_attribute :archived, true
+  end
+end
+
+# Usage
+first = Article.create! title: "Winter is coming",
+                        status: "published",
+                        published_at: 1.year.ago
+second = Article.create! title: "Brace yourself",
+                         status: "draft",
+                         published_at: 1.month.ago
+
+Article.count # => 1
+first.archive!
+p Article.count # => 2
+```
+
+Note: 這個應用程式只專注在尚未歸檔的 `Articles`。View 也允許使用條件式，所以我們可以直接排除掉已歸檔的 `Articles`。
