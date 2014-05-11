@@ -367,6 +367,7 @@ Views
 * [建立 View](http://www.postgresql.org/docs/9.3/static/sql-createview.html)
 
 假設需要處理老舊的資料庫，資料表如下：
+
 ```
 rails_pg_guide=# \d "TBL_ART"
                                         Table "public.TBL_ART"
