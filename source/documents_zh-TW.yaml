@@ -161,7 +161,6 @@
       name: 客製與新建 Rails 產生器
       url: generators.html
       description: 本篇介紹如何加入新的產生器、修改 Rails 內建的產生器。
-      needs_translation: true
 -
   name: 貢獻至 Ruby on Rails
   documents:

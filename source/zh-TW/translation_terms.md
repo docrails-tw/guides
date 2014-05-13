@@ -1,11 +1,13 @@
 翻譯術語
 ===================
 
-參考了[ihower](http://ihower.tw/rails3/translation.html)以及 ETBlue 的[翻譯詞彙表](https://docs.google.com/spreadsheet/ccc?key=0AkNsS2a-Qx8ZdDJzTUlNeVlvRy1BYnZDUnRjZUpWWGc&hl=en#gid=0)。
+參考了業界先進張文鈿（ihower）先生 [Rails 實戰聖經的翻譯術語表](http://ihower.tw/rails3/translation.html) 以及[藍一婷](https://twitter.com/etblue)小姐的[翻譯詞彙表](https://docs.google.com/spreadsheet/ccc?key=0AkNsS2a-Qx8ZdDJzTUlNeVlvRy1BYnZDUnRjZUpWWGc&hl=en#gid=0)。
 
 更好的譯法，請不吝指教，感謝。
 
 歡迎加入新術語。
+
+-------
 
 保留原文不譯
 ------------
@@ -161,6 +163,8 @@ F
 
 G
 ------
+
+* Generator 產生器
 
 * Globbing 通配符號
 
