@@ -100,7 +100,7 @@ class AddPartNumberToProducts < ActiveRecord::Migration
 end
 ```
 
-在命令行輸入的遷移名稱若是 `AddXXXToYYY` 或 `RemoveXXXFromYYY`，之後接一系列的欄位名稱與類型。則會自動產生 `add_column` 或 `remove_column`：
+在命令列輸入的遷移名稱若是 `AddXXXToYYY` 或 `RemoveXXXFromYYY`，之後接一系列的欄位名稱與類型。則會自動產生 `add_column` 或 `remove_column`：
 
 
 ```bash

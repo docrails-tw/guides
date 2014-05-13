@@ -36,7 +36,7 @@ $ rails generate helper --help
 -----------------------------
 
 自 Rails 3.0 起，產生器用 [Thor](https://github.com/erikhuda/thor)
-重寫了。Thor 負責解析命令行參數、具有強大的檔案處理 API。輕輕鬆鬆便能打造一個 Generator，如何寫個能在 `config/initializers` 目錄下產生 `initializer` 檔案（`initializer.rb`）的 Generator 呢？
+重寫了。Thor 負責解析命令列參數、具有強大的檔案處理 API。輕輕鬆鬆便能打造一個 Generator，如何寫個能在 `config/initializers` 目錄下產生 `initializer` 檔案（`initializer.rb`）的 Generator 呢？
 
 首先新建 `lib/generators/initializer_generator.rb` 檔案，填入如下內容：
 
