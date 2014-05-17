@@ -1292,7 +1292,7 @@ has_many` 的這個類別沒有外鍵。外鍵在與之關聯的類別，參照�
 
 #### `has_many` 關聯新增的方法
 
-宣告 `has_one` 關聯時，宣告的類別獲得 16 個關聯方法：
+宣告 `has_many` 關聯時，宣告的類別獲得 16 個關聯方法：
 
 * `collection(force_reload = false)`
 * `collection<<(object, ...)`
