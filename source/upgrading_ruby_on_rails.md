@@ -82,10 +82,10 @@ secrets, you need to:
 
 2. Use your existing `secret_key_base` from the `secret_token.rb` initializer to
    set the SECRET_KEY_BASE environment variable for whichever users run the Rails
-   app in production mode. Alternately, you can simply copy the existing 
-   `secret_key_base` from the `secret_token.rb` initializer to `secrets.yml` 
+   app in production mode. Alternately, you can simply copy the existing
+   `secret_key_base` from the `secret_token.rb` initializer to `secrets.yml`
    under the `production` section, replacing '<%= ENV["SECRET_KEY_BASE"] %>'.
-   
+
 3. Remove the `secret_token.rb` initializer.
 
 4. Use `rake secret` to generate new keys for the `development` and `test` sections.
@@ -392,6 +392,14 @@ We will be deprecating the use of `render :text` in a future version. So please
 start using the more precise `:plain:`, `:html`, and `:body` options instead.
 Using `render :text` may pose a security risk, as the content is sent as
 `text/html`.
+
+### PostgreSQL json and hstore datatypes
+
+Rails 4.1 will map `json` and `hstore` columns to a string-keyed Ruby `Hash`.
+In earlier versions a `HashWithIndifferentAccess` was used. This means that
+symbol access is no longer supported. This is also the case for
+`store_accessors` based on top of `json` or `hstore` columns. Make sure to use
+string keys consistently.
 
 Upgrading from Rails 3.2 to Rails 4.0
 -------------------------------------
