@@ -100,6 +100,8 @@ Ruby 的 `Class`
 
 * Conditional 條件式
 
+* Compile 編譯
+
 * Computer 計算機
 
 亦作電腦。
@@ -225,6 +227,8 @@ L
 
 * Layout 版型
 
+* Library 套件庫
+
 M
 ------
 
@@ -268,6 +272,10 @@ O
 
 P
 ------
+
+* Package 套件
+
+* Partial 部份頁面
 
 * Path 路徑
 
