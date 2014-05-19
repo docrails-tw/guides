@@ -1,3 +1,5 @@
+require 'pathname'
+
 BASE_PATH = Pathname(IO.readlines('./BASE_PATH').first.chomp)
 
 RAILS_PATH  = BASE_PATH + 'rails'
