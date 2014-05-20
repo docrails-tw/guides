@@ -227,7 +227,7 @@ L
 
 * Layout 版型
 
-* Library 套件庫
+* Library 函式庫
 
 M
 ------
