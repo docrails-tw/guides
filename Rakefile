@@ -9,7 +9,7 @@ PAGES_PATH  = BASE_PATH + 'docrails-tw.github.io'
 RAILS_GUIDE_SOURCE_PATH = RAILS_PATH + 'guides/source/'
 
 def update_rails_repo!
-  FileUtils.cd(RAILS_PATH.expand_path) { `git pull upstream master` }
+  FileUtils.cd(RAILS_PATH.expand_path) { `git pull origin master` }
 end
 
 def get_rails_latest_sha1
