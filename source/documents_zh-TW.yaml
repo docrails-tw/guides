@@ -49,7 +49,7 @@
     -
       name: Action View 綜覽
       url: action_view_overview.html
-      description: 本篇介紹 Action View 以及常見的 View Helpers。
+      description: 本篇介紹 Action View 輔助方法。
       work_in_progress: true
       needs_translation: true
     -
