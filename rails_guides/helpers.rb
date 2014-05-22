@@ -6,7 +6,6 @@ module RailsGuides
       link = content_tag(:a, :href => url) { name }
       result = content_tag(:dt, link)
 
-
       if options[:work_in_progress]
         result << content_tag(:dd, '原文撰寫中', :class => 'work-in-progress')
       end
@@ -28,7 +27,7 @@ module RailsGuides
     end
 
     def documents_flat
-      documents_by_section.flat_map { |section| section['documents'] }
+      documents_by_section.flat_map {|section| section['documents']}
     end
 
     def finished_documents(documents)
@@ -48,7 +47,7 @@ module RailsGuides
     def author(name, nick, image = 'credits_pic_blank.gif', &block)
       image = "images/#{image}"
 
-      result = content_tag(:img, nil, :src => image, :class => 'left pic', :alt => name, :width => 91, :height => 91)
+      result = tag(:img, :src => image, :class => 'left pic', :alt => name, :width => 91, :height => 91)
       result << content_tag(:h3, name)
       result << content_tag(:p, capture(&block))
       content_tag(:div, result, :class => 'clearfix', :id => nick)

@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require 'redcarpet'
 require 'nokogiri'
 require 'rails_guides/markdown/renderer'
@@ -24,6 +26,33 @@ module RailsGuides
     end
 
     private
+
+      def dom_id(nodes)
+        dom_id = dom_id_text(nodes.last.text)
+
+        # Fix duplicate node by prefix with its parent node
+        if @node_ids[dom_id]
+          if @node_ids[dom_id].size > 1
+            duplicate_nodes = @node_ids.delete(dom_id)
+            new_node_id = "#{duplicate_nodes[-2][:id]}-#{duplicate_nodes.last[:id]}"
+            duplicate_nodes.last[:id] = new_node_id
+            @node_ids[new_node_id] = duplicate_nodes
+          end
+
+          # begin
+            dom_id = "#{nodes[-2][:id]}-#{dom_id}"
+          # rescue NoMethodError
+          #   # ...
+          # end
+        end
+
+        @node_ids[dom_id] = nodes
+        dom_id
+      end
+
+      def dom_id_text(text)
+        text.downcase.gsub(/\?/, '-questionmark').gsub(/!/, '-bang').gsub(/\s+/, '-')
+      end
 
       def engine
         @engine ||= Redcarpet::Markdown.new(Renderer, {
@@ -53,10 +82,10 @@ module RailsGuides
       def generate_structure
         @headings_for_index = []
         if @body.present?
-          @body = Nokogiri::HTML(@body).tap do |doc|
+          @body = Nokogiri::HTML.fragment(@body).tap do |doc|
             hierarchy = []
 
-            doc.at('body').children.each do |node|
+            doc.children.each do |node|
               if node.name =~ /^h[3-6]$/
                 case node.name
                 when 'h3'
@@ -71,6 +100,7 @@ module RailsGuides
                   hierarchy = hierarchy[0, 3] + [node]
                 end
 
+                node[:id] = dom_id(hierarchy)
                 node.inner_html = "#{node_index(hierarchy)} #{node.inner_html}"
               end
             end
@@ -89,7 +119,7 @@ module RailsGuides
             end
           end
 
-          @index = Nokogiri::HTML(engine.render(raw_index)).tap do |doc|
+          @index = Nokogiri::HTML.fragment(engine.render(raw_index)).tap do |doc|
             doc.at('ol')[:class] = 'chapters'
           end.to_html
 
@@ -103,8 +133,8 @@ module RailsGuides
       end
 
       def generate_title
-        if heading = Nokogiri::HTML(@header).at(:h2)
-          @title = "#{heading.text} — Ruby on Rails 指南".html_safe
+        if heading = Nokogiri::HTML.fragment(@header).at(:h2)
+          @title = "#{heading.text} — Ruby on Rails 指南"
         else
           @title = "Ruby on Rails 指南"
         end
