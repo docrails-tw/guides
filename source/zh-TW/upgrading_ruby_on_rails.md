@@ -25,8 +25,6 @@ TIP: Ruby 1.8.7 p248 and p249 have marshaling bugs that crash Rails. Ruby Enterp
 Upgrading from Rails 4.0 to Rails 4.1
 -------------------------------------
 
-NOTE: This section is a work in progress.
-
 ### CSRF protection from remote `<script>` tags
 
 Or, "whaaat my tests are failing!!!?"
@@ -79,11 +77,14 @@ secrets, you need to:
       secret_key_base:
 
     production:
-      secret_key_base:
+      secret_key_base: <%= ENV["SECRET_KEY_BASE"] %>
     ```
 
-2. Copy the existing `secret_key_base` from the `secret_token.rb` initializer to
-   `secrets.yml` under the `production` section.
+2. Use your existing `secret_key_base` from the `secret_token.rb` initializer to
+   set the SECRET_KEY_BASE environment variable for whichever users run the Rails
+   app in production mode. Alternately, you can simply copy the existing
+   `secret_key_base` from the `secret_token.rb` initializer to `secrets.yml`
+   under the `production` section, replacing '<%= ENV["SECRET_KEY_BASE"] %>'.
 
 3. Remove the `secret_token.rb` initializer.
 
@@ -104,9 +105,9 @@ Applications created before Rails 4.1 uses `Marshal` to serialize cookie values 
 the signed and encrypted cookie jars. If you want to use the new `JSON`-based format
 in your application, you can add an initializer file with the following content:
 
-  ```ruby
-  Rails.application.config.cookies_serializer :hybrid
-  ```
+```ruby
+Rails.application.config.action_dispatch.cookies_serializer = :hybrid
+```
 
 This would transparently migrate your existing `Marshal`-serialized cookies into the
 new `JSON`-based format.
@@ -392,6 +393,14 @@ start using the more precise `:plain:`, `:html`, and `:body` options instead.
 Using `render :text` may pose a security risk, as the content is sent as
 `text/html`.
 
+### PostgreSQL json and hstore datatypes
+
+Rails 4.1 will map `json` and `hstore` columns to a string-keyed Ruby `Hash`.
+In earlier versions a `HashWithIndifferentAccess` was used. This means that
+symbol access is no longer supported. This is also the case for
+`store_accessors` based on top of `json` or `hstore` columns. Make sure to use
+string keys consistently.
+
 Upgrading from Rails 3.2 to Rails 4.0
 -------------------------------------
 
@@ -463,7 +472,7 @@ being used, you can update your form to use the `PUT` method instead:
 <%= form_for [ :update_name, @user ], method: :put do |f| %>
 ```
 
-For more on PATCH and why this change was made, see [this post](http://weblog.rubyonrails.org/2012/2/26/edge-rails-patch-is-the-new-primary-http-method-for-updates/)
+For more on PATCH and why this change was made, see [this post](http://weblog.rubyonrails.org/2012/2/25/edge-rails-patch-is-the-new-primary-http-method-for-updates/)
 on the Rails blog.
 
 #### A note about media types
@@ -479,7 +488,7 @@ def update
   respond_to do |format|
     format.json do
       # perform a partial update
-      @post.update params[:post]
+      @article.update params[:article]
     end
 
     format.json_patch do
@@ -882,7 +891,7 @@ AppName::Application.config.session_store :cookie_store, key: 'SOMETHINGNEW'
 or
 
 ```bash
-$ rake db:sessions:clear
+$ bin/rake db:sessions:clear
 ```
 
 ### Remove :cache and :concat options in asset helpers references in views

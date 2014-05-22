@@ -187,61 +187,61 @@ form_for @geocoder, url: geocoder_path do |f|
 
 ```ruby
 namespace :admin do
-  resources :posts, :comments
+  resources :articles, :comments
 end
 ```
 
-會給 `Posts` 與 `Comments` Controllers 在 `Admin::` 命名空間下建出路由。比如 `Admin::PostsController`，Rails 會產生以下路由：
+會給 `Articles` 與 `Comments` Controllers 在 `Admin::` 命名空間下建出路由。比如 `Admin::ArticlesController`，Rails 會產生以下路由：
 
-| HTTP 動詞 | 路徑                  | Controller#動作   | 輔助方法              |
-| --------- | --------------------- | ------------------- | ------------------------- |
-| GET       | /admin/posts          | admin/posts#index   | admin_posts_path          |
-| GET       | /admin/posts/new      | admin/posts#new     | new_admin_post_path       |
-| POST      | /admin/posts          | admin/posts#create  | admin_posts_path          |
-| GET       | /admin/posts/:id      | admin/posts#show    | admin_post_path(:id)      |
-| GET       | /admin/posts/:id/edit | admin/posts#edit    | edit_admin_post_path(:id) |
-| PATCH/PUT | /admin/posts/:id      | admin/posts#update  | admin_post_path(:id)      |
-| DELETE    | /admin/posts/:id      | admin/posts#destroy | admin_post_path(:id)      |
+| HTTP 動詞  | 路徑                      | Controller#動作        | 輔助方法                      |
+| --------- | ------------------------ | ---------------------- | ---------------------------- |
+| GET       | /admin/articles          | admin/articles#index   | admin_articles_path          |
+| GET       | /admin/articles/new      | admin/articles#new     | new_admin_article_path       |
+| POST      | /admin/articles          | admin/articles#create  | admin_articles_path          |
+| GET       | /admin/articles/:id      | admin/articles#show    | admin_article_path(:id)      |
+| GET       | /admin/articles/:id/edit | admin/articles#edit    | edit_admin_article_path(:id) |
+| PATCH/PUT | /admin/articles/:id      | admin/articles#update  | admin_article_path(:id)      |
+| DELETE    | /admin/articles/:id      | admin/articles#destroy | admin_article_path(:id)      |
 
 若想把路徑拿掉 `/admin` 前綴，則可以這麼宣告：
 
 ```ruby
 scope module: 'admin' do
-  resources :posts, :comments
+  resources :articles, :comments
 end
 ```
 
 如只有一筆資源，則可簡寫為：
 
 ```ruby
-resources :posts, module: 'admin'
+resources :articles, module: 'admin'
 ```
 
-若路由希望是 `/admin/posts`，但想拿掉 `Admin::` 的前綴，可以這麼宣告：
+若路由希望是 `/admin/articles`，但想拿掉 `Admin::` 的前綴，可以這麼宣告：
 
 ```ruby
 scope '/admin' do
-  resources :posts, :comments
+  resources :articles, :comments
 end
 ```
 
 如只有一筆資源，則可簡寫為：
 
 ```ruby
-resources :posts, path: '/admin/posts'
+resources :articles, path: '/admin/articles'
 ```
 
 以上這些例子，若沒有使用 `scope`，則輔助方法保持不變。看看上面最後一個使用 `scope` 的例子（與前個表格對比看看那裡不一樣），Rails 會產生以下路由：
 
-| HTTP 動詞 | 路徑                  | Controller#動作   | 輔助方法              |
-| --------- | --------------------- | ----------------- | ------------------- |
-| GET       | /admin/posts          | posts#index       | posts_path          |
-| GET       | /admin/posts/new      | posts#new         | new_post_path       |
-| POST      | /admin/posts          | posts#create      | posts_path          |
-| GET       | /admin/posts/:id      | posts#show        | post_path(:id)      |
-| GET       | /admin/posts/:id/edit | posts#edit        | edit_post_path(:id) |
-| PATCH/PUT | /admin/posts/:id      | posts#update      | post_path(:id)      |
-| DELETE    | /admin/posts/:id      | posts#destroy     | post_path(:id)      |
+| HTTP 動詞  | 路徑                      | Controller#動作      | 輔助方法                |
+| --------- | ------------------------ | -------------------- | ---------------------- |
+| GET       | /admin/articles          | articles#index       | articles_path          |
+| GET       | /admin/articles/new      | articles#new         | new_article_path       |
+| POST      | /admin/articles          | articles#create      | articles_path          |
+| GET       | /admin/articles/:id      | articles#show        | article_path(:id)      |
+| GET       | /admin/articles/:id/edit | articles#edit        | edit_article_path(:id) |
+| PATCH/PUT | /admin/articles/:id      | articles#update      | article_path(:id)      |
+| DELETE    | /admin/articles/:id      | articles#destroy     | article_path(:id)      |
 
 TIP: 若需要在 `namespace` 區塊裡，使用不同的命名空間。可以指定 Controller 的絕對路徑：`get '/foo' => '/foo#index'`。
 
@@ -308,7 +308,7 @@ TIP: 嵌套資源永遠不要超過 1 層。
 避免多層嵌套的方法之一，是將 Controller 的集合動作放在父資源的作用域底下，這樣可以有階層的概念，但不需要嵌套的成員動作。也就是說，只用最少的資源資訊來表示路由，像是：
 
 ```ruby
-resources :posts do
+resources :articles do
   resources :comments, only: [:index, :new, :create]
 end
 resources :comments, only: [:show, :edit, :update, :destroy]
@@ -317,7 +317,7 @@ resources :comments, only: [:show, :edit, :update, :destroy]
 這種做法在有意義的描述路由與深層嵌套之間取得平衡。上例還可以使用 `:shallow` 選項來簡寫：
 
 ```ruby
-resources :posts do
+resources :articles do
   resources :comments, shallow: true
 end
 ```
@@ -325,7 +325,7 @@ end
 這種寫法產生的路由與上例相同。也可以對父資源指定 `:shallow` 選項，則父資源底下的資源都會是淺層嵌套：
 
 ```ruby
-resources :posts, shallow: true do
+resources :articles, shallow: true do
   resources :comments
   resources :quotes
   resources :drafts
@@ -336,7 +336,7 @@ end
 
 ```ruby
 shallow do
-  resources :posts do
+  resources :articles do
     resources :comments
     resources :quotes
     resources :drafts
@@ -348,7 +348,7 @@ end
 
 ```ruby
 scope shallow_path: "sekret" do
-  resources :posts do
+  resources :articles do
     resources :comments, shallow: true
   end
 end
@@ -356,21 +356,21 @@ end
 
 comments 資源會有下列路由：
 
-| HTTP Verb | Path                                   | Controller#Action | Named Helper          |
-| --------- | -------------------------------------- | ----------------- | --------------------- |
-| GET       | /posts/:post_id/comments(.:format)     | comments#index    | post_comments_path    |
-| POST      | /posts/:post_id/comments(.:format)     | comments#create   | post_comments_path    |
-| GET       | /posts/:post_id/comments/new(.:format) | comments#new      | new_post_comment_path |
-| GET       | /sekret/comments/:id/edit(.:format)    | comments#edit     | edit_comment_path     |
-| GET       | /sekret/comments/:id(.:format)         | comments#show     | comment_path          |
-| PATCH/PUT | /sekret/comments/:id(.:format)         | comments#update   | comment_path          |
-| DELETE    | /sekret/comments/:id(.:format)         | comments#destroy  | comment_path          |
+| HTTP Verb | Path                                         | Controller#Action | Named Helper          |
+| --------- | -------------------------------------------- | ----------------- | --------------------- |
+| GET       | /articles/:article_id/comments(.:format)     | comments#index    | article_comments_path    |
+| POST      | /articles/:article_id/comments(.:format)     | comments#create   | article_comments_path    |
+| GET       | /articles/:article_id/comments/new(.:format) | comments#new      | new_article_comment_path |
+| GET       | /sekret/comments/:id/edit(.:format)          | comments#edit     | edit_comment_path     |
+| GET       | /sekret/comments/:id(.:format)               | comments#show     | comment_path          |
+| PATCH/PUT | /sekret/comments/:id(.:format)               | comments#update   | comment_path          |
+| DELETE    | /sekret/comments/:id(.:format)               | comments#destroy  | comment_path          |
 
 `:shallow_prefix` 選項則是給 named helpers 加上前綴:
 
 ```ruby
 scope shallow_prefix: "sekret" do
-  resources :posts do
+  resources :articles do
     resources :comments, shallow: true
   end
 end
@@ -378,15 +378,15 @@ end
 
 comments 資源會有下列路由：
 
-| HTTP Verb | Path                                   | Controller#Action | Named Helper             |
-| --------- | -------------------------------------- | ----------------- | ------------------------ |
-| GET       | /posts/:post_id/comments(.:format)     | comments#index    | post_comments_path       |
-| POST      | /posts/:post_id/comments(.:format)     | comments#create   | post_comments_path       |
-| GET       | /posts/:post_id/comments/new(.:format) | comments#new      | new_post_comment_path    |
-| GET       | /comments/:id/edit(.:format)           | comments#edit     | edit_sekret_comment_path |
-| GET       | /comments/:id(.:format)                | comments#show     | sekret_comment_path      |
-| PATCH/PUT | /comments/:id(.:format)                | comments#update   | sekret_comment_path      |
-| DELETE    | /comments/:id(.:format)                | comments#destroy  | sekret_comment_path      |
+| HTTP Verb | Path                                         | Controller#Action | Named Helper             |
+| --------- | -------------------------------------------- | ----------------- | ------------------------ |
+| GET       | /articles/:article_id/comments(.:format)     | comments#index    | article_comments_path       |
+| POST      | /articles/:article_id/comments(.:format)     | comments#create   | article_comments_path       |
+| GET       | /articles/:article_id/comments/new(.:format) | comments#new      | new_article_comment_path    |
+| GET       | /comments/:id/edit(.:format)                 | comments#edit     | edit_sekret_comment_path |
+| GET       | /comments/:id(.:format)                      | comments#show     | sekret_comment_path      |
+| PATCH/PUT | /comments/:id(.:format)                      | comments#update   | sekret_comment_path      |
+| DELETE    | /comments/:id(.:format)                      | comments#destroy  | sekret_comment_path      |
 
 ### Routing Concerns
 
@@ -407,7 +407,7 @@ end
 ```ruby
 resources :messages, concerns: :commentable
 
-resources :posts, concerns: [:commentable, :image_attachable]
+resources :articles, concerns: [:commentable, :image_attachable]
 ```
 
 上例等價於：
@@ -417,7 +417,7 @@ resources :messages do
   resources :comments
 end
 
-resources :posts do
+resources :articles do
   resources :comments
   resources :images, only: :index
 end
@@ -426,7 +426,7 @@ end
 Concerns 可以在任何地方使用，譬如在作用域，或是命名空間呼叫裡使用：
 
 ```ruby
-namespace :posts do
+namespace :articles do
   concerns :commentable
 end
 ```
@@ -661,15 +661,15 @@ get 'photos/:id', to: 'photos#show', id: /[A-Z]\d{5}/
 `:constraints` 雖然接受正規表示法，但不能使用錨點（anchors）。比如以下路由不會正常工作：
 
 ```ruby
-get '/:id', to: 'posts#show', constraints: {id: /^\d/}
+get '/:id', to: 'articles#show', constraints: {id: /^\d/}
 ```
 
 但其實不需要使用錨點，因為所有的路由皆從頭開始匹配。
 
-舉個例子，下面的路由，若 `posts` 呼叫 `to_param` 的值像是 `1-hello-world`，以數字開頭，就會把請求交給 `PostsController` 的 `show` 動作處理；而 `to_param` 的值不以數字開頭，像是 `david`，則會交給 `UsersController` 的 `show` 動作處理。
+舉個例子，下面的路由，若 `articles` 呼叫 `to_param` 的值像是 `1-hello-world`，以數字開頭，就會把請求交給 `ArticlesController` 的 `show` 動作處理；而 `to_param` 的值不以數字開頭，像是 `david`，則會交給 `UsersController` 的 `show` 動作處理。
 
 ```ruby
-get '/:id', to: 'posts#show', constraints: { id: /\d.+/ }
+get '/:id', to: 'articles#show', constraints: { id: /\d.+/ }
 get '/:username', to: 'users#show'
 ```
 
@@ -768,20 +768,20 @@ get '*pages', to: 'pages#show', format: true
 可以使用 `redirect` 輔助方法將甲路徑轉到乙路徑：
 
 ```ruby
-get '/stories', to: redirect('/posts')
+get '/stories', to: redirect('/articles')
 ```
 
 轉址也可以重複使用匹配路由的動態片段：
 
 ```ruby
-get '/stories/:name', to: redirect('/posts/%{name}')
+get '/stories/:name', to: redirect('/articles/%{name}')
 ```
 
 `redirect` 也可以以區塊形式定義，接受 `path` 參數與 `request` 物件：
 
 ```ruby
-get '/stories/:name', to: redirect { |path_params, req| "/posts/#{path_params[:name].pluralize}" }
-get '/stories', to: redirect { |path_params, req| "/posts/#{req.subdomain}" }
+get '/stories/:name', to: redirect { |path_params, req| "/articles/#{path_params[:name].pluralize}" }
+get '/stories', to: redirect { |path_params, req| "/articles/#{req.subdomain}" }
 ```
 
 Note: 轉址是 301 "Moved Permanently" 轉址。某些瀏覽器或代理伺服器會快取 301 轉址，導致舊的頁面無法存取。
@@ -790,7 +790,7 @@ Note: 轉址是 301 "Moved Permanently" 轉址。某些瀏覽器或代理伺服�
 
 ### 路由到 Rack 應用程式
 
-除了使用像是 `"posts#index"` 的字串（會交給 `PostsController` 的 `index` 動作處理），還可以指定任何 [Rack 應用程式](/rails_on_rack.html) 作為 Endpoint：
+除了使用像是 `"articles#index"` 的字串（會交給 `ArticlesController` 的 `index` 動作處理），還可以指定任何 [Rack 應用程式](/rails_on_rack.html) 作為 Endpoint：
 
 ```ruby
 match '/application.js', to: Sprockets, via: :all
@@ -798,7 +798,7 @@ match '/application.js', to: Sprockets, via: :all
 
 只要 `Sprockets` 有回應 `call`，並回傳 `[status, headers, body]`，則路由器便不管這是一個 Rack 應用程式，還是單純一個動作。這是個應用 `via: :all` 的適當場景，因為希望 Rack 應用程式自己處理所有的 HTTP 動詞。
 
-NOTE: 針對比較好奇的朋友，`"posts#index` 其實會展開成 `PostsController.action(:index)`，會回傳一個合法的 Rack 應用程式。
+NOTE: 針對比較好奇的朋友，`"articles#index` 其實會展開成 `ArticlesController.action(:index)`，會回傳一個合法的 Rack 應用程式。
 
 ### 使用 `root`
 
@@ -834,7 +834,7 @@ get 'こんにちは', to: 'welcome#index'
 客製化資源式路由
 ------------------------------
 
-`resources :posts` 產生的預設路由與輔助方法通常可以滿足多數需求，但有時可能想在某種程度上進行客製化。Rails 允許資源式輔助方法的通用部分做客製化。
+`resources :articles` 產生的預設路由與輔助方法通常可以滿足多數需求，但有時可能想在某種程度上進行客製化。Rails 允許資源式輔助方法的通用部分做客製化。
 
 ### 指定使用的 Controller
 
@@ -968,11 +968,11 @@ NOTE: `namespace` 作用域會自動新增 `:as`、`:module` 以及 `:path` 前�
 
 ```ruby
 scope ':username' do
-  resources :posts
+  resources :articles
 end
 ```
 
-這會產生像是 `/bob/posts/1` 的路由，並允許在 Controller、View 以及輔助方法使用 `params[:username]` 來存取路徑傳入的 `username`。
+這會產生像是 `/bob/articles/1` 的路由，並允許在 Controller、View 以及輔助方法使用 `params[:username]` 來存取路徑傳入的 `username`。
 
 ### 限制建立出來的路由
 

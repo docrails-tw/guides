@@ -3,10 +3,6 @@ Active Record PostgreSQL
 
 本篇介紹 Active Record PostgreSQL 的具體用法。
 
-PostgreSQL 的最低版本要求為 8.2。舊版不支援。
-
-開始使用 PostgreSQL 之前，請先看看[如何為 Active Record 設定 PostgreSQL 資料庫](configuring.html#configuring-a-postgresql-database)。
-
 讀完本篇，您將了解：
 
 * 如何使用 PostgreSQL 的資料類型。
@@ -14,6 +10,10 @@ PostgreSQL 的最低版本要求為 8.2。舊版不支援。
 * 如何在 PostgreSQL 實作全文搜索。
 
 --------------------------------------------------------------------------------
+
+PostgreSQL 的最低版本要求為 8.2。舊版不支援。
+
+開始使用 PostgreSQL 之前，請先看看[如何為 Active Record 設定 PostgreSQL 資料庫](configuring.html#configuring-a-postgresql-database)。
 
 資料類型
 ---------

@@ -118,7 +118,7 @@ Rails 的 “Ajax 幫助方法” 實際上分成用 JavaScript 所寫的幫助�
 撰寫表單的幫助方法。接受 `:remote` 選項：
 
 ```erb
-<%= form_for(@post, remote: true) do |f| %>
+<%= form_for(@article, remote: true) do |f| %>
   ...
 <% end %>
 ```
@@ -126,7 +126,7 @@ Rails 的 “Ajax 幫助方法” 實際上分成用 JavaScript 所寫的幫助�
 產生的 HTML：
 
 ```html
-<form accept-charset="UTF-8" action="/posts" class="new_post" data-remote="true" id="new_post" method="post">
+<form accept-charset="UTF-8" action="/articles" class="new_article" data-remote="true" id="new_article" method="post">
   ...
 </form>
 ```
@@ -137,10 +137,10 @@ Rails 的 “Ajax 幫助方法” 實際上分成用 JavaScript 所寫的幫助�
 
 ```coffeescript
 $(document).ready ->
-  $("#new_post").on("ajax:success", (e, data, status, xhr) ->
-    $("#new_post").append xhr.responseText
+  $("#new_article").on("ajax:success", (e, data, status, xhr) ->
+    $("#new_article").append xhr.responseText
   ).on "ajax:error", (e, xhr, status, error) ->
-    $("#new_post").append "<p>ERROR</p>"
+    $("#new_article").append "<p>ERROR</p>"
 ```
 
 當然這只是個開始，更多可用的事件可在 [jQuery-ujs 的維基頁面][jquery-ujs-wiki]上可找到。
@@ -152,13 +152,13 @@ $(document).ready ->
 跟 `form_for` 非常類似，接受 `:remote` 選項：
 
 ```erb
-<%= form_tag('/posts', remote: true) %>
+<%= form_tag('/articles', remote: true) %>
 ```
 
 產生的 HTML：
 
 ```html
-<form accept-charset="UTF-8" action="/posts" data-remote="true" method="post">
+<form accept-charset="UTF-8" action="/articles" data-remote="true" method="post">
   ...
 </form>
 ```
@@ -170,19 +170,19 @@ $(document).ready ->
 產生連結的幫助方法。接受 `:remote` 選項：
 
 ```erb
-<%= link_to "a post", @post, remote: true %>
+<%= link_to "an article", @article, remote: true %>
 ```
 
 產生的 HTML：
 
 ```html
-<a href="/posts/1" data-remote="true">a post</a>
+<a href="/artciles/1" data-remote="true">an article</a>
 ```
 
 可以像上面 `form_for` 例子那樣，綁定相同的 Ajax 事件上去。 來看個例子，假設按個按鍵，刪除一篇文章，提示一些訊息。只需寫一些 HTML：
 
 ```erb
-<%= link_to "Delete post", @post, remote: true, method: :delete %>
+<%= link_to "Delete artcile", @article, remote: true, method: :delete %>
 ```
 
 再寫一點 CoffeeScript：
@@ -190,7 +190,7 @@ $(document).ready ->
 ```coffeescript
 $ ->
   $("a[data-remote]").on "ajax:success", (e, data, status, xhr) ->
-    alert "The post was deleted."
+    alert "The article was deleted."
 ```
 
 就這麼簡單。
@@ -202,15 +202,15 @@ $ ->
 建立按鈕的幫助方法。接受 `:remote` 選項：
 
 ```erb
-<%= button_to "A post", @post, remote: true %>
+<%= button_to "An article", @article, remote: true %>
 ```
 
 會產生：
 
 ```html
-<form action="/posts/1" class="button_to" data-remote="true" method="post">
+<form action="/articles/1" class="button_to" data-remote="true" method="post">
   <div>
-    <input type="submit" value="A post">
+    <input type="submit" value="An article">
     <input name="authenticity_token" type="hidden" value="PVXViXMJCLd717CYN5Ty7/gTLF3iaqPhL33FTeBmoVk=">
   </div>
 </form>

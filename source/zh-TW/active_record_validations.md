@@ -53,7 +53,7 @@ end
 可以在 `rails console` 下試試這是怎麼工作的：
 
 ```ruby
-$ rails console
+$ bin/rails console
 >> p = Person.new(name: "John Doe")
 => #<Person id: nil, name: "John Doe", created_at: nil, updated_at: nil>
 >> p.new_record?
@@ -920,15 +920,15 @@ person.errors.size # => 0
 
 然而，Rails 大量豐富的驗證方法，自己寫一個顯示錯誤的 View Helper 也不難。當使用 Scaffold 產生時，Rails 會在 `_form.html.erb` 加入一些 ERB，用來產生 Model 的完整錯誤清單。
 
-假設我們有個 Model 存在實體變數 `@post` 裡，View 則可以這麼寫：
+假設我們有個 Model 存在實體變數 `@article` 裡，View 則可以這麼寫：
 
 ```ruby
-<% if @post.errors.any? %>
+<% if @article.errors.any? %>
   <div id="error_explanation">
-    <h2><%= pluralize(@post.errors.count, "error") %> prohibited this post from being saved:</h2>
+    <h2><%= pluralize(@article.errors.count, "error") %> prohibited this article from being saved:</h2>
 
     <ul>
-    <% @post.errors.full_messages.each do |msg| %>
+    <% @article.errors.full_messages.each do |msg| %>
       <li><%= msg %></li>
     <% end %>
     </ul>
@@ -940,7 +940,7 @@ person.errors.size # => 0
 
 ```
 <div class="field_with_errors">
- <input id="post_title" name="post[title]" size="30" type="text" value="">
+ <input id="article_title" name="article[title]" size="30" type="text" value="">
 </div>
 ```
 

@@ -514,7 +514,7 @@ SELECT * FROM clients WHERE (clients.orders_count IN (1,3,5))
 SQL 的 `NOT` 可以使用 `where.not`。
 
 ```ruby
-Post.where.not(author: author)
+Article.where.not(author: author)
 ```
 
 換句話說，先不傳參數呼叫 `where`，再使用 `not` 傳入 `where` 條件。
@@ -687,43 +687,35 @@ HAVING sum(price) > 100
 覆蓋條件
 ---------------------
 
-### `except`
-
-用 `except` 來去掉特定條件，如：
-
-```ruby
-Post.where('id > 10').limit(20).order('id asc').except(:order)
-```
-
-執行的 SQL 語句：
-
-```sql
-SELECT * FROM posts WHERE id > 10 LIMIT 20
-
-# Original query without `except`
-SELECT * FROM posts WHERE id > 10 ORDER BY id asc LIMIT 20
-
-```
-
 ### `unscope`
 
-`except` 在 Relation 合併時無效，比如：
+可以使用 `unscope` 來指定要移除的特定條件，譬如：
 
 ```ruby
-Post.comments.except(:order)
+Article.where('id > 10').limit(20).order('id asc').except(:order)
 ```
 
-如果 `.order(...)` 從預設 scope 而來，則不會消去。為了要移掉所有 `.order(...)`，使用 `unscope`：
+執行的 SQL 可能是：
 
-```ruby
-Post.order('id DESC').limit(20).unscope(:order) = Post.limit(20)
-Post.order('id DESC').limit(20).unscope(:order, :limit) = Post.all
+```sql
+SELECT * FROM articles WHERE id > 10 LIMIT 20
+
+# Original query without `unscope`
+SELECT * FROM articles WHERE id > 10 ORDER BY id asc LIMIT 20
 ```
 
-`unscope` 特定的 `where` 子句也可以：
+也可以 `unscope` 特定的 `where` 子句，譬如：
 
 ```ruby
-Post.where(id: 10).limit(1).unscope({ where: :id }, :limit).order('id DESC') = Post.order('id DESC')
+Article.where(id: 10, trashed: false).unscope(where: :id)
+# SELECT "articles".* FROM "articles" WHERE trashed = 0
+```
+
+使用了 `unscope` 的 Relation 會影響與其合併的 Relation：
+
+```
+Article.order('id asc').merge(Article.unscope(:order))
+# SELECT "articles".* FROM "articles"
 ```
 
 ### `only`
@@ -731,17 +723,16 @@ Post.where(id: 10).limit(1).unscope({ where: :id }, :limit).order('id DESC') = P
 `only` 可以留下特定條件，比如：
 
 ```ruby
-Post.where('id > 10').limit(20).order('id desc').only(:order, :where)
+Article.where('id > 10').limit(20).order('id desc').only(:order, :where)
 ```
 
 執行的 SQL 語句：
 
 ```sql
-SELECT * FROM posts WHERE id > 10 ORDER BY id DESC
+SELECT * FROM articles WHERE id > 10 ORDER BY id DESC
 
 # Original query without `only`
-SELECT "posts".* FROM "posts" WHERE (id > 10) ORDER BY id desc LIMIT 20
-
+SELECT "articles".* FROM "articles" WHERE (id > 10) ORDER BY id desc LIMIT 20
 ```
 
 ### `reorder`
@@ -749,25 +740,25 @@ SELECT "posts".* FROM "posts" WHERE (id > 10) ORDER BY id desc LIMIT 20
 `reorder` 可以覆蓋掉預設 scope 的 `order` 條件：
 
 ```ruby
-class Post < ActiveRecord::Base
+class Article < ActiveRecord::Base
   ..
   ..
   has_many :comments, -> { order('posted_at DESC') }
 end
 
-Post.find(10).comments.reorder('name')
+Article.find(10).comments.reorder('name')
 ```
 
 執行的 SQL 語句：
 
 ```sql
-SELECT * FROM posts WHERE id = 10 ORDER BY name
+SELECT * FROM comments WHERE id = 10 ORDER BY name
 ```
 
 原本會執行的 SQL 語句（沒用 `reorder`）：
 
 ```sql
-SELECT * FROM posts WHERE id = 10 ORDER BY posted_at DESC
+SELECT * FROM comments WHERE id = 10 ORDER BY posted_at DESC
 ```
 
 ### `reverse_order`
@@ -804,29 +795,28 @@ SELECT * FROM clients WHERE orders_count > 10 ORDER BY clients.id DESC
 `none` 方法回傳一個不包含任何記錄、可連鎖使用的 Relation。`none` 回傳的 Relation 上做查詢，仍會回傳空的 Relation。應用場景是回傳的 Relation 可能沒有記錄，但需要可以連鎖使用。
 
 ```ruby
-Post.none # returns an empty Relation and fires no queries.
+Article.none # returns an empty Relation and fires no queries.
 ```
 
 回傳空的 Relation，不會對資料庫下查詢。
 
 ```ruby
-# The visible_posts method below is expected to return a Relation.
-@posts = current_user.visible_posts.where(name: params[:name])
+# The visible_articles method below is expected to return a Relation.
+@articles = current_user.visible_articles.where(name: params[:name])
 
-def visible_posts
+def visible_articles
   case role
   when 'Country Manager'
-    Post.where(country: country)
+    Article.where(country: country)
   when 'Reviewer'
-    Post.published
+    Article.published
   when 'Bad User'
-    Post.none # => returning [] or nil breaks the caller code in this case
+    Article.none # => returning [] or nil breaks the caller code in this case
   end
 end
 ```
 
-上例 `visible_posts` 可能沒有可見的 `posts`，但之後還有 `where` 子句，此時沒有 `posts` 的情況可以使用 `Post.none`。
-
+上例 `visible_articles` 可能沒有可見的 `articles`，但之後還有 `where` 子句，此時沒有 `articles` 的情況可以使用 `Article.none`。
 
 唯讀物件
 ----------------
@@ -951,21 +941,21 @@ WARNING: 此法僅對 `INNER JOIN` 有效。
 
 Active Record 允許在使用 `joins` 方法時，使用關聯名稱來指定 `JOIN` 子句。
 
-舉個例子，以下有 `Category`、`Post`、`Comment`、`Guest` 以及 `Tag` Models：
+舉個例子，以下有 `Category`、`Article`、`Comment`、`Guest` 以及 `Tag` Models：
 
 ```ruby
 class Category < ActiveRecord::Base
-  has_many :posts
+  has_many :articles
 end
 
-class Post < ActiveRecord::Base
+class Article < ActiveRecord::Base
   belongs_to :category
   has_many :comments
   has_many :tags
 end
 
 class Comment < ActiveRecord::Base
-  belongs_to :post
+  belongs_to :article
   has_one :guest
 end
 
@@ -974,7 +964,7 @@ class Guest < ActiveRecord::Base
 end
 
 class Tag < ActiveRecord::Base
-  belongs_to :post
+  belongs_to :article
 end
 ```
 
@@ -983,30 +973,30 @@ end
 #### 連接單個關聯
 
 ```ruby
-Category.joins(:posts)
+Category.joins(:articles)
 ```
 
 會產生：
 
 ```sql
 SELECT categories.* FROM categories
-  INNER JOIN posts ON posts.category_id = categories.id
+  INNER JOIN articles ON articles.category_id = categories.id
 ```
 
-用白話解釋是：“依文章分類來回傳分類物件”。注意到如果有 `post` 是相同類別，會看到重複的分類物件。若要去掉重複結果，可以使用 `Category.joins(:posts).uniq`。
+用白話解釋是：“依文章分類來回傳分類物件”。注意到如果有 `article` 是相同類別，會看到重複的分類物件。若要去掉重複結果，可以使用 `Category.joins(:articles).uniq`。
 
 #### 連接多個關聯
 
 ```ruby
-Post.joins(:category, :comments)
+Article.joins(:category, :comments)
 ```
 
 會產生：
 
 ```sql
-SELECT posts.* FROM posts
-  INNER JOIN categories ON posts.category_id = categories.id
-  INNER JOIN comments ON comments.post_id = posts.id
+SELECT articles.* FROM articles
+  INNER JOIN categories ON articles.category_id = categories.id
+  INNER JOIN comments ON comments.article_id = articles.id
 ```
 
 用白話解釋是：“依分類來回傳文章物件，且文章至少有一則評論”。有多則評論的文章將會出現很多次。
@@ -1014,14 +1004,14 @@ SELECT posts.* FROM posts
 #### 連接一層嵌套關聯
 
 ```ruby
-Post.joins(comments: :guest)
+Article.joins(comments: :guest)
 ```
 
 會產生：
 
 ```sql
-SELECT posts.* FROM posts
-  INNER JOIN comments ON comments.post_id = posts.id
+SELECT articles.* FROM articles
+  INNER JOIN comments ON comments.article_id = articles.id
   INNER JOIN guests ON guests.comment_id = comments.id
 ```
 
@@ -1030,17 +1020,17 @@ SELECT posts.* FROM posts
 #### 連接多層嵌套關聯
 
 ```ruby
-Category.joins(posts: [{comments: :guest}, :tags])
+Category.joins(articles: [{comments: :guest}, :tags])
 ```
 
 會產生：
 
 ```sql
 SELECT categories.* FROM categories
-  INNER JOIN posts ON posts.category_id = categories.id
-  INNER JOIN comments ON comments.post_id = posts.id
+  INNER JOIN articles ON articles.category_id = categories.id
+  INNER JOIN comments ON comments.article_id = articles.id
   INNER JOIN guests ON guests.comment_id = comments.id
-  INNER JOIN tags ON tags.post_id = posts.id
+  INNER JOIN tags ON tags.article_id = articles.id
 ```
 
 ### 對連接的資料表指定條件
@@ -1110,7 +1100,7 @@ SELECT addresses.* FROM addresses
 #### 陣列有多個關聯
 
 ```ruby
-Post.includes(:category, :comments)
+Article.includes(:category, :comments)
 ```
 
 會加載所有文章，以及每篇文章的類別與評論。
@@ -1118,7 +1108,7 @@ Post.includes(:category, :comments)
 #### 嵌套關聯 Hash
 
 ```ruby
-Category.includes(posts: [{comments: :guest}, :tags]).find(1)
+Category.includes(articles: [{ comments: :guest }, :tags]).find(1)
 ```
 
 會找到 `category` `id` 為 1 的類別，並加載與類別相關聯的文章。以及文章的標籤與評論跟評論的 `guest` 關聯。
@@ -1130,13 +1120,13 @@ Category.includes(posts: [{comments: :guest}, :tags]).find(1)
 但若非要這麼做，可以像平常那樣使用 `where`：
 
 ```ruby
-Post.includes(:comments).where("comments.visible" => true)
+Article.includes(:comments).where("comments.visible" => true)
 ```
 
 產生的查詢語句會有 `LEFT OUTER JOIN`，而 `joins` 產生的是 `INNER JOIN`。
 
 ```ruby
-SELECT "posts"."id" AS t0_r0, ... "comments"."updated_at" AS t1_r5 FROM "posts" LEFT OUTER JOIN "comments" ON "comments"."post_id" = "posts"."id" WHERE (comments.visible = 1)
+SELECT "articles"."id" AS t0_r0, ... "comments"."updated_at" AS t1_r5 FROM "articles" LEFT OUTER JOIN "comments" ON "comments"."article_id" = "articles"."id" WHERE (comments.visible = 1)
 ```
 
 如果沒有下 `where` 條件，則會像平常那樣產生兩條查詢。
@@ -1151,7 +1141,7 @@ SELECT "posts"."id" AS t0_r0, ... "comments"."updated_at" AS t1_r5 FROM "posts" 
 要定義一個簡單的作用域，在類別裡使用 `scope` 方法，傳入呼叫此作用域時想執行的查詢即可：
 
 ```ruby
-class Post < ActiveRecord::Base
+class Article < ActiveRecord::Base
   scope :published, -> { where(published: true) }
 end
 ```
@@ -1159,7 +1149,7 @@ end
 這與定義一個類別方法完全相同，用那個完全是個人喜好：
 
 ```ruby
-class Post < ActiveRecord::Base
+class Article < ActiveRecord::Base
   def self.published
     where(published: true)
   end
@@ -1169,7 +1159,7 @@ end
 作用域可以與其它作用域連鎖使用：
 
 ```ruby
-class Post < ActiveRecord::Base
+class Article < ActiveRecord::Base
   scope :published,               -> { where(published: true) }
   scope :published_and_commented, -> { published.where("comments_count > 0") }
 end
@@ -1178,14 +1168,14 @@ end
 要呼叫 `published` 作用域，可以在類上呼叫：
 
 ```ruby
-Post.published # => [published posts]
+Article.published # => [published articles]
 ```
 
-或是對由 `Post` 物件組成的關聯使用：
+或是對由 `Article` 物件組成的關聯使用：
 
 ```ruby
 category = Category.first
-category.posts.published # => [published posts belonging to this category]
+category.articles.published # => [published articles belonging to this category]
 ```
 
 ### 傳入參數
@@ -1193,7 +1183,7 @@ category.posts.published # => [published posts belonging to this category]
 作用域可接受參數：
 
 ```ruby
-class Post < ActiveRecord::Base
+class Article < ActiveRecord::Base
   scope :created_before, ->(time) { where("created_at < ?", time) }
 end
 ```
@@ -1201,13 +1191,13 @@ end
 像呼叫類別方法那般使用作用域
 
 ```ruby
-Post.created_before(Time.zone.now)
+Article.created_before(Time.zone.now)
 ```
 
 這只是重複類別方法可提供的功能。
 
 ```ruby
-class Post < ActiveRecord::Base
+class Article < ActiveRecord::Base
   def self.created_before(time)
     where("created_at < ?", time)
   end
@@ -1217,7 +1207,7 @@ end
 作用域需要接受參數偏好使用類別方法。接受參數的類別方法仍可在關聯物件上使用：
 
 ```ruby
-category.posts.created_before(time)
+category.articles.created_before(time)
 ```
 
 ### 合併作用域
@@ -1549,20 +1539,20 @@ Client.exists?
 
 ```ruby
 # via a model
-Post.any?
-Post.many?
+Article.any?
+Article.many?
 
 # via a named scope
-Post.recent.any?
-Post.recent.many?
+Article.recent.any?
+Article.recent.many?
 
 # via a relation
-Post.where(published: true).any?
-Post.where(published: true).many?
+Article.where(published: true).any?
+Article.where(published: true).many?
 
 # via an association
-Post.first.categories.any?
-Post.first.categories.many?
+Article.first.categories.any?
+Article.first.categories.many?
 ```
 
 計算
@@ -1656,18 +1646,18 @@ Client.sum(:orders_count)
 可以對 Active Record Relation 使用 `explain`，比如：
 
 ```ruby
-User.where(id: 1).joins(:posts).explain
+User.where(id: 1).joins(:articles).explain
 ```
 
 可能輸出如下（MySQL）：
 
 ```
-EXPLAIN for: SELECT `users`.* FROM `users` INNER JOIN `posts` ON `posts`.`user_id` = `users`.`id` WHERE `users`.`id` = 1
+EXPLAIN for: SELECT `users`.* FROM `users` INNER JOIN `articles` ON `articles`.`user_id` = `users`.`id` WHERE `users`.`id` = 1
 +----+-------------+-------+-------+---------------+---------+---------+-------+------+-------------+
 | id | select_type | table | type  | possible_keys | key     | key_len | ref   | rows | Extra       |
 +----+-------------+-------+-------+---------------+---------+---------+-------+------+-------------+
 |  1 | SIMPLE      | users | const | PRIMARY       | PRIMARY | 4       | const |    1 |             |
-|  1 | SIMPLE      | posts | ALL   | NULL          | NULL    | NULL    | NULL  |    1 | Using where |
+|  1 | SIMPLE      | articles | ALL   | NULL          | NULL    | NULL    | NULL  |    1 | Using where |
 +----+-------------+-------+-------+---------------+---------+---------+-------+------+-------------+
 2 rows in set (0.00 sec)
 ```
@@ -1675,22 +1665,22 @@ EXPLAIN for: SELECT `users`.* FROM `users` INNER JOIN `posts` ON `posts`.`user_i
 Active Record 會根據使用的資料庫不同，按照資料庫 Shell 的方式印出。在 PostgreSQL 可能會輸出：
 
 ```
-EXPLAIN for: SELECT "users".* FROM "users" INNER JOIN "posts" ON "posts"."user_id" = "users"."id" WHERE "users"."id" = 1
+EXPLAIN for: SELECT "users".* FROM "users" INNER JOIN "articles" ON "articles"."user_id" = "users"."id" WHERE "users"."id" = 1
                                   QUERY PLAN
 ------------------------------------------------------------------------------
  Nested Loop Left Join  (cost=0.00..37.24 rows=8 width=0)
-   Join Filter: (posts.user_id = users.id)
+   Join Filter: (articles.user_id = users.id)
    ->  Index Scan using users_pkey on users  (cost=0.00..8.27 rows=1 width=4)
          Index Cond: (id = 1)
-   ->  Seq Scan on posts  (cost=0.00..28.88 rows=8 width=4)
-         Filter: (posts.user_id = 1)
+   ->  Seq Scan on articles  (cost=0.00..28.88 rows=8 width=4)
+         Filter: (articles.user_id = 1)
 (6 rows)
 ```
 
 Eager loading 可能會觸發多條查詢，某些查詢依賴先前查詢的結果。由於這個原因，`explain` 會實際執行該查詢，並詢問要查詢那一個，比如：
 
 ```ruby
-User.where(id: 1).includes(:posts).explain
+User.where(id: 1).includes(:articles).explain
 ```
 
 會輸出（MySQL）：
@@ -1704,11 +1694,11 @@ EXPLAIN for: SELECT `users`.* FROM `users`  WHERE `users`.`id` = 1
 +----+-------------+-------+-------+---------------+---------+---------+-------+------+-------+
 1 row in set (0.00 sec)
 
-EXPLAIN for: SELECT `posts`.* FROM `posts`  WHERE `posts`.`user_id` IN (1)
+EXPLAIN for: SELECT `articles`.* FROM `articles`  WHERE `articles`.`user_id` IN (1)
 +----+-------------+-------+------+---------------+------+---------+------+------+-------------+
 | id | select_type | table | type | possible_keys | key  | key_len | ref  | rows | Extra       |
 +----+-------------+-------+------+---------------+------+---------+------+------+-------------+
-|  1 | SIMPLE      | posts | ALL  | NULL          | NULL | NULL    | NULL |    1 | Using where |
+|  1 | SIMPLE      | articles | ALL  | NULL          | NULL | NULL    | NULL |    1 | Using where |
 +----+-------------+-------+------+---------------+------+---------+------+------+-------------+
 1 row in set (0.00 sec)
 ```

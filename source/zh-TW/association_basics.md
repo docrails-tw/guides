@@ -1706,47 +1706,47 @@ WARNING: 若使用了 `select`，記得要選出關聯的主鍵與外鍵欄位�
 ```ruby
 class Person < ActiveRecord::Base
   has_many :readings
-  has_many :posts, through: :readings
+  has_many :articles, through: :readings
 end
 
 person = Person.create(name: 'John')
-post   = Post.create(name: 'a1')
-person.posts << post
-person.posts << post
-person.posts.inspect # => [#<Post id: 5, name: "a1">, #<Post id: 5, name: "a1">]
-Reading.all.inspect  # => [#<Reading id: 12, person_id: 5, post_id: 5>, #<Reading id: 13, person_id: 5, post_id: 5>]
+article   = Article.create(name: 'a1')
+person.articles << a
+person.articles << a
+person.articles.inspect # => [#<Article id: 5, name: "a1">, #<Article id: 5, name: "a1">]
+Reading.all.inspect  # => [#<Reading id: 12, person_id: 5, article_id: 5>, #<Reading id: 13, person_id: 5, article_id: 5>]
 ```
 
-上例中，人有兩篇文章要讀，雖然這兩篇是相同的文章，但 `person.posts` 會回傳兩篇文章。
+上例中，人有兩篇文章要讀，雖然這兩篇是相同的文章，但 `person.articles` 會回傳兩篇文章。
 
 使用 `distinct`：
 
 ```ruby
 class Person
   has_many :readings
-  has_many :posts, -> { distinct }, through: :readings
+  has_many :articles, -> { distinct }, through: :readings
 end
 
 person = Person.create(name: 'Honda')
-post   = Post.create(name: 'a1')
-person.posts << post
-person.posts << post
-person.posts.inspect # => [#<Post id: 7, name: "a1">]
-Reading.all.inspect  # => [#<Reading id: 16, person_id: 7, post_id: 7>, #<Reading id: 17, person_id: 7, post_id: 7>]
+article   = Article.create(name: 'a1')
+person.articles << article
+person.articles << article
+person.articles.inspect # => [#<Article id: 7, name: "a1">]
+Reading.all.inspect  # => [#<Reading id: 16, person_id: 7, article_id: 7>, #<Reading id: 17, person_id: 7, article_id: 7>]
 ```
 
-上例仍有兩篇文章要讀，但 `person.posts` 僅回傳一篇文章，因為集合只載入唯一的記錄。
+上例仍有兩篇文章要讀，但 `person.articles` 僅回傳一篇文章，因為集合只載入唯一的記錄。
 
-若想確保不插入重複的資料到資料庫（這樣取出來就確定是不重複的記錄了），應該要在資料表上新增一個唯一性的索引。舉例來說，如果有 `person_posts` 資料表，想確保所有文章不重複，可加入下面這個遷移：
+若想確保不插入重複的資料到資料庫（這樣取出來就確定是不重複的記錄了），應該要在資料表上新增一個唯一性的索引。舉例來說，如果有 `person_articles` 資料表，想確保所有文章不重複，可加入下面這個遷移：
 
 ```ruby
-add_index :person_posts, :post, unique: true
+add_index :person_articles, :article, unique: true
 ```
 
 使用 `include?` 來檢唯一性可能會導致競態條件（Race Condition）。不要使用 `include?` 來確保集合的唯一性。同樣以前面文章為例，以下的程式碼會導致競態條件，因為多個使用者可能同時加入文章：
 
 ```ruby
-person.posts << post unless person.posts.include?(post)
+person.articles << article unless person.articles.include?(article)
 ```
 
 #### 物件何時被儲存？

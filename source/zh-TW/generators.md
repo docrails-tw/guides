@@ -23,13 +23,13 @@
 ```bash
 $ rails new myapp
 $ cd myapp
-$ rails generate
+$ bin/rails generate
 ```
 
 需要特定產生器的詳細說明，可以傳入 `--help`，比如要瀏覽輔助方法產生器的說明：
 
 ```bash
-$ rails generate helper --help
+$ bin/rails generate helper --help
 ```
 
 建立第一個產生器
@@ -55,13 +55,13 @@ NOTE: `create_file` 是 `Thor::Actions` 提供的方法。`create_file` 及其�
 要呼叫新的產生器，只需要：
 
 ```bash
-$ rails generate initializer
+$ bin/rails generate initializer
 ```
 
 在繼續解說之前，看看剛剛建立出來的產生器的說明文件：
 
 ```bash
-$ rails generate initializer --help
+$ bin/rails generate initializer --help
 ```
 如果產生器放在適當的命名空間，譬如 `ActiveRecord::Generators::ModelGenerator`，Rails 通常可以產生出不錯的指令說明。但這個情況不適用。這個問題有兩個解決辦法，一是使用 `desc` 自己寫說明：
 
@@ -82,7 +82,7 @@ end
 產生器本身也可以用產生器來產生：
 
 ```bash
-$ rails generate generator initializer
+$ bin/rails generate generator initializer
       create  lib/generators/initializer
       create  lib/generators/initializer/initializer_generator.rb
       create  lib/generators/initializer/USAGE
@@ -102,7 +102,7 @@ end
 可以透過呼叫新的產生器的說明看看（記得先刪除舊的產生器檔案）：
 
 ```bash
-$ rails generate initializer --help
+$ bin/rails generate initializer --help
 Usage:
   rails generate initializer NAME [options]
 ```
@@ -130,7 +130,7 @@ end
 接著執行：
 
 ```bash
-$ rails generate initializer core_extensions
+$ bin/rails generate initializer core_extensions
 ```
 
 現在可以看到一個 `initializer`，叫做 `core_extensions` 被建立出來了，位置是：`config/initializers/core_extensions.rb`，內容是模版所填之內容。`copy_file` 在 `source_root` 複製檔案到指定的目標路徑。當繼承自 `Rails::Generators::NamedBase` 時，會自動建立 `file_name` 這個方法。
@@ -169,7 +169,7 @@ end
 在客製化工作流程之前，先看看預設的鷹架輸出是什麼：
 
 ```bash
-$ rails generate scaffold User name:string
+$ bin/rails generate scaffold User name:string
       invoke  active_record
       create    db/migrate/20140513182748_create_users.rb
       create    app/models/user.rb
@@ -224,7 +224,7 @@ end
 接著來客製化輔助方法產生器，先建立新的輔助方法產生器，這個產生器會幫輔助方法裡的實體變數自動加上 `attr_reader`。首先在 Rails 的命名空間下建立產生器，這樣 Rails 才能找到。
 
 ```bash
-$ rails generate generator rails/my_helper
+$ bin/rails generate generator rails/my_helper
       create  lib/generators/rails/my_helper
       create  lib/generators/rails/my_helper/my_helper_generator.rb
       create  lib/generators/rails/my_helper/USAGE
@@ -249,7 +249,7 @@ end
 可以建立輔助方法，來試試看新的產生器：
 
 ```bash
-$ rails generate my_helper products
+$ bin/rails generate my_helper products
       create  app/helpers/products_helper.rb
 ```
 
@@ -277,7 +277,7 @@ end
 再產生看看是否用了新加的輔助方法產生器：
 
 ```bash
-$ rails generate scaffold Post body:text
+$ bin/rails generate scaffold Post body:text
       [...]
       invoke    my_helper
       create      app/helpers/posts_helper.rb
@@ -363,7 +363,7 @@ end
 現在用鷹架新建 `Comment`資源，會看到輸出裡呼叫了 `shoulda` 產生器，最下方替代方案使用了 TestUnit 產生器：
 
 ```bash
-$ rails generate scaffold Comment body:text
+$ bin/rails generate scaffold Comment body:text
       invoke  active_record
       create    db/migrate/20130924143118_create_comments.rb
       create    app/models/comment.rb

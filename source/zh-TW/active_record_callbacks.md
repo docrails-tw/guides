@@ -259,27 +259,27 @@ WARNING: 即便回呼鏈已終止，任何非 `ActiveRecord::Rollback` 的異常
 關聯回呼
 --------------------------
 
-回呼也可穿透 Model 之間的關係，甚至可以透過關聯來定義。舉個例子，假設使用者有許多文章，使用者的文章應在刪除使用者時一併刪除。可以在與 `User` Model 相關聯的 `Post` Model 裡加入 `after_destroy` 回呼：
+回呼也可穿透 Model 之間的關係，甚至可以透過關聯來定義。舉個例子，假設使用者有許多文章，使用者的文章應在刪除使用者時一併刪除。可以在與 `User` Model 相關聯的 `Article` Model 裡加入 `after_destroy` 回呼：
 
 ```ruby
 class User < ActiveRecord::Base
-  has_many :posts, dependent: :destroy
+  has_many :articles, dependent: :destroy
 end
 
-class Post < ActiveRecord::Base
+class Article < ActiveRecord::Base
   after_destroy :log_destroy_action
 
   def log_destroy_action
-    puts 'Posts also destroyed'
+    puts 'Article also destroyed'
   end
 end
 
 >> user = User.first
 => #<User id: 1>
 >> user.posts.create!
-=> #<Post id: 1, user_id: 1>
+=> #<Article id: 1, user_id: 1>
 >> user.destroy
-Post destroyed
+Article destroyed
 => #<User id: 1>
 ```
 
@@ -326,7 +326,7 @@ end
 ```ruby
 class Comment < ActiveRecord::Base
   after_create :send_email_to_author, if: :author_wants_emails?,
-    unless: Proc.new { |comment| comment.post.ignore_comments? }
+    unless: Proc.new { |comment| comment.article.ignore_comments? }
 end
 ```
 

@@ -110,7 +110,7 @@ NOTE: Rails 的 `ActionDispatch::MiddlewareStack` 等同於 `Rack::Builder`，�
 Rails 有一個好用的 Rake 任務，可檢視使用中的 Middleware stack：
 
 ```bash
-$ rake middleware
+$ bin/rake middleware
 ```
 
 新建出來的 Rails 應用程式，輸出結果會像是：
@@ -198,7 +198,7 @@ config.middleware.delete "Rack::Lock"
 現在檢視 Middleware Stack，會發現 `Rack::Lock` 已經被刪除了。
 
 ```bash
-$ rake middleware
+$ bin/rake middleware
 use Rack::Sendfile
 use ActionDispatch::Static
 use #<ActiveSupport::Cache::Strategy::LocalCache::Middleware:0x000000029a0838>

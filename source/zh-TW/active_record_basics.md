@@ -50,7 +50,7 @@ Active Record 預設使用某種命名慣例來找出 Model 與資料表的對�
 
     | Model / Class | Table / Schema |
     | ------------- | -------------- |
-    | `Post`        | `posts`        |
+    | `Article`     | `articles`     |
     | `LineItem`    | `line_items`   |
     | `Deer`        | `deers`        |
     | `Mouse`       | `mice`         |
@@ -75,7 +75,7 @@ Active Record 資料表欄位的命名慣例，取決於欄位的用途
 * `type` - 表示 Model 開啟了[單表繼承](http://api.rubyonrails.org/classes/ActiveRecord/Base.html#label-Single+table+inheritance)功能。
 * `(association_name)_type` - 儲存
   [多態關聯](association_basics.html#polymorphic-associations) 所需的類型資料。
-* `(table_name)_count` - 用來快取關聯物件的數量。舉例來說，`Post` Model 的 `comments_count` 便會為每篇文章快取評論的數量。
+* `(table_name)_count` - 用來快取關聯物件的數量。舉例來說，`Article` Model 的 `comments_count` 便會為每篇文章快取評論的數量。
 
 NOTE: 雖然這些欄位名稱是選擇性的，但實際上是 Active Record 的保留字。如果要使用這些額外的功能，不要將這些保留字作為他用。比如，`type` 是用來設計單表繼承的資料表。如果沒有使用 STI 功能，試試用個類似的名稱如，“context” 來描述您在建模的資料。
 

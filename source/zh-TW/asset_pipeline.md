@@ -56,11 +56,11 @@ the comment operator on that line to later enable the asset pipeline:
 
 To set asset compression methods, set the appropriate configuration options
 in `production.rb` - `config.assets.css_compressor` for your CSS and
-`config.assets.js_compressor` for your Javascript:
+`config.assets.js_compressor` for your JavaScript:
 
 ```ruby
 config.assets.css_compressor = :yui
-config.assets.js_compressor = :uglify
+config.assets.js_compressor = :uglifier
 ```
 
 NOTE: The `sass-rails` gem is automatically used for CSS compression if included
@@ -198,12 +198,9 @@ will result in your assets being included more than once.
 
 WARNING: When using asset precompilation, you will need to ensure that your
 controller assets will be precompiled when loading them on a per page basis. By
-default .coffee and .scss files will not be precompiled on their own. This will
-result in false positives during development as these files will work just fine
-since assets are compiled on the fly in development mode. When running in
-production, however, you will see 500 errors since live compilation is turned
-off by default. See [Precompiling Assets](#precompiling-assets) for more
-information on how precompiling works.
+default .coffee and .scss files will not be precompiled on their own. See
+[Precompiling Assets](#precompiling-assets) for more information on how
+precompiling works.
 
 NOTE: You must have an ExecJS supported runtime in order to use CoffeeScript.
 If you are using Mac OS X or Windows, you have a JavaScript runtime installed in
@@ -245,7 +242,7 @@ When a file is referenced from a manifest or a helper, Sprockets searches the
 three default asset locations for it.
 
 The default locations are: the `images`, `javascripts` and `stylesheets`
-directories under the `apps/assets` folder, but these subdirectories
+directories under the `app/assets` folder, but these subdirectories
 are not special - any path under `assets/*` will be searched.
 
 For example, these files:
@@ -581,23 +578,21 @@ runtime. To disable this behavior you can set:
 config.assets.raise_runtime_errors = false
 ```
 
-When `raise_runtime_errors` is set to `false` sprockets will not check that dependencies of assets are declared properly. Here is a scenario where you must tell the asset pipeline about a dependency:
+When this option is true, the asset pipeline will check if all the assets loaded
+in your application are included in the `config.assets.precompile` list.
+If `config.assets.digests` is also true, the asset pipeline will require that
+all requests for assets include digests.
 
-If you have `application.css.erb` that references `logo.png` like this:
+### Turning Digests Off
 
-```css
-#logo { background: url(<%= asset_data_uri 'logo.png' %>) }
+You can turn off digests by updating `config/environments/development.rb` to
+include:
+
+```ruby
+config.assets.digests = false
 ```
 
-Then you must declare that `logo.png` is a dependency of `application.css.erb`, so when the image gets re-compiled, the css file does as well. You can do this using the `//= depend_on_asset` declaration:
-
-```css
-//= depend_on_asset "logo.png"
-#logo { background: url(<%= asset_data_uri 'logo.png' %>) }
-```
-
-Without this declaration you may experience strange behavior when pushing to production that is difficult to debug. When you have `raise_runtime_errors` set to `true`, dependencies will be checked at runtime so you can ensure that all dependencies are met.
-
+When this option is true, digests will be generated for asset URLs.
 
 ### Turning Debugging Off
 
@@ -691,7 +686,7 @@ information on compiling locally.
 The rake task is:
 
 ```bash
-$ RAILS_ENV=production bundle exec rake assets:precompile
+$ RAILS_ENV=production bin/rake assets:precompile
 ```
 
 Capistrano (v2.15.1 and above) includes a recipe to handle this in deployment.
@@ -724,17 +719,17 @@ JS/CSS is excluded, as well as raw JS/CSS files; for example, `.coffee` and
 `.scss` files are **not** automatically included as they compile to JS/CSS.
 
 If you have other manifests or individual stylesheets and JavaScript files to
-include, you can add them to the `precompile` array in `config/application.rb`:
+include, you can add them to the `precompile` array in `config/initializers/assets.rb`:
 
 ```ruby
-config.assets.precompile += ['admin.js', 'admin.css', 'swfObject.js']
+Rails.application.config.assets.precompile += ['admin.js', 'admin.css', 'swfObject.js']
 ```
 
 Or, you can opt to precompile all assets with something like this:
 
 ```ruby
-# config/application.rb
-config.assets.precompile << Proc.new do |path|
+# config/initializers/assets.rb
+Rails.application.config.assets.precompile << Proc.new do |path|
   if path =~ /\.(css|js)\z/
     full_path = Rails.application.assets.resolve(path).to_path
     app_assets_path = Rails.root.join('app', 'assets').to_path
@@ -781,7 +776,7 @@ exception indicating the name of the missing file(s).
 
 #### Far-future Expires Header
 
-Precompiled assets exist on the filesystem and are served directly by your web
+Precompiled assets exist on the file system and are served directly by your web
 server. They do not have far-future headers by default, so to get the benefit of
 fingerprinting you'll have to update your server configuration to add those
 headers.
@@ -928,6 +923,14 @@ that it plays nicely with the pipeline. You may find quirks related to your
 specific set up, you may not. The defaults nginx uses, for example, should give
 you no problems when used as an HTTP cache.
 
+If you want to serve only some assets from your CDN, you can use custom
+`:host` option of  `asset_url` helper, which overwrites value set in
+`config.action_controller.asset_host`.
+
+```ruby
+asset_url 'image.png', :host => 'http://cdn.example.com'
+```
+
 Customizing the Pipeline
 ------------------------
 
@@ -943,7 +946,7 @@ gem.
 ```ruby
 config.assets.css_compressor = :yui
 ```
-The other option for compressing CSS if you have the sass-rails gem installed is 
+The other option for compressing CSS if you have the sass-rails gem installed is
 
 ```ruby
 config.assets.css_compressor = :sass
@@ -1018,7 +1021,7 @@ The X-Sendfile header is a directive to the web server to ignore the response
 from the application, and instead serve a specified file from disk. This option
 is off by default, but can be enabled if your server supports it. When enabled,
 this passes responsibility for serving the file to the web server, which is
-faster. Have a look at [send_file](http://api.rubyonrails.org/classes/ActionController/DataStreaming.html#method-i-send_file) 
+faster. Have a look at [send_file](http://api.rubyonrails.org/classes/ActionController/DataStreaming.html#method-i-send_file)
 on how to use this feature.
 
 Apache and nginx support this option, which can be enabled in
@@ -1054,6 +1057,14 @@ cache store.
 
 ```ruby
 config.assets.cache_store = :memory_store, { size: 32.megabytes }
+```
+
+To disable the assets cache store:
+
+```ruby
+config.assets.configure do |env|
+  env.cache = ActiveSupport::Cache.lookup_store(:null_store)
+end
 ```
 
 Adding Assets to Your Gems
