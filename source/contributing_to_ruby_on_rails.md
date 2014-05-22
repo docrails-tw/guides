@@ -265,15 +265,15 @@ This is how you run the Active Record test suite only for SQLite3:
 
 ```bash
 $ cd activerecord
-$ bundle exec rake test_sqlite3
+$ bundle exec rake test:sqlite3
 ```
 
 You can now run the tests as you did for `sqlite3`. The tasks are respectively
 
 ```bash
-test_mysql
-test_mysql2
-test_postgresql
+test:mysql
+test:mysql2
+test:postgresql
 ```
 
 Finally,
@@ -361,9 +361,9 @@ it should not be necessary to visit a webpage to check the history.
 Description can have multiple paragraphs and you can use code examples
 inside, just indent it with 4 spaces:
 
-    class PostsController
+    class ArticlesController
       def index
-        respond_with Post.limit(10)
+        respond_with Article.limit(10)
       end
     end
 

@@ -3,13 +3,6 @@ Active Record and PostgreSQL
 
 This guide covers PostgreSQL specific usage of Active Record.
 
-In order to use the PostgreSQL adapter you need to have at least version 8.2
-installed. Older versions are not supported.
-
-To get started with PostgreSQL have a look at the
-[configuring Rails guide](configuring.html#configuring-a-postgresql-database).
-It describes how to properly setup Active Record for PostgreSQL.
-
 After reading this guide, you will know:
 
 * How to use PostgreSQL's datatypes.
@@ -17,6 +10,13 @@ After reading this guide, you will know:
 * How to implement full text search with PostgreSQL.
 
 --------------------------------------------------------------------------------
+
+In order to use the PostgreSQL adapter you need to have at least version 8.2
+installed. Older versions are not supported.
+
+To get started with PostgreSQL have a look at the
+[configuring Rails guide](configuring.html#configuring-a-postgresql-database).
+It describes how to properly setup Active Record for PostgreSQL.
 
 Datatypes
 ---------
@@ -171,7 +171,7 @@ event.ends_at # => Thu, 13 Feb 2014
 
 * [type definition](http://www.postgresql.org/docs/9.3/static/rowtypes.html)
 
-Currently there is no special support for composite types. They are mapped to as
+Currently there is no special support for composite types. They are mapped to
 normal text columns:
 
 ```sql
@@ -287,8 +287,9 @@ user.save!
 
 * [type definition](http://www.postgresql.org/docs/9.3/static/datatype-net-types.html)
 
-The types `inet` and `cidr` are mapped to Ruby [`IPAddr`](http://www.ruby-doc.org/stdlib-2.1.1/libdoc/ipaddr/rdoc/IPAddr.html) objects. The
-`macaddr` type is mapped to normal text.
+The types `inet` and `cidr` are mapped to Ruby
+[`IPAddr`](http://www.ruby-doc.org/stdlib-2.1.1/libdoc/ipaddr/rdoc/IPAddr.html)
+objects. The `macaddr` type is mapped to normal text.
 
 ```ruby
 # db/migrate/20140508144913_create_devices.rb
