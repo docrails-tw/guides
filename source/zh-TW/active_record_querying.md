@@ -752,13 +752,15 @@ Article.find(10).comments.reorder('name')
 執行的 SQL 語句：
 
 ```sql
-SELECT * FROM comments WHERE id = 10 ORDER BY name
+SELECT * FROM articles WHERE id = 10
+SELECT * FROM comments WHERE article_id = 10 ORDER BY name
 ```
 
 原本會執行的 SQL 語句（沒用 `reorder`）：
 
 ```sql
-SELECT * FROM comments WHERE id = 10 ORDER BY posted_at DESC
+SELECT * FROM articles WHERE id = 10
+SELECT * FROM comments WHERE article_id = 10 ORDER BY posted_at DESC
 ```
 
 ### `reverse_order`
