@@ -178,7 +178,6 @@
       name: Ruby on Rails 指南準則
       url: ruby_on_rails_guides_guidelines.html
       description: 本篇記錄了撰寫 Ruby on Rails 指南的準則。
-      needs_translation: true
 -
   name: 維護方針
   documents:
