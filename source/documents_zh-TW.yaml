@@ -60,7 +60,7 @@
     -
       name: Action View 表單輔助方法
       url: form_helpers.html
-      description: 本篇介紹如何使用內建的表單助方法。
+      description: 本篇介紹如何使用內建的表單輔助方法。
       needs_translation: true
 -
   name: Controllers
