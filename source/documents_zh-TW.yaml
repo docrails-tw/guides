@@ -58,9 +58,9 @@
       description: 本篇介紹 Action Controller 與 Action View 基本的版型功能，包含了算繪、重定向、使用 `content_for` 區塊、以及 partial。
       needs_translation: true
     -
-      name: Action View 表單 Helpers
+      name: Action View 表單輔助方法
       url: form_helpers.html
-      description: 本篇介紹內建表單 Helpers 如何使用。
+      description: 本篇介紹如何使用內建的表單助方法。
       needs_translation: true
 -
   name: Controllers
