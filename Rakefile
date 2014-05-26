@@ -43,7 +43,7 @@ namespace :guides do
 
     Dir.chdir(PAGES_PATH.expand_path) do
       `git add -A .`
-      `git commit -m '#{%Q[Site updated @ #{Time.now.strftime("%a %b %-m %H:%M:%S %Z %Y")}]}'`
+      `git commit -m '#{%Q[Site updated @ #{Time.now.strftime("%a %b %-d %H:%M:%S %Z %Y")}]}'`
       `git push origin master`
     end
 
