@@ -205,9 +205,9 @@ TIP: 若使用了 password input fields（不論用途），輸入的值可能�
 
 ### Model 物件輔助方法
 
-表單通常拿來新建或編輯 Model 物件。帶有 `_tag` 字尾的 Helpers 可以解決這件事，但太繁瑣了，參數名稱和預設值都得正確才行。Rails 提供更多方便的輔助方法（沒有 `_tag` 字尾），像是 `text_field`、`text_area` 等，用來處理 Model objects。
+表單通常拿來新建或編輯 Model 物件。可以使用 `*_tag` 這些輔助方法來處理，但太繁瑣了，參數名稱和預設值都得正確才行。Rails 提供更多方便的輔助方法（沒有 `_tag` 字尾），像是 `text_field`、`text_area` 等，專門用來處理 Model 物件。
 
-這些 Helpers 的第一個參數是實體變數的名字，第二個參數是要對實體變數呼叫的方法名稱（通常是屬性）。Rails 會將呼叫的結果存成 `input` 的 `value`，並幫你給 `input` 的 `name` 取個好名字。假設 Controller 已經定義了 `@person`，`@person.name` 是 `Henry`，則：
+這些輔助方法的第一個參數是實體變數的名字，第二個參數是要對實體變數呼叫的方法名稱（通常是屬性）。Rails 會將呼叫的結果存成 `input` 的 `value`，並幫你給 `input` 的 `name` 取個好名字。假設 Controller 已經定義了 `@person`，`@person.name` 是 `Henry`，則：
 
 ```erb
 <%= text_field(:person, :name) %>
@@ -466,8 +466,6 @@ TIP: `options_for_select` 的第二個參數，必須與需要選中選項的值
 ```
 
 `select` 也接受區塊：
-
-You can also pass a block to `select` helper:
 
 ```erb
 <%= f.select(:city_id) do %>
