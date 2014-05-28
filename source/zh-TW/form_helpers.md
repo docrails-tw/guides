@@ -32,11 +32,9 @@ NOTE: 本篇不是表單輔助方法完整的文件，完整文件請參考 [Rai
 像這樣不傳參數呼叫時，會建立出 `<form>` 標籤。按下送出時，會對目前的頁面做 POST。舉例來說，假設目前的頁面是 `/home/index`，上例產生的 HTML 會像是（加了某些斷行提高可讀性）：
 
 ```html
-<form accept-charset="UTF-8" action="/home/index" method="post">
-  <div style="display:none">
-    <input name="utf8" type="hidden" value="&#x2713;" />
-    <input name="authenticity_token" type="hidden" value="f755bb0ed134b76c432144748a6d4b7a7ddf2b71" />
-  </div>
+<form accept-charset="UTF-8" action="/" method="post">
+  <input name="utf8" type="hidden" value="&#x2713;" />
+  <input name="authenticity_token" type="hidden" value="J7CBxfHalt49OSHp27hblqK20c9PgwJ108nDHX/8Cts=" />
   Form contents
 </form>
 ```
@@ -67,7 +65,8 @@ Web 世界最基本的表單之一是「搜索表單」。通常由以下元素�
 會產生出如下 HTML：
 
 ```html
-<form accept-charset="UTF-8" action="/search" method="get"><div style="display:none"><input name="utf8" type="hidden" value="&#x2713;" /></div>
+<form accept-charset="UTF-8" action="/search" method="get">
+  <input name="utf8" type="hidden" value="&#x2713;" />
   <label for="q">Search for:</label>
   <input id="q" name="q" type="text" />
   <input name="commit" type="submit" value="Search" />
