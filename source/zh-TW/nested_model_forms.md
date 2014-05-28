@@ -1,18 +1,17 @@
-Rails nested model forms
+Rails Nested Model forms
 ========================
 
 Creating a form for a model _and_ its associations can become quite tedious. Therefore Rails provides helpers to assist in dealing with the complexities of generating these forms _and_ the required CRUD operations to create, update, and destroy associations.
 
-After reading this guide, you will know:
+讀完本篇，您將了解：
 
-* do stuff.
+* Nested model forms in Rails.
 
 --------------------------------------------------------------------------------
 
-NOTE: This guide assumes the user knows how to use the [Rails form helpers](form_helpers.html) in general. Also, it's **not** an API reference. For a complete reference please visit [the Rails API documentation](http://api.rubyonrails.org/).
+NOTE: This guide assumes the user knows how to use the [Action View form helpers](form_helpers.html) in general. Also, it's **not** an API reference. For a complete reference please visit [Rails API documentation](http://api.rubyonrails.org/).
 
-
-Model setup
+設定 Model
 -----------
 
 To be able to use the nested model functionality in your forms, the model will need to support some basic operations.
@@ -152,7 +151,7 @@ Now add a nested form for the `address` association:
 <% end %>
 ```
 
-This generates:
+輸出：
 
 ```html
 <form action="/people" class="new_person" id="new_person" method="post">
@@ -193,7 +192,7 @@ The form code for an association collection is pretty similar to that of a singl
 <% end %>
 ```
 
-Which generates:
+輸出：
 
 ```html
 <form action="/people" class="new_person" id="new_person" method="post">

@@ -108,6 +108,8 @@ Ruby 的 `Class`
 
 * Copy 複本
 
+* Constructor 建構子
+
 D
 ------
 
@@ -147,6 +149,12 @@ F
 
 資料庫特有的功能之一。
 
+* Form 表單
+
+* Form Helpers 表單輔助方法
+
+* Form Builder 表單構造器
+
 * File 檔案
 
 * Finder Methods 查詢方法
@@ -172,6 +180,8 @@ G
 
 H
 ------
+
+* Hash 散列
 
 * Handler 處理函數
 
@@ -205,6 +215,8 @@ UI => 介面
 API => 接口
 
 * Integrity 完整性
+
+* Iterate 迭代
 
 J
 ------
@@ -317,6 +329,10 @@ R
 
 資料庫裡的紀錄。
 
+* Record Identification 記錄自動識別技術
+
+指的是 `form_for @article` 能自動分辨出現在是 `edit`、還是 `new`。
+
 * Redirection
 
 轉址。
@@ -371,6 +387,8 @@ S
 * Self-Join 自連接
 
 * Serialize 序列化
+
+* Serialization 序列化
 
 * Shallow Nesting 淺層嵌套
 

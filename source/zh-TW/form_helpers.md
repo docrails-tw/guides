@@ -7,7 +7,7 @@ Action View 表單輔助方法
 
 * 如何建立搜索表單與其它常見的通用表單。
 * 如何替 Model 打造出編輯與建立資料庫記錄的表單。
-* 如何從多種類型的資料產生 select boxes。
+* 如何從多種類型的資料產生下拉選單。
 * Rails 提供的日期與時間輔助方法。
 * 上傳檔案表單的特別之處。
 * 打造供外部資源使用的表單。
@@ -41,7 +41,7 @@ NOTE: 本篇不是表單輔助方法完整的文件，完整文件請參考 [Rai
 </form>
 ```
 
-注意到 HTML 裡有個額外的 `div` 元素，裡面有兩個隱藏的 `input`。這個 `div` 很重要，沒有這個 `div` 表單便無法順利送出。第一個 `name` 屬性為 `utf8` 的 `input`，強制瀏覽器正確採用表單指定的編碼，所有 HTTP 動詞為 GET 或 POST 表單，Rails 都會產生這個 input。第二個 `name` 屬性為 `authenticity_token` 的 `input`，是 Rails 內建用來防止 CSRF (cross-site request forgery protection) 攻擊的安全機制，任何非 GET 的表單，Rails 都會產生一個這樣的 `input`（安全機制有啟用的話）。詳情請閱讀[安全指南](./security.html#cross-site-request-forgery-csrf。
+注意到 HTML 裡有個額外的 `div` 元素，裡面有兩個隱藏的 `input`。這個 `div` 很重要，沒有這個 `div` 表單便無法順利送出。第一個 `name` 屬性為 `utf8` 的 `input`，強制瀏覽器正確採用表單指定的編碼，所有 HTTP 動詞為 GET 或 POST 表單，Rails 都會產生這個 input。第二個 `name` 屬性為 `authenticity_token` 的 `input`，是 Rails 內建用來防止 CSRF (cross-site request forgery protection) 攻擊的安全機制，任何非 GET 的表單，Rails 都會產生一個這樣的 `input`（安全機制有啟用的話）。詳情請閱讀[安全指南](security.html#cross-site-request-forgery-csrf)。
 
 NOTE: 為求行文簡潔，有隱藏輸入的 `div` 將省略不列在之後的範例裡。
 
@@ -54,8 +54,7 @@ Web 世界最基本的表單之一是「搜索表單」。通常由以下元素�
 * 輸入有標籤
 * 送出元素
 
- form_tag、label_tag、text_field_tag、
-要建立搜索表單，可以使用 `form_tag`、`label_tag`、`text_field_tag` 以及 `submit_tag`：
+要建立這樣的搜索表單，可以使用 `form_tag`、`label_tag`、`text_field_tag` 以及 `submit_tag`：
 
 ```erb
 <%= form_tag("/search", method: "get") do %>
@@ -75,24 +74,24 @@ Web 世界最基本的表單之一是「搜索表單」。通常由以下元素�
 </form>
 ```
 
-TIP: 每個表單的輸入 `input`，都會根據 `name` 屬性來產生 ID 屬性（上例為 `q`）。ID 給 CSS 新增樣式、或是 JavaScript 操作表單都很方便。
+TIP: 每個表單的輸入 `input`，都會根據 `name` 屬性來產生 ID 屬性（上例為 `q`）。有了 ID，CSS 要新增樣式、或 JavaScript 要操作表單都很方便。
 
 除了 `text_field_tag` 與 `submit_tag` 之外，每個表單元素都有對應的輔助方法。
 
-IMPORTANT: 搜索表單永遠使用 GET 動詞。這允許使用者可以把搜索結果加入書籤，之後能透過書籤瀏覽。Rails 普遍鼓勵使用正確的 HTTP 動詞。
+IMPORTANT: 搜索表單永遠使用 GET 動詞。這允許使用者可以把搜索結果加入書籤，之後便能透過書籤瀏覽。Rails 普遍鼓勵使用正確的 HTTP 動詞。
 
 ### 呼叫表單輔助方法同時傳多個 Hash
 
-`form_tag` 輔助方法接受 2 個參數： 表單送出的目標路徑，以及 Hash 選項。Hash 選項用來指定表單所使用的方法，以及其它 HTML 選項，如指定表單的 `class`。
+`form_tag` 輔助方法接受 2 個參數：表單送出的目標路徑和 Hash 選項。Hash 選項用來指定表單所使用的方法，以及其它 HTML 選項，如指定表單的 `class`。
 
-和 `link_to` 輔助方法類似，路徑不需要是字串。可以是 Rails Router 看的懂的 URL Hash，Rails 的路由機制會把 Hash 轉換為有效的 URL。但由於傳給 `form_tag` 的兩個參數都是 Hash 時，兩個同時指定會碰到問題。請看以下這個例子：
+和 `link_to` 輔助方法類似，路徑不需要是字串。可以是 Rails Router 看的懂的 URL Hash，Rails 的路由機制會把 Hash 轉換為有效的 URL。但由於傳給 `form_tag` 的兩個參數都是 Hash 時，同時指定會碰到下例所演示的問題：
 
 ```ruby
 form_tag(controller: "people", action: "search", method: "get", class: "nifty_form")
 # => '<form accept-charset="UTF-8" action="/people/search?class=nifty_form&amp;method=get" method="post">'
 ```
 
-這裡 `method` 與 `class` 變成了產生出來的 URL 的查詢字串，因為 Rails 將這四個參數認成了一個 Hash。需要把第一組 Hash 放在大括號裡（或兩組明確使用大括號亦可），才會產生出正確的 HTML：
+這裡 `method` 與 `class` 變成了 URL 的查詢字串，因為 Rails 將這四個參數認成了一個 Hash。需要把第一組 Hash 放在大括號裡（或明確使用大括號亦可），才會產生出正確的 HTML：
 
 ```ruby
 form_tag({ controller: "people", action: "search" }, method: "get", class: "nifty_form")
@@ -206,31 +205,31 @@ TIP: 若使用了 password input fields（不論用途），輸入的值可能�
 
 ### Model 物件輔助方法
 
-A particularly common task for a form is editing or creating a model object. While the `*_tag` helpers can certainly be used for this task they are somewhat verbose as for each tag you would have to ensure the correct parameter name is used and set the default value of the input appropriately. Rails provides helpers tailored to this task. These helpers lack the _tag suffix, for example `text_field`, `text_area`.
+表單通常拿來新建或編輯 Model 物件。帶有 `_tag` 字尾的 Helpers 可以解決這件事，但太繁瑣了，參數名稱和預設值都得正確才行。Rails 提供更多方便的輔助方法（沒有 `_tag` 字尾），像是 `text_field`、`text_area` 等，用來處理 Model objects。
 
-For these helpers the first argument is the name of an instance variable and the second is the name of a method (usually an attribute) to call on that object. Rails will set the value of the input control to the return value of that method for the object and set an appropriate input name. If your controller has defined `@person` and that person's name is Henry then a form containing:
+這些 Helpers 的第一個參數是實體變數的名字，第二個參數是要對實體變數呼叫的方法名稱（通常是屬性）。Rails 會將呼叫的結果存成 `input` 的 `value`，並幫你給 `input` 的 `name` 取個好名字。假設 Controller 已經定義了 `@person`，`@person.name` 是 `Henry`，則：
 
 ```erb
 <%= text_field(:person, :name) %>
 ```
 
-will produce output similar to
+會產生
 
 ```erb
 <input id="person_name" name="person[name]" type="text" value="Henry"/>
 ```
 
-Upon form submission the value entered by the user will be stored in `params[:person][:name]`. The `params[:person]` hash is suitable for passing to `Person.new` or, if `@person` is an instance of Person, `@person.update`. While the name of an attribute is the most common second parameter to these helpers this is not compulsory. In the example above, as long as person objects have a `name` and a `name=` method Rails will be happy.
+送出表單時，使用者的輸入會存在 `params[:person][:name]`，`params[:person]` 可傳給 `Person.new`；若 `@person` 是 `Person` 的實體，則可傳給 `Person#update`。通常第二個參數是屬性名稱，實在是太常用了，通常可省略不寫，只要該物件有實作 `name` 與 `name=` 方法即可。
 
-WARNING: You must pass the name of an instance variable, i.e. `:person` or `"person"`, not an actual instance of your model object.
+WARNING: 第一個參數必須是實體變數的“名稱”，如：`:person` 或 `"person"`，而不是傳實際的實體物件進去。
 
-Rails provides helpers for displaying the validation errors associated with a model object. These are covered in detail by the [Active Record Validations](./active_record_validations.html#displaying-validation-errors-in-views) guide.
+Rails 還提供了用來顯示與 Model 物件驗證錯誤訊息的輔助方法。這些方法在 [Active Record 驗證](/active_record_validations.html#在-view-顯示驗證失敗訊息)一文裡詳細說明。
 
 ### 將表單綁定到物件
 
-While this is an increase in comfort it is far from perfect. If Person has many attributes to edit then we would be repeating the name of the edited object many times. What we want to do is somehow bind a form to a model object, which is exactly what `form_for` does.
+雖然這些去掉 `_tag` 的輔助方法很方便，但還不夠好。若 `Person` 有很多屬性時，得一直重複傳入要編輯的物件名稱，來生成對應的表單。Rails 提供了 `form_for`，用來將表單綁定至 Model 的物件。
 
-Assume we have a controller for dealing with articles `app/controllers/articles_controller.rb`:
+假設有處理文章的 Controller `app/controllers/articles_controller.rb`：
 
 ```ruby
 def new
@@ -238,7 +237,7 @@ def new
 end
 ```
 
-The corresponding view `app/views/articles/new.html.erb` using `form_for` looks like this:
+對應的 View `app/views/articles/new.html.erb`，使用了 `form_for` 看起來會像是這樣：
 
 ```erb
 <%= form_for @article, url: {action: "create"}, html: {class: "nifty_form"} do |f| %>
@@ -248,14 +247,15 @@ The corresponding view `app/views/articles/new.html.erb` using `form_for` looks 
 <% end %>
 ```
 
-There are a few things to note here:
+有幾件要說明的事情：
 
-* `@article` is the actual object being edited.
-* There is a single hash of options. Routing options are passed in the `:url` hash, HTML options are passed in the `:html` hash. Also you can provide a `:namespace` option for your form to ensure uniqueness of id attributes on form elements. The namespace attribute will be prefixed with underscore on the generated HTML id.
-* The `form_for` method yields a **form builder** object (the `f` variable).
-* Methods to create form controls are called **on** the form builder object `f`
+* `@article` 是實際被編輯的物件。
+& `form_for` 接受一個 Hash 選項。路由相關選項放在 `:url` 傳入，HTML 相關選項放在 `html:` 選項傳入。還可以提供 `:namespace` 選項，用來確保 ID 的唯一性。`namespace` 的值會自動成為 HTML ID 的前綴。
 
-The resulting HTML is:
+* `form_for` 方法會產生一個 **表單構造器（Form Builder）** 物件（`f` 變數）。
+* 輔助方法皆在 `f`，表單構造器上呼叫。
+
+產生的 HTML 為：
 
 ```html
 <form accept-charset="UTF-8" action="/articles/create" method="post" class="nifty_form">
@@ -265,11 +265,11 @@ The resulting HTML is:
 </form>
 ```
 
-The name passed to `form_for` controls the key used in `params` to access the form's values. Here the name is `article` and so all the inputs have names of the form `article[attribute_name]`. Accordingly, in the `create` action `params[:article]` will be a hash with keys `:title` and `:body`. You can read more about the significance of input names in the parameter_names section.
+傳給 `form_for` 的名稱會成為在 `params` 取用表單數值的鍵。上例名稱為 `article`，因此所有的 `name` 都是 `article[attribute_name]`。在 `create` 動作裡的 `params[:article]` 會是有著 `:title` 與 `:body` 鍵的 Hash。輸入名稱的重要性，可參閱[理解參數命名慣例](#理解參數命名慣例)一節。
 
-The helper methods called on the form builder are identical to the model object helpers except that it is not necessary to specify which object is being edited since this is already managed by the form builder.
+對表單構造器呼叫輔助方法，和對 Model 物件上呼叫的效果相同。但不需要指定編輯的物件，因為編輯的物件即表單構造器。
 
-You can create a similar binding without actually creating `<form>` tags with the `fields_for` helper. This is useful for editing additional model objects with the same form. For example if you had a Person model with an associated ContactDetail model you could create a form for creating both like so:
+使用 `fields_for` 輔助方法也可以達到上面的效果，但不會產生出 `<form>` 標籤。同個表單用來編輯多個 Model 物件時很有用。譬如 `Person` Model 有個關聯的 `ContactDetail` Model，下面的表單可以同時建立初兩個 Model 的物件：
 
 ```erb
 <%= form_for @person, url: {action: "create"} do |person_form| %>
@@ -280,7 +280,7 @@ You can create a similar binding without actually creating `<form>` tags with th
 <% end %>
 ```
 
-which produces the following output:
+會產生出以下輸出：
 
 ```html
 <form accept-charset="UTF-8" action="/people/create" class="new_person" id="new_person" method="post">
@@ -289,19 +289,19 @@ which produces the following output:
 </form>
 ```
 
-The object yielded by `fields_for` is a form builder like the one yielded by `form_for` (in fact `form_for` calls `fields_for` internally).
+`fields_for` 給出的物件也是個表單構造器，和 `form_for` 一樣（實際上 `form_for` 內部呼叫的是 `fields_for`）。
 
-### Relying on Record Identification
+### 記錄自動識別技術
 
-The Article model is directly available to users of the application, so - following the best practices for developing with Rails - you should declare it **a resource**:
+如使用者可以直接操作 `Article` Model，則依據 Rails 開發的最佳實踐，應將 `Article` 視為**一個資源**。
 
 ```ruby
 resources :articles
 ```
 
-TIP: Declaring a resource has a number of side-affects. See [Rails Routing From the Outside In](routing.html#resource-routing-the-rails-default) for more information on setting up and using resources.
+TIP: 宣告成資源有許多副作用。見 [Rails 路由：深入淺出〈資源式路由：Rails 的預設路由〉](routing.html#資源式路由：rails-的預設路由)來瞭解更多關於設定與使用資源的資訊。
 
-When dealing with RESTful resources, calls to `form_for` can get significantly easier if you rely on **record identification**. In short, you can just pass the model instance and have Rails figure out model name and the rest:
+處理 RESTful 資源時，若用了記錄自動識別技術，則呼叫 `form_for` 便很容易使用。簡單的說，可以只把 Model 實體傳進去，Rails 會自己處理好 Model 名稱與其它內容：
 
 ```ruby
 ## Creating a new article
@@ -317,40 +317,39 @@ form_for(@article, url: article_path(@article), html: {method: "patch"})
 form_for(@article)
 ```
 
-Notice how the short-style `form_for` invocation is conveniently the same, regardless of the record being new or existing. Record identification is smart enough to figure out if the record is new by asking `record.new_record?`. It also selects the correct path to submit to and the name based on the class of the object.
+無論記錄是否存在，使用簡短風格的 `form_for` 呼叫都長得一樣。記錄自動識別技術很聰明，會對紀錄呼叫 `record.new_record?` 來檢查是否是新紀錄。也能根據物件的類別，選出正確的送出路徑與名稱。
 
-Rails will also automatically set the `class` and `id` of the form appropriately: a form creating an article would have `id` and `class` `new_article`. If you were editing the article with id 23, the `class` would be set to `edit_article` and the id to `edit_article_23`. These attributes will be omitted for brevity in the rest of this guide.
+Rails 也會自動幫表單設定適當的 `class` 與 `id`。新增文章的表單 `id` 與 `class` 可能是 `new_article`。若編輯 ID 為 23 的文章，`class` 則會設為 `edit_article`、`id` 設為 `edit_article_23`。為求行文簡潔，這些屬性後文忽略不計。
 
-WARNING: When you're using STI (single-table inheritance) with your models, you can't rely on record identification on a subclass if only their parent class is declared a resource. You will have to specify the model name, `:url`, and `:method` explicitly.
+WARNING: 使用 STI（單表繼承）時，如父類宣告為資源，則子類便不能依賴記錄自動識別技術。必須要明確指定 Model 的名稱、`:url` 以及 `:method`。
 
-#### Dealing with Namespaces
+#### 處理命名空間
 
-If you have created namespaced routes, `form_for` has a nifty shorthand for that too. If your application has an admin namespace then
+若建立的路由有命名空間，`form_for` 也有對應的簡寫形式。假設應用程式有 `admin` 命名空間：
 
 ```ruby
 form_for [:admin, @article]
 ```
 
-will create a form that submits to the `ArticlesController` inside the admin namespace (submitting to `admin_article_path(@article)` in the case of an update). If you have several levels of namespacing then the syntax is similar:
+會在 `admin` 命名空間裡，建立出對 `ArticlesController` 提交的表單，送出結果到 `admin_article_path(@article)`（假設是更新文章的情況）。若有多層命名空間，語法類推：
 
 ```ruby
 form_for [:admin, :management, @article]
 ```
 
-For more information on Rails' routing system and the associated conventions, please see the [routing guide](routing.html).
+關於 Rails 路由系統的更多資訊以及有關的慣例，請參見：[Rails 路由：深入淺出]。
 
+### PATCH、PUT、DELETE 表單的工作原理
 
-### How do forms with PATCH, PUT, or DELETE methods work?
+Rails 框架鼓勵用 RESTful 風格來設計應用程式，這表示會用到許多 “PATCH” 與 “DELETE” 請求（而不只是 GET 與 POST）。但多數瀏覽器 **只支援** 用 GET 或 POST 來送出表單。
 
-The Rails framework encourages RESTful design of your applications, which means you'll be making a lot of "PATCH" and "DELETE" requests (besides "GET" and "POST"). However, most browsers _don't support_ methods other than "GET" and "POST" when it comes to submitting forms.
-
-Rails works around this issue by emulating other methods over POST with a hidden input named `"_method"`, which is set to reflect the desired method:
+Rails 透過使用 POST 請求模擬出其它 HTTP 方法來解決這個問題。在表單裡新增一個 `name` 為 `_method`、`value` 為真正希望使用的方法名稱的隱藏輸入：
 
 ```ruby
 form_tag(search_path, method: "patch")
 ```
 
-output:
+輸出：
 
 ```html
 <form accept-charset="UTF-8" action="/search" method="post">
@@ -362,14 +361,14 @@ output:
   ...
 ```
 
-When parsing POSTed data, Rails will take into account the special `_method` parameter and acts as if the HTTP method was the one specified inside it ("PATCH" in this example).
+解析 POST 過來的資料時，Rails 會將特殊的 `_method` 參數考慮進去，以 `value` 的值作為 HTTP 方法（上例為 “PATCH”）。
 
-Making Select Boxes with Ease
+輕鬆製作下拉式選單
 -----------------------------
 
-Select boxes in HTML require a significant amount of markup (one `OPTION` element for each option to choose from), therefore it makes the most sense for them to be dynamically generated.
+HTML 的下拉選單需要大量的 Markup（一個選項就要一個 `OPTION` 元素），非常適合動態產生這些選項。
 
-Here is what the markup might look like:
+以下是可能的 Markup：
 
 ```html
 <select name="city_id" id="city_id">
@@ -380,69 +379,72 @@ Here is what the markup might look like:
 </select>
 ```
 
-Here you have a list of cities whose names are presented to the user. Internally the application only wants to handle their IDs so they are used as the options' value attribute. Let's see how Rails can help out here.
+這裡有一組給使用者選擇的城市清單。應用程式內部只需要處理各選項的 ID，因此把 `option` 的 `value` 設為 ID。接著看 Rails 如何化繁為簡。
 
-### The Select and Option Tags
+### Select 與 Option 標籤
 
-The most generic helper is `select_tag`, which - as the name implies - simply generates the `SELECT` tag that encapsulates an options string:
+最通用的輔助方法是 `select_tag`，從名字就可以看出來，是用來產生封裝了選項字串的 `select` 標籤：
 
 ```erb
 <%= select_tag(:city_id, '<option value="1">Lisbon</option>...') %>
 ```
 
-This is a start, but it doesn't dynamically create the option tags. You can generate option tags with the `options_for_select` helper:
+這只是剛開始而已，上面把字串封裝在 `select_tag` 裡面，無法動態生成 `option` 標籤，於是有了 `options_for_select`：
 
 ```html+erb
 <%= options_for_select([['Lisbon', 1], ['Madrid', 2], ...]) %>
 
-output:
+輸出：
 
 <option value="1">Lisbon</option>
 <option value="2">Madrid</option>
 ...
 ```
 
-The first argument to `options_for_select` is a nested array where each element has two elements: option text (city name) and option value (city id). The option value is what will be submitted to your controller. Often this will be the id of a corresponding database object but this does not have to be the case.
+`options_for_select` 的第一個參數是選項組成的嵌套陣列，每個選項有兩個元素，選項文字（城市名稱）與選項數值（城市 ID）。選項數值會送給 Controller 處理。通常會是資料庫對應物件的 ID，但也不強迫一定要用 ID。
 
-Knowing this, you can combine `select_tag` and `options_for_select` to achieve the desired, complete markup:
+瞭解之後，可以結合 `select_tag` 與 `options_for_select` 來實作完整的 Markup：
 
 ```erb
 <%= select_tag(:city_id, options_for_select(...)) %>
 ```
 
-`options_for_select` allows you to pre-select an option by passing its value.
+`options_for_select` 的第二個參數可以設定預設選項。
 
 ```html+erb
 <%= options_for_select([['Lisbon', 1], ['Madrid', 2], ...], 2) %>
 
-output:
+輸出：
 
 <option value="1">Lisbon</option>
 <option value="2" selected="selected">Madrid</option>
 ...
 ```
 
-Whenever Rails sees that the internal value of an option being generated matches this value, it will add the `selected` attribute to that option.
+Rails 在發現屬性值與 `options_for_select` 第二個參數的值相同時，便會給該選項新增 `selected` 屬性。
 
-TIP: The second argument to `options_for_select` must be exactly equal to the desired internal value. In particular if the value is the integer 2 you cannot pass "2" to `options_for_select` - you must pass 2. Be aware of values extracted from the `params` hash as they are all strings.
+TIP: `options_for_select` 的第二個參數，必須與需要選中選項的值完全相等。特別注意若該選項的值是整數 `2`，`options_for_select` 第二個參數的值便不可以是 `"2"`，必須是 `2`。需要注意的是從 `params` 取出的數值都是字串。
 
-WARNING: when `:include_blank` or `:prompt` are not present, `:include_blank` is forced true if the select attribute `required` is true, display `size` is one and `multiple` is not true.
-
-You can add arbitrary attributes to the options using hashes:
+可以用 Hash 給每個選項加上任意的屬性：
 
 ```html+erb
-<%= options_for_select([['Lisbon', 1, {'data-size' => '2.8 million'}], ['Madrid', 2, {'data-size' => '3.2 million'}]], 2) %>
+<%= options_for_select(
+  [
+    ['Lisbon', 1, { 'data-size' => '2.8 million' }],
+    ['Madrid', 2, { 'data-size' => '3.2 million' }]
+  ], 2
+) %>
 
-output:
+輸出：
 
 <option value="1" data-size="2.8 million">Lisbon</option>
 <option value="2" selected="selected" data-size="3.2 million">Madrid</option>
 ...
 ```
 
-### Select Boxes for Dealing with Models
+### 處理 Models 的下拉選單
 
-In most cases form controls will be tied to a specific database model and as you might expect Rails provides helpers tailored for that purpose. Consistent with other form helpers, when dealing with models you drop the `_tag` suffix from `select_tag`:
+多數情況下表單控件與特定的資料庫模型綁在一起，可能會好奇 Rails 有沒有針對 Model 提供 的輔助方法可用呢？答案是有。針對 Model 的輔助方法和其它的表單輔助方法相同，名稱去掉 `select_tag` 的 `_tag` 即可：
 
 ```ruby
 # controller:
@@ -454,73 +456,87 @@ In most cases form controls will be tied to a specific database model and as you
 <%= select(:person, :city_id, [['Lisbon', 1], ['Madrid', 2], ...]) %>
 ```
 
-Notice that the third parameter, the options array, is the same kind of argument you pass to `options_for_select`. One advantage here is that you don't have to worry about pre-selecting the correct city if the user already has one - Rails will do this for you by reading from the `@person.city_id` attribute.
+注意 `select` 的第三個參數，由選項組成的陣列，跟傳給 `options_for_select` 的參數一樣。好處是無需煩惱預選的城市是那個，Rails 會自己去讀取 `@person.city_id` 來決定預選城市是那個。
 
-As with other helpers, if you were to use the `select` helper on a form builder scoped to the `@person` object, the syntax would be:
+和其它輔助方法一樣，對表單構造器也可以使用，語法是：
 
 ```erb
 # select on a form builder
 <%= f.select(:city_id, ...) %>
 ```
 
-WARNING: If you are using `select` (or similar helpers such as `collection_select`, `select_tag`) to set a `belongs_to` association you must pass the name of the foreign key (in the example above `city_id`), not the name of association itself. If you specify `city` instead of `city_id` Active Record will raise an error along the lines of ` ActiveRecord::AssociationTypeMismatch: City(#17815740) expected, got String(#1138750) ` when you pass the `params` hash to `Person.new` or `update`. Another way of looking at this is that form helpers only edit attributes. You should also be aware of the potential security ramifications of allowing users to edit foreign keys directly.
+`select` 也接受區塊：
 
-### Option Tags from a Collection of Arbitrary Objects
+You can also pass a block to `select` helper:
 
-Generating options tags with `options_for_select` requires that you create an array containing the text and value for each option. But what if you had a City model (perhaps an Active Record one) and you wanted to generate option tags from a collection of those objects? One solution would be to make a nested array by iterating over them:
+```erb
+<%= f.select(:city_id) do %>
+  <% [['Lisbon', 1], ['Madrid', 2]].each do |c| -%>
+    <%= content_tag(:option, c.first, value: c.last) %>
+  <% end %>
+<% end %>
+```
+
+上例 Person 與 City Model 存在 `belongs_to` 關係，在使用 `select` 時必須傳入 foreign key，否則會報這個錯誤：`ActiveRecord::AssociationTypeMismatch`。
+
+若使用 `select` （或其它類似的輔助方法，像是 `collection_select`、`select_tag`）來設定 `belongs_to` 關聯，則必須傳入外鍵的名稱（上例須傳入 `city_id`），而不是關聯名稱。若指定的是 `city` 而不是 `city_id`，把 `params` 傳給 `Person.new` 或 `Person.update` 時，Active Record 會拋出錯誤： `ActiveRecord::AssociationTypeMismatch: City(#17815740) expected, got String(#1138750)`。換句話說也就是表單輔助方法只能編輯屬性。應該要注意讓使用者直接編輯外鍵，所存在的安全性風險。
+
+### 從任何物件集合產生選項
+
+用 `options_for_select` 來產生選項，需要先建立陣列，陣列裡有選項文字與數值。但要是已經有了 City Model（假設是個繼承自 Active Record 的 Model），想要直接從 Model 的實體產生出這些選項該怎麼做？解法之一是迭代這些物件，產生出嵌套的陣列：
 
 ```erb
 <% cities_array = City.all.map { |city| [city.name, city.id] } %>
 <%= options_for_select(cities_array) %>
 ```
 
-This is a perfectly valid solution, but Rails provides a less verbose alternative: `options_from_collection_for_select`. This helper expects a collection of arbitrary objects and two additional arguments: the names of the methods to read the option **value** and **text** from, respectively:
+這個方法完美可行，但 Rails 提供更簡潔的解法：`options_from_collection_for_select`。這個輔助方法接受一組任意物件的集合和兩個額外的參數：用來讀取選項 **數值** 與 **文字** 的方法名稱。
 
 ```erb
 <%= options_from_collection_for_select(City.all, :id, :name) %>
 ```
 
-As the name implies, this only generates option tags. To generate a working select box you would need to use it in conjunction with `select_tag`, just as you would with `options_for_select`. When working with model objects, just as `select` combines `select_tag` and `options_for_select`, `collection_select` combines `select_tag` with `options_from_collection_for_select`.
+從名字可以看出來，`options_from_collection_for_select` 只會產生出 `option` 標籤。要產生出會動的 `select`，需要與 `select_tag` 一起使用。就跟 `options_for_select` 需要與 `select_tag` 同時使用的情況相同。在處理 Model 物件時，`select` 結合了 `select_tag` 與 `options_for_select`；`collection_select` 則結合了 `select_tag` 與 `options_from_collection_for_select`。
 
 ```erb
 <%= collection_select(:person, :city_id, City.all, :id, :name) %>
 ```
 
-To recap, `options_from_collection_for_select` is to `collection_select` what `options_for_select` is to `select`.
+複習一下，`options_from_collection_for_select` 與 `collection_select` 的關係，和 `options_for_select` 與 `select` 之間的關係一樣。
 
-NOTE: Pairs passed to `options_for_select` should have the name first and the id second, however with `options_from_collection_for_select` the first argument is the value method and the second the text method.
+NOTE: 傳給 `options_for_select` 的陣列需要先傳 `name`，再傳 `id`；而 `options_from_collection_for_select` 則是先傳 `id`，再傳 `name`。
 
-### Time Zone and Country Select
+### 時區與國家選單
 
-To leverage time zone support in Rails, you have to ask your users what time zone they are in. Doing so would require generating select options from a list of pre-defined TimeZone objects using `collection_select`, but you can simply use the `time_zone_select` helper that already wraps this:
+要完善利用 Rails 支援的時區功能，首先要詢問使用者所在的時區為何。要詢問時區得先產生所有的時區選項，再傳給 `collection_select` 來產生選單，但可以直接使用 `time_zone_select` 輔助方法，已經包裝好了：
 
 ```erb
 <%= time_zone_select(:person, :time_zone) %>
 ```
 
-There is also `time_zone_options_for_select` helper for a more manual (therefore more customizable) way of doing this. Read the API documentation to learn about the possible arguments for these two methods.
+還有一個 `time_zone_options_for_select` 輔助方法，這個的客製性更高。關於這個方法的使用方法，請查閱 API 文件，來了解 `time_zone_select` 與 `time_zone_options_for_select` 可用的參數有那些。
 
-Rails _used_ to have a `country_select` helper for choosing countries, but this has been extracted to the [country_select plugin](https://github.com/stefanpenner/country_select). When using this, be aware that the exclusion or inclusion of certain names from the list can be somewhat controversial (and was the reason this functionality was extracted from Rails).
+Rails 曾有過 `country_select` 輔助方法，用來選擇國家。但已經抽出來變成 [country_select](https://github.com/stefanpenner/country_select) 套件。使用這個套件時，請注意清單裡的國家名稱，有些國家有列在清單裡、有些沒有、有些有爭議。這也是為什麼 Rails 不內建這個功能的原因。
 
-Using Date and Time Form Helpers
+日期與時間的表單輔助方法
 --------------------------------
 
-You can choose not to use the form helpers generating HTML5 date and time input fields and use the alternative date and time helpers. These date and time helpers differ from all the other form helpers in two important respects:
+可選擇不用會產生出 HTML5 日期與時間輸入欄位的輔助方法，而使用替代的日期與時間輔助方法。這些日期與時間方法和其它的表單輔助方法主要有以下兩點不同：
 
-* Dates and times are not representable by a single input element. Instead you have several, one for each component (year, month, day etc.) and so there is no single value in your `params` hash with your date or time.
-* Other helpers use the `_tag` suffix to indicate whether a helper is a barebones helper or one that operates on model objects. With dates and times, `select_date`, `select_time` and `select_datetime` are the barebones helpers, `date_select`, `time_select` and `datetime_select` are the equivalent model object helpers.
+* 日期與時間不代表單一的 `input` 元素，而是多個 `input`，每個有每個的用途（年份、月份、日等）。所以 `params` 裡的日期與時間不會是個單獨的數值。
+* 其它的表單輔助方法用 `_tag` 來區分，這個方法是個準方法，或是針對 Model 物件的輔助方法。而日期與時間的輔助方法有：`select_date`、`select_time` 以及 `select_datetime` 是準方法；而 `date_select`、`time_select` 以及 `datetime_select` 則是針對 Model 物件的輔助方法。
 
-Both of these families of helpers will create a series of select boxes for the different components (year, month, day etc.).
+準方法和針對 Model 物件的方法，都會針對不同的時間單位（年、月、日等）來建出選單。
 
-### Barebones Helpers
+### 準方法
 
-The `select_*` family of helpers take as their first argument an instance of Date, Time or DateTime that is used as the currently selected value. You may omit this parameter, in which case the current date is used. For example
+`select_*` 家族的輔助方法，第一個參數接受的是日期的實體，`Date`、`Time` 或 `DateTime`，用來作為目前選中的日期。第一個參數可以忽略，預設會選擇當下日期。舉個例子：
 
 ```erb
 <%= select_date Date.today, prefix: :start_date %>
 ```
 
-outputs (with actual option values omitted for brevity)
+輸出（省略選項數值，保持簡單）：
 
 ```html
 <select id="start_date_year" name="start_date[year]"> ... </select>
@@ -528,24 +544,23 @@ outputs (with actual option values omitted for brevity)
 <select id="start_date_day" name="start_date[day]"> ... </select>
 ```
 
-The above inputs would result in `params[:start_date]` being a hash with keys `:year`, `:month`, `:day`. To get an actual Time or Date object you would have to extract these values and pass them to the appropriate constructor, for example
+以上的輸入送出時會存在 `params[:start_date]`，以散列表的形式儲存，鍵有 `:year`、`:month` 以及 `day`。要獲得實際的 `Time` 或 `Date` 物件，可以將時間各個單位取出來，傳給適當的建構子，參考下例：
 
 ```ruby
 Date.civil(params[:start_date][:year].to_i, params[:start_date][:month].to_i, params[:start_date][:day].to_i)
 ```
 
-The `:prefix` option is the key used to retrieve the hash of date components from the `params` hash. Here it was set to `start_date`, if omitted it will default to `date`.
+上例的 `:prefix` 選項為 `:start_date`，是時間單位存在 `params` 的鍵名。沒給的話預設值是 `date`。
 
-### Model Object Helpers
+### 給 Model 物件用的方法
 
-`select_date` does not work well with forms that update or create Active Record objects as Active Record expects each element of the `params` hash to correspond to one attribute.
-The model object helpers for dates and times submit parameters with special names; when Active Record sees parameters with such names it knows they must be combined with the other parameters and given to a constructor appropriate to the column type. For example:
+`select_date` 與 Active Record 配合的不好，因為 Active Record 期望每個 `params` 的元素，都對應到一個屬性。而 Model 物件的日期與時間輔助方法，會採用特殊的名稱來送出參數。Active Record 看到這些特殊名稱的參數時，便知道要將這些參數結合起來，傳給欄位類型的建構子。譬如：
 
 ```erb
 <%= date_select :person, :birth_date %>
 ```
 
-outputs (with actual option values omitted for brevity)
+輸出（省略選項數值，保持簡單）：
 
 ```html
 <select id="person_birth_date_1i" name="person[birth_date(1i)]"> ... </select>
@@ -553,41 +568,40 @@ outputs (with actual option values omitted for brevity)
 <select id="person_birth_date_3i" name="person[birth_date(3i)]"> ... </select>
 ```
 
-which results in a `params` hash like
+產生出來的 `params` ：
 
 ```ruby
 {'person' => {'birth_date(1i)' => '2008', 'birth_date(2i)' => '11', 'birth_date(3i)' => '22'}}
 ```
 
-When this is passed to `Person.new` (or `update`), Active Record spots that these parameters should all be used to construct the `birth_date` attribute and uses the suffixed information to determine in which order it should pass these parameters to functions such as `Date.civil`.
+`params` 傳給 `Person.new` 或 `Person.update` 時，Active Record 會注意到這些參數名稱，要一起傳進來，來產生 `birth_date` 屬性，並根據字尾的資訊（`ni`），來決定傳給 `Date.civil` 的順序。
 
-### Common Options
+### 通用選項
 
-Both families of helpers use the same core set of functions to generate the individual select tags and so both accept largely the same options. In particular, by default Rails will generate year options 5 years either side of the current year. If this is not an appropriate range, the `:start_year` and `:end_year` options override this. For an exhaustive list of the available options, refer to the [API documentation](http://api.rubyonrails.org/classes/ActionView/Helpers/DateHelper.html).
+這兩個家族的輔助方法，內部使用同一組核心功能，來產生 `select` 標籤，因此接受的選項大致相同。特別要提 Rails 預設會產生前後五年的年份。若這個範圍不夠用，`:start_year` 以及 `:end_year` 選項可以修改。可用選項更詳細的清單，請參考 [API 文件](http://api.rubyonrails.org/classes/ActionView/Helpers/DateHelper.html)。
 
-As a rule of thumb you should be using `date_select` when working with model objects and `select_date` in other cases, such as a search form which filters results by date.
+經驗法則表示，處理 Model 物件使用 `date_select`、其它情況用 `select_date`，像是用來過濾日期的搜尋表單。
 
-NOTE: In many cases the built-in date pickers are clumsy as they do not aid the user in working out the relationship between the date and the day of the week.
+NOTE: 內建的日期選單不太好用，無法幫助使用者處理日期與星期幾這個問題。
 
-### Individual Components
+### 單一時間單位
 
-Occasionally you need to display just a single date component such as a year or a month. Rails provides a series of helpers for this, one for each component `select_year`, `select_month`, `select_day`, `select_hour`, `select_minute`, `select_second`. These helpers are fairly straightforward. By default they will generate an input field named after the time component (for example "year" for `select_year`, "month" for `select_month` etc.) although this can be overridden with the `:field_name` option. The `:prefix` option works in the same way that it does for `select_date` and `select_time` and has the same default value.
+有時只需顯示日期的某個部分，像年或月。Rails 提供一系列的輔助方法：`select_year`、`select_month`、`select_day`、`select_hour`、`select_minute` 以及 `select_second`。這些輔助方法的使用方式非常直觀，產生出來的 `input`，`name` 屬性預設會產生以時間單位命名的（譬如 `select_year` 產生出來的 `select`，`name` 為 `year`，以此類推）。這可以透過 `:field_name` 選項修改。`:prefix` 選項和 `select_date` 與 `select_time` 裡的用途相同，預設值也相同。
 
-The first parameter specifies which value should be selected and can either be an instance of a Date, Time or DateTime, in which case the relevant component will be extracted, or a numerical value. For example
+
+這些輔助方法的第一個參數指定要選中的數值，可以是 `Date`、`Time` 或 `DateTime` 的實體，或是數值也可以，對應的時間單位會被選中，譬如：
 
 ```erb
 <%= select_year(2009) %>
 <%= select_year(Time.now) %>
 ```
 
-will produce the same output if the current year is 2009 and the value chosen by the user can be retrieved by `params[:date][:year]`.
+若今年是 2009 年，上面兩種用法的輸出相同，使用者選的數值可以在 `params[:date][:year]` 取出。
 
-Uploading Files
----------------
+檔案上傳
+--------
 
-A common task is uploading some sort of file, whether it's a picture of a person or a CSV file containing data to process. The most important thing to remember with file uploads is that the rendered form's encoding **MUST** be set to "multipart/form-data". If you use `form_for`, this is done automatically. If you use `form_tag`, you must set it yourself, as per the following example.
-
-The following two forms both upload a file.
+常見的任務是上傳檔案，舉凡使用者的圖片或需要處理的 CSV。檔案上傳最重要要記住的一點是，表單的編碼必須是 `"multipart/form-data"`。若使用 `form_for`，已經自動設定好了。若使用 `form_tag`，則必須自己設定，以下是表單上傳檔案的兩個例子：
 
 ```erb
 <%= form_tag({action: :upload}, multipart: true) do %>
@@ -599,11 +613,11 @@ The following two forms both upload a file.
 <% end %>
 ```
 
-Rails provides the usual pair of helpers: the barebones `file_field_tag` and the model oriented `file_field`. The only difference with other helpers is that you cannot set a default value for file inputs as this would have no meaning. As you would expect in the first case the uploaded file is in `params[:picture]` and in the second case in `params[:person][:picture]`.
+Rails 提供成對的輔助方法：準方法 `file_field_tag` 以及供 Model 物件使用的 `file_field`。這兩個輔助方法與其它表單輔助方法的差別在於無法設定預設值，因為預設值在這沒有意義。第一個例子，使用 `file_field_tag` 上傳的檔案會存在 `params[:picture]`，而 `file_field` 上傳的檔案則放在 `params[:person][:picture]`。
 
-### What Gets Uploaded
+### 究竟上傳了什麼
 
-The object in the `params` hash is an instance of a subclass of IO. Depending on the size of the uploaded file it may in fact be a StringIO or an instance of File backed by a temporary file. In both cases the object will have an `original_filename` attribute containing the name the file had on the user's computer and a `content_type` attribute containing the MIME type of the uploaded file. The following snippet saves the uploaded content in `#{Rails.root}/public/uploads` under the same name as the original file (assuming the form was the one in the previous example).
+`params` Hash 裡的物件，是 `IO` 子類別的實體。取決於上傳的檔案大小，會是 `StringIO` 或存在臨時檔案的 `File` 實體。兩種都會有 `original_filename` 屬性，記錄使用者電腦裡的檔案名稱；以及 `content_type` 屬性，記錄了上傳檔案的 `MIME` 類型。以下程式碼片段將上傳的內容存在 `#{Rails.root}/public/uploads`，使用原始上傳的檔名存放（假設使用前例 `form_for` 的表單來上傳）。
 
 ```ruby
 def upload
@@ -614,18 +628,18 @@ def upload
 end
 ```
 
-Once a file has been uploaded, there are a multitude of potential tasks, ranging from where to store the files (on disk, Amazon S3, etc) and associating them with models to resizing image files and generating thumbnails. The intricacies of this are beyond the scope of this guide, but there are several libraries designed to assist with these. Two of the better known ones are [CarrierWave](https://github.com/jnicklas/carrierwave) and [Paperclip](http://www.thoughtbot.com/projects/paperclip).
+一旦檔案上傳成功，有許多事情可以做。譬如把檔案存到別的地方（硬碟、Amazon S3 等）；或把檔案與 Model 關聯起來；縮放圖片檔案、產生縮圖等。這些事情超出了本文的範疇，但有許多專門設計的函式庫來協助完成這些任務。其中兩個不錯也比較多人知道的是 [CarrierWave](https://github.com/jnicklas/carrierwave) 以及 [Paperclip](https://github.com/thoughtbot/paperclip)。
 
-NOTE: If the user has not selected a file the corresponding parameter will be an empty string.
+NOTE: 若使用者沒有選擇檔案，對應的參數會是空字串。
 
-### Dealing with Ajax
+### 處理 Ajax
 
-Unlike other forms making an asynchronous file upload form is not as simple as providing `form_for` with `remote: true`. With an Ajax form the serialization is done by JavaScript running inside the browser and since JavaScript cannot read files from your hard drive the file cannot be uploaded. The most common workaround is to use an invisible iframe that serves as the target for the form submission.
+要非同步的上傳檔案，不像其它的方法那麼簡單，像 `form_for` 只要加個 `remote: true` 即可。Ajax 表單的序列化由跑在瀏覽器的 JavaScript 處理，由於 JavaScript 無法從硬碟讀取檔案，檔案則無法上傳。最常見的解法是使用隱藏的 iframe，作為表單送出的目的地。
 
-Customizing Form Builders
--------------------------
+客製化表單構造器
+--------------
 
-As mentioned previously the object yielded by `form_for` and `fields_for` is an instance of FormBuilder (or a subclass thereof). Form builders encapsulate the notion of displaying form elements for a single object. While you can of course write helpers for your forms in the usual way, you can also subclass FormBuilder and add the helpers there. For example
+如前所述，由 `form_for` 與 `fields_for` 給出的物件，是 `FormBuilder` （或子類）的實體。表單構造器封裝了單一物件的顯示。當然可以如往常一樣使用輔助方法，也可以繼承 `FormBuilder`，再往裡面新增輔助方法。譬如：
 
 ```erb
 <%= form_for @person do |f| %>
@@ -633,7 +647,7 @@ As mentioned previously the object yielded by `form_for` and `fields_for` is an 
 <% end %>
 ```
 
-can be replaced with
+可以替換成
 
 ```erb
 <%= form_for @person, builder: LabellingFormBuilder do |f| %>
@@ -641,7 +655,7 @@ can be replaced with
 <% end %>
 ```
 
-by defining a LabellingFormBuilder class similar to the following:
+藉由定義 `LabellingFormBuilder` 類別：
 
 ```ruby
 class LabellingFormBuilder < ActionView::Helpers::FormBuilder
@@ -651,60 +665,59 @@ class LabellingFormBuilder < ActionView::Helpers::FormBuilder
 end
 ```
 
-If you reuse this frequently you could define a `labeled_form_for` helper that automatically applies the `builder: LabellingFormBuilder` option.
+若很常需要使用這個功能，可以定義一個 `labeled_form_for` 輔助方法，來自動代入 `builder: LabellingFormBuilder` 選項。
 
-The form builder used also determines what happens when you do
+表單構造器會決定下面這行程式碼會做什麼事：
 
 ```erb
 <%= render partial: f %>
 ```
 
-If `f` is an instance of FormBuilder then this will render the `form` partial, setting the partial's object to the form builder. If the form builder is of class LabellingFormBuilder then the `labelling_form` partial would be rendered instead.
+若 `f` 是 `FormBuilder` 的實體，則會算繪（render）`form` 這個部分頁面（partial），並把傳入的 `f` 設定成表單構造器。若表單構造器是 `LabellingFormBuilder` 的實體，則會算繪 `labelling_form` 這個部分頁面。
 
-Understanding Parameter Naming Conventions
-------------------------------------------
+理解參數命名慣例
+--------------
 
-As you've seen in the previous sections, values from forms can be at the top level of the `params` hash or nested in another hash. For example in a standard `create`
-action for a Person model, `params[:person]` would usually be a hash of all the attributes for the person to create. The `params` hash can also contain arrays, arrays of hashes and so on.
+如前一節所見，表單的數值可以在 `params` 的第一層，或是嵌套在 Hash 裡。舉例來說，`Person` Model 對應的 Controller `create` 動作裡，`params[:person]` 這個 Hash，會存放建立 `person` 所需的屬性。`params` Hash 也可以包含陣列、陣列裡有 Hash 等都可以。
 
-Fundamentally HTML forms don't know about any sort of structured data, all they generate is name-value pairs, where pairs are just plain strings. The arrays and hashes you see in your application are the result of some parameter naming conventions that Rails uses.
+HTML 表單基本上不知道資料的結構，只是產生出純字串組成的 name-value 對。應用程式裡的陣列與 Hash，是透過 Rails 參數的命名慣例所產生。
 
-TIP: You may find you can try out examples in this section faster by using the console to directly invoke Racks' parameter parser. For example,
+TIP: 可能會發現在 Console 裡試試這些例子，可以瞭解得比較快。直接像下例這樣呼叫 Rack 的參數即可：
 
 ```ruby
 Rack::Utils.parse_query "name=fred&phone=0123456789"
 # => {"name"=>"fred", "phone"=>"0123456789"}
 ```
 
-### Basic Structures
+### 基本結構
 
-The two basic structures are arrays and hashes. Hashes mirror the syntax used for accessing the value in `params`. For example if a form contains
+兩個基本結構是陣列與 Hash。Hash 取值的方法和 `params` 相同。假設表單的內容為：
 
 ```html
 <input id="person_name" name="person[name]" type="text" value="Henry"/>
 ```
 
-the `params` hash will contain
+則 `params` 的內容為：
 
 ```erb
 {'person' => {'name' => 'Henry'}}
 ```
 
-and `params[:person][:name]` will retrieve the submitted value in the controller.
+在 Controller 可以用 `params[:person][:name]` 來取出表單送出的數值。
 
-Hashes can be nested as many levels as required, for example
+Hash 可以多層嵌套，如：
 
 ```html
 <input id="person_address_city" name="person[address][city]" type="text" value="New York"/>
 ```
 
-will result in the `params` hash being
+產生的 `params` Hash：
 
 ```ruby
 {'person' => {'address' => {'city' => 'New York'}}}
 ```
 
-Normally Rails ignores duplicate parameter names. If the parameter name contains an empty set of square brackets [] then they will be accumulated in an array. If you wanted people to be able to input multiple phone numbers, you could place this in the form:
+通常 Rails 會忽略重複的參數。若參數名稱有中括號，則會被放在陣列裡。若想使用者能夠輸入多組電話號碼，可以使用下面這個表單：
 
 ```html
 <input name="person[phone_number][]" type="text"/>
@@ -712,11 +725,11 @@ Normally Rails ignores duplicate parameter names. If the parameter name contains
 <input name="person[phone_number][]" type="text"/>
 ```
 
-This would result in `params[:person][:phone_number]` being an array.
+則 `params[:person][:phone_number]` 會是個陣列。
 
-### Combining Them
+### 結合起來
 
-We can mix and match these two concepts. For example, one element of a hash might be an array as in the previous example, or you can have an array of hashes. For example a form might let you create any number of addresses by repeating the following form fragment
+陣列與 Hash 可以混合使用。舉個例子，Hash 的一個元素可能像前面的例子一樣，是個陣列；或是可以有一個陣列，裡面存 Hash。下例是用來新建多筆地址的表單：
 
 ```html
 <input name="addresses[][line1]" type="text"/>
@@ -724,17 +737,17 @@ We can mix and match these two concepts. For example, one element of a hash migh
 <input name="addresses[][city]" type="text"/>
 ```
 
-This would result in `params[:addresses]` being an array of hashes with keys `line1`, `line2` and `city`. Rails decides to start accumulating values in a new hash whenever it encounters an input name that already exists in the current hash.
+則 `params[:addresses]` 會是裡面有 Hash 的陣列，每個 Hash 的鍵有 `line1`, `line2` 以及 `city`。Rails 在目前的 Hash 發現有同樣的輸入時，會新建 Hash 來存放。
 
-There's a restriction, however, while hashes can be nested arbitrarily, only one level of "arrayness" is allowed. Arrays can be usually replaced by hashes, for example instead of having an array of model objects one can have a hash of model objects keyed by their id, an array index or some other parameter.
+但有個限制，Hash 可以隨意嵌套，但陣列只能嵌套一次。陣列通常可以用 Hash 取代，譬如可以用 Hash 組成的 Model 物件來取代陣列組成的 Model 物件，Hash 的鍵是 `id`、陣列的索引、以及其它的參數。
 
-WARNING: Array parameters do not play well with the `check_box` helper. According to the HTML specification unchecked checkboxes submit no value. However it is often convenient for a checkbox to always submit a value. The `check_box` helper fakes this by creating an auxiliary hidden input with the same name. If the checkbox is unchecked only the hidden input is submitted and if it is checked then both are submitted but the value submitted by the checkbox takes precedence. When working with array parameters this duplicate submission will confuse Rails since duplicate input names are how it decides when to start a new array element. It is preferable to either use `check_box_tag` or to use hashes instead of arrays.
+WARNING: 陣列參數與 `check_box` 輔助方法配合的不好。根據 HTML 規範，沒選中的多選方框不會送出值。但多選方框總是送出值會比較方便。`check_box` 透過建立一個同名的隱藏輸入來處理。若多選方框沒有被勾選，則只會送出隱藏輸入；若勾選了多選方框，則會將隱藏輸入與勾選的值一起送出，但勾選的值優先權比較高。處理陣列參數時，重複的送出會使 Rails 困惑，因為 Rails 見到重複的輸入，就會建立一個新的陣列。使用 `check_box_tag` 或用 Hash 取代陣列是推薦的做法。
 
-### Using Form Helpers
+### 使用表單輔助方法
 
-The previous sections did not use the Rails form helpers at all. While you can craft the input names yourself and pass them directly to helpers such as `text_field_tag` Rails also provides higher level support. The two tools at your disposal here are the name parameter to `form_for` and `fields_for` and the `:index` option that helpers take.
+前一節完全沒用到 Rails 的表單輔助方法。自己手寫 `input` 再直接傳給 `text_field_tag` 沒有問題。但 Rails 提供了更抽象的方法。這裡介紹 `form_for` 與 `fields_for`，以及 `:index` 選項。
 
-You might want to render a form with a set of edit fields for each of a person's addresses. For example:
+可能會想要有地址表單，裡面有一組可編輯的欄位，分別編輯地址的各個部分。
 
 ```erb
 <%= form_for @person do |person_form| %>
@@ -747,7 +760,7 @@ You might want to render a form with a set of edit fields for each of a person's
 <% end %>
 ```
 
-Assuming the person had two addresses, with ids 23 and 45 this would create output similar to this:
+假設 `person` 有兩個地址（`id` 分別是 23 與 `45`），輸出會像是：
 
 ```html
 <form accept-charset="UTF-8" action="/people/1" class="edit_person" id="edit_person_1" method="post">
@@ -757,22 +770,15 @@ Assuming the person had two addresses, with ids 23 and 45 this would create outp
 </form>
 ```
 
-This will result in a `params` hash that looks like
+產生出的 `params`：
 
 ```ruby
 {'person' => {'name' => 'Bob', 'address' => {'23' => {'city' => 'Paris'}, '45' => {'city' => 'London'}}}}
 ```
 
-Rails knows that all these inputs should be part of the person hash because you
-called `fields_for` on the first form builder. By specifying an `:index` option
-you're telling Rails that instead of naming the inputs `person[address][city]`
-it should insert that index surrounded by [] between the address and the city.
-This is often useful as it is then easy to locate which Address record
-should be modified. You can pass numbers with some other significance,
-strings or even `nil` (which will result in an array parameter being created).
+Rails 知道所有的 `input` 皆屬於 `person` Hash，因為對 `person_form` 呼叫了 `fields_for`。透過指定 `:index` 選項 `index: address.id`，可以告訴 Rails，`input` 的 `name` 不要命名為 `person[address][city]`，而是在 `address` 與 `city` 之間插入索引值（放在中括號內）。通常這很有用，因為可以簡單的找出要修改的地址記錄是那個。`:index` 的值可以是其它有意義的屬性，字串，甚至是 `nil` 也可以（`nil` 會建立一個陣列參數出來）。
 
-To create more intricate nestings, you can specify the first part of the input
-name (`person[address]` in the previous example) explicitly:
+要產生更複雜的嵌套，可以明確指定 `input` `name` 的第一個部分（`person[address]`）：
 
 ```erb
 <%= fields_for 'person[address][primary]', address, index: address do |address_form| %>
@@ -780,15 +786,15 @@ name (`person[address]` in the previous example) explicitly:
 <% end %>
 ```
 
-will create inputs like
+建立出來的輸入：
 
 ```html
 <input id="person_address_primary_1_city" name="person[address][primary][1][city]" type="text" value="bologna" />
 ```
 
-As a general rule the final input name is the concatenation of the name given to `fields_for`/`form_for`, the index value and the name of the attribute. You can also pass an `:index` option directly to helpers such as `text_field`, but it is usually less repetitive to specify this at the form builder level rather than on individual input controls.
+一個通用的規則是，最後的 `input` `name` 是傳給 `fields_for` 或 `form_for` 的名字，加上索引值，再加上屬性名稱。也可以直接將 `:index` 選項傳給像是 `text_field` 的輔助方法，但這樣比較繁瑣，在表單構造器一起指定來減少重複。
 
-As a shortcut you can append [] to the name and omit the `:index` option. This is the same as specifying `index: address` so
+忽略 `:index` 選項的簡寫是，在傳給 `form_for` 或 `fields_for` 的名稱後面加上一個中括號。這與指定 `index: address` 的效果相同：
 
 ```erb
 <%= fields_for 'person[address][primary][]', address do |address_form| %>
@@ -796,28 +802,28 @@ As a shortcut you can append [] to the name and omit the `:index` option. This i
 <% end %>
 ```
 
-produces exactly the same output as the previous example.
+會產生與前例相同的輸出。
 
-Forms to external resources
+送出至外部資源的表單
 ---------------------------
 
-If you need to post some data to an external resource it is still great to build your form using rails form helpers. But sometimes you need to set an `authenticity_token` for this resource. You can do it by passing an `authenticity_token: 'your_external_token'` parameter to the `form_tag` options:
+Rails 的表單輔助方法，也可以用來打造送出資料到外部資源的表單。但需要給資源指定一個 `authenticity_token`，可以使用 `:authenticity_token` 選項來指定：
 
 ```erb
-<%= form_tag 'http://farfar.away/form', authenticity_token: 'external_token') do %>
+<%= form_tag 'http://farfar.away/form', authenticity_token: 'external_token' do %>
   Form contents
 <% end %>
 ```
 
-Sometimes when you submit data to an external resource, like payment gateway, fields you can use in your form are limited by an external API. So you may want not to generate an `authenticity_token` hidden field at all. For doing this just pass `false` to the `:authenticity_token` option:
+某些時候在送出資料到外部資源時，像是付款閘到。可以使用的欄位受外部 API 限制，還有可能不需要 `authenticity_token`，此時將 `:authenticity_token` 設為 `false` 即可：
 
 ```erb
-<%= form_tag 'http://farfar.away/form', authenticity_token: false) do %>
+<%= form_tag 'http://farfar.away/form', authenticity_token: false do %>
   Form contents
 <% end %>
 ```
 
-The same technique is also available for `form_for`:
+同樣的技術 `form_for` 也適用：
 
 ```erb
 <%= form_for @invoice, url: external_url, authenticity_token: 'external_token' do |f| %>
@@ -825,7 +831,7 @@ The same technique is also available for `form_for`:
 <% end %>
 ```
 
-Or if you don't want to render an `authenticity_token` field:
+不需要 `authenticity_token` 的情況：
 
 ```erb
 <%= form_for @invoice, url: external_url, authenticity_token: false do |f| %>
@@ -833,14 +839,14 @@ Or if you don't want to render an `authenticity_token` field:
 <% end %>
 ```
 
-Building Complex Forms
-----------------------
+打造複雜表單
+-----------
 
-Many apps grow beyond simple forms editing a single object. For example when creating a Person you might want to allow the user to (on the same form) create multiple address records (home, work, etc.). When later editing that person the user should be able to add, remove or amend addresses as necessary.
+許多應用程式表單不僅是編輯單一物件這麼簡單。例如建立 `person` 時，可能想讓使用者（在同一個表單）建立出多筆地址記錄（住家地址、工作地址等）。之後在編輯 `person` 時，使用者應該要能夠新增、刪除或修改地址。
 
-### Configuring the Model
+### Model 部分
 
-Active Record provides model level support via the `accepts_nested_attributes_for` method:
+Active Record 在 Model 層級提供這樣的支援，請用 `accepts_nested_attributes_for` 方法：
 
 ```ruby
 class Person < ActiveRecord::Base
@@ -853,11 +859,11 @@ class Address < ActiveRecord::Base
 end
 ```
 
-This creates an `addresses_attributes=` method on `Person` that allows you to create, update and (optionally) destroy addresses.
+會建出一個 `Person#addresses_attributes=` 方法，用來新建、更新與刪除地址。
 
-### Nested Forms
+### 嵌套表單
 
-The following form allows a user to create a `Person` and its associated addresses.
+下面的表單允許使用者建立 `Person` 的實體，以及相關的地址。
 
 ```html+erb
 <%= form_for @person do |f| %>
@@ -877,8 +883,7 @@ The following form allows a user to create a `Person` and its associated address
 <% end %>
 ```
 
-
-When an association accepts nested attributes `fields_for` renders its block once for every element of the association. In particular, if a person has no addresses it renders nothing. A common pattern is for the controller to build one or more empty children so that at least one set of fields is shown to the user. The example below would result in 2 sets of address fields being rendered on the new person form.
+當關聯接受嵌套屬性時，`fields_for` 會對關聯的每個元素，執行 `fields_for` 的區塊。若 `person` 沒有地址，便不執行 `fields_for` 區塊。常見的做法是在 Controller 建一個或多個空的子元素，這樣只少有一組欄位會顯示給使用者。下例會在新建 `person` 的表單產生兩組地址欄位，
 
 ```ruby
 def new
@@ -887,9 +892,7 @@ def new
 end
 ```
 
-The `fields_for` yields a form builder. The parameters' name will be what
-`accepts_nested_attributes_for` expects. For example when creating a user with
-2 addresses, the submitted parameters would look like:
+`fields_for` 給出一個表單構造器。參數的名稱要與 `accepts_nested_attributes_for` 指定的相同。舉個例子，建立有兩組地址的使用者，送出的參數看起來會像是：
 
 ```ruby
 {
@@ -909,15 +912,13 @@ The `fields_for` yields a form builder. The parameters' name will be what
 }
 ```
 
-The keys of the `:addresses_attributes` hash are unimportant, they need merely be different for each address.
+`:addresses_attributes` Hash 的鍵不重要，每個地址的鍵不要重複就好。
 
-If the associated object is already saved, `fields_for` autogenerates a hidden input with the `id` of the saved record. You can disable this by passing `include_id: false` to `fields_for`. You may wish to do this if the autogenerated input is placed in a location where an input tag is not valid HTML or when using an ORM where children do not have an `id`.
+若關聯物件已經儲存了，`fields_for` 會自動產生一個隱藏輸入，`id` 是該記錄的 `id`。可以傳入 `include_id: false` 給 `fields_for` 來禁用這個行為。可能會想要禁止產生隱藏輸入，因為自動產生的輸入擺放的位置不對，導致 HTML 不合法；或者是使用的 ORM，子物件沒有 `id`。
 
-### The Controller
+### Controller 部分
 
-As usual you need to
-[whitelist the parameters](action_controller_overview.html#strong-parameters) in
-the controller before you pass them to the model:
+通常需要在傳給 Model 之前，先在 Controller [過濾參數](action_controller_overview.html#strong-parameters)：
 
 ```ruby
 def create
@@ -931,9 +932,9 @@ private
   end
 ```
 
-### Removing Objects
+### 移除物件
 
-You can allow users to delete associated objects by passing `allow_destroy: true` to `accepts_nested_attributes_for`
+可以透過傳入 `allow_destroy: true` 給 `accepts_nested_attributes_for`，來允許使用者刪除關聯物件。
 
 ```ruby
 class Person < ActiveRecord::Base
@@ -942,9 +943,7 @@ class Person < ActiveRecord::Base
 end
 ```
 
-If the hash of attributes for an object contains the key `_destroy` with a value
-of `1` or `true` then the object will be destroyed. This form allows users to
-remove addresses:
+若屬性組成的 Hash 的鍵有 `_destroy`，值是 `1` 或 `true`，則物件會被刪除。下面這個表單允許使用者刪除地址：
 
 ```erb
 <%= form_for @person do |f| %>
@@ -962,8 +961,7 @@ remove addresses:
 <% end %>
 ```
 
-Don't forget to update the whitelisted params in your controller to also include
-the `_destroy` field:
+不要忘記更新 Controller 過濾參數的名單，要把 `_destroy` 加進來：
 
 ```ruby
 def person_params
@@ -972,9 +970,9 @@ def person_params
 end
 ```
 
-### Preventing Empty Records
+### 避免空的紀錄
 
-It is often useful to ignore sets of fields that the user has not filled in. You can control this by passing a `:reject_if` proc to `accepts_nested_attributes_for`. This proc will be called with each hash of attributes submitted by the form. If the proc returns `false` then Active Record will not build an associated object for that hash. The example below only tries to build an address if the `kind` attribute is set.
+忽略使用者沒有填的欄位通常很有用。可以透過傳給 `accepts_nested_attributes_for` 一個 `:reject_if` `proc` 來辦到。這個 `proc` 會在每個屬性送出時呼叫。若 `proc` 回傳 `flase`，則 Active Record 不會為這組 Hash 建立關聯物件。下面這個例子只有在有給出 `kind` 屬性時，才會建立地址：
 
 ```ruby
 class Person < ActiveRecord::Base
@@ -983,8 +981,8 @@ class Person < ActiveRecord::Base
 end
 ```
 
-As a convenience you can instead pass the symbol `:all_blank` which will create a proc that will reject records where all the attributes are blank excluding any value for `_destroy`.
+有一個方便的符號可以用：`:all_blank`，會建立一個 `proc`，會拒絕為有任何屬性為空（ `_destroy` 屬性除外）的 Hash 建立物件。
 
-### Adding Fields on the Fly
+### 動態添加欄位
 
-Rather than rendering multiple sets of fields ahead of time you may wish to add them only when a user clicks on an 'Add new address' button. Rails does not provide any builtin support for this. When generating new sets of fields you must ensure the key of the associated array is unique - the current JavaScript date (milliseconds after the epoch) is a common choice.
+與其一開始就算繪多組地址，不如加入一個按鈕 `Add new address`，讓使用者自己決定什麼時候要新增一組地址。但 Rails 不支援這個功能。建立一組新的欄位時，要確保關聯陣列的鍵是獨一無二的。可在 JavaScript 使用目前的日期是常見的做法。

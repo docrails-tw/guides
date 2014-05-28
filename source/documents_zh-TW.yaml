@@ -60,7 +60,12 @@
     -
       name: Action View 表單輔助方法
       url: form_helpers.html
-      description: 本篇介紹如何使用內建的表單輔助方法。
+      description: 本篇介紹 Action View 的表單輔助方法。
+    -
+      name: Rails Nested Model Forms
+      url: nested_model_forms.html
+      description:
+      work_in_progress: true
       needs_translation: true
 -
   name: Controllers
