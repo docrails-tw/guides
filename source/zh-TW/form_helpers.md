@@ -39,9 +39,7 @@ NOTE: 本篇不是表單輔助方法完整的文件，完整文件請參考 [Rai
 </form>
 ```
 
-注意到 HTML 裡有個額外的 `div` 元素，裡面有兩個隱藏的 `input`。這個 `div` 很重要，沒有這個 `div` 表單便無法順利送出。第一個 `name` 屬性為 `utf8` 的 `input`，強制瀏覽器正確採用表單指定的編碼，所有 HTTP 動詞為 GET 或 POST 表單，Rails 都會產生這個 input。第二個 `name` 屬性為 `authenticity_token` 的 `input`，是 Rails 內建用來防止 CSRF (cross-site request forgery protection) 攻擊的安全機制，任何非 GET 的表單，Rails 都會產生一個這樣的 `input`（安全機制有啟用的話）。詳情請閱讀[安全指南](security.html#cross-site-request-forgery-csrf)。
-
-NOTE: 為求行文簡潔，有隱藏輸入的 `div` 將省略不列在之後的範例裡。
+注意到 HTML 裡有個隱藏的 `input`，這個隱藏的 `input` 很重要，沒有這個 `input` 表單便無法順利送出。第一個 `name` 屬性為 `utf8` 的 `input`，強制瀏覽器正確採用表單指定的編碼，所有 HTTP 動詞為 GET 或 POST 表單，Rails 都會產生這個 input。第二個 `name` 屬性為 `authenticity_token` 的 `input`，是 Rails 內建用來防止 CSRF (cross-site request forgery protection) 攻擊的安全機制，任何非 GET 的表單，Rails 都會產生一個這樣的 `input`（安全機制有啟用的話）。詳情請閱讀[安全指南](security.html#cross-site-request-forgery-csrf)。
 
 ### 通用搜索表單
 
@@ -352,12 +350,11 @@ form_tag(search_path, method: "patch")
 
 ```html
 <form accept-charset="UTF-8" action="/search" method="post">
-  <div style="margin:0;padding:0">
     <input name="_method" type="hidden" value="patch" />
     <input name="utf8" type="hidden" value="&#x2713;" />
     <input name="authenticity_token" type="hidden" value="f755bb0ed134b76c432144748a6d4b7a7ddf2b71" />
-  </div>
   ...
+</form>
 ```
 
 解析 POST 過來的資料時，Rails 會將特殊的 `_method` 參數考慮進去，以 `value` 的值作為 HTTP 方法（上例為 “PATCH”）。
