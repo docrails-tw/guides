@@ -419,4 +419,4 @@ first.archive!
 p Article.count # => 2
 ```
 
-Note: 這個應用程式只專注在尚未歸檔的 `Articles`。View 也允許使用條件式，所以我們可以直接排除掉已歸檔的 `Articles`。
+NOTE: 這個應用程式只專注在尚未歸檔的 `Articles`。View 也允許使用條件式，所以我們可以直接排除掉已歸檔的 `Articles`。
