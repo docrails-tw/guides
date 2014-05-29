@@ -69,6 +69,10 @@ Model 的屬性、HTML 的屬性。
 B
 ------
 
+* Backtick 反引號
+
+`` ` ``
+
 * Bound Parameters 綁定參數
 
 C
@@ -124,6 +128,8 @@ D
 [Transactional DDL in PostgreSQL: A Competitive Analysis - PostgreSQL wiki](https://wiki.postgresql.org/wiki/Transactional_DDL_in_PostgreSQL:_A_Competitive_Analysis)
 
 * Debug 除錯
+
+* Directory 目錄
 
 * Drop 刪除
 
@@ -302,6 +308,8 @@ P
 * Program (v.) 編程
 
 編寫程式，取編寫的編，程式的程來代表。亦作寫程式。
+
+* Project 專案
 
 * Protocol 協定
 
