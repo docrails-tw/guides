@@ -1038,6 +1038,25 @@ end
 
 這會產生出像是：`edit_magazine_periodical_ad_path` 與 `magazine_periodical_ads_url` 等輔助方法。
 
+### 覆寫具名路由參數
+
+`:param` 選項可以覆寫辨識資源的變數，預設是 `:id`（[動態片段](#動態片段)的名稱）。這個變數是用來產生路由的。可以在 Controller 使用 `params[<:param>]` 傳入片段變數。
+
+```ruby
+resources :videos, param: :identifier
+```
+
+```
+     videos GET  /videos(.:format)                  videos#index
+            POST /videos(.:format)                  videos#create
+ new_videos GET  /videos/new(.:format)              videos#new
+edit_videos GET  /videos/:identifier/edit(.:format) videos#edit
+```
+
+```ruby
+Video.find_by(identifier: params[:identifier])
+```
+
 檢查與測試路由
 -----------------------------
 
