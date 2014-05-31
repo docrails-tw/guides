@@ -73,6 +73,10 @@ B
 
 * Bound Parameters 綁定參數
 
+* Bootstrap 啟動
+
+* Boilerplate 樣板
+
 C
 ------
 
