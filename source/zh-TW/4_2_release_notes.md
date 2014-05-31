@@ -55,19 +55,21 @@ Action Pack
 
 * 棄用 `*_filter` 的方法，偏好 `*_action` 的方法。
 
-      after_filter          => after_action
-      append_after_filter   => append_after_action
-      append_around_filter  => append_around_action
-      append_before_filter  => append_before_action
-      around_filter         => around_action
-      before_filter         => before_action
-      prepend_after_filter  => prepend_after_action
-      prepend_around_filter => prepend_around_action
-      prepend_before_filter => prepend_before_action
-      skip_after_filter     => skip_after_action
-      skip_around_filter    => skip_around_action
-      skip_before_filter    => skip_before_action
-      skip_filter           => skip_action_callback
+    ```ruby
+    after_filter          => after_action
+    append_after_filter   => append_after_action
+    append_around_filter  => append_around_action
+    append_before_filter  => append_before_action
+    around_filter         => around_action
+    before_filter         => before_action
+    prepend_after_filter  => prepend_after_action
+    prepend_around_filter => prepend_around_action
+    prepend_before_filter => prepend_before_action
+    skip_after_filter     => skip_after_action
+    skip_around_filter    => skip_around_action
+    skip_before_filter    => skip_before_action
+    skip_filter           => skip_action_callback
+    ```
 
   若應用程式依賴這些 `*_filter` 方法，應該使用 `*_action` 方法替換。
   ([Commit](https://github.com/rails/rails/commit/6c5f43bab8206747a8591435b2aa0ff7051ad3de))
