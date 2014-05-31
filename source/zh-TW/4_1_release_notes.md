@@ -8,16 +8,16 @@ Rails 4.1 精華摘要：
 * Action Pack Variants
 * Action Mailer Preview
 
-本篇僅涵蓋主要的變化。要了解關於已修復的 Bug、功能變更等，請參考 [Rails GitHub 主頁][rails]上各個 Gem 的 CHANGELOG 或是 [Rails 的提交歷史](https://github.com/rails/rails/commits/master)。
+本篇僅記錄主要的變化。要了解關於已修復的 Bug、功能變更等，請參考 [Rails GitHub 主頁][rails]上各個 Gem 的 CHANGELOG 或是 [Rails 的提交歷史](https://github.com/rails/rails/commits/master)。
 
 --------------------------------------------------------------------------------
 
 升級至 Rails 4.1
 ------------------
 
-如果您正試著升級現有的應用程式至 Rails 4.1，最好有廣的測試覆蓋度。首先應先升級至 4.0，再升上 4.1。升級需要注意的事項在此篇 [Ruby on Rails 升級指南](/guides/edge-translation/upgrading-ruby-on-rails-zh_TW.md#2-從-rails-40-升級到-rails-41)可以找到。
+如果您正試著升級現有的應用程式，最好有廣的測試覆蓋度。首先應先升級至 4.0，確保應用程式仍正常工作，接著再升上 4.1。升級需要注意的事項在 [Ruby on Rails 升級指南](upgrading_ruby_on_rails.html#upgrading-from-rails-4-0-to-rails-4-1)可以找到。
 
-主要的新功能
+主要新功能
 ------------
 
 ### 應用程式預加載器：Spring
@@ -534,7 +534,7 @@ Active Support
 * 新增 `Object#presence_in` 來簡化對數值做白名單。[Commit](https://github.com/rails/rails/commit/4edca106daacc5a159289eae255207d160f22396)
 
 致謝
----------
+----
 
 許多人花了寶貴的時間貢獻至 Rails 專案，使 Rails 成為更穩定、更強韌的網路框架，參考[完整的 Rails 貢獻者清單](http://contributors.rubyonrails.org/)，感謝所有的貢獻者！
 

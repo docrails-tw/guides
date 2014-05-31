@@ -1,31 +1,22 @@
 Ruby on Rails 4.2 Release Notes
 ===============================
 
-Highlights in Rails 4.2:
+Rails 4.2 精華摘要：
 
 * ...
 * ...
 
-These release notes cover only the major changes. To know about various bug
-fixes and changes, please refer to the change logs or check out the
-[list of commits](https://github.com/rails/rails/commits/master) in the main
-Rails repository on GitHub.
+本篇僅記錄主要的變化。要了解關於已修復的 Bug、功能變更等，請參考 [Rails GitHub 主頁][rails]上各個 Gem 的 CHANGELOG 或是 [Rails 的提交歷史](https://github.com/rails/rails/commits/master)。
 
 --------------------------------------------------------------------------------
 
-Upgrading to Rails 4.2
+升級至 Rails 4.2
 ----------------------
 
-If you're upgrading an existing application, it's a great idea to have good test
-coverage before going in. You should also first upgrade to Rails 4.1 in case you
-haven't and make sure your application still runs as expected before attempting
-an update to Rails 4.2. A list of things to watch out for when upgrading is
-available in the
-[Upgrading Ruby on Rails](upgrading_ruby_on_rails.html#upgrading-from-rails-4-1-to-rails-4-2)
-guide.
+如果您正試著升級現有的應用程式，最好有廣的測試覆蓋度。首先應先升級至 4.1，確保應用程式仍正常工作，接著再升上 4.2。升級需要注意的事項在 [Ruby on Rails 升級指南](upgrading_ruby_on_rails.html#upgrading-from-rails-4-1-to-rails-4-2)可以找到。
 
 
-Major Features
+主要的新功能
 --------------
 
 
@@ -33,16 +24,14 @@ Major Features
 Railties
 --------
 
-Please refer to the
-[Changelog](https://github.com/rails/rails/blob/4-2-stable/railties/CHANGELOG.md)
-for detailed changes.
+請參考 [CHANGELOG][Railties-CHANGELOG] 來了解更多細節。
 
-### Removals
+### 移除
 
 * The `rails application` command has been removed without replacement.
   ([Pull Request](https://github.com/rails/rails/pull/11616))
 
-### Notable changes
+### 值得一提的變化
 
 * Introduced `bin/setup` script to bootstrap an application.
   ([Pull Request](https://github.com/rails/rails/pull/15189))
@@ -60,11 +49,9 @@ for detailed changes.
 Action Pack
 -----------
 
-Please refer to the
-[Changelog](https://github.com/rails/rails/blob/4-2-stable/actionpack/CHANGELOG.md)
-for detailed changes.
+請參考 [CHANGELOG][AP-CHANGELOG] 來了解更多細節。
 
-### Deprecations
+### 棄用
 
 * "Soft deprecated" the `*_filter` family methods in favor of the `*_action`
   family methods:
@@ -87,7 +74,7 @@ for detailed changes.
   replacement `*_action` methods instead.
   ([Commit](https://github.com/rails/rails/commit/6c5f43bab8206747a8591435b2aa0ff7051ad3de))
 
-### Notable changes
+### 值得一提的變化
 
 * Added HTTP method `MKCALENDAR` from RFC-4791
   ([Pull Request](https://github.com/rails/rails/pull/15121))
@@ -109,11 +96,9 @@ for detailed changes.
 Action Mailer
 -------------
 
-Please refer to the
-[Changelog](https://github.com/rails/rails/blob/4-2-stable/actionmailer/CHANGELOG.md)
-for detailed changes.
+請參考 [CHANGELOG](https://github.com/rails/rails/blob/4-1-stable/actionmailer/CHANGELOG.md) 來了解更多細節。
 
-### Notable changes
+### 值得一提的變化
 
 * ...
 * ...
@@ -122,11 +107,9 @@ for detailed changes.
 Active Record
 -------------
 
-Please refer to the
-[Changelog](https://github.com/rails/rails/blob/4-2-stable/activerecord/CHANGELOG.md)
-for detailed changes.
+請參考 [CHANGELOG][AR-CHANGELOG] 來了解更多細節。
 
-### Notable changes
+### 值得一提的變化
 
 * ...
 * ...
@@ -135,11 +118,9 @@ for detailed changes.
 Active Model
 ------------
 
-Please refer to the
-[Changelog](https://github.com/rails/rails/blob/4-2-stable/activemodel/CHANGELOG.md)
-for detailed changes.
+請參考 [CHANGELOG][AM-CHANGELOG] 來了解更多細節。
 
-### Notable changes
+### 值得一提的變化
 
 * ...
 * ...
@@ -148,11 +129,9 @@ for detailed changes.
 Active Support
 --------------
 
-Please refer to the
-[Changelog](https://github.com/rails/rails/blob/4-2-stable/activesupport/CHANGELOG.md)
-for detailed changes.
+請參考 [CHANGELOG](https://github.com/rails/rails/blob/4-1-stable/activesupport/CHANGELOG.md) 來了解更多細節。
 
-### Removals
+### 移除
 
 * Removed deprecated `Numeric#ago`, `Numeric#until`, `Numeric#since`,
   `Numeric#from_now`. ([Commit](https://github.com/rails/rails/commit/f1eddea1e3f6faf93581c43651348f48b2b7d8bb))
@@ -160,7 +139,7 @@ for detailed changes.
 * Removed deprecated string based terminators for `ActiveSupport::Callbacks`.
   ([Pull Request](https://github.com/rails/rails/pull/15100))
 
-### Deprecations
+### 棄用
 
 * Deprecated `Class#superclass_delegating_accessor`, use `Class#class_attribute`
   instead. ([Pull Request](https://github.com/rails/rails/pull/14271))
@@ -168,7 +147,7 @@ for detailed changes.
 * Deprecated `ActiveSupport::SafeBuffer#prepend!` as `ActiveSupport::SafeBuffer#prepend`
   now performs the same function. ([Pull Request](https://github.com/rails/rails/pull/14529))
 
-### Notable changes
+### 值得一提的變化
 
 * The `humanize` inflector helper now strips any leading underscores.
   ([Commit](https://github.com/rails/rails/commit/daaa21bc7d20f2e4ff451637423a25ff2d5e75c7))
@@ -180,10 +159,13 @@ for detailed changes.
   as well as `Kernel#concern` to avoid the `module Foo; extend ActiveSupport::Concern; end`
   boilerplate. ([Commit](https://github.com/rails/rails/commit/b16c36e688970df2f96f793a759365b248b582ad))
 
-Credits
--------
+致謝
+----
 
-See the
-[full list of contributors to Rails](http://contributors.rubyonrails.org/) for
-the many people who spent many hours making Rails, the stable and robust
-framework it is. Kudos to all of them.
+許多人花了寶貴的時間貢獻至 Rails 專案，使 Rails 成為更穩定、更強韌的網路框架，參考[完整的 Rails 貢獻者清單](http://contributors.rubyonrails.org/)，感謝所有的貢獻者！
+
+[rails]: https://github.com/rails/rails
+[Railties-CHANGELOG]: https://github.com/rails/rails/blob/4-1-stable/railties/CHANGELOG.md
+[AR-CHANGELOG]: https://github.com/rails/rails/blob/4-1-stable/activerecord/CHANGELOG.md
+[AP-CHANGELOG]: https://github.com/rails/rails/blob/4-1-stable/actionpack/CHANGELOG.md
+[AM-CHANGELOG]: https://github.com/rails/rails/blob/4-1-stable/activemodel/CHANGELOG.md
