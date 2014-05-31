@@ -204,6 +204,11 @@
       description: 本篇幫助您將應用程式升級至最新版本。
       needs_translation: true
     -
+      name: Ruby on Rails 4.2 發佈記
+      url: 4_2_release_notes.html
+      description: Rails 4.2 的發佈記。
+      needs_translation: true
+    -
       name: Ruby on Rails 4.1 發佈記
       url: 4_1_release_notes.html
       description: Rails 4.1 的發佈記。
