@@ -1,5 +1,5 @@
-Ruby on Rails 4.2 Release Notes
-===============================
+Ruby on Rails 4.2 發佈記
+========================
 
 Rails 4.2 精華摘要：
 
@@ -28,21 +28,21 @@ Railties
 
 ### 移除
 
-* The `rails application` command has been removed without replacement.
+* 移除了 `rails application` 命令。
   ([Pull Request](https://github.com/rails/rails/pull/11616))
 
 ### 值得一提的變化
 
-* Introduced `bin/setup` script to bootstrap an application.
+* 導入 `bin/setup` 腳本來啟動應用程式。
   ([Pull Request](https://github.com/rails/rails/pull/15189))
 
-* Changed default value for `config.assets.digest` to `true` in development.
+* `config.assets.digest` 在開發模式的預設值改為 `true`。
   ([Pull Request](https://github.com/rails/rails/pull/15155))
 
-* Introduced an API to register new extensions for `rake notes`.
+* 導入給 `rake notes` 註冊新擴充功能的 API。
   ([Pull Request](https://github.com/rails/rails/pull/14379))
 
-* Introduced `Rails.gem_version` as a convenience method to return `Gem::Version.new(Rails.version)`.
+* 導入 `Rails.gem_version` 作為回傳 `Gem::Version.new(Rails.version)` 的便捷方法。
   ([Pull Request](https://github.com/rails/rails/pull/14101))
 
 
@@ -53,8 +53,7 @@ Action Pack
 
 ### 棄用
 
-* "Soft deprecated" the `*_filter` family methods in favor of the `*_action`
-  family methods:
+* 棄用 `*_filter` 的方法，偏好 `*_action` 的方法。
 
       after_filter          => after_action
       append_after_filter   => append_after_action
@@ -70,26 +69,24 @@ Action Pack
       skip_before_filter    => skip_before_action
       skip_filter           => skip_action_callback
 
-  If your application is depending on these methods, you should use the
-  replacement `*_action` methods instead.
+  若應用程式依賴這些 `*_filter` 方法，應該使用 `*_action` 方法替換。
   ([Commit](https://github.com/rails/rails/commit/6c5f43bab8206747a8591435b2aa0ff7051ad3de))
 
 ### 值得一提的變化
 
-* Added HTTP method `MKCALENDAR` from RFC-4791
+* 從 RFC-4791 新增 HTTP 方法 `MKCALENDAR`。
   ([Pull Request](https://github.com/rails/rails/pull/15121))
 
-* `*_fragment.action_controller` notifications now include the controller and action name
-  in the payload.
+* `*_fragment.action_controller` 通知訊息的 Payload 現在包含 Controller 與動作名稱。
   ([Pull Request](https://github.com/rails/rails/pull/14137))
 
-* Segments that are passed into URL helpers are now automatically escaped.
+* 傳入 URL 輔助方法的片段現在會自動 Escaped。
   ([Commit](https://github.com/rails/rails/commit/5460591f0226a9d248b7b4f89186bd5553e7768f))
 
-* Improved Routing Error page with fuzzy matching for route search.
+* 改善路由錯誤頁面，搜索路由支持模糊搜尋。
   ([Pull Request](https://github.com/rails/rails/pull/14619))
 
-* Added option to disable logging of CSRF failures.
+* 新增關掉 CSRF 失敗記錄的選項。
   ([Pull Request](https://github.com/rails/rails/pull/14280))
 
 
@@ -133,31 +130,31 @@ Active Support
 
 ### 移除
 
-* Removed deprecated `Numeric#ago`, `Numeric#until`, `Numeric#since`,
+* 移除棄用的 `Numeric#ago`、`Numeric#until`、`Numeric#since` 以及
   `Numeric#from_now`. ([Commit](https://github.com/rails/rails/commit/f1eddea1e3f6faf93581c43651348f48b2b7d8bb))
 
-* Removed deprecated string based terminators for `ActiveSupport::Callbacks`.
+* 移除棄用 `ActiveSupport::Callbacks` 基於字串的終止符。
   ([Pull Request](https://github.com/rails/rails/pull/15100))
 
 ### 棄用
 
-* Deprecated `Class#superclass_delegating_accessor`, use `Class#class_attribute`
-  instead. ([Pull Request](https://github.com/rails/rails/pull/14271))
+* 棄用 `Class#superclass_delegating_accessor`，請改用 `Class#class_attribute`。
+  ([Pull Request](https://github.com/rails/rails/pull/14271))
 
-* Deprecated `ActiveSupport::SafeBuffer#prepend!` as `ActiveSupport::SafeBuffer#prepend`
-  now performs the same function. ([Pull Request](https://github.com/rails/rails/pull/14529))
+* 棄用 `ActiveSupport::SafeBuffer#prepend!` 請改用 `ActiveSupport::SafeBuffer#prepend`（兩者功能相同）。
+  ([Pull Request](https://github.com/rails/rails/pull/14529))
 
 ### 值得一提的變化
 
-* The `humanize` inflector helper now strips any leading underscores.
+* `humanize` 現在會去掉前面的底線。
   ([Commit](https://github.com/rails/rails/commit/daaa21bc7d20f2e4ff451637423a25ff2d5e75c7))
 
-* Added `SecureRandom::uuid_v3` and `SecureRandom::uuid_v5`.
+* 新增 `SecureRandom::uuid_v3` 和 `SecureRandom::uuid_v5` 方法。
   ([Pull Request](https://github.com/rails/rails/pull/12016))
 
-* Introduce `Concern#class_methods` as an alternative to `module ClassMethods`,
-  as well as `Kernel#concern` to avoid the `module Foo; extend ActiveSupport::Concern; end`
-  boilerplate. ([Commit](https://github.com/rails/rails/commit/b16c36e688970df2f96f793a759365b248b582ad))
+* 導入 `Concern#class_methods` 來取代 `module ClassMethods` 以及 `Kernel#concern`，
+  來避免使用 `module Foo; extend ActiveSupport::Concern; end` 這樣的樣板。
+  ([Commit](https://github.com/rails/rails/commit/b16c36e688970df2f96f793a759365b248b582ad))
 
 致謝
 ----
