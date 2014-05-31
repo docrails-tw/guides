@@ -1,13 +1,13 @@
-The Rails Command Line
-======================
+Rails 命令行
+===========
 
-After reading this guide, you will know:
+讀完本篇，您將了解：
 
-* How to create a Rails application.
-* How to generate models, controllers, database migrations, and unit tests.
-* How to start a development server.
-* How to experiment with objects through an interactive shell.
-* How to profile and benchmark your new creation.
+* 如何新建 Rails 應用程式。
+* 如何產生 models、controllers、資料庫 migrations、單元測試。
+* 如何啟動開發伺服器。
+* 如何用互動的 Shell 來實驗物件。
+* 如何測量應用程式的瓶頸。
 
 --------------------------------------------------------------------------------
 
