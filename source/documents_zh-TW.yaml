@@ -2,7 +2,7 @@
   name: 起步走
   documents:
     -
-      name: Rails 入門指南
+      name: Rails 起步走
       url: getting_started.html
       description: 從安裝到建立第一個應用程式所需知道的一切。
       needs_translation: true
@@ -200,13 +200,13 @@
     -
       name: 升級 Ruby on Rails
       url: upgrading_ruby_on_rails.html
-      work_in_progress: true
       description: 本篇幫助您將應用程式升級至最新版本。
       needs_translation: true
     -
       name: Ruby on Rails 4.2 發佈記
       url: 4_2_release_notes.html
       description: Rails 4.2 的發佈記。
+      work_in_progress: true
       needs_translation: true
     -
       name: Ruby on Rails 4.1 發佈記
@@ -242,10 +242,10 @@
       url: 2_2_release_notes.html
       description: Rails 2.2 的發佈記。
       needs_translation: true
-# -
-#   name: 關於 Rails 指南翻譯
-#   documents:
-#     -
-#       name: 翻譯術語
-#       url: translation_terms.html
-#       description: 翻譯所使用的術語。
+-
+  name: Rails 指南翻譯術語
+  documents:
+    -
+      name: 翻譯術語
+      url: translation_terms.html
+      description: 翻譯所使用的術語。
