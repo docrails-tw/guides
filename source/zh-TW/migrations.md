@@ -1,5 +1,5 @@
 Active Record 遷移
-========================
+==================
 
 Migration，遷移。Active Record 眾多功能之一，可與時俱進的[管理資料庫綱要](http://en.wikipedia.org/wiki/Schema_migration)。最棒的是遷移提供了簡潔的 Ruby DSL，無需寫純 SQL，便能變更資料表。
 
@@ -14,7 +14,7 @@ Migration，遷移。Active Record 眾多功能之一，可與時俱進的[管�
 --------------------------------------------------------------------------------
 
 綜覽
---------------------
+----
 
 遷移是一種簡單、一致、方便[與時俱進管理資料庫綱要](http://en.wikipedia.org/wiki/Schema_migration)的方法。遷移使用 Ruby DSL，而不用手寫 SQL，適用於所有資料庫。
 
@@ -357,6 +357,25 @@ end
 ```
 
 會移除 `description` 與 `name` 欄位。新增 `part_number` （字串）欄位，並打上索引。並將 `upccode` 欄位重新命名為 `upc_code`。
+
+### 修改欄位
+
+就像 Rails 有 `remove_column` 與 `add_column`，Rails 也提供了 `change_column` 方法。
+
+```ruby
+change_column :products, :part_number, :text
+```
+
+會更改 `products` 資料表裡的 `part_number` 欄位，類型改為 `:text`。
+
+除了 `change_column` 之外，還有 `change_column_null` 與 `change_column_default` 方法，專門用來修改欄位的預設值。
+
+```ruby
+change_column_null :products, :name, false
+change_column_default :products, :approved, false
+```
+
+上例程式會把 `products` 資料表的 `:name` 欄位設為 `NOT NULL`；而 `:approved` 欄位預設設為 `false`。
 
 ### Helpers 不夠用怎麼辦
 
