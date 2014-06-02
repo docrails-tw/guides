@@ -32,7 +32,7 @@ Controller 命名慣例
 
 Rails Controller 的命名慣例是**最後一個單字以複數形式結尾**，但是也有例外，比如 `ApplicationController`。舉例來說：偏好 `ClientsController` 勝過 `ClientController`。偏好 `SiteAdminsController` 勝過 `SitesAdminsController` 等。
 
-遵循慣例便可享受內建 Rails Router 的功能，如：`resources`、`resource` 路由等，而無需特地傳入 `:path`、`:controller` 選項，便可保持 URL 與路徑 Helpers 的一致性。詳細內容請參考 [Rails 算繪與版型](/layouts_and_rendering.html)一篇。
+遵循慣例便可享受內建 Rails Router 的功能，如：`resources`、`resource` 路由等，而無需特地傳入 `:path`、`:controller` 選項，便可保持 URL 與路徑輔助方法的一致性。詳細內容請參考 [Rails 算繪與版型](/layouts_and_rendering.html)一篇。
 
 NOTE: Controller 的命名慣例與 Model 的命名慣例不同，Model 命名慣例是**單數形式**。
 
@@ -765,7 +765,7 @@ token 如何加到隱藏欄位：
 </form>
 ```
 
-Rails 自動給所有使用了 [Form Helpers](/form-helpers.html) 的表單加上這個 token，所以不用擔心怎麼處理。若是手寫表單可以透過 `form_authenticity_token` 方法來加上 token。
+Rails 自動給所有使用了[表單輔助方法](/form-helpers.html) 的表單加上這個 token，所以不用擔心怎麼處理。若是手寫表單可以透過 `form_authenticity_token` 方法來加上 token。
 
 [`form_authenticity_token`](http://api.rubyonrails.org/classes/ActionController/RequestForgeryProtection.html#method-i-form_authenticity_token) 產生一個有效的驗證 token。這在 Rails 沒有自動加上 token 的場景下很有用，像是自定的 Ajax 請求，`form_authenticity_token` 很簡單，就是設定了 Session 的 `_csrf_token`：
 
