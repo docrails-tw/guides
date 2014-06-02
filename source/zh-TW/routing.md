@@ -9,16 +9,16 @@ Rails 路由：深入淺出
 * 如何使用推薦的資源式寫法或使用 `match` 方法來撰寫路由。
 * Controller 動作可接受的參數有那些。
 * 如何使用路由輔助方法來自動建立路徑與 URL。
-* 路由約束條件與 Rack Endpoint 等進階技巧。
+* 路由約束條件與 Rack 端點等進階技巧。
 
 --------------------------------------------------------------------------------
 
 Rails 路由器的目的
 -------------------------------
 
-Rails 路由器（router）識別 URL，分配給對應的 Controller 動作處理。Rails 路由器同時也可用來產生路徑與 URL，避免在 View 裡面把路徑寫死。
+Rails 路由器（router）識別網址，分配給對應的 Controller 動作處理。Rails 路由器同時也可用來產生路徑與網址，避免在 View 裡面用字串來把路徑與網址寫死。
 
-### URL 工作分派
+### 路由器如何分派請求
 
 當 Rails 收到如下請求時：
 
@@ -26,7 +26,7 @@ Rails 路由器（router）識別 URL，分配給對應的 Controller 動作處�
 GET /patients/17
 ```
 
-會詢問路由器，匹配的 Controller 動作是那個。若第一個匹配的路由為：
+會詢問路由器，匹配的 Controller 動作是那個。若第一筆匹配的路由為：
 
 ```ruby
 get '/patients/:id', to: 'patients#show'
@@ -34,9 +34,9 @@ get '/patients/:id', to: 'patients#show'
 
 則請求會分派給 `PatientsController` 的 `show` 動作處理，且 `params` 裡有 `{ id: '17' }` 參數。
 
-### 產生路徑與 URL
+### 產生路徑與網址
 
-Rails 路由器也可以產生路徑與 URL。若上例的路由改寫為：
+Rails 路由器也可以產生路徑與網址。若上例的路由改寫為：
 
 ```ruby
 get '/patients/:id', to: 'patients#show', as: 'patient'
@@ -59,11 +59,11 @@ get '/patients/:id', to: 'patients#show', as: 'patient'
 資源式路由：Rails 的預設路由
 -----------------------------------
 
-資源式路由允許替給定的資源式 Controller，快速宣告出所有常見的路由。與其替每個動作（ `index`、`show`、`new`、`edit`、`create`、`update` 以及 `destroy`）個別宣告路由，資源式路由宣告只需要一行即可。
+資源式路由可替資源式 Controller 快速宣告出所有常見的路由。與其挨個替每個動作（ `index`、`show`、`new`、`edit`、`create`、`update` 以及 `destroy`）宣告路由，資源式路由宣告一行解決。
 
 ### Web 世界裡的資源
 
-瀏覽器向 Rails 請求頁面時，透過使用具體的 HTTP 動詞，如 `GET`、`POST`、`PATCH`、`PUT` 以及 `DELETE`，往 URL 發出請求。每個動詞都是對資源的一種操作。資源式路由將相關的請求，對應到 Controller 的不同動作。
+瀏覽器向 Rails 請求頁面時，透過使用具體的 HTTP 動詞，如 `GET`、`POST`、`PATCH`、`PUT` 以及 `DELETE`，往 URL 發出請求。每個動詞都是對資源的一種操作。資源式路由將請求對應到 Controller 的動作。
 
 當 Rails 應用程式收到下面這個請求時：
 
@@ -71,7 +71,7 @@ get '/patients/:id', to: 'patients#show', as: 'patient'
 DELETE /photos/17
 ```
 
-會詢問路由器，該交給那個 Controller 的那個動作處理。若第一個匹配的路由為：
+會詢問路由器，路由器會決定該交給那個 Controller 的那個動作處理。若第一筆匹配的路由為：
 
 ```ruby
 resources :photos
@@ -87,38 +87,38 @@ Rails 會將請求分派給 `PhotosController` 的 `destroy` 方法，且 `param
 resources :photos
 ```
 
-會在應用程式建立出七筆不同的路由，皆對應到 `PhotosController`：
+會建立出七筆不同的路由，皆對應到 `PhotosController`：
 
-| HTTP 動詞 | 路徑             | Controller#動作 | 用途                                     |
-| --------- | --------------- | -------------- | --------------------------------------- |
-| GET       | /photos          | photos#index      | 顯示所有圖片                 |
+| HTTP 動詞 | 路徑              | Controller#動作    | 用途               |
+| --------- | ---------------- | ----------------- | ------------------|
+| GET       | /photos          | photos#index      | 顯示所有圖片        |
 | GET       | /photos/new      | photos#new        | 回傳建立新圖片的表單 |
-| POST      | /photos          | photos#create     | 建立新圖片                           |
-| GET       | /photos/:id      | photos#show       | 顯示特定圖片                     |
-| GET       | /photos/:id/edit | photos#edit       | 回傳編輯圖片的表單     |
-| PATCH/PUT | /photos/:id      | photos#update     | 更新特定圖片                     |
-| DELETE    | /photos/:id      | photos#destroy    | 刪除特定圖片                      |
+| POST      | /photos          | photos#create     | 建立新圖片          |
+| GET       | /photos/:id      | photos#show       | 顯示特定圖片        |
+| GET       | /photos/:id/edit | photos#edit       | 回傳編輯圖片的表單   |
+| PATCH/PUT | /photos/:id      | photos#update     | 更新特定圖片        |
+| DELETE    | /photos/:id      | photos#destroy    | 刪除特定圖片        |
 
-NOTE: 因為路由器使用 HTTP 動詞與 URL ，來匹配進來的請求，所以可以將四個 URL 對應到七種不同的動作。
+NOTE: 因為路由器使用 HTTP 動詞與 URL 來匹配進來的請求，所以可將四個 URL 對應到七種不同的動作。
 
-NOTE: Rails 路由依據宣告的順序來匹配。若在 `get 'photos/poll'` 之前宣告了 `resources :photos`，則 `show` 動作會先匹配到 `resources :photos`。若想將 `get 'photos/poll'` 的匹配順序提前，提到 `resources :photos` 之前即可。
+NOTE: 路由依據宣告的順序來匹配。若在 `get 'photos/poll'` 之前宣告了 `resources :photos`，則 `show` 動作會先匹配到 `resources :photos`。若想將 `get 'photos/poll'` 的匹配順序提前，提到 `resources :photos` 之前即可。
 
 ### 路徑與 URL 的輔助方法
 
-新建一筆資源式的路由，同時會給 Controller 加入一些輔助方法。以 `resources :photos` 為例，可用的輔助方法有：
+新建一筆資源式的路由，同時會給應用程式裡的 Controller 加入一些輔助方法。以 `resources :photos` 為例，可用的輔助方法有：
 
-| 輔助方法 | 用途 |
-| ------- | ----- |
-| `photos_path` | 回傳 `/photos` |
-| `new_photo_path` | 回傳 `/photos/new` |
+| 輔助方法                | 用途                                                                        |
+| ---------------------- | --------------------------------------------------------------------------- |
+| `photos_path`          | 回傳 `/photos`                                                               |
+| `new_photo_path`       | 回傳 `/photos/new`                                                           |
 | `edit_photo_path(:id)` | 回傳 `/photos/:id/edit` (例如 `edit_photo_path(10)` 會回傳 `/photos/10/edit`) |
-| `photo_path(:id)` | 回傳 `/photos/:id` (例如 `photo_path(10)` 回傳 `/photos/10`) |
+| `photo_path(:id)`      | 回傳 `/photos/:id` (例如 `photo_path(10)` 回傳 `/photos/10`)                  |
 
 這些輔助方法有對應的 `*_url` 形式（像是 `photos_url`），`*_url` 會回傳完整的路徑，包含了主機、埠口以及路徑。
 
 ### 同時定義多筆資源
 
-如需要給多個資源建立路由時，可以用一行 `resources` 宣告完成，節省一些打字的時間：
+如需同時給多個資源建立路由，可以用一行 `resources` 宣告完成，可節省些打字的時間：
 
 ```ruby
 resources :photos, :books, :videos
@@ -134,7 +134,7 @@ resources :videos
 
 ### 單數資源
 
-有些資源不需要 ID 便能查詢。舉個例子，希望 `/profile` 顯示目前登入使用者的個人檔案。這個情況下可以使用單數資源（Singular resource），把 `/profile`（而不是 `/profile/:id`）對應到 `show` 動作：
+有些資源無需 ID 便能查詢。舉個例子，希望 `/profile` 顯示目前登入使用者的個人檔案。可以用單數資源（Singular resource），把 `/profile`（而不是 `/profile/:id`）對應到 `show` 動作：
 
 ```ruby
 get 'profile', to: 'users#show'
@@ -154,24 +154,24 @@ resource :geocoder
 
 會建立出六筆不同的路由，皆對應到 `GeocodersController`：
 
-| HTTP 動詞 | 路徑           | Controller#動作 | 用途                                      |
-| --------- | ------------- | --------------- | ---------------------------------------- |
+| HTTP 動詞 | 路徑            | Controller#動作    | 用途                      |
+| --------- | -------------- | ----------------- | ------------------------ |
 | GET       | /geocoder/new  | geocoders#new     | 回傳建立 `geocoder` 的表單 |
-| POST      | /geocoder      | geocoders#create  | 建立新 `geocoder`                       |
-| GET       | /geocoder      | geocoders#show    | 顯示唯一的 `geocoder` 資源    |
+| POST      | /geocoder      | geocoders#create  | 建立新 `geocoder`         |
+| GET       | /geocoder      | geocoders#show    | 顯示唯一的 `geocoder` 資源 |
 | GET       | /geocoder/edit | geocoders#edit    | 回傳編輯 `geocoder` 的表單 |
-| PATCH/PUT | /geocoder      | geocoders#update  | 更新唯一的 `geocoder` 資源    |
-| DELETE    | /geocoder      | geocoders#destroy | 刪除 `geocoder` 資源                  |
+| PATCH/PUT | /geocoder      | geocoders#update  | 更新唯一的 `geocoder` 資源 |
+| DELETE    | /geocoder      | geocoders#destroy | 刪除 `geocoder` 資源      |
 
 NOTE: 有時單數（`/account`）與複數路由（`/accounts/45`）想交給同樣的 Controller 處理，或是把單數資源對應到複數 Controller 上。舉個例子，`resource :photo` 與 `resources :photos` 同時建立出單數與複數的路由，皆對應到 `PhotosController`。
 
 單數的資源式路由會產生以下輔助方法：
 
-| 輔助方法 | 用途 |
-| ------- | ----- |
-| `new_geocoder_path` | 回傳 `/geocoder/new` |
+| 輔助方法              | 用途                  |
+| -------------------- | -------------------- |
+| `new_geocoder_path`  | 回傳 `/geocoder/new`  |
 | `edit_geocoder_path` | 回傳 `/geocoder/edit` |
-| `geocoder_path` | 回傳 `/geocoder` |
+| `geocoder_path`      | 回傳 `/geocoder`      |
 
 和複數資源的路由相同，皆有對應的 `*_url` 形式，會回傳完整的路徑，包含了主機、埠口以及路徑。
 
@@ -269,15 +269,15 @@ end
 
 上面會建立 `MagazinesController` 的路由，也會給 `AdsController` 建立路由。`Ad` 的路徑裡會需要引用 `Magazine` 資源：
 
-| HTTP 動詞 | 路徑                                 | Controller#動作 | 用途                                                                   |
-| --------- | ----------------------------------- | ---------------- | -------------------------------------------------------------------------- |
-| GET       | /magazines/:magazine_id/ads          | ads#index         | 顯示特定雜誌的所有廣告                          |
-| GET       | /magazines/:magazine_id/ads/new      | ads#new           | 回傳給特定雜誌新建廣告的表單 |
-| POST      | /magazines/:magazine_id/ads          | ads#create        | 建立屬於特定雜誌的廣告                           |
-| GET       | /magazines/:magazine_id/ads/:id      | ads#show          | 顯示屬於特定雜誌的廣告                     |
-| GET       | /magazines/:magazine_id/ads/:id/edit | ads#edit          | 回傳編輯屬於特定雜誌廣告的表單     |
-| PATCH/PUT | /magazines/:magazine_id/ads/:id      | ads#update        | 更新屬於特定雜誌的廣告                      |
-| DELETE    | /magazines/:magazine_id/ads/:id      | ads#destroy       | 刪除屬於特定雜誌的廣告                     |
+| HTTP 動詞 | 路徑                                 | Controller#動作 | 用途                           |
+| --------- | ----------------------------------- | ---------------- | --------------------------- |
+| GET       | /magazines/:magazine_id/ads          | ads#index         | 顯示特定雜誌的所有廣告        |
+| GET       | /magazines/:magazine_id/ads/new      | ads#new           | 回傳給特定雜誌新建廣告的表單   |
+| POST      | /magazines/:magazine_id/ads          | ads#create        | 建立屬於特定雜誌的廣告        |
+| GET       | /magazines/:magazine_id/ads/:id      | ads#show          | 顯示屬於特定雜誌的廣告        |
+| GET       | /magazines/:magazine_id/ads/:id/edit | ads#edit          | 回傳編輯屬於特定雜誌廣告的表單 |
+| PATCH/PUT | /magazines/:magazine_id/ads/:id      | ads#update        | 更新屬於特定雜誌的廣告        |
+| DELETE    | /magazines/:magazine_id/ads/:id      | ads#destroy       | 刪除屬於特定雜誌的廣告        |
 
 同時這也會建立像是 `magazine_ads_url` 以及 `edit_magazine_ad_path` 的路由輔助方法。這些方法可接受 `Magazine` 的實體作為第一個參數：`magazine_ads_url(@magazine)`。
 
@@ -537,7 +537,7 @@ end
 TIP: 若發現給資源新增了許多額外的動作，停下來想想是不是要拆成另一個資源。
 
 非資源式路由
-----------------------
+-----------
 
 除了資源式路由之外，將隨意的 URL 對應到動作，Rails 提供了強大的支持。這一節不像資源式路由，會獲得一組自動產生的路由。反而是自己在應用程式裡設定每一條路由。
 
@@ -680,7 +680,7 @@ get '/:username', to: 'users#show'
 基於 `request` 物件的約束條件的宣告方式與片段約束條件相同：
 
 ```ruby
-get 'photos', constraints: {subdomain: 'admin'}
+get 'photos', constraints: { subdomain: 'admin' }
 ```
 
 約束條件也可以使用區塊形式：
@@ -708,7 +708,7 @@ class BlacklistConstraint
   end
 end
 
-TwitterClone::Application.routes.draw do
+Rails.application.routes.draw do
   get '*path', to: 'blacklist#index',
     constraints: BlacklistConstraint.new
 end
@@ -717,7 +717,7 @@ end
 約束條件也可用 lambda 宣告：
 
 ```ruby
-TwitterClone::Application.routes.draw do
+Rails.application.routes.draw do
   get '*path', to: 'blacklist#index',
     constraints: lambda { |request| Blacklist.retrieve_ips.include?(request.remote_ip) }
 end
@@ -751,7 +751,7 @@ get '*a/foo/*b', to: 'test#index'
 
 會匹配 `zoo/woo/foo/bar/baz`，`params[:a]` 會設為 `'zoo/woo'`，而 `params[:b]` 則是 `'bar/baz'`。
 
-NOTE: 若想請求 `"/foo/bar.json"`，`params[:pages]` 會設為 `"foo/bar"`，請求格式為 JSON。若想使用 3.0.x 的行為，可以傳一個 `format: false`：
+NOTE: 發送請求到 `"/foo/bar.json"` 時，`params[:pages]` 會設為 `"foo/bar"`，請求格式為 JSON。若想使用 3.0.x 的行為，可以傳一個 `format: false`：
 
 ```ruby
 get '*pages', to: 'pages#show', format: false
@@ -790,7 +790,7 @@ Note: 轉址是 301 "Moved Permanently" 轉址。某些瀏覽器或代理伺服�
 
 ### 路由到 Rack 應用程式
 
-除了使用像是 `"articles#index"` 的字串（會交給 `ArticlesController` 的 `index` 動作處理），還可以指定任何 [Rack 應用程式](/rails_on_rack.html) 作為 Endpoint：
+除了使用像是 `"articles#index"` 的字串（會交給 `ArticlesController` 的 `index` 動作處理），還可以指定任何 [Rack 應用程式](/rails_on_rack.html) 作為端點（Endpoint）：
 
 ```ruby
 match '/application.js', to: Sprockets, via: :all
@@ -846,7 +846,7 @@ resources :photos, controller: 'images'
 
 會識別出以 `/photos` 開頭的請求，交給 `Images` Controller 處理：
 
-| HTTP Verb | Path             | Controller#Action | Named Helper         |
+| HTTP 動詞  | 路徑              | Controller#動作   | 具名輔助方法           |
 | --------- | ---------------- | ----------------- | -------------------- |
 | GET       | /photos          | images#index      | photos_path          |
 | GET       | /photos/new      | images#new        | new_photo_path       |
@@ -901,7 +901,7 @@ resources :photos, as: 'images'
 
 will recognize incoming paths beginning with `/photos` and route the requests to `PhotosController`, but use the value of the :as option to name the helpers.
 
-| HTTP Verb | Path             | Controller#Action | Named Helper         |
+| HTTP 動詞  | 路徑              | Controller#動作   | 具名輔助方法           |
 | --------- | ---------------- | ----------------- | -------------------- |
 | GET       | /photos          | photos#index      | images_path          |
 | GET       | /photos/new      | photos#new        | new_image_path       |
@@ -1006,7 +1006,7 @@ end
 
 產生的路由：
 
-| HTTP Verb | Path                       | Controller#Action  | Named Helper            |
+| HTTP 動詞  | 路徑                        | Controller#動作    | 具名輔助方法              |
 | --------- | -------------------------- | ------------------ | ----------------------- |
 | GET       | /kategorien                | categories#index   | categories_path         |
 | GET       | /kategorien/neu            | categories#new     | new_category_path       |

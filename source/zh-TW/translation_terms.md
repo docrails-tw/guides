@@ -3,6 +3,8 @@
 
 參考了業界先進張文鈿（ihower）先生於其書[《Rails 實戰聖經》裡的〈翻譯術語表〉](http://ihower.tw/rails3/translation.html)以及[藍一婷](https://twitter.com/etblue)小姐的[翻譯詞彙表](https://docs.google.com/spreadsheet/ccc?key=0AkNsS2a-Qx8ZdDJzTUlNeVlvRy1BYnZDUnRjZUpWWGc&hl=en#gid=0)。
 
+我提倡應該要試著使用中文來描述英文術語，否則將永遠不會有共同的術語。
+
 更好的譯法，請不吝指教，感謝。
 
 歡迎加入新術語。
@@ -41,6 +43,8 @@ A
 * Accessor 存取器
 
 * Action 動作
+
+  Controller 的 Action：動作。
 
 * Anchor 錨點
 
@@ -142,7 +146,9 @@ D
 E
 ------
 
-* exception 異常
+* Exception 異常
+
+* Endpoint 端點
 
 F
 ------
@@ -253,6 +259,8 @@ L
 
 M
 ------
+
+* Match 匹配
 
 * Macro 宏
 
@@ -373,7 +381,7 @@ R
 
 * Router 路由器
 
-    指得是以 [Journey](https://github.com/rails/journey) 所實作的路由器。
+    負責解析路由。指得是以 [Journey](https://github.com/rails/journey) 所實作的路由器。
 
 S
 ------
