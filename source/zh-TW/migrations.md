@@ -377,9 +377,9 @@ change_column_default :products, :approved, false
 
 上例程式會把 `products` 資料表的 `:name` 欄位設為 `NOT NULL`；而 `:approved` 欄位預設設為 `false`。
 
-### Helpers 不夠用怎麼辦
+### 輔助方法不夠用怎麼辦
 
-Active Record 提供的 Helper 不夠用的時候，可以使用 `execute` 方法來執行任何 SQL 語句：
+Active Record 提供的輔助方法不夠用的時候，可以使用 `execute` 方法來執行任何 SQL 語句：
 
 ```ruby
 Product.connection.execute('UPDATE `products` SET `price`=`free` WHERE 1')
@@ -738,7 +738,7 @@ ActiveRecord::Schema.define(version: 20080906171750) do
 end
 ```
 
-多數情況下，這便是資料庫裡有的東西。這個檔案是檢查資料庫之後，用 `create_table`、`add_index` 這些 helper 來表示資料庫的結構。這與使用何種資料庫無關，可以加載到任何 Active Record 所支援的資料庫。如果應用程式要發佈到多種資料庫的時候，這個檔案非常有用。
+多數情況下，這便是資料庫裡有的東西。這個檔案是檢查資料庫之後，用 `create_table`、`add_index` 這些輔助方法用來表示資料庫的結構。這與使用何種資料庫無關，可以加載到任何 Active Record 所支援的資料庫。如果應用程式要發佈到多種資料庫的時候，這個檔案非常有用。
 
 但魚與熊掌不可兼得：`db/schema.rb` 不能表達資料庫特有的功能，像是外鍵約束、觸發器（triggers）、或是儲存過程（stored procedure）。但是在遷移裡可以執行任何自訂的 SQL 語句，但資料庫綱要的程式，無法從資料庫重建出這些 SQL 語句。如果要執行自訂的 SQL，記得將資料庫綱要的導出格式設定為 `:sql`。
 
