@@ -642,7 +642,6 @@ SELECT * FROM clients LIMIT 5 OFFSET 30
 Group
 ----------
 
-
 要在 `Model.find` 裡使用 SQL 的 `LIMIT`，可以對 Active Record Relation 使用 `group` 方法。
 
 比如想找出某日的訂單：
@@ -659,6 +658,23 @@ Order.select("date(created_at) as ordered_date, sum(price) as total_price").grou
 SELECT date(created_at) as ordered_date, sum(price) as total_price
 FROM orders
 GROUP BY date(created_at)
+```
+
+### 分組項目的總數
+
+要取得單一查詢呼叫有幾筆結果，在 `group` 之後呼叫 `count`。
+
+```ruby
+Order.group(:status).count
+# => { 'awaiting_approval' => 7, 'paid' => 12 }
+```
+
+上例執行的 SQL 看起來會像是：
+
+```sql
+SELECT COUNT (*) AS count_all, status AS status
+FROM "orders"
+GROUP BY status
 ```
 
 Having

@@ -659,6 +659,23 @@ FROM orders
 GROUP BY date(created_at)
 ```
 
+### Total of grouped items
+
+To get the total of grouped items on a single query call `count` after the `group`.
+
+```ruby
+Order.group(:status).count
+# => { 'awaiting_approval' => 7, 'paid' => 12 }
+```
+
+The SQL that would be executed would be something like this:
+
+```sql
+SELECT COUNT (*) AS count_all, status AS status
+FROM "orders"
+GROUP BY status
+```
+
 Having
 ------
 
