@@ -1,33 +1,30 @@
-Action Mailer Basics
-====================
+Action Mailer 基礎
+===================
 
-This guide provides you with all you need to get started in sending and
-receiving emails from and to your application, and many internals of Action
-Mailer. It also covers how to test your mailers.
+本篇提供收寄信所需要了解的所有知識，Action Mailer 內部工作原理以及如何測試 Mailer。
 
-After reading this guide, you will know:
+讀完本篇，您將了解：
 
-* How to send and receive email within a Rails application.
-* How to generate and edit an Action Mailer class and mailer view.
-* How to configure Action Mailer for your environment.
-* How to test your Action Mailer classes.
+* 如何在 Rails 裡寄信收信。
+* 如何產生、編輯 Action Mailer 的類別與 View。
+* 如何針對環境設定 Action Mailer。
+* 如何測試 Action Mailer。
 
 --------------------------------------------------------------------------------
 
-Introduction
-------------
+簡介
+----
 
-Action Mailer allows you to send emails from your application using mailer classes and views. Mailers work very similarly to controllers. They inherit from `ActionMailer::Base` and live in `app/mailers`, and they have associated views that appear in `app/views`.
+Action Mailer 允許在應用程式裡使用 Mailer 類別與 View 來寄信。Mailer 的動作原理類似於 Controller。Action Mailer 繼承自 `ActionMailer::Base`，檔案放在 `app/mailers`，與信件有關的 View 一樣放在 `app/views`。
 
-Sending Emails
---------------
+寄信
+----
 
-This section will provide a step-by-step guide to creating a mailer and its
-views.
+本節一步一步介紹如何建立 Mailer，以及相關的 View。
 
-### Walkthrough to Generating a Mailer
+### 產生 Mailer 的步驟
 
-#### Create the Mailer
+#### 新建 Mailer
 
 ```bash
 $ bin/rails generate mailer UserMailer
@@ -38,26 +35,20 @@ invoke  test_unit
 create    test/mailers/user_mailer_test.rb
 ```
 
-As you can see, you can generate mailers just like you use other generators with
-Rails. Mailers are conceptually similar to controllers, and so we get a mailer,
-a directory for views, and a test.
+如上所見，可以使用產生器來產生 Mailer。Mailer 概念上類似於 Controller，產生的檔案也類似：有 Mailer、放信件 View 的目錄，以及測試。
 
-If you didn't want to use a generator, you could create your own file inside of
-app/mailers, just make sure that it inherits from `ActionMailer::Base`:
+若不想使用產生器，可以自己在 `app/mailers` 建立檔案，記得繼承自 `ActionMailer::Base`：
 
 ```ruby
 class MyMailer < ActionMailer::Base
 end
 ```
 
-#### Edit the Mailer
+#### 編輯 Mailer
 
-Mailers are very similar to Rails controllers. They also have methods called
-"actions" and use views to structure the content. Where a controller generates
-content like HTML to send back to the client, a Mailer creates a message to be
-delivered via email.
+Mailer 和 Controller 非常類似。方法都叫做“動作”，用 View 來組織信件內容。但 Controller 是產生 HTML，回給客戶端；Mailer 則是建立訊息，透過信件寄出。
 
-`app/mailers/user_mailer.rb` contains an empty mailer:
+剛剛產生出來的 `app/mailers/user_mailer.rb` 檔案裡，有空的 Mailer：
 
 ```ruby
 class UserMailer < ActionMailer::Base
@@ -65,8 +56,7 @@ class UserMailer < ActionMailer::Base
 end
 ```
 
-Let's add a method called `welcome_email`, that will send an email to the user's
-registered email address:
+新增一個方法，稱之為 `welcome_email`，會寄信給使用者註冊的信箱：
 
 ```ruby
 class UserMailer < ActionMailer::Base
@@ -80,20 +70,16 @@ class UserMailer < ActionMailer::Base
 end
 ```
 
-Here is a quick explanation of the items presented in the preceding method. For
-a full list of all available options, please have a look further down at the
-Complete List of Action Mailer user-settable attributes section.
+以下是 `welcome_email` 的快速說明。所有可用的選項請參考[〈Action Mailer user-settable attributes〉]()一節。
 
-* `default Hash` - This is a hash of default values for any email you send from this mailer. In this case we are setting the `:from` header to a value for all messages in this class. This can be overridden on a per-email basis.
-* `mail` - The actual email message, we are passing the `:to` and `:subject` headers in.
+* `default` ── 任何使用這個 Mailer 送出的信件的預設值都存在這個 Hash 裡。上例設定了 `:from` 標頭為 `'notifications@example.com'`。所有發出去的信件都會採用這個預設值，但可以在動作裡覆蓋。
+* `mail` ── 寄信的方法。上例傳入了 `:to` 與 `:subject` 這兩個標頭。
 
-Just like controllers, any instance variables we define in the method become
-available for use in the views.
+和 Controller 一樣，動作裡定義的實體變數，在 View 裡都可以取用。
 
-#### Create a Mailer View
+#### 建立 Mailer 的 View
 
-Create a file called `welcome_email.html.erb` in `app/views/user_mailer/`. This
-will be the template used for the email, formatted in HTML:
+在 `app/views/user_mailer/` 新建叫做 `welcome_email.html.erb` 檔案。這個檔案會是信件的模版，採用 HTML 格式：
 
 ```html+erb
 <!DOCTYPE html>
@@ -115,9 +101,7 @@ will be the template used for the email, formatted in HTML:
 </html>
 ```
 
-Let's also make a text part for this email. Not all clients prefer HTML emails,
-and so sending both is best practice. To do this, create a file called
-`welcome_email.text.erb` in `app/views/user_mailer/`:
+再給信件建立一個純文字檔案。因為不是所有客戶端都可以顯示 HTML 格式的信件，兩種格式都寄是最佳實踐。在 `app/views/user_mailer/` 建立 `welcome_email.text.erb`：
 
 ```erb
 Welcome to example.com, <%= @user.name %>
@@ -131,29 +115,22 @@ To login to the site, just follow this link: <%= @url %>.
 Thanks for joining and have a great day!
 ```
 
-When you call the `mail` method now, Action Mailer will detect the two templates
-(text and HTML) and automatically generate a `multipart/alternative` email.
+呼叫 `mail` 方法時，Action Mailer 會偵測出有兩個模版（純文字與 HTML），會自動產生 `multipart/alternative` 的信件。
 
-#### Calling the Mailer
+#### 呼叫 Mailer
 
-Mailers are really just another way to render a view. Instead of rendering a
-view and sending out the HTTP protocol, they are just sending it out through the
-email protocols instead. Due to this, it makes sense to just have your
-controller tell the Mailer to send an email when a user is successfully created.
+Mailer 其實只是另一種算繪 View 的方式，只是算繪的 View 不透過 HTTP 協定送出，而是透過 Email 協定送出。也是因為這個原因，使用者成功建立之後，應該用 Controller 呼叫 mailer 來寄信。
 
-Setting this up is painfully simple.
+設定起來非常非常簡單。
 
-First, let's create a simple `User` scaffold:
+首先，建立一個簡單的 `User` 鷹架：
 
 ```bash
 $ bin/rails generate scaffold user name email login
 $ bin/rake db:migrate
 ```
 
-Now that we have a user model to play with, we will just edit the
-`app/controllers/users_controller.rb` make it instruct the UserMailer to deliver
-an email to the newly created user by editing the create action and inserting a
-call to `UserMailer.welcome_email` right after the user is successfully saved:
+現在有了可以實驗的 `User` Model，打開 `app/controllers/users_controller.rb`，修改 `create` 動作，在成功新建使用者之後，讓 Controller 呼叫 `UserMailer` 寄信出去。將 `UserMailer.welcome_email` 這一行放到使用者成功儲存之後：
 
 ```ruby
 class UsersController < ApplicationController
@@ -178,35 +155,26 @@ class UsersController < ApplicationController
 end
 ```
 
-The method `welcome_email` returns a `Mail::Message` object which can then just
-be told `deliver` to send itself out.
+`welcome_email` 會回傳 `Mail::Message` 物件，對這個物件呼叫 `deliver` 便會送出信件。
 
-### Auto encoding header values
+### 自動對標頭編碼
 
-Action Mailer handles the auto encoding of multibyte characters inside of
-headers and bodies.
+Action Mailer 會自動對標頭與信件主體裡的多位元組字元編碼。
 
-For more complex examples such as defining alternate character sets or
-self-encoding text first, please refer to the
-[Mail](https://github.com/mikel/mail) library.
+定義其它字元組、自編碼純文字等更複雜的範例，請參考 [Mail](https://github.com/mikel/mail) 函式庫。
 
-### Complete List of Action Mailer Methods
+### Action Mailer 方法清單
 
-There are just three methods that you need to send pretty much any email
-message:
+任何信件有三個方法最為重要：
 
-* `headers` - Specifies any header on the email you want. You can pass a hash of
-  header field names and value pairs, or you can call `headers[:field_name] =
-  'value'`.
-* `attachments` - Allows you to add attachments to your email. For example,
-  `attachments['file-name.jpg'] = File.read('file-name.jpg')`.
-* `mail` - Sends the actual email itself. You can pass in headers as a hash to
-  the mail method as a parameter, mail will then create an email, either plain
-  text, or multipart, depending on what email templates you have defined.
+* `headers` ── 指定信件的標頭。可以用 Hash 傳入欄位名與數值，或是呼叫 `headers[:field_name] = 'value'`。
+* `attachments` ── 加入附件到信件。例如，`attachments['file-name.jpg'] = File.read('file-name.jpg')`。
+* `mail` ── 寄出實際信件。可以將標頭作為 Hash 傳給 `mail` 作為參數。`mail` 會新建一封信，純文字或是多種格式（multipart），取決於定義的模版是那種。
 
-#### Adding Attachments
+#### 新增附件
 
-Action Mailer makes it very easy to add attachments.
+Action Mailer 把新增附件變得非常簡單。
+
 
 * Pass the file name and content and Action Mailer and the
   [Mail gem](https://github.com/mikel/mail) will automatically guess the
