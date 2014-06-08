@@ -1138,7 +1138,7 @@ Category.includes(articles: [{ comments: :guest }, :tags]).find(1)
 但若非要這麼做，可以像平常那樣使用 `where`：
 
 ```ruby
-Article.includes(:comments).where("comments.visible" => true)
+Article.includes(:comments).where(comments: { visible: true })
 ```
 
 產生的查詢語句會有 `LEFT OUTER JOIN`，而 `joins` 產生的是 `INNER JOIN`。
@@ -1148,6 +1148,12 @@ SELECT "articles"."id" AS t0_r0, ... "comments"."updated_at" AS t1_r5 FROM "arti
 ```
 
 如果沒有下 `where` 條件，則會像平常那樣產生兩條查詢。
+
+NOTE: `where` 的這種用法只對參數是 Hash 有效。傳入參數是 SQL 片段，要使用 `references` 來強制連接資料表。
+
+```ruby
+Article.includes(:comments).where("comments.visible = true").references(:comments)
+```
 
 上例若文章都沒有評論，仍會載入所有文章。然而使用 `joins` （`INNER JOIN`）**必須**要滿足連接條件，不然不會回傳任何記錄。
 
