@@ -18,7 +18,7 @@ Rack 簡介
 
 Rack 給使用 Ruby 開發的網路應用程式，提供了精簡、模組化、容易介接的介面。Rack 將 HTTP 請求與響應，盡可能包裝成最簡單的形式，給網路框架、伺服器以及框架與伺服器之間的軟體（Middleware）提供了一個統一的 API 接口，`call` 方法。
 
-更多內容請參考：[Rack API 文件](http://rack.rubyforge.org/doc/)。
+更多內容請參考：[Rack API 文件](http://rack.github.io/)。
 
 深入解釋 Rack 超出本篇的範疇。若不熟悉 Rack 的基礎知識，請閱讀[參考資料](#參考資料)一節。
 
