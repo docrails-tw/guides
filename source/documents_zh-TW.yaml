@@ -117,9 +117,9 @@
       description: 本篇介紹 Rails 應用程式的基本設定選項。
       needs_translation: true
     -
-      name: Rake 任務與 Rails 命令行工具
+      name: Rake 任務與 Rails 命令列工具
       url: command_line.html
-      description: 本篇介紹 Rails 提供的 Rake 任務與命令行功能。
+      description: 本篇介紹 Rails 提供的 Rake 任務與命令列功能。
       needs_translation: true
     -
       name: Rails 快取
