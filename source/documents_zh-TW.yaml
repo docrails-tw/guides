@@ -20,7 +20,7 @@
       description: 本篇介紹 Models、資料庫持久性以及 Active Record 模式。
     -
       name: Active Record 遷移
-      url: migrations.html
+      url: active_record_migrations.html
       description: 本篇介紹如何有條有理地使用 Active Record 來修改資料庫。
     -
       name: Active Record 驗證
@@ -95,7 +95,6 @@
       name: Action Mailer 基礎
       url: action_mailer_basics.html
       description: 本篇介紹如何使用 Action Mailer 來收發信件。
-      needs_translation: true
     -
       name: 測試 Rails 應用程式
       url: testing.html
@@ -108,12 +107,12 @@
       description: 本篇介紹網路應用程式常見的安全問題，如何在 Rails 裡處理這些問題。
       needs_translation: true
     -
-      name: Rails 應用程式除錯
+      name: 除錯 Rails 應用程式
       url: debugging_rails_applications.html
       description: 本篇介紹如何給 Rails 應用程式除錯。包含了多種除錯技巧、如何理解與了解程式碼背後究竟發生了什麼事。
       needs_translation: true
     -
-      name: Rails 設定應用程式
+      name: Rails 應用程式設定
       url: configuring.html
       description: 本篇介紹 Rails 應用程式的基本設定選項。
       needs_translation: true
