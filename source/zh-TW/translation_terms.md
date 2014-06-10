@@ -75,6 +75,8 @@ B
 
     `` ` ``
 
+* blind carbon copy 密件副本 Bcc
+
 * Bound Parameters 綁定參數
 
 * Bootstrap 啟動
@@ -87,6 +89,8 @@ C
 * Callback 回呼
 
 * Cache 快取
+
+* Carbon copy 副本 Cc
 
 * Class 類別
 
@@ -103,6 +107,10 @@ C
 * Column 欄位
 
     資料庫的欄位。
+
+* Command 命令
+
+* Command Line 命令列
 
 * Commit 提交
 
@@ -192,6 +200,8 @@ G
 
 * Generator 產生器
 
+* Generic 通用
+
 * Globbing 通配符號
 
 H
@@ -257,6 +267,8 @@ L
 
 * Library 函式庫
 
+* Log 記錄檔
+
 M
 ------
 
@@ -288,6 +300,8 @@ N
 * Namespace 命名空間
 
 * Named Helpers 具名輔助方法
+
+* Named Route 具名路由
 
 * Nesting 嵌套的
 
