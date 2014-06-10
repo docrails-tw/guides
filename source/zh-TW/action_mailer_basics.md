@@ -189,7 +189,11 @@ NOTE: Mail 會自動使用 Base64 來對附件做編碼。若想用不同的編�
 
     ```ruby
     encoded_content = SpecialEncode(File.read('/path/to/filename.jpg'))
-    attachments['filename.jpg'] = {mime_type: 'application/x-gzip',encoding: 'SpecialEncoding',content: encoded_content }
+    attachments['filename.jpg'] = {
+      mime_type: 'application/x-gzip',
+      encoding: 'SpecialEncoding',
+      content: encoded_content
+    }
     ```
 
 NOTE: 如有指定編碼，Mail 會假設信件內容已經經過編碼了，不會再對附件做 Base64 編碼。
