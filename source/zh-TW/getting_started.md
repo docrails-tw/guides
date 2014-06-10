@@ -125,7 +125,7 @@ run the following:
 $ bin/rails --version
 ```
 
-If it says something like "Rails 4.1.0", you are ready to continue.
+If it says something like "Rails 4.1.1", you are ready to continue.
 
 ### Creating the Blog Application
 
@@ -163,7 +163,7 @@ of the files and folders that Rails created by default:
 | File/Folder | Purpose |
 | ----------- | ------- |
 |app/|Contains the controllers, models, views, helpers, mailers and assets for your application. You'll focus on this folder for the remainder of this guide.|
-|bin/|Contains the rails script that starts your app and can contain other scripts you use to deploy or run your application.|
+|bin/|Contains the rails script that starts your app and can contain other scripts you use to setup, deploy or run your application.|
 |config/|Configure your application's routes, database, and more. This is covered in more detail in [Configuring Rails Applications](configuring.html).|
 |config.ru|Rack configuration for Rack based servers used to start the application.|
 |db/|Contains your current database schema, as well as the database migrations.|
@@ -623,6 +623,8 @@ method returns an `ActiveSupport::HashWithIndifferentAccess` object, which
 allows you to access the keys of the hash using either strings or symbols. In
 this situation, the only parameters that matter are the ones from the form.
 
+TIP: Ensure you have a firm grasp of the `params` method, as you'll use it fairly regularly. Let's consider an example URL: **http://www.example.com/?username=dhh&email=dhh@email.com**. In this URL, `params[:username]` would equal "dhh" and `params[:email]` would equal "dhh@email.com".
+
 If you re-submit the form one more time you'll now no longer get the missing
 template error. Instead, you'll see something that looks like the following:
 
@@ -738,6 +740,8 @@ database columns. In the first line we do just that (remember that
 `params[:article]` contains the attributes we're interested in). Then,
 `@article.save` is responsible for saving the model in the database. Finally,
 we redirect the user to the `show` action, which we'll define later.
+
+TIP: You might be wondering why the `A` in `Article.new` is capitalized above, whereas most other references to articles in this guide have used lowercase. In this context, we are referring to the class named `Article` that is defined in `\models\article.rb`. Class names in Ruby must begin with a capital letter.
 
 TIP: As we'll see later, `@article.save` returns a boolean indicating whether
 the article was saved or not.
