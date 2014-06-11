@@ -58,8 +58,6 @@ A
 
 * Auxiliary Methods 輔助方法
 
-    使用者認證。
-
 * Adapter 連接器
 
     用來連接資料庫的“連接器”，比如 Active Record 以相同的 API，分別實作了 SQLite、PostgreSQL、MySQL 等“連接器”，用來連接資料庫。
@@ -122,13 +120,15 @@ C
 
     版本管理世界的用詞。`git commit`。
 
-* Conditional 條件式
-
 * Compile 編譯
 
 * Computer 計算機
 
     亦作電腦。
+
+* Conditional 條件式
+
+* Context 上下文
 
 * Copy 複本
 
@@ -236,6 +236,8 @@ I
 
 * Instance variable 實體變數
 
+    `@foo`
+
 * Instantiate 實體化
 
     指 `Class.new`。
@@ -272,6 +274,8 @@ L
 * Layout 版型、版面
 
 * Library 函式庫
+
+* Load Path 載入路徑
 
 * Log 記錄檔
 
@@ -336,6 +340,8 @@ P
 * Predicate 謂詞
 
     謂詞，回傳真或假的條件式，比如 `Array#empty?`。
+
+* process 進程
 
 * Program (n.) 程式
 
