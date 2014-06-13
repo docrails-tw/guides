@@ -580,7 +580,7 @@ config.assets.raise_runtime_errors = false
 
 When this option is true, the asset pipeline will check if all the assets loaded
 in your application are included in the `config.assets.precompile` list.
-If `config.assets.digests` is also true, the asset pipeline will require that
+If `config.assets.digest` is also true, the asset pipeline will require that
 all requests for assets include digests.
 
 ### Turning Digests Off
@@ -589,7 +589,7 @@ You can turn off digests by updating `config/environments/development.rb` to
 include:
 
 ```ruby
-config.assets.digests = false
+config.assets.digest = false
 ```
 
 When this option is true, digests will be generated for asset URLs.
@@ -709,7 +709,7 @@ The default matcher for compiling files includes `application.js`,
 automatically) from `app/assets` folders including your gems:
 
 ```ruby
-[ Proc.new { |path, fn| fn =~ /app\/assets/ && !%w(.js .css).include?(File.extname(path)) },
+[ Proc.new { |filename, path| path =~ /app\/assets/ && !%w(.js .css).include?(File.extname(filename)) },
 /application.(css|js)$/ ]
 ```
 
@@ -788,13 +788,15 @@ For Apache:
 # `mod_expires` to be enabled.
 <Location /assets/>
   # Use of ETag is discouraged when Last-Modified is present
-  Header unset ETag FileETag None
+  Header unset ETag
+  FileETag None
   # RFC says only cache for 1 year
-  ExpiresActive On ExpiresDefault "access plus 1 year"
+  ExpiresActive On
+  ExpiresDefault "access plus 1 year"
 </Location>
 ```
 
-For nginx:
+For NGINX:
 
 ```nginx
 location ~ ^/assets/ {
@@ -816,7 +818,7 @@ compression ratio, thus reducing the size of the data transfer to the minimum.
 On the other hand, web servers can be configured to serve compressed content
 directly from disk, rather than deflating non-compressed files themselves.
 
-Nginx is able to do this automatically enabling `gzip_static`:
+NGINX is able to do this automatically enabling `gzip_static`:
 
 ```nginx
 location ~ ^/(assets)/  {
@@ -835,7 +837,7 @@ the module compiled. Otherwise, you may need to perform a manual compilation:
 ./configure --with-http_gzip_static_module
 ```
 
-If you're compiling nginx with Phusion Passenger you'll need to pass that option
+If you're compiling NGINX with Phusion Passenger you'll need to pass that option
 when prompted.
 
 A robust configuration for Apache is possible but tricky; please Google around.
@@ -854,10 +856,12 @@ duplication of work.
 Local compilation allows you to commit the compiled files into source control,
 and deploy as normal.
 
-There are two caveats:
+There are three caveats:
 
 * You must not run the Capistrano deployment task that precompiles assets.
-* You must change the following two application configuration settings.
+* You must ensure any necessary compressors or minifiers are
+available on your development system.
+* You must change the following application configuration setting:
 
 In `config/environments/development.rb`, place the following line:
 
@@ -870,9 +874,6 @@ development mode, and pass all requests to Sprockets. The prefix is still set to
 `/assets` in the production environment. Without this change, the application
 would serve the precompiled assets from `/assets` in development, and you would
 not see any local changes until you compile assets again.
-
-You will also need to ensure any necessary compressors or minifiers are
-available on your development system.
 
 In practice, this will allow you to precompile locally, have those files in your
 working tree, and commit those files to source control when needed.  Development
@@ -920,7 +921,7 @@ cache forever. This can cause problems. If you use
 
 Every cache is different, so evaluate how your CDN handles caching and make sure
 that it plays nicely with the pipeline. You may find quirks related to your
-specific set up, you may not. The defaults nginx uses, for example, should give
+specific set up, you may not. The defaults NGINX uses, for example, should give
 you no problems when used as an HTTP cache.
 
 If you want to serve only some assets from your CDN, you can use custom
@@ -1024,12 +1025,12 @@ this passes responsibility for serving the file to the web server, which is
 faster. Have a look at [send_file](http://api.rubyonrails.org/classes/ActionController/DataStreaming.html#method-i-send_file)
 on how to use this feature.
 
-Apache and nginx support this option, which can be enabled in
+Apache and NGINX support this option, which can be enabled in
 `config/environments/production.rb`:
 
 ```ruby
-# config.action_dispatch.x_sendfile_header = "X-Sendfile" # for apache
-# config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for nginx
+# config.action_dispatch.x_sendfile_header = "X-Sendfile" # for Apache
+# config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for NGINX
 ```
 
 WARNING: If you are upgrading an existing application and intend to use this
@@ -1039,7 +1040,7 @@ and any other environments you define with production behavior (not
 
 TIP: For further details have a look at the docs of your production web server:
 - [Apache](https://tn123.org/mod_xsendfile/)
-- [Nginx](http://wiki.nginx.org/XSendfile)
+- [NGINX](http://wiki.nginx.org/XSendfile)
 
 Assets Cache Store
 ------------------
