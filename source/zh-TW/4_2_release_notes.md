@@ -12,7 +12,6 @@ Rails 4.2 精華摘要：
 
 如果您正試著升級現有的應用程式，最好有廣的測試覆蓋度。首先應先升級至 4.1，確保應用程式仍正常工作，接著再升上 4.2。升級需要注意的事項在 [Ruby on Rails 升級指南](upgrading_ruby_on_rails.html#upgrading-from-rails-4-1-to-rails-4-2)可以找到。
 
-
 主要的新功能
 --------------
 
@@ -59,8 +58,7 @@ Action Pack
 
 ### 值得一提的變化
 
-* The `*_filter` family methods has been removed from the documentation. Their
-  usage are discouraged in favor of the `*_action` family methods:
+* `*_filter` 方法已經從文件中移除，已經不鼓勵使用。偏好使用 `*_action` 方法：
 
     ```ruby
     after_filter          => after_action
@@ -79,11 +77,7 @@ Action Pack
     ```
 
   若應用程式依賴這些 `*_filter` 方法，應該使用 `*_action` 方法替換。
-  ([Commit](https://github.com/rails/rails/commit/6c5f43bab8206747a8591435b2aa0ff7051ad3de))
-
-  If your application is depending on these methods, you should use the
-  replacement `*_action` methods instead. These methods will be deprecated in
-  the future and eventually removed from Rails.
+  因為 `*_filter` 方法最終會從 Rails 裡拿掉。
   (Commit [1](https://github.com/rails/rails/commit/6c5f43bab8206747a8591435b2aa0ff7051ad3de),
   [2](https://github.com/rails/rails/commit/489a8f2a44dc9cea09154ee1ee2557d1f037c7d4))
 
@@ -109,7 +103,6 @@ Action Mailer
 
 ### 值得一提的變化
 
-
 Active Record
 -------------
 
@@ -117,56 +110,45 @@ Active Record
 
 ### 棄用
 
-* Deprecated using `.joins`, `.preload` and `.eager_load` with associations that
-  depends on the instance state (i.e. those defined with a scope that takes an
-  argument) without replacement.
+* 依賴實體狀態（有定義接受參數的作用域）的關聯現在不能使用 `.joins`、`.preload` 以及 `.eager_load` 了。
   ([Commit](https://github.com/rails/rails/commit/ed56e596a0467390011bc9d56d462539776adac1))
 
-* Deprecated passing Active Record objects to `.find` or `.exists?`. Call `#id`
-  on the objects first.
+* 棄用 `.find` 或 `.exists?` 可傳入 Active Record 物件。請先對物件呼叫 `#id`。
   (Commit [1](https://github.com/rails/rails/commit/d92ae6ccca3bcfd73546d612efaea011270bd270),
   [2](https://github.com/rails/rails/commit/d35f0033c7dec2b8d8b52058fb8db495d49596f7))
 
-* Deprecated half-baked support for PostgreSQL range values with excluding
-  beginnings. We currently map PostgreSQL ranges to Ruby ranges. This conversion
-  is not fully possible because the Ruby range does not support excluded
-  beginnings.
+* 棄用半支持的 PostgreSQL 範圍數值（不包含起始值）。目前我們把 PostgreSQL 的範圍對應到 Ruby 的範圍。但由於 Ruby 的範圍不支援不包含起始值，所以無法完全轉換。
 
-  The current solution of incrementing the beginning is not correct and is now
-  deprecated. For subtypes where we don't know how to increment (e.g. `#succ`
-  is not defined) it will raise an `ArgumentError` for ranges with excluding
-  beginnings.
+  目前的解決方法是將起始數遞增，這是不對的，已經棄用了。關於不知如何遞增的子類型（比如沒有定義 `#succ`）會對不包含起始值的拋出 `ArgumentError`。
 
   ([Commit](https://github.com/rails/rails/commit/91949e48cf41af9f3e4ffba3e5eecf9b0a08bfc3))
 
 ### 值得一提的變化
 
-* Added support for `#pretty_print` in `ActiveRecord::Base` objects.
+* 新增 `ActiveRecord::Base` 物件的 `#pretty_print` 方法。
   ([Pull Request](https://github.com/rails/rails/pull/15172))
 
-* PostgreSQL and SQLite adapters no longer add a default limit of 255 characters
-  on string columns.
+* PostgreSQL 與 SQLite 連接器不再預設限制字串只能 255 字元。
   ([Pull Request](https://github.com/rails/rails/pull/14579))
 
-* `sqlite3:///some/path` now resolves to the absolute system path `/some/path`.
-  For relative paths, use `sqlite3:some/path` instead. (Previously, `sqlite3:///some/path`
-  resolved to the relative path `some/path`. This behaviour was deprecated on
-  Rails 4.1.)
+* `sqlite3:///some/path` 現在可以解析系統的絕對路徑 `/some/path`。
+  相對路徑請使用 `sqlite3:some/path`。(先前是 `sqlite3:///some/path`
+  會解析成 `some/path`。這個行為已在 Rails 4.1 被棄用了。  Rails 4.1.)
   ([Pull Request](https://github.com/rails/rails/pull/14569))
 
-* Introduced `#validate` as an alias for `#valid?`.
+* 引入 `#validate` 作為 `#valid?` 的別名。
   ([Pull Request](https://github.com/rails/rails/pull/14456))
 
-* `#touch` now accepts multiple attributes to be touched at once.
+* `#touch` 現在可一次對多屬性操作。
   ([Pull Request](https://github.com/rails/rails/pull/14423))
 
-* Added support for fractional seconds for MySQL 5.6 and above.
+* 新增 MySQL 5.6 以上版本的 fractional seconds 支持。
   (Pull Request [1](https://github.com/rails/rails/pull/8240), [2](https://github.com/rails/rails/pull/14359))
 
-* Added support for the `citext` column type in PostgreSQL adapter.
+* 新增 PostgreSQL 連接器的 `citext` 支持。
   ([Pull Request](https://github.com/rails/rails/pull/12523))
 
-* Added support for user-created range types in PostgreSQL adapter.
+* 新增 PostgreSQL 連接器的使用自建的範圍類型支持。
   ([Commit](https://github.com/rails/rails/commit/4cb47167e747e8f9dc12b0ddaf82bdb68c03e032))
 
 Active Model
@@ -176,7 +158,7 @@ Active Model
 
 ### 值得一提的變化
 
-* Introduced `#validate` as an alias for `#valid?`.
+* 引入 `#validate` 作為 `#valid?` 的別名。
   ([Pull Request](https://github.com/rails/rails/pull/14456))
 
 Active Support
