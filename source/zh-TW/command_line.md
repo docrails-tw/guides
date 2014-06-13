@@ -11,12 +11,12 @@ Rails 命令列
 
 --------------------------------------------------------------------------------
 
-NOTE: This tutorial assumes you have basic Rails knowledge from reading the [Getting Started with Rails Guide](getting_started.html).
+NOTE: 本文假設你已閱讀[Rails 起步走](getting_started.html)並有基礎的 Rails 知識。
 
-Command Line Basics
+命令列基礎
 -------------------
 
-There are a few commands that are absolutely critical to your everyday usage of Rails. In the order of how much you'll probably use them are:
+Rails 開發有幾個每天都會用到的命令。以下按照通常的使用順序排列：
 
 * `rails console`
 * `rails server`
@@ -25,15 +25,15 @@ There are a few commands that are absolutely critical to your everyday usage of 
 * `rails dbconsole`
 * `rails new app_name`
 
-All commands can run with ```-h or --help``` to list more information.
+每個命令都可以傳入 ```-h or --help``` 來列出更多資訊。
 
-Let's create a simple Rails application to step through each of these commands in context.
+首先建立一個簡單的 Rails 應用程式，用來講解這些命令。
 
 ### `rails new`
 
-The first thing we'll want to do is create a new Rails application by running the `rails new` command after installing Rails.
+通常安裝 Rails 之後，第一個會用到的命令是 `rails new`，用來新建 Rails 應用程式。
 
-INFO: You can install the rails gem by typing `gem install rails`, if you don't have it already.
+INFO: 可以使用 `gem install rails` 來安裝 Rails。
 
 ```bash
 $ rails new commandsapp
@@ -50,50 +50,52 @@ $ rails new commandsapp
         run  bundle install
 ```
 
-Rails will set you up with what seems like a huge amount of stuff for such a tiny command! You've got the entire Rails directory structure now with all the code you need to run our simple application right out of the box.
+才一個命令，Rails 就建立了這麼多東西！有了這些產生出來的東西之後，就可以試著把伺服器跑起來了。
 
 ### `rails server`
 
-The `rails server` command launches a small web server named WEBrick which comes bundled with Ruby. You'll use this any time you want to access your application through a web browser.
+`rails server` 命令會啟動一個小型的網路伺服器，叫做 WEBrick，是 Ruby 內建的伺服器。想要在瀏覽器存取應用程式，就要使用 `rails server` 來啟動伺服器。
 
-With no further work, `rails server` will run our new shiny Rails app:
+`rails server` 會啟動剛剛新產生出來的 Rails 應用程式：
 
 ```bash
 $ cd commandsapp
 $ bin/rails server
 => Booting WEBrick
-=> Rails 4.0.0 application starting in development on http://0.0.0.0:3000
-=> Call with -d to detach
+=> Rails 4.1.2 application starting in development on http://0.0.0.0:3000
+=> Run `rails server -h` for more startup options
+=> Notice: server is listening on all interfaces (0.0.0.0). Consider using 127.0.0.1 (--binding option)
 => Ctrl-C to shutdown server
-[2013-08-07 02:00:01] INFO  WEBrick 1.3.1
-[2013-08-07 02:00:01] INFO  ruby 2.0.0 (2013-06-27) [x86_64-darwin11.2.0]
-[2013-08-07 02:00:01] INFO  WEBrick::HTTPServer#start: pid=69680 port=3000
+[2014-06-14 06:51:39] INFO  WEBrick 1.3.1
+[2014-06-14 06:51:39] INFO  ruby 2.1.2 (2014-05-08) [x86_64-darwin13.0]
+[2014-06-14 06:51:39] INFO  WEBrick::HTTPServer#start: pid=60314 port=3000
 ```
 
-With just three commands we whipped up a Rails server listening on port 3000. Go to your browser and open [http://localhost:3000](http://localhost:3000), you will see a basic Rails app running.
+僅使用了三個命令，便能把 Rails 在埠口 3000 跑起來了。開啟瀏覽器並瀏覽 [http://localhost:3000](http://localhost:3000)，會看到 Rails 正在執行。
 
-INFO: You can also use the alias "s" to start the server: `rails s`.
+INFO: 也可以使用縮寫 `s` 來啟動伺服器：`rails s`。
 
-The server can be run on a different port using the `-p` option. The default development environment can be changed using `-e`.
+伺服器可以跑在不同的埠口，使用 `-p` 選項。而預設的開發環境可以使用 `-e` 更改。
 
 ```bash
 $ bin/rails server -e production -p 4000
 ```
 
-The `-b` option binds Rails to the specified IP, by default it is 0.0.0.0. You can run a server as a daemon by passing a `-d` option.
+`-b` 選項可把 Rails 綁定到特定的 IP，預設是 `0.0.0.0`。`-d` 選項可以把伺服器放在背景裡執行（daemon）。
 
 ### `rails generate`
 
-The `rails generate` command uses templates to create a whole lot of things. Running `rails generate` by itself gives a list of available generators:
+`rails generate` 命令使用模版來產生一大堆東西。執行 `rails generate` 可以看到所有可用的產生器。
 
-INFO: You can also use the alias "g" to invoke the generator command: `rails g`.
+INFO: 也可以使用縮寫 `g` 來使用產生器命令：`rails g`。
 
 ```bash
 $ bin/rails generate
 Usage: rails generate GENERATOR [args] [options]
 
-...
-...
+General options:
+  -h, [--help]     # Print generator's options and usage
+  ...
 
 Please choose a generator below.
 
@@ -105,13 +107,13 @@ Rails:
   ...
 ```
 
-NOTE: You can install more generators through generator gems, portions of plugins you'll undoubtedly install, and you can even create your own!
+NOTE: 透過 Gems 還能安裝更多產生器、插件，甚至可以建立自己的產生器！
 
-Using generators will save you a large amount of time by writing **boilerplate code**, code that is necessary for the app to work.
+使用產生器會節省許多撰寫“樣板程式”的時間。
 
-Let's make our own controller with the controller generator. But what command should we use? Let's ask the generator:
+讓我們來自己建立產生 Controller 的產生器。該怎麼產生“產生器”？問問便知：
 
-INFO: All Rails console utilities have help text. As with most *nix utilities, you can try adding `--help` or `-h` to the end, for example `rails server --help`.
+INFO: 和所有的 *nix 工具一樣，所有的 Rails 子命令都有說明文件。可以在命令最後加上 `--help` 或 `-h` 試試看，譬如 `rails server --help`。
 
 ```bash
 $ bin/rails generate controller
@@ -137,12 +139,12 @@ Example:
         Helper:     app/helpers/credit_cards_helper.rb
 ```
 
-The controller generator is expecting parameters in the form of `generate controller ControllerName action1 action2`. Let's make a `Greetings` controller with an action of **hello**, which will say something nice to us.
+從上可知 Controller 產生器預期參數形式為 `generate controller ControllerName action1 action2`。讓我們建立一個 `Greetings` Controller，內有 `hello` 動作，會說些好聽的話。
 
 ```bash
 $ bin/rails generate controller Greetings hello
      create  app/controllers/greetings_controller.rb
-      route  get "greetings/hello"
+      route  get 'greetings/hello'
      invoke  erb
      create    app/views/greetings
      create    app/views/greetings/hello.html.erb
@@ -159,9 +161,9 @@ $ bin/rails generate controller Greetings hello
      create      app/assets/stylesheets/greetings.css.scss
 ```
 
-What all did this generate? It made sure a bunch of directories were in our application, and created a controller file, a view file, a functional test file, a helper for the view, a JavaScript file and a stylesheet file.
+這些是怎麼產生的？建了許多資料夾，建了 Controller、View、功能性測試、View 的輔助方法、JavaScript 以及樣式表。
 
-Check out the controller and modify it a little (in `app/controllers/greetings_controller.rb`):
+打開 Controller 並稍微修改一下 (in `app/controllers/greetings_controller.rb`)：
 
 ```ruby
 class GreetingsController < ApplicationController
@@ -171,25 +173,25 @@ class GreetingsController < ApplicationController
 end
 ```
 
-Then the view, to display our message (in `app/views/greetings/hello.html.erb`):
+接著修改 View，顯示訊息（`app/views/greetings/hello.html.erb`）：
 
 ```erb
 <h1>A Greeting for You!</h1>
 <p><%= @message %></p>
 ```
 
-Fire up your server using `rails server`.
+啟動伺服器 `rails server`：
 
 ```bash
 $ bin/rails server
 => Booting WEBrick...
 ```
 
-The URL will be [http://localhost:3000/greetings/hello](http://localhost:3000/greetings/hello).
+網址是 [http://localhost:3000/greetings/hello](http://localhost:3000/greetings/hello)。
 
-INFO: With a normal, plain-old Rails application, your URLs will generally follow the pattern of http://(host)/(controller)/(action), and a URL like http://(host)/(controller) will hit the **index** action of that controller.
+INFO: Rails 應用程式 URL 通常會遵循這個模式 `http://(host)/(controller)/(action)`，而 URL 像是 `http://(host)/(controller)` 會觸發該 Controller 的 `index` 動作。
 
-Rails comes with a generator for data models too.
+Rails 也有產生 Model 的產生器。
 
 ```bash
 $ bin/rails generate model
@@ -206,18 +208,24 @@ Active Record options:
 
 Description:
     Create rails files for model generator.
+
+...
+
+Available field types:
+
+...
 ```
 
-NOTE: For a list of available field types, refer to the [API documentation](http://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/TableDefinition.html#method-i-column) for the column method for the `TableDefinition` class.
+NOTE: 所有可用的欄位類型，請參考 [API 文件](http://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/TableDefinition.html#method-i-column) `TableDefinition` 類別的 `column` 方法。
 
-But instead of generating a model directly (which we'll be doing later), let's set up a scaffold. A **scaffold** in Rails is a full set of model, database migration for that model, controller to manipulate it, views to view and manipulate the data, and a test suite for each of the above.
+但與其直接產生 Model，讓我們來設定一個鷹架。Rails 的鷹架是用來產生一組完整的 Model、遷移、Controller、View 以及測試。
 
-We will set up a simple resource called "HighScore" that will keep track of our highest score on video games we play.
+產生一個簡單的資源叫做 “HighScore”，用來追蹤玩過的電玩遊戲的最高分。
 
 ```bash
 $ bin/rails generate scaffold HighScore game:string score:integer
     invoke  active_record
-    create    db/migrate/20130717151933_create_high_scores.rb
+    create    db/migrate/20140613231642_create_high_scores.rb
     create    app/models/high_score.rb
     invoke    test_unit
     create      test/models/high_score_test.rb
@@ -248,8 +256,9 @@ $ bin/rails generate scaffold HighScore game:string score:integer
     invoke    scss
     create      app/assets/stylesheets/high_scores.css.scss
     invoke  scss
-   identical    app/assets/stylesheets/scaffolds.css.scss
+    create    app/assets/stylesheets/scaffolds.css.scss
 ```
+
 
 The generator checks that there exist the directories for models, controllers, helpers, layouts, functional and unit tests, stylesheets, creates the views, controller, model and database migration for HighScore (creating the `high_scores` table and fields), takes care of the route for the **resource**, and new tests for everything.
 
