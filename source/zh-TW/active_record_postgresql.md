@@ -8,6 +8,7 @@ Active Record PostgreSQL
 * 如何使用 PostgreSQL 的資料類型。
 * 如何使用 UUID 主鍵。
 * 如何在 PostgreSQL 實作全文搜索。
+* 如何用 PostgreSQL 的 View 來支援 Active Record Model。
 
 --------------------------------------------------------------------------------
 
@@ -316,7 +317,8 @@ macbook.address
 
 * [類型定義](http://www.postgresql.org/docs/9.3/static/datatype-geometric.html)
 
-幾何類型映射到一般的 `text` 欄位。
+幾何類型（除了 `points`）映射到一般的 `text` 欄位。
+`point` 會轉成陣列，陣列裡有 x、y 軸。
 
 UUID 主鍵
 -----------------
@@ -365,7 +367,6 @@ Document.where("to_tsvector('english', title || ' ' || body) @@ to_tsquery(?)",
 
 Views
 -----
-
 
 * [建立 View](http://www.postgresql.org/docs/9.3/static/sql-createview.html)
 
@@ -419,7 +420,7 @@ second = Article.create! title: "Brace yourself",
 
 Article.count # => 1
 first.archive!
-p Article.count # => 2
+Article.count # => 2
 ```
 
 NOTE: 這個應用程式只專注在尚未歸檔的 `Articles`。View 也允許使用條件式，所以我們可以直接排除掉已歸檔的 `Articles`。
