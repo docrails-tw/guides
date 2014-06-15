@@ -8,7 +8,7 @@ Active Record PostgreSQL
 * 如何使用 PostgreSQL 的資料類型。
 * 如何使用 UUID 主鍵。
 * 如何在 PostgreSQL 實作全文搜索。
-* 如何用 PostgreSQL 的 View 來支援 Active Record Model。
+* 如何用 資料庫的 View 來支援 Active Record Model。
 
 --------------------------------------------------------------------------------
 
@@ -365,8 +365,8 @@ Document.where("to_tsvector('english', title || ' ' || body) @@ to_tsquery(?)",
                  "cat & dog")
 ```
 
-Views
------
+資料庫 Views
+------------
 
 * [建立 View](http://www.postgresql.org/docs/9.3/static/sql-createview.html)
 
