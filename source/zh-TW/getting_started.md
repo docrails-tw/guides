@@ -1,4 +1,4 @@
-Getting Started with Rails
+Rails 初學指南
 ==========================
 
 This guide covers getting up and running with Ruby on Rails.
