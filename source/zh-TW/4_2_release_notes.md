@@ -3,9 +3,6 @@ Ruby on Rails 4.2 發佈記
 
 Rails 4.2 精華摘要：
 
-* ...
-* ...
-
 本篇僅記錄主要的變化。要了解關於已修復的 Bug、功能變更等，請參考 [Rails GitHub 主頁][rails]上各個 Gem 的 CHANGELOG 或是 [Rails 的提交歷史](https://github.com/rails/rails/commits/master)。
 
 --------------------------------------------------------------------------------
@@ -15,11 +12,8 @@ Rails 4.2 精華摘要：
 
 如果您正試著升級現有的應用程式，最好有廣的測試覆蓋度。首先應先升級至 4.1，確保應用程式仍正常工作，接著再升上 4.2。升級需要注意的事項在 [Ruby on Rails 升級指南](upgrading_ruby_on_rails.html#upgrading-from-rails-4-1-to-rails-4-2)可以找到。
 
-
 主要的新功能
 --------------
-
-
 
 Railties
 --------
@@ -45,7 +39,6 @@ Railties
 * 導入 `Rails.gem_version` 作為回傳 `Gem::Version.new(Rails.version)` 的便捷方法。
   ([Pull Request](https://github.com/rails/rails/pull/14101))
 
-
 Action Pack
 -----------
 
@@ -53,7 +46,19 @@ Action Pack
 
 ### 棄用
 
-* 棄用 `*_filter` 的方法，偏好 `*_action` 的方法。
+* Deprecated support for setting the `to:` option of a router to a symbol or a
+  string that does not contain a `#` character:
+
+      get '/posts', to: MyRackApp    => (No change necessary)
+      get '/posts', to: 'post#index' => (No change necessary)
+      get '/posts', to: 'posts'      => get '/posts', controller: :posts
+      get '/posts', to: :index       => get '/posts', action: :index
+
+  ([Commit](https://github.com/rails/rails/commit/cc26b6b7bccf0eea2e2c1a9ebdcc9d30ca7390d9))
+
+### 值得一提的變化
+
+* `*_filter` 方法已經從文件中移除，已經不鼓勵使用。偏好使用 `*_action` 方法：
 
     ```ruby
     after_filter          => after_action
@@ -72,9 +77,9 @@ Action Pack
     ```
 
   若應用程式依賴這些 `*_filter` 方法，應該使用 `*_action` 方法替換。
-  ([Commit](https://github.com/rails/rails/commit/6c5f43bab8206747a8591435b2aa0ff7051ad3de))
-
-### 值得一提的變化
+  因為 `*_filter` 方法最終會從 Rails 裡拿掉。
+  (Commit [1](https://github.com/rails/rails/commit/6c5f43bab8206747a8591435b2aa0ff7051ad3de),
+  [2](https://github.com/rails/rails/commit/489a8f2a44dc9cea09154ee1ee2557d1f037c7d4))
 
 * 從 RFC-4791 新增 HTTP 方法 `MKCALENDAR`。
   ([Pull Request](https://github.com/rails/rails/pull/15121))
@@ -88,9 +93,8 @@ Action Pack
 * 改善路由錯誤頁面，搜索路由支持模糊搜尋。
   ([Pull Request](https://github.com/rails/rails/pull/14619))
 
-* 新增關掉 CSRF 失敗記錄的選項。
+* 新增關掉記錄 CSRF 失敗的選項。
   ([Pull Request](https://github.com/rails/rails/pull/14280))
-
 
 Action Mailer
 -------------
@@ -99,20 +103,53 @@ Action Mailer
 
 ### 值得一提的變化
 
-* ...
-* ...
-
-
 Active Record
 -------------
 
 請參考 [CHANGELOG][AR-CHANGELOG] 來了解更多細節。
 
+### 棄用
+
+* 依賴實體狀態（有定義接受參數的作用域）的關聯現在不能使用 `.joins`、`.preload` 以及 `.eager_load` 了。
+  ([Commit](https://github.com/rails/rails/commit/ed56e596a0467390011bc9d56d462539776adac1))
+
+* 棄用 `.find` 或 `.exists?` 可傳入 Active Record 物件。請先對物件呼叫 `#id`。
+  (Commit [1](https://github.com/rails/rails/commit/d92ae6ccca3bcfd73546d612efaea011270bd270),
+  [2](https://github.com/rails/rails/commit/d35f0033c7dec2b8d8b52058fb8db495d49596f7))
+
+* 棄用半支持的 PostgreSQL 範圍數值（不包含起始值）。目前我們把 PostgreSQL 的範圍對應到 Ruby 的範圍。但由於 Ruby 的範圍不支援不包含起始值，所以無法完全轉換。
+
+  目前的解決方法是將起始數遞增，這是不對的，已經棄用了。關於不知如何遞增的子類型（比如沒有定義 `#succ`）會對不包含起始值的拋出 `ArgumentError`。
+
+  ([Commit](https://github.com/rails/rails/commit/91949e48cf41af9f3e4ffba3e5eecf9b0a08bfc3))
+
 ### 值得一提的變化
 
-* ...
-* ...
+* 新增 `ActiveRecord::Base` 物件的 `#pretty_print` 方法。
+  ([Pull Request](https://github.com/rails/rails/pull/15172))
 
+* PostgreSQL 與 SQLite 連接器不再預設限制字串只能 255 字元。
+  ([Pull Request](https://github.com/rails/rails/pull/14579))
+
+* `sqlite3:///some/path` 現在可以解析系統的絕對路徑 `/some/path`。
+  相對路徑請使用 `sqlite3:some/path`。(先前是 `sqlite3:///some/path`
+  會解析成 `some/path`。這個行為已在 Rails 4.1 被棄用了。  Rails 4.1.)
+  ([Pull Request](https://github.com/rails/rails/pull/14569))
+
+* 引入 `#validate` 作為 `#valid?` 的別名。
+  ([Pull Request](https://github.com/rails/rails/pull/14456))
+
+* `#touch` 現在可一次對多屬性操作。
+  ([Pull Request](https://github.com/rails/rails/pull/14423))
+
+* 新增 MySQL 5.6 以上版本的 fractional seconds 支持。
+  (Pull Request [1](https://github.com/rails/rails/pull/8240), [2](https://github.com/rails/rails/pull/14359))
+
+* 新增 PostgreSQL 連接器的 `citext` 支持。
+  ([Pull Request](https://github.com/rails/rails/pull/12523))
+
+* 新增 PostgreSQL 連接器的使用自建的範圍類型支持。
+  ([Commit](https://github.com/rails/rails/commit/4cb47167e747e8f9dc12b0ddaf82bdb68c03e032))
 
 Active Model
 ------------
@@ -121,9 +158,8 @@ Active Model
 
 ### 值得一提的變化
 
-* ...
-* ...
-
+* 引入 `#validate` 作為 `#valid?` 的別名。
+  ([Pull Request](https://github.com/rails/rails/pull/14456))
 
 Active Support
 --------------

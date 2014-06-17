@@ -22,6 +22,12 @@ Rails generally stays close to the latest released Ruby version when it's releas
 
 TIP: Ruby 1.8.7 p248 and p249 have marshaling bugs that crash Rails. Ruby Enterprise Edition has these fixed since the release of 1.8.7-2010.02. On the 1.9 front, Ruby 1.9.1 is not usable because it outright segfaults, so if you want to use 1.9.x, jump straight to 1.9.3 for smooth sailing.
 
+Upgrading from Rails 4.1 to Rails 4.2
+-------------------------------------
+
+NOTE: This section is a work in progress.
+
+
 Upgrading from Rails 4.0 to Rails 4.1
 -------------------------------------
 
@@ -720,17 +726,18 @@ config.assets.js_compressor = :uglifier
 Upgrading from Rails 3.1 to Rails 3.2
 -------------------------------------
 
-If your application is currently on any version of Rails older than 3.1.x, you should upgrade to Rails 3.1 before attempting an update to Rails 3.2.
+If your application is currently on any version of Rails older than 3.1.x, you
+should upgrade to Rails 3.1 before attempting an update to Rails 3.2.
 
-The following changes are meant for upgrading your application to Rails 3.2.17,
-the last 3.2.x version of Rails.
+The following changes are meant for upgrading your application to the latest
+3.2.x version of Rails.
 
 ### Gemfile
 
 Make the following changes to your `Gemfile`.
 
 ```ruby
-gem 'rails', '3.2.17'
+gem 'rails', '3.2.18'
 
 group :assets do
   gem 'sass-rails',   '~> 3.2.6'

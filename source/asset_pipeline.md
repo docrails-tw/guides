@@ -709,7 +709,7 @@ The default matcher for compiling files includes `application.js`,
 automatically) from `app/assets` folders including your gems:
 
 ```ruby
-[ Proc.new { |path, fn| fn =~ /app\/assets/ && !%w(.js .css).include?(File.extname(path)) },
+[ Proc.new { |filename, path| path =~ /app\/assets/ && !%w(.js .css).include?(File.extname(filename)) },
 /application.(css|js)$/ ]
 ```
 
@@ -788,9 +788,11 @@ For Apache:
 # `mod_expires` to be enabled.
 <Location /assets/>
   # Use of ETag is discouraged when Last-Modified is present
-  Header unset ETag FileETag None
+  Header unset ETag
+  FileETag None
   # RFC says only cache for 1 year
-  ExpiresActive On ExpiresDefault "access plus 1 year"
+  ExpiresActive On
+  ExpiresDefault "access plus 1 year"
 </Location>
 ```
 
@@ -854,10 +856,12 @@ duplication of work.
 Local compilation allows you to commit the compiled files into source control,
 and deploy as normal.
 
-There are two caveats:
+There are three caveats:
 
 * You must not run the Capistrano deployment task that precompiles assets.
-* You must change the following two application configuration settings.
+* You must ensure any necessary compressors or minifiers are
+available on your development system.
+* You must change the following application configuration setting:
 
 In `config/environments/development.rb`, place the following line:
 
@@ -870,9 +874,6 @@ development mode, and pass all requests to Sprockets. The prefix is still set to
 `/assets` in the production environment. Without this change, the application
 would serve the precompiled assets from `/assets` in development, and you would
 not see any local changes until you compile assets again.
-
-You will also need to ensure any necessary compressors or minifiers are
-available on your development system.
 
 In practice, this will allow you to precompile locally, have those files in your
 working tree, and commit those files to source control when needed.  Development

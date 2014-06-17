@@ -14,7 +14,7 @@ Active Record 關聯
 為什麼需要關聯？
 -----------------
 
-為什麼 Model 之間要有關聯？關聯簡化了常見的操作，程式碼撰寫起來更簡單。比如，一個簡單的 Rails 應用程式，有顧客與訂單 Model。每個顧客可有多筆訂單。若沒有關聯功能，則 Model 看起來會像是：
+為什麼 Model 之間要有關聯？關聯簡化了常見的操作，程式碼撰寫起來更簡單。比如，一個簡單的 Rails 應用程式，有顧客與訂單 Model。每個顧客可以有多筆訂單。若沒有關聯功能，則 Model 看起來會像是：
 
 ```ruby
 class Customer < ActiveRecord::Base
@@ -24,13 +24,13 @@ class Order < ActiveRecord::Base
 end
 ```
 
-為顧客建筆新訂單：
+為顧客新增訂單：
 
 ```ruby
 @order = Order.create(order_date: Time.now, customer_id: @customer.id)
 ```
 
-刪除顧客以及顧客所有相關的訂單：
+刪除顧客以及顧客的所有訂單：
 
 ```ruby
 @orders = Order.where(customer_id: @customer.id)
@@ -40,7 +40,7 @@ end
 @customer.destroy
 ```
 
-有了 Active Record 關聯，可以透過告訴 Rails，Model 之間的關聯，來精簡上例。以下是簡化後的程式碼：
+有了 Active Record 關聯，可以告訴 Rails Model 之間的關聯，來精簡上例。以下是簡化後的程式碼：
 
 ```ruby
 class Customer < ActiveRecord::Base
@@ -58,18 +58,18 @@ end
 @order = @customer.orders.create(order_date: Time.now)
 ```
 
-刪除顧客以及有關訂單更是簡單多了：
+刪除顧客以及顧客的所有訂單簡單多了：
 
 ```ruby
 @customer.destroy
 ```
 
-要了解各種關聯的用途，請閱讀下一節。下一節介紹關聯種類、各種關聯的秘訣與小技巧。本篇最後一節是 Rails 各種關聯的可用選項與方法的完整參考手冊。
+要了解各種關聯的用途，請閱讀下一節。下一節介紹關聯種類、各種關聯的秘訣與小技巧。本篇最後一節是 Rails 關聯的可用選項與方法的完整參考手冊。
 
 關聯種類
 -------------------------
 
-在 Rails 的世界裡，__關聯__連結了兩個 Active Record Model。關聯使用宏風格（macro-style）的語法來呼叫，以宣告的形式加入功能到 Model。舉例來說，透過宣告一個 Model 屬於另一個，來告訴 Rails 如何維護兩者之間的主外鍵，同時獲得許多實用的方法。Rails 支援以下六種關聯：
+在 Rails 的世界裡，__關聯__連結了兩個 Active Record Model。關聯使用宏風格（macro-style）的語法來呼叫，以宣告的形式來加入功能到 Model。舉例來說，透過宣告一個 Model 屬於另一個，來告訴 Rails 如何維護兩者之間的主外鍵，同時獲得許多實用的方法。Rails 支援以下六種關聯：
 
 * `belongs_to`
 * `has_one`
@@ -78,7 +78,7 @@ end
 * `has_one :through`
 * `has_and_belongs_to_many`
 
-本篇之後細講各種關聯如何使用，首先介紹各種關聯的應用場景。
+本篇之後細講如何使用各種關聯，首先介紹各種關聯的應用場景。
 
 ### `belongs_to` 關聯
 
@@ -92,9 +92,9 @@ end
 
 ![belongs_to Association Diagram](images/belongs_to.png)
 
-NOTE: `belongs_to` 宣告**必須**使用單數形式。上例若使用複數形式，會報 `"uninitialized constant Order::Customers"` 錯誤。這是因為 Rails 自動從關聯名稱推斷出類別名稱。關聯名稱錯用複數，推斷出來的類別名稱自然也錯了。
+NOTE: `belongs_to` 宣告**必須**使用單數形式。上例若使用複數形式，會報 `"uninitialized constant Order::Customers"` 錯誤。這是因為 Rails 使用關聯名稱來推出類別名稱。關聯名稱錯用複數，推斷出來的類別名稱自然也錯了。
 
-上例對應的遷移（Migration）看起來會像是：
+上例對應的遷移看起來會像是：
 
 ```ruby
 class CreateOrders < ActiveRecord::Migration

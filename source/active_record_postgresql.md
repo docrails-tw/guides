@@ -8,6 +8,7 @@ After reading this guide, you will know:
 * How to use PostgreSQL's datatypes.
 * How to use UUID primary keys.
 * How to implement full text search with PostgreSQL.
+* How to back your Active Record models with database views.
 
 --------------------------------------------------------------------------------
 
@@ -324,7 +325,8 @@ macbook.address
 
 * [type definition](http://www.postgresql.org/docs/9.3/static/datatype-geometric.html)
 
-All geometric types are mapped to normal text.
+All geometric types, with the exception of `points` are mapped to normal text.
+A point is casted to an array containing `x` and `y` coordinates.
 
 
 UUID Primary Keys
@@ -372,8 +374,8 @@ Document.where("to_tsvector('english', title || ' ' || body) @@ to_tsquery(?)",
                  "cat & dog")
 ```
 
-Views
------
+Database Views
+--------------
 
 * [view creation](http://www.postgresql.org/docs/9.3/static/sql-createview.html)
 
@@ -428,7 +430,7 @@ second = Article.create! title: "Brace yourself",
 
 Article.count # => 1
 first.archive!
-p Article.count # => 2
+Article.count # => 2
 ```
 
 NOTE: This application only cares about non-archived `Articles`. A view also
