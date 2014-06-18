@@ -1,15 +1,14 @@
-Rails 初學指南
+Rails 起步走
 ==========================
 
-This guide covers getting up and running with Ruby on Rails.
+本文將介紹如何使用 Ruby on Rails。
 
-After reading this guide, you will know:
+在你讀過這篇之後，應可以學習到：
 
-* How to install Rails, create a new Rails application, and connect your
-  application to a database.
-* The general layout of a Rails application.
-* The basic principles of MVC (Model, View, Controller) and RESTful design.
-* How to quickly generate the starting pieces of a Rails application.
+* 如何安裝 Rails，如何新建立一個 Rails 應用專案，並且如何連接到資料庫。
+* Rails 應用專案的一般配置。
+* MVC (Model, View, Controller) 跟 RESTful 設計的基本原理。
+* 如何快速產生可執行的 Rails 應用程式。
 
 --------------------------------------------------------------------------------
 
