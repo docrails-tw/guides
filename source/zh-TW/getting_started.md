@@ -15,19 +15,18 @@ Rails 起步走
 學前所需的知識
 -----------------
 
-本文是為了想從頭學 Rails 的初學者所寫. 所以不需要具備任何 Rails 的開發經驗. 當然如果你想更快上手的話, 最好有以下的基礎:
+本文是為了想從頭學 Rails 的初學者所寫，所以不需要具備任何 Rails 的開發經驗。當然如果你想更快上手的話，最好有以下的基礎：
 
-* [Ruby](http://www.ruby-lang.org/en/downloads) 1.9.3 及以上版本.
-* [RubyGems](http://rubygems.org) 是一個伴隨 Ruby 1.9+ 安裝的套件管理程式. 如果想學習更多有關於 RubyGems, 請參考 [RubyGems Guides](http://guides.rubygems.org).
-* [SQLite3 資料庫](http://www.sqlite.org).
+* [Ruby](http://www.ruby-lang.org/en/downloads) 1.9.3 及以上版本。
+* [RubyGems](http://rubygems.org) 是一個伴隨 Ruby 1.9+ 安裝的套件管理程式，如果想學習更多有關於 RubyGems，請參考 [RubyGems Guides](http://guides.rubygems.org)。
+* [SQLite3 資料庫](http://www.sqlite.org)。
 
-Rails 是一個使用 Ruby 開發的 Web 框架.
-如果你沒有 Ruby 相關的經驗就開始學 Rails, 你將會發現這是一條陡峭的學習曲線. 在這提供幾個 Ruby 學習的線上資源:
+Rails 是一個使用 Ruby 開發的 Web 框架，如果你沒有 Ruby 相關的經驗就開始學 Rails，你將會發現這是一條陡峭的學習曲線。這裡提供幾個 Ruby 學習的線上資源：
 
 * [Ruby Programming Language 官方網站](https://www.ruby-lang.org/en/documentation/)
 * [reSRC 免費程式設計書單](http://resrc.io/list/10/list-of-free-programming-books/#ruby)
 
-值得注意的，有些不錯的書籍用的是常見的 Ruby 1.8 版或較舊的 1.6 版，所以 Rails 現行版本中部份語法是這些書籍所沒有涵蓋到的
+值得注意的，有些不錯的書籍用的是常見的 Ruby 1.8 版或較舊的 1.6 版，所以 Rails 現行版本中部份語法是這些書籍所沒有涵蓋到的。
 
 What is Rails?
 --------------
