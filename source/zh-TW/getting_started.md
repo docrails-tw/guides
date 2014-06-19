@@ -18,7 +18,7 @@ Rails 起步走
 本文是為了想從頭學 Rails 的初學者所寫，所以不需要具備任何 Rails 的開發經驗。當然如果你想更快上手的話，最好有以下的基礎：
 
 * [Ruby](http://www.ruby-lang.org/en/downloads) 1.9.3 及以上版本。
-* [RubyGems](http://rubygems.org) 是一個伴隨 Ruby 1.9+ 安裝的套件管理程式，如果想學習更多有關於 RubyGems，請參考 [RubyGems Guides](http://guides.rubygems.org)。
+* [RubyGems](http://rubygems.org) 一個伴隨 Ruby 1.9+ 安裝的套件管理程式。如果想學習更多有關於 RubyGems，請參考 [RubyGems Guides](http://guides.rubygems.org)。
 * [SQLite3 資料庫](http://www.sqlite.org)。
 
 Rails 是一個使用 Ruby 開發的 Web 框架，如果沒有 Ruby 相關的經驗就開始學 Rails，你將會發現這是一條陡峭的學習曲線。這裡提供幾個 Ruby 學習的線上資源：
