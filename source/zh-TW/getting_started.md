@@ -21,39 +21,34 @@ Rails 起步走
 * [RubyGems](http://rubygems.org) 一個伴隨 Ruby 1.9+ 安裝的套件管理程式。如果想學習更多有關於 RubyGems，請參考 [RubyGems Guides](http://guides.rubygems.org)。
 * [SQLite3 資料庫](http://www.sqlite.org)。
 
-Rails 是一個使用 Ruby 開發的 Web 框架，如果沒有 Ruby 相關的經驗就開始學 Rails，你將會發現這是一條陡峭的學習曲線。這裡提供幾個 Ruby 學習的線上資源：
+Rails 是一個使用 Ruby 開發的 Web 框架。如果沒有 Ruby 相關的經驗就開始學 Rails，你將會發現這是一條陡峭的學習曲線。這裡提供幾個 Ruby 學習的線上資源：
 
 * [Ruby Programming Language 官方網站](https://www.ruby-lang.org/en/documentation/)
 * [reSRC 免費程式設計書單](http://resrc.io/list/10/list-of-free-programming-books/#ruby)
 
 值得注意的，有些不錯的線上資源他們是用較常見的 Ruby 1.8 版或較舊的 1.6 版，所以 Rails 現行版本中部份語法是這些線上資源所沒有涵蓋到的。
 
-What is Rails?
+Rails 是什麼？
 --------------
 
-Rails is a web application development framework written in the Ruby language.
-It is designed to make programming web applications easier by making assumptions
-about what every developer needs to get started. It allows you to write less
-code while accomplishing more than many other languages and frameworks.
-Experienced Rails developers also report that it makes web application
-development more fun.
+Rails 是一個用 Ruby 所寫的 Web 開發框架。
+它把開發過程的細節的都設想周到，讓開發 Web 應用程式變成一件簡單的事情。
+與其他程式語言或開發框架比較的話，它可以讓你用更簡短的程式碼來實現相同或更完整的功能。
+多數資深的 Rails 開發者認為 Rails 使得開發 Web 應用程式變的更加有趣。
 
-Rails is opinionated software. It makes the assumption that there is the "best"
-way to do things, and it's designed to encourage that way - and in some cases to
-discourage alternatives. If you learn "The Rails Way" you'll probably discover a
-tremendous increase in productivity. If you persist in bringing old habits from
-other languages to your Rails development, and trying to use patterns you
-learned elsewhere, you may have a less happy experience.
+Rails 是一個有先見之明的軟體。
+當事情有最好的處理方法，他的設計會傾向讓你去使用這個方法，而不是花很多時間去找尋跟嘗試。
+所以如果你學完＂The Rails Way＂之後，那你的開發效率將會進展到另一個境界。
+但前提是你不能堅持把其他程式語言的開發習慣或思維帶到 Rails 中，否則你將對 Rails 有不好的印象。
 
-The Rails philosophy includes two major guiding principles:
+在 Rails 開發哲學中有著兩個主要的原則：
 
-* **Don't Repeat Yourself:** DRY is a principle of software development which
-  states that "Every piece of knowledge must have a single, unambiguous, authoritative
-  representation within a system." By not writing the same information over and over
-  again, our code is more maintainable, more extensible, and less buggy.
-* **Convention Over Configuration:** Rails has opinions about the best way to do many
-  things in a web application, and defaults to this set of conventions, rather than
-  require that you specify every minutiae through endless configuration files.
+* **Don't Repeat Yourself(不要重複你自己):** DRY 是一個軟體工程的開發原則，敘述如下 
+	"Every piece of knowledge must have a single, unambiguous, authoritative
+  representation within a system." (系統中每個功能的構思都必須要有單一、明確且讓人認同的表達方式)
+	儘量避免一再重複的相同資訊，所寫的程式才容易維護、有擴展性且不容易出現 bug 。
+	
+* **Convention Over Configuration(約定優於配置):** Rails 不希望你浪費太多時間無止境的配置設定檔，而是把最好的一些 Web 開發方法作為預設，讓你熟悉之後就可以上手。
 
 Creating a New Rails Project
 ----------------------------
