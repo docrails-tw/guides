@@ -34,21 +34,21 @@ Rails 是什麼？
 Rails 是一個用 Ruby 所寫的 Web 開發框架。
 它把開發過程的細節的都設想周到，讓開發 Web 應用程式變成一件簡單的事情。
 與其他程式語言或開發框架比較的話，它可以讓你用更簡短的程式碼來實現相同或更完整的功能。
-多數資深的 Rails 開發者認為 Rails 使得開發 Web 應用程式變的更加有趣。
+多數資深的 Rails 開發者認為 Rails 可以使開發 Web 應用程式變的更加有趣。
 
 Rails 是一個有先見之明的軟體。
 當事情有最好的處理方法，他的設計會傾向讓你去使用這個方法，而不是花很多時間去找尋跟嘗試。
-所以如果你學完＂The Rails Way＂之後，那你的開發效率將會進展到另一個境界。
-但前提是你不能堅持把其他程式語言的開發習慣或思維帶到 Rails 中，否則你將對 Rails 有不好的印象。
+所以當學完＂The Rails Way＂之後，那你的開發效率將會進展到另一個境界。
+但前提是你不能堅持把其他程式語言的開發習慣或思維帶到 Rails 中，否則一開始對 Rails 會有不好的印象。
 
 在 Rails 開發哲學中有著兩個主要的原則：
 
-* **Don't Repeat Yourself(不要重複你自己):** DRY 是一個軟體工程的開發原則，敘述如下 
+* **Don't Repeat Yourself(不要重複你自己):** DRY 是一個軟體工程的開發原則，是如此描述
 	"Every piece of knowledge must have a single, unambiguous, authoritative
-  representation within a system." (系統中每個功能的構思都必須要有單一、明確且讓人認同的表達方式)
+  representation within a system. (系統中每個功能的構思都必須要有單一、明確且讓人認同的表達方式)"
 	儘量避免一再重複的相同資訊，所寫的程式才容易維護、有擴展性且不容易出現 bug 。
 	
-* **Convention Over Configuration(約定優於配置):** Rails 不希望你浪費太多時間無止境的配置設定檔，而是把最好的一些 Web 開發方法作為預設，讓你熟悉之後就可以上手。
+* **Convention Over Configuration(約定優於配置):** Rails 不希望你浪費太多時間無止境的配置設定檔，而是把最好的一些 Web 開發方法直接作為預設，讓你熟悉之後就可以上手了。
 
 Creating a New Rails Project
 ----------------------------
