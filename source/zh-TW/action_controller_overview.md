@@ -1138,10 +1138,9 @@ end
 
 NOTE: 特定的異常只有在 `ApplicationController` 裡面可以捕捉的到，因為他們在 Controller 被實體化出來之前，或動作執行之前便發生了。參考 Pratik Naik 的[文章](http://m.onkey.org/2008/7/20/rescue-from-dispatching)來了解更多關於這個問題的細節。
 
-### Custom errors page
+### 自訂錯誤頁面
 
-You can customize the layout of your error handling using controllers and views.
-First define your app own routes to display the errors page.
+可以使用 Controller 與 View 來自己客製化錯誤處理的版面。首先定義顯示錯誤頁面的路由。
 
 * `config/application.rb`
 
@@ -1157,7 +1156,7 @@ First define your app own routes to display the errors page.
   get '/500', to: 'errors#server_error'
   ```
 
-Create the controller and views.
+建立 Controller 與 View。
 
 * `app/controllers/errors_controller.rb`
 
@@ -1190,7 +1189,7 @@ Create the controller and views.
       error.html.erb
   ```
 
-Do not forget to set the correct status code on the controller as shown before. You should avoid using the database or any complex operations because the user is already on the error page. Generating another error while on an error page could cause issues.
+別忘記在 Controller 設定正確的錯誤碼（如上所示）。錯誤頁面要避免使用資料庫，或進行任何複雜的操作。因為使用者已經到了錯誤頁面這裡，在錯誤頁面產生另外的錯誤會造成不必要的問題。
 
 強制使用 HTTPS 協定
 ------------------------------
