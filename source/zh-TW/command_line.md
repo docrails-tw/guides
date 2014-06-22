@@ -259,7 +259,6 @@ $ bin/rails generate scaffold HighScore game:string score:integer
     create    app/assets/stylesheets/scaffolds.css.scss
 ```
 
-
 The generator checks that there exist the directories for models, controllers, helpers, layouts, functional and unit tests, stylesheets, creates the views, controller, model and database migration for HighScore (creating the `high_scores` table and fields), takes care of the route for the **resource**, and new tests for everything.
 
 The migration requires that we **migrate**, that is, run some Ruby code (living in that `20130717151933_create_high_scores.rb`) to modify the schema of our database. Which database? The SQLite3 database that Rails will create for you when we run the `rake db:migrate` command. We'll talk more about Rake in-depth in a little while.
@@ -301,6 +300,31 @@ $ bin/rails console --sandbox
 Loading development environment in sandbox (Rails 4.0.0)
 Any modifications you make will be rolled back on exit
 irb(main):001:0>
+```
+
+#### The app and helper objects
+
+Inside the `rails console` you have access to the `app` and `helper` instances.
+
+With the `app` method you can access url and path helpers, as well as do requests.
+
+```bash
+>> app.root_path
+=> "/"
+
+>> app.get _
+Started GET "/" for 127.0.0.1 at 2014-06-19 10:41:57 -0300
+...
+```
+
+With the `helper` method it is possible to access Rails and your application's helpers.
+
+```bash
+>> helper.time_ago_in_words 30.days.ago
+=> "about 1 month"
+
+>> helper.my_custom_helper
+=> "my custom helper"
 ```
 
 ### `rails dbconsole`
