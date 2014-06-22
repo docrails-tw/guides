@@ -412,6 +412,10 @@ S
 
 * Scalar Types 純量類型
 
+* SCM 原始碼管理系統
+
+* Source Code Managment 原始碼管理系統
+
 * Seed Data 種子資料
 
     資料庫的初始資料，通常寫在 `db/seeds.rb` 檔案裡。

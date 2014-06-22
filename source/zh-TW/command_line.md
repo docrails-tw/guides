@@ -575,16 +575,16 @@ $ bin/rake db:nothing
 
 NOTE: If your need to interact with your application models, perform database queries and so on, your task should depend on the `environment` task, which will load your application code.
 
-The Rails Advanced Command Line
--------------------------------
+進階命令列
+---------
 
-More advanced use of the command line is focused around finding useful (even surprising at times) options in the utilities, and fitting those to your needs and specific work flow. Listed here are some tricks up Rails' sleeve.
+命令列更進階的用途主要在如何找到每個工具有用的選項，找到符合需求的選項，結合到工作流程裡。以下列出一些小撇步。
 
-### Rails with Databases and SCM
+### Rails 與資料庫、原始碼管理系統
 
-When creating a new Rails application, you have the option to specify what kind of database and what kind of source code management system your application is going to use. This will save you a few minutes, and certainly many keystrokes.
+建立新的 Rails 應用程式時，可以指定要使用的資料庫與原始碼管理系統。可以省下一點打字的時間。
 
-Let's see what a `--git` option and a `--database=postgresql` option will do for us:
+看看 `--git` 與 `--database=postgresql` 選項可以幹嘛：
 
 ```bash
 $ mkdir gitapp
@@ -611,7 +611,7 @@ add 'app/controllers/application_controller.rb'
 add 'log/test.log'
 ```
 
-We had to create the **gitapp** directory and initialize an empty git repository before Rails would add files it created to our repository. Let's see what it put in our database configuration:
+必須要在使用 `rails new . --git --database=postgresql` 命令之前先建立一個空的資料夾，並做 `git init`。看看資料庫設定檔的內容：
 
 ```bash
 $ cat config/database.yml
@@ -631,17 +631,20 @@ $ cat config/database.yml
 # Configure Using Gemfile
 # gem 'pg'
 #
-development:
+default: &default
   adapter: postgresql
   encoding: unicode
-  database: gitapp_development
+  # For details on connection pooling, see rails configuration guide
+  # http://guides.rubyonrails.org/configuring.html#database-pooling
   pool: 5
-  username: gitapp
-  password:
+
+development:
+  <<: *default
+  database: gitapp_development
 ...
 ...
 ```
 
-It also generated some lines in our database.yml configuration corresponding to our choice of PostgreSQL for database.
+會根據 PostgreSQL 產生相關的設定到 `database.yml`。
 
-NOTE. The only catch with using the SCM options is that you have to make your application's directory first, then initialize your SCM, then you can run the `rails new` command to generate the basis of your app.
+NOTE: 指定原始碼管理系統要注意先建立資料夾、初始化，接著才執行 `rails new` 命令。
