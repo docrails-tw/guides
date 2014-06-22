@@ -252,17 +252,9 @@ end
 
 可以接著給產生出來的遷移檔案新增欄位。
 
-### 支援的類型修飾符
+### 傳入類型修飾符
 
-類型後面還可加修飾符（modifiers），放在大括號裡。可以使用以下修飾符：
-
-|修飾符         |說明                                           |
-|:-------------|:---------------------------------------------|
-|`:limit`      | 設定 `string/text/binary/integer` 欄位的最大值。|
-|`:precision`  | 定義 `decimal` 欄位的精度，含小數點可以有幾個數字。|
-|`:scale`      | 定義 `decimal` 欄位的位數，小數點可以有幾位。|
-|`:polymorphic`| 給 `belongs_to` association 加上 `type` 欄位。|
-|`:null`       | 欄位允不允許 `NULL` 值。|
+某些常用的[類型修飾符](#column-modifiers)可以直接在命令列指定。這些修飾符在欄位類型之後指定，用大括號包起來：
 
 舉例來說，執行：
 
@@ -280,6 +272,8 @@ class AddDetailsToProducts < ActiveRecord::Migration
   end
 end
 ```
+
+TIP: 看看產生器的說明文字來了解更多細節。
 
 撰寫遷移
 ------------------
@@ -376,6 +370,25 @@ change_column_default :products, :approved, false
 ```
 
 上例程式會把 `products` 資料表的 `:name` 欄位設為 `NOT NULL`；而 `:approved` 欄位預設設為 `false`。
+
+TIP: 和 `change_column`（以及 `change_column_default`）不同，`change_column_null`
+是可逆的。
+
+### 欄位修飾符
+
+欄位修飾符可在新建或修改欄位時使用：
+
+|修飾符         |說明                                           |
+|:-------------|:---------------------------------------------|
+|`:limit`      | 設定 `string/text/binary/integer` 欄位的最大值。|
+|`:precision`  | 定義 `decimal` 欄位的精度，含小數點可以有幾個數字。|
+|`:scale`      | 定義 `decimal` 欄位的位數，小數點可以有幾位。|
+|`:polymorphic`| 給 `belongs_to` association 加上 `type` 欄位。|
+|`:null`       | 欄位允不允許 `NULL` 值。|
+|`:default`    | 允許設定欄位的預設值。注意，若使用了動態數值（譬如日期），預設值只會在第一次跑遷移時做計算（也就是跑遷移當下的日期）。|
+|`:index`      | 給欄位加入索引。|
+
+某些連接器可能支援其他選項，請參考與連接器相關的 API 文件來了解更多資訊。
 
 ### 輔助方法不夠用怎麼辦
 
