@@ -302,11 +302,11 @@ Any modifications you make will be rolled back on exit
 irb(main):001:0>
 ```
 
-#### The app and helper objects
+#### `app` 與 `helper` 物件
 
-Inside the `rails console` you have access to the `app` and `helper` instances.
+在 `rails console` 裡，有兩個實體可以存取：`app` 與 `helper`。
 
-With the `app` method you can access url and path helpers, as well as do requests.
+`app` 可以存取網址與路徑的輔助方法，也可以發送請求。
 
 ```bash
 >> app.root_path
@@ -317,7 +317,7 @@ Started GET "/" for 127.0.0.1 at 2014-06-19 10:41:57 -0300
 ...
 ```
 
-With the `helper` method it is possible to access Rails and your application's helpers.
+而 `helper` 方法可以存取應用程式裡的輔助方法。
 
 ```bash
 >> helper.time_ago_in_words 30.days.ago
@@ -377,28 +377,28 @@ $ bin/rails destroy model Oops
 Rake
 ----
 
-Rake is Ruby Make, a standalone Ruby utility that replaces the Unix utility 'make', and uses a 'Rakefile' and `.rake` files to build up a list of tasks. In Rails, Rake is used for common administration tasks, especially sophisticated ones that build off of each other.
+Rake 是 Ruby 的 “Make”，獨立的 Ruby 工具，用來取代 Unix 的 make。Rake 使用 `Rakefile` 與 `.rake` 檔案來撰寫一系列的任務。在 Rails，Rake 用來做一些管理的任務，特別是相互之間有關聯、又複雜的管理任務。
 
-You can get a list of Rake tasks available to you, which will often depend on your current directory, by typing `rake --tasks`. Each task has a description, and should help you find the thing you need.
+可以輸入 `rake --tasks` 來獲得這個 Rails 應用程式所有可用的任務清單，應該可以找到需要用的任務。
 
-To get the full backtrace for running rake task you can pass the option
-```--trace``` to command line, for example ```rake db:create --trace```.
+要獲得執行 Rake 任務完整的 Backtrace，可以傳入 `--trace` 選項，譬如：`rake db:create --trace`。
 
 ```bash
 $ bin/rake --tasks
-rake about              # List versions of all Rails frameworks and the environment
-rake assets:clean       # Remove old compiled assets
-rake assets:clobber     # Remove compiled assets
-rake assets:precompile  # Compile all the assets named in config.assets.precompile
-rake db:create          # Create the database from config/database.yml for the current Rails.env
+rake about              # 列出整個 Rails 框架與環境的版本
+rake assets:clean       # 移除過時已編譯過的 Assets
+rake assets:clobber     # 移除編譯過的 Assets
+rake assets:precompile  # 編譯所有在 config.assets.precompile 所指定的 Assets
+rake db:create          # 根據 config/database.yml 給目前的 Rails.env 環境建立資料庫
 ...
-rake log:clear          # Truncates all *.log files in log/ to zero bytes (specify which logs with LOGS=test,development)
-rake middleware         # Prints out your Rack middleware stack
+rake log:clear          # 刪掉 log/ 目錄下所有的 *.log 檔案（可以用 LOGS 選項指定要刪除那個環境的記錄檔，譬如 LOGS=test,development）。
+rake middleware         # 印出所有的 Rack 中間件
 ...
-rake tmp:clear          # Clear session, cache, and socket files from tmp/ (narrow w/ tmp:sessions:clear, tmp:cache:clear, tmp:sockets:clear)
-rake tmp:create         # Creates tmp directories for sessions, cache, sockets, and pids
+rake tmp:clear          # 清空 tmp/ 目錄下的 Session、快取以及 Socket 檔案。（清除單一個請用 tmp:sessions:clear、tmp:cache:clear、tmp:sockets:clear）
+rake tmp:create         # 建立 tmp/ 目錄，用來存放 Session、快取、Socket 以及 pid 等資料。
 ```
-INFO: You can also use ```rake -T```  to get the list of tasks.
+
+INFO: `rake --tasks` 縮寫為 `rake -T`。
 
 ### `about`
 
@@ -407,21 +407,22 @@ INFO: You can also use ```rake -T```  to get the list of tasks.
 ```bash
 $ bin/rake about
 About your application's environment
-Ruby version              1.9.3 (x86_64-linux)
-RubyGems version          1.3.6
-Rack version              1.3
-Rails version             4.1.1
+Ruby version              2.1.2-p95 (x86_64-darwin13.0)
+RubyGems version          2.3.0
+Rack version              1.5
+Rails version             4.2.0
 JavaScript Runtime        Node.js (V8)
-Active Record version     4.1.1
-Action Pack version       4.1.1
-Action View version       4.1.1
-Action Mailer version     4.1.1
-Active Support version    4.1.1
-Middleware                Rack::Sendfile, ActionDispatch::Static, Rack::Lock, #<ActiveSupport::Cache::Strategy::LocalCache::Middleware:0x007ffd131a7c88>, Rack::Runtime, Rack::MethodOverride, ActionDispatch::RequestId, Rails::Rack::Logger, ActionDispatch::ShowExceptions, ActionDispatch::DebugExceptions, ActionDispatch::RemoteIp, ActionDispatch::Reloader, ActionDispatch::Callbacks, ActiveRecord::Migration::CheckPending, ActiveRecord::ConnectionAdapters::ConnectionManagement, ActiveRecord::QueryCache, ActionDispatch::Cookies, ActionDispatch::Session::CookieStore, ActionDispatch::Flash, ActionDispatch::ParamsParser, Rack::Head, Rack::ConditionalGet, Rack::ETag
-Application root          /home/foobar/commandsapp
+Active Record version     4.2.0
+Action Pack version       4.2.0
+Action View version       4.2.0
+Action Mailer version     4.2.0
+Active Support version    4.2.0
+Active Model version      4.2.0
+Middleware                Rack::Sendfile, ActionDispatch::Static, Rack::Lock, #<ActiveSupport::Cache::Strategy::LocalCache::Middleware:0x007fe45ae964e8>, Rack::Runtime, Rack::MethodOverride, ActionDispatch::RequestId, Rails::Rack::Logger, ActionDispatch::ShowExceptions, ActionDispatch::DebugExceptions, ActionDispatch::RemoteIp, ActionDispatch::Reloader, ActionDispatch::Callbacks, ActiveRecord::Migration::CheckPending, ActiveRecord::ConnectionAdapters::ConnectionManagement, ActiveRecord::QueryCache, ActionDispatch::Cookies, ActionDispatch::Session::CookieStore, ActionDispatch::Flash, ActionDispatch::ParamsParser, Rack::Head, Rack::ConditionalGet, Rack::ETag
+Application root          /Users/Juan/play/gitapp
 Environment               development
-Database adapter          sqlite3
-Database schema version   20110805173523
+Database adapter          postgresql
+Database schema version   0
 ```
 
 ### `assets`
@@ -526,13 +527,13 @@ The `tmp:` namespaced tasks will help you clear and create the `Rails.root/tmp` 
 * `rake tmp:clear` clears all the three: cache, sessions and sockets.
 * `rake tmp:create` creates tmp directories for sessions, cache, sockets, and pids.
 
-### Miscellaneous
+### 其它
 
 * `rake stats` is great for looking at statistics on your code, displaying things like KLOCs (thousands of lines of code) and your code to test ratio.
 * `rake secret` will give you a pseudo-random key to use for your session secret.
 * `rake time:zones:all` lists all the timezones Rails knows about.
 
-### Custom Rake Tasks
+### 自訂 Rake 任務
 
 Custom rake tasks have a `.rake` extension and are placed in
 `Rails.root/lib/tasks`. You can create these custom rake tasks with the
@@ -546,7 +547,7 @@ task task_name: [:prerequisite_task, :another_task_we_depend_on] do
 end
 ```
 
-To pass arguments to your custom rake task:
+傳入參數給自訂的 Rake 任務：
 
 ```ruby
 task :task_name, [:arg_1] => [:pre_1, :pre_2] do |t, args|
@@ -554,7 +555,7 @@ task :task_name, [:arg_1] => [:pre_1, :pre_2] do |t, args|
 end
 ```
 
-You can group tasks by placing them in namespaces:
+把相同任務放在命名空間下管理：
 
 ```ruby
 namespace :db do
@@ -565,7 +566,7 @@ namespace :db do
 end
 ```
 
-Invocation of the tasks will look like:
+使用命名空間下的任務：
 
 ```bash
 $ bin/rake task_name
@@ -573,7 +574,7 @@ $ bin/rake "task_name[value 1]" # entire argument string should be quoted
 $ bin/rake db:nothing
 ```
 
-NOTE: If your need to interact with your application models, perform database queries and so on, your task should depend on the `environment` task, which will load your application code.
+NOTE: 如需與應用程式的 Model 互動、進行資料庫查詢等操作，任務需要依賴於 `environment` 任務，`environment` 任務 會載入應用程式的程式進來。
 
 進階命令列
 ---------

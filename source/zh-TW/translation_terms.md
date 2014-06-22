@@ -14,6 +14,8 @@
 保留原文不譯
 ------------
 
+* Backtrace
+
 * Model
 
 * View
@@ -23,6 +25,8 @@
 * Cookie
 
 * Session
+
+* Socket
 
 * Token
 
