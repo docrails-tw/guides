@@ -59,16 +59,13 @@ Rails 是一個有先見之明的軟體。
 
 TIP: 本文的範例中會用 `$` 來表示類 Unix 系統的命令提示字元，但實際上顯示可能因客制化而不同。如果你是 Windows 的使用者，那命令提示字元會類似如此 `c:\source_code>` 。
 
-### Installing Rails
+### 學習安裝 Rails
 
-Open up a command line prompt. On Mac OS X open Terminal.app, on Windows choose
-"Run" from your Start menu and type 'cmd.exe'. Any commands prefaced with a
+首先打開命令提示視窗。在 Mac OS X 底下請打開 Terminal.app ，如果是在 Windows 下請在開始功能表選擇＂執行＂並且輸入 'cmd.exe' 後開啟. Any commands prefaced with a
 dollar sign `$` should be run in the command line. Verify that you have a
 current version of Ruby installed:
 
-TIP: A number of tools exist to help you quickly install Ruby and Ruby
-on Rails on your system. Windows users can use [Rails Installer](http://railsinstaller.org),
-while Mac OS X users can use [Tokaido](https://github.com/tokaido/tokaidoapp).
+TIP: 其實有很多工具可以幫助你在系統上快速安裝 Ruby 或是 Ruby on Rails 。 像 Windows 使用者可以參考 [Rails Installer](http://railsinstaller.org)，而 Mac OS X 使用者則有 [Tokaido](https://github.com/tokaido/tokaidoapp) 可以選擇。
 
 ```bash
 $ ruby -v
