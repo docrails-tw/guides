@@ -50,20 +50,14 @@ Rails 是一個有先見之明的軟體。
 	
 * **Convention Over Configuration(約定優於配置):** Rails 不希望你浪費太多時間無止境的配置設定檔，而是把最好的一些 Web 開發方法直接作為預設，讓你熟悉之後就可以上手了。
 
-Creating a New Rails Project
+建立一個新的 Rails 專案
 ----------------------------
 
-The best way to use this guide is to follow each step as it happens, no code or
-step needed to make this example application has been left out, so you can
-literally follow along step by step.
+看這篇教學過程中最好照著每個步驟走，不要省略任何的程式片斷或步驟，一步一步腳踏實地去實作範例程式，最後一定可以完成學習。
 
-By following along with this guide, you'll create a Rails project called
-`blog`, a (very) simple weblog. Before you can start building the application,
-you need to make sure that you have Rails itself installed.
+一開始我們會建立一個取名為 `blog` 的 Rails 專案，以一個簡易的網誌作為學習範例。不過在這之前，你要先確定是否已經裝了 Rails 。
 
-TIP: The examples below use `$` to represent your terminal prompt in a UNIX-like OS,
-though it may have been customized to appear differently. If you are using Windows,
-your prompt will look something like `c:\source_code>`
+TIP: 本文的範例中會用 `$` 來表示類 Unix 系統的命令提示字元，但實際上顯示可能因客制化而不同。如果你是 Windows 的使用者，那命令提示字元會類似如此 `c:\source_code>` 。
 
 ### Installing Rails
 
