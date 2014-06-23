@@ -4,19 +4,19 @@ Rails 命令列
 讀完本篇，您將了解：
 
 * 如何新建 Rails 應用程式。
-* 如何產生 models、controllers、資料庫 migrations、單元測試。
+* 如何產生 Models、Controllers、資料庫遷移以及單元測試。
 * 如何啟動開發伺服器。
 * 如何用互動的 Shell 來實驗物件。
 * 如何測量應用程式的瓶頸。
 
 --------------------------------------------------------------------------------
 
-NOTE: 本文假設你已閱讀[Rails 起步走](getting_started.html)並有基礎的 Rails 知識。
+NOTE: 本文假設你已閱讀 [Rails 起步走](getting_started.html)並有基礎的 Rails 知識。
 
 命令列基礎
 -------------------
 
-Rails 開發有幾個每天都會用到的命令。以下按照通常的使用順序排列：
+有幾個開發 Rails 每天都會用到的命令。以下按常見的使用順序排列：
 
 * `rails console`
 * `rails server`
@@ -25,7 +25,7 @@ Rails 開發有幾個每天都會用到的命令。以下按照通常的使用�
 * `rails dbconsole`
 * `rails new app_name`
 
-每個命令都可以傳入 ```-h or --help``` 來列出更多資訊。
+每個命令都可以傳入 `-h` 或 `--help` 來列出更多資訊。
 
 首先建立一個簡單的 Rails 應用程式，用來講解這些命令。
 
@@ -54,7 +54,7 @@ $ rails new commandsapp
 
 ### `rails server`
 
-`rails server` 命令會啟動一個小型的網路伺服器，叫做 WEBrick，是 Ruby 內建的伺服器。想要在瀏覽器存取應用程式，就要使用 `rails server` 來啟動伺服器。
+`rails server` 命令會啟動一個小型的網路伺服器，叫做 WEBrick，是 Ruby 內建的伺服器。想要在瀏覽器存取 Rails 應用程式，使用 `rails server` 來啟動伺服器。
 
 `rails server` 會啟動剛剛新產生出來的 Rails 應用程式：
 
@@ -62,7 +62,7 @@ $ rails new commandsapp
 $ cd commandsapp
 $ bin/rails server
 => Booting WEBrick
-=> Rails 4.1.2 application starting in development on http://0.0.0.0:3000
+=> Rails 4.2.0 application starting in development on http://0.0.0.0:3000
 => Run `rails server -h` for more startup options
 => Notice: server is listening on all interfaces (0.0.0.0). Consider using 127.0.0.1 (--binding option)
 => Ctrl-C to shutdown server
@@ -71,23 +71,23 @@ $ bin/rails server
 [2014-06-14 06:51:39] INFO  WEBrick::HTTPServer#start: pid=60314 port=3000
 ```
 
-僅使用了三個命令，便能把 Rails 在埠口 3000 跑起來了。開啟瀏覽器並瀏覽 [http://localhost:3000](http://localhost:3000)，會看到 Rails 正在執行。
+只用了三個命令，便能把 Rails 在埠口 3000 跑起來了。開啟瀏覽器並瀏覽 [http://localhost:3000](http://localhost:3000)，會看到簡單的 Rails 應用程式正在執行。
 
 INFO: 也可以使用縮寫 `s` 來啟動伺服器：`rails s`。
 
-伺服器可以跑在不同的埠口，使用 `-p` 選項。而預設的開發環境可以使用 `-e` 更改。
+伺服器可以跑在不同的埠口，使用 `-p` 選項。而環境可以使用 `-e` 更改。
 
 ```bash
 $ bin/rails server -e production -p 4000
 ```
 
-`-b` 選項可把 Rails 綁定到特定的 IP，預設是 `0.0.0.0`。`-d` 選項可以把伺服器放在背景裡執行（daemon）。
+`-b` 選項可以把 Rails 綁定在特定的 IP，預設 IP 是 `0.0.0.0`。`-d` 選項可以把伺服器放在背景裡執行（daemon）。
 
 ### `rails generate`
 
-`rails generate` 命令使用模版來產生一大堆東西。執行 `rails generate` 可以看到所有可用的產生器。
+`rails generate` 命令使用模版來產生很多東西。執行 `rails generate`，會看到所有可用的產生器。
 
-INFO: 也可以使用縮寫 `g` 來使用產生器命令：`rails g`。
+INFO: 也可以使用別名 `g` 來使用產生器命令：`rails g`。
 
 ```bash
 $ bin/rails generate
@@ -113,7 +113,7 @@ NOTE: 透過 Gems 還能安裝更多產生器、插件，甚至可以建立自�
 
 讓我們來自己建立產生 Controller 的產生器。該怎麼產生“產生器”？問問便知：
 
-INFO: 和所有的 *nix 工具一樣，所有的 Rails 子命令都有說明文件。可以在命令最後加上 `--help` 或 `-h` 試試看，譬如 `rails server --help`。
+INFO: 和所有的 *nix 工具一樣，所有的 Rails 子命令都有說明文件。在命令最後加上 `--help` 或 `-h` 試試看，譬如 `rails server --help`。
 
 ```bash
 $ bin/rails generate controller
@@ -139,7 +139,7 @@ Example:
         Helper:     app/helpers/credit_cards_helper.rb
 ```
 
-從上可知 Controller 產生器預期參數形式為 `generate controller ControllerName action1 action2`。讓我們建立一個 `Greetings` Controller，內有 `hello` 動作，會說些好聽的話。
+從上可知 Controller 產生器預期參數形式為 `generate controller ControllerName action1 action2`。接著建立一個 `Greetings` Controller，內有一個會打招呼的 `hello` 動作。
 
 ```bash
 $ bin/rails generate controller Greetings hello
@@ -161,7 +161,7 @@ $ bin/rails generate controller Greetings hello
      create      app/assets/stylesheets/greetings.css.scss
 ```
 
-這些是怎麼產生的？建了許多資料夾，建了 Controller、View、功能性測試、View 的輔助方法、JavaScript 以及樣式表。
+產生出來的這些檔案是什麼？在應用程式裡建了許多資料夾，建了 Controller、View、功能性測試、View 的輔助方法、JavaScript 以及樣式表。
 
 打開 Controller 並稍微修改一下 (in `app/controllers/greetings_controller.rb`)：
 
@@ -189,9 +189,9 @@ $ bin/rails server
 
 網址是 [http://localhost:3000/greetings/hello](http://localhost:3000/greetings/hello)。
 
-INFO: Rails 應用程式 URL 通常會遵循這個模式 `http://(host)/(controller)/(action)`，而 URL 像是 `http://(host)/(controller)` 會觸發該 Controller 的 `index` 動作。
+INFO: Rails 應用程式的網址的模式是 `http://(host)/(controller)/(action)`，而像是 `http://(host)/(controller)` 的網址，會觸發 Controller 的 `index` 動作。
 
-Rails 也有產生 Model 的產生器。
+Rails 也有產生 Model 之用的產生器。
 
 ```bash
 $ bin/rails generate model
@@ -218,9 +218,9 @@ Available field types:
 
 NOTE: 所有可用的欄位類型，請參考 [API 文件](http://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/TableDefinition.html#method-i-column) `TableDefinition` 類別的 `column` 方法。
 
-但與其直接產生 Model，讓我們來設定一個鷹架。Rails 的鷹架是用來產生一組完整的 Model、遷移、Controller、View 以及測試。
+但與其直接產生 Model，先用鷹架試試。Rails 的鷹架是用來產生一組完整的 Model、遷移、Controller、View 以及測試。
 
-產生一個簡單的資源叫做 “HighScore”，用來追蹤玩過的電玩遊戲的最高分。
+產生一個簡單的資源叫做 “HighScore”，用來追蹤電玩遊戲的最高分。
 
 ```bash
 $ bin/rails generate scaffold HighScore game:string score:integer
@@ -259,9 +259,9 @@ $ bin/rails generate scaffold HighScore game:string score:integer
     create    app/assets/stylesheets/scaffolds.css.scss
 ```
 
-The generator checks that there exist the directories for models, controllers, helpers, layouts, functional and unit tests, stylesheets, creates the views, controller, model and database migration for HighScore (creating the `high_scores` table and fields), takes care of the route for the **resource**, and new tests for everything.
+產生器會建立 HighScroe 資源所需的所有檔案，包含了 Controller、Model、Model 的遷移檔案、輔助方法、Assets（JavaScript、CSS）、設定路由，以及所有的測試檔案（Controller、Model、輔助方法的測試）。
 
-The migration requires that we **migrate**, that is, run some Ruby code (living in that `20130717151933_create_high_scores.rb`) to modify the schema of our database. Which database? The SQLite3 database that Rails will create for you when we run the `rake db:migrate` command. We'll talk more about Rake in-depth in a little while.
+遷移檔案產生出來之後，需要手動進行執行“遷移”，也就是執行 `20130717151933_create_high_scores.rb` 檔案裡的 Ruby 程式碼，用來修改資料庫的綱要檔案。修改那個資料庫？執行 `rake db:migrate` 命令，Rails 會建立一個 SQLite3 資料庫。稍後會再詳細介紹 Rake。
 
 ```bash
 $ bin/rake db:migrate
@@ -271,29 +271,30 @@ $ bin/rake db:migrate
 ==  CreateHighScores: migrated (0.0019s) ======================================
 ```
 
-INFO: Let's talk about unit tests. Unit tests are code that tests and makes assertions about code. In unit testing, we take a little part of code, say a method of a model, and test its inputs and outputs. Unit tests are your friend. The sooner you make peace with the fact that your quality of life will drastically increase when you unit test your code, the better. Seriously. We'll make one in a moment.
+INFO: 介紹一下單元測試。單元測試是用來測試、檢查邏輯的程式。在單元測試裡，從小部分的程式下手，譬如 Model 的一個方法，測試輸入輸出。單元測試是你的好朋友。很快你就會發現到，當你有對程式做單元測試，生活的品質便會提高了許多。我說真的，稍後寫一個單元測試做示範。
 
-Let's see the interface Rails created for us.
+
+首先看一下 Rails 建立的介面。
 
 ```bash
 $ bin/rails server
 ```
 
-Go to your browser and open [http://localhost:3000/high_scores](http://localhost:3000/high_scores), now we can create new high scores (55,160 on Space Invaders!)
+到瀏覽器打開 [http://localhost:3000/high_scores](http://localhost:3000/high_scores)，現在可以建立新的高分了（太空侵略者的最高分是 55160 分）
 
 ### `rails console`
 
-The `console` command lets you interact with your Rails application from the command line. On the underside, `rails console` uses IRB, so if you've ever used it, you'll be right at home. This is useful for testing out quick ideas with code and changing data server-side without touching the website.
+`console` 命令可以從命令列跟 Rails 應用程式互動。`rails console` 背後用的是 IRB，有用過 IRB 的話，一定會感到很熟悉。可以用來快速驗證想法、不到網站便可修改伺服器上的資料等。
 
-INFO: You can also use the alias "c" to invoke the console: `rails c`.
+INFO: 也可以使用別名 `c` 來啟動伺服器：`rails c`。
 
-You can specify the environment in which the `console` command should operate.
+指定 `console` 命令要運行的環境。
 
 ```bash
 $ bin/rails console staging
 ```
 
-If you wish to test out some code without changing any data, you can do that by invoking `rails console --sandbox`.
+若想測試而不想修改到資料，可以使用 `rails console --sandbox`。
 
 ```bash
 $ bin/rails console --sandbox
@@ -329,21 +330,21 @@ Started GET "/" for 127.0.0.1 at 2014-06-19 10:41:57 -0300
 
 ### `rails dbconsole`
 
-`rails dbconsole` figures out which database you're using and drops you into whichever command line interface you would use with it (and figures out the command line parameters to give to it, too!). It supports MySQL, PostgreSQL, SQLite and SQLite3.
+`rails dbconsole` 知道正在使用的資料庫，打開每個資料庫的命令列介面（也能接受傳給命令列的參數哦！）支援 MySQL、PostgreSQL、SQLite 以及 SQLite3。
 
-INFO: You can also use the alias "db" to invoke the dbconsole: `rails db`.
+INFO: 別名 `db`，`rails db`。
 
 ### `rails runner`
 
-`runner` runs Ruby code in the context of Rails non-interactively. For instance:
+`runner` 在 Rails 的上下文裡執行 Ruby 程式碼。譬如：
 
 ```bash
 $ bin/rails runner "Model.long_running_method"
 ```
 
-INFO: You can also use the alias "r" to invoke the runner: `rails r`.
+INFO: 別名 `r`，`rails r`。
 
-You can specify the environment in which the `runner` command should operate using the `-e` switch.
+可以使用 `-e` 指定命令執行的環境。
 
 ```bash
 $ bin/rails runner -e staging "Model.long_running_method"
@@ -351,9 +352,9 @@ $ bin/rails runner -e staging "Model.long_running_method"
 
 ### `rails destroy`
 
-Think of `destroy` as the opposite of `generate`. It'll figure out what generate did, and undo it.
+可以把 `destroy` 想成是 `generate` 的反操作。`destroy` 會研究出 `generate` 做了什麼，並復原。
 
-INFO: You can also use the alias "d" to invoke the destroy command: `rails d`.
+INFO: 別名 `d`，`rails d`。
 
 ```bash
 $ bin/rails generate model Oops
@@ -402,7 +403,7 @@ INFO: `rake --tasks` 縮寫為 `rake -T`。
 
 ### `about`
 
-`rake about` gives information about version numbers for Ruby, RubyGems, Rails, the Rails subcomponents, your application's folder, the current Rails environment name, your app's database adapter, and schema version. It is useful when you need to ask for help, check if a security patch might affect you, or when you need some stats for an existing Rails installation.
+`rake about` 會輸出關於 Ruby、RubyGems、Rails、Rails 各個元件的版本、Middleware、應用程式根目錄、目前的 Rails 環境、資料庫連接器以及資料庫綱要的版本。在需要知道現有 Rails 的一些資料的情況下很有用，比如檢查某個安全性補丁有沒有影響到正在使用的版本。
 
 ```bash
 $ bin/rake about
@@ -427,30 +428,27 @@ Database schema version   0
 
 ### `assets`
 
-You can precompile the assets in `app/assets` using `rake assets:precompile`,
-and remove older compiled assets using `rake assets:clean`. The `assets:clean`
-task allows for rolling deploys that may still be linking to an old asset while
-the new assets are being built.
+使用 `rake assets:precompile` 來預編譯 `app/assets` 下的 Assets 檔案，`rake assets:clean` 會刪除編譯過的 Assets 檔案。`assets:clean` 任務允許在部署時編譯新的 Asset 時，仍使用先前編譯過的 Assets 檔案。
 
-If you want to clear `public/assets` completely, you can use `rake assets:clobber`.
+若想完整清空 `public/assets`，可以使用 `rake assets:clobber`。
 
 ### `db`
 
-The most common tasks of the `db:` Rake namespace are `migrate` and `create`, and it will pay off to try out all of the migration rake tasks (`up`, `down`, `redo`, `reset`). `rake db:version` is useful when troubleshooting, telling you the current version of the database.
+`db:` 命名空間下最常使用的任務是 `migrate` 與 `create`。這兩個任務會試著執行所有遷移相關的 Rake 任務（`up`、`down`、`redo`、`reset`）。`rake db:version` 在除錯時有用，會告訴你當前資料庫的版本號是多少。
 
-More information about migrations can be found in the [Migrations](migrations.html) guide.
+更多遷移有關的資料，請閱讀 [Active Record 遷移](migrations.html)指南。
 
 ### `doc`
 
-The `doc:` namespace has the tools to generate documentation for your app, API documentation, guides. Documentation can also be stripped which is mainly useful for slimming your codebase, like if you're writing a Rails application for an embedded platform.
+`doc:` 命名空間下有用來給應用程式產生文件的任務，API 文件、指南等。文件可以從應用程式裡拿掉，減少整個程式的大小，比如在嵌入式平台上撰寫 Rails 應用程式。
 
-* `rake doc:app` generates documentation for your application in `doc/app`.
-* `rake doc:guides` generates Rails guides in `doc/guides`.
-* `rake doc:rails` generates API documentation for Rails in `doc/api`.
+* `rake doc:app` 為應用程式產生文件，放在 `doc/app`。
+* `rake doc:guides` 產生 Rails 指南，放在 `doc/guides`。
+* `rake doc:rails` 產生 API 文件，放在 `doc/api`。
 
 ### `notes`
 
-`rake notes` will search through your code for comments beginning with FIXME, OPTIMIZE or TODO. The search is done in files with extension `.builder`, `.rb`, `.rake`, `.yml`, `.yaml`, `.ruby`, `.css`, `.js` and `.erb` for both default and custom annotations.
+`rake notes` 會到程式碼裡尋找是否有以 `FIXME`、`OPTIMIZE` 或 `TODO` 開頭的註解。會搜索這些副檔名的檔案：`.builder`、`.rb`、`.rake`、`.yml`、`.yaml`、`.ruby`、`.css`、`.js` 以及 `.erb`。會同時搜索預設的註解，以及自訂的註解。
 
 ```bash
 $ bin/rake notes
@@ -464,13 +462,13 @@ app/models/school.rb:
   * [ 17] [FIXME]
 ```
 
-You can add support for new file extensions using `config.annotations.register_extensions` option, which receives a list of the extensions with its corresponding regex to match it up.
+可以使用 `config.annotations.register_extensions` 選項新增要搜尋的副檔名。選項接受一組副檔名，區塊內放實際搜尋的正則表達式。
 
 ```ruby
 config.annotations.register_extensions("scss", "sass", "less") { |annotation| /\/\/\s*(#{annotation}):?\s*(.*)$/ }
 ```
 
-If you are looking for a specific annotation, say FIXME, you can use `rake notes:fixme`. Note that you have to lower case the annotation's name.
+若要搜尋特定的註解，譬如 `FIXME`，可以使用 `rake notes:fixme`。
 
 ```bash
 $ bin/rake notes:fixme
@@ -482,7 +480,7 @@ app/models/school.rb:
   * [ 17]
 ```
 
-You can also use custom annotations in your code and list them using `rake notes:custom` by specifying the annotation using an environment variable `ANNOTATION`.
+也可以在程式裡使用自訂的註解，並用 `rake notes:custom` 來搜尋，要搜尋的註解使用環境變數 `ANNOTATION` 來指定。
 
 ```bash
 $ bin/rake notes:custom ANNOTATION=BUG
@@ -491,9 +489,9 @@ app/models/article.rb:
   * [ 23] Have to fix this one before pushing!
 ```
 
-NOTE. When using specific annotations and custom annotations, the annotation name (FIXME, BUG etc) is not displayed in the output lines.
+NOTE: 使用自訂註解時，搜尋結果不會顯示註解的名稱（例如 BUG、FIXME 等）。
 
-By default, `rake notes` will look in the `app`, `config`, `lib`, `bin` and `test` directories. If you would like to search other directories, you can provide them as a comma separated list in an environment variable `SOURCE_ANNOTATION_DIRECTORIES`.
+`rake notes` 預設會在 `app`、`config`、`lib`、`bin` 以及 `test` 目錄下搜尋。若想搜尋其它目錄，可以使用 `SOURCE_ANNOTATION_DIRECTORIES` 來指定，目錄之間以逗號區隔。
 
 ```bash
 $ export SOURCE_ANNOTATION_DIRECTORIES='spec,vendor'
@@ -507,25 +505,25 @@ spec/models/user_spec.rb:
 
 ### `routes`
 
-`rake routes` will list all of your defined routes, which is useful for tracking down routing problems in your app, or giving you a good overview of the URLs in an app you're trying to get familiar with.
+`rake routes` 會列出所有定義的路由，可以用來追蹤有關路由的問題，或是在需要熟習 Rails 時，綜覽一下整個 Rails 應用程式裡的路由。
 
 ### `test`
 
-INFO: A good description of unit testing in Rails is given in [A Guide to Testing Rails Applications](testing.html)
+INFO: 關於單元測試，請閱讀 [Rails 測試指南](testing.html)。
 
-Rails comes with a test suite called Minitest. Rails owes its stability to the use of tests. The tasks available in the `test:` namespace helps in running the different tests you will hopefully write.
+Rails 內建了叫做 Minitest 的測試套裝。Rails 本身也是使用 Minitest 做測試。`test:` 命名空間下的任務可用來執行各種測試。
 
 ### `tmp`
 
-The `Rails.root/tmp` directory is, like the *nix /tmp directory, the holding place for temporary files like sessions (if you're using a file store for files), process id files, and cached actions.
+`Rails.root/tmp` 目錄和 *nix 的 `/tmp` 目錄的作用相同，用來存放像是 Session 等的暫存檔案（如果 Session 是用檔案來存的話）、進程的 ID 檔案、快取檔案等。
 
-The `tmp:` namespaced tasks will help you clear and create the `Rails.root/tmp` directory:
+`tmp:` 命名空間下的任務可以清理、新建 `Rails.root/tmp` 目錄：
 
-* `rake tmp:cache:clear` clears `tmp/cache`.
-* `rake tmp:sessions:clear` clears `tmp/sessions`.
-* `rake tmp:sockets:clear` clears `tmp/sockets`.
-* `rake tmp:clear` clears all the three: cache, sessions and sockets.
-* `rake tmp:create` creates tmp directories for sessions, cache, sockets, and pids.
+* `rake tmp:cache:clear` 清空 `tmp/cache`。
+* `rake tmp:sessions:clear` 清空 `tmp/sessions`。
+* `rake tmp:sockets:clear` 清空 `tmp/sockets`。
+* `rake tmp:clear` 完整清空這三個目錄：`cache`、`sessions` 以及 sockets。
+* `rake tmp:create` 給 sessions、cache、sockets 以及 pids 新建臨時目錄。
 
 ### 其它
 

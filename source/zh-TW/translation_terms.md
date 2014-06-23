@@ -50,6 +50,8 @@ A
 
   Controller 的 Action：動作。
 
+* Alias 別名
+
 * Anchor 錨點
 
 * Authentication 認證
