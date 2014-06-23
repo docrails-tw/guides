@@ -527,15 +527,13 @@ Rails 內建了叫做 Minitest 的測試套裝。Rails 本身也是使用 Minite
 
 ### 其它
 
-* `rake stats` is great for looking at statistics on your code, displaying things like KLOCs (thousands of lines of code) and your code to test ratio.
-* `rake secret` will give you a pseudo-random key to use for your session secret.
-* `rake time:zones:all` lists all the timezones Rails knows about.
+* `rake stats` 可以查看程式的統計資料。像是 KLOCs、程式測試比等資料。
+* `rake secret` 會產生一個偽隨機字串，作 Session Secret 之用。
+* `rake time:zones:all` 會列出所有 Rails 知道的時區資料。
 
 ### 自訂 Rake 任務
 
-Custom rake tasks have a `.rake` extension and are placed in
-`Rails.root/lib/tasks`. You can create these custom rake tasks with the
-`bin/rails generate task` command.
+自訂的 rake 任務有 `.rake` 副檔名，放在 `Rails.root/lib/tasks` 目錄下。可以使用 `bin/rails generate task` 命令來產生自訂的 Rake 任務。
 
 ```ruby
 desc "I am short, but comprehensive description for my cool task"
