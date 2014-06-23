@@ -61,7 +61,7 @@ TIP: 本文的範例中會用 `$` 來表示類 Unix 系統的命令提示字元�
 
 ### 學習安裝 Rails
 
-首先打開命令提示視窗。在 Mac OS X 底下請打開 Terminal.app ，如果是在 Windows 下請在開始功能表選擇＂執行＂並且輸入 'cmd.exe' 後開啟命令視窗。 以下有貨幣符號開頭的命令都要在命令列上執行. 並且用命令檢查你是否有安裝最新的 Ruby 版本：
+首先打開命令提示視窗。在 Mac OS X 底下請打開 Terminal.app ，如果是在 Windows 下請在開始功能表選擇＂執行＂並且輸入 'cmd.exe' 後開啟命令視窗。只要是有貨幣符號 `$` 開頭的命令都是要在命令列上執行。現在就用命令檢查你是否有安裝最新的 Ruby 版本：
 
 TIP: 其實有很多工具可以幫助你在系統上快速安裝 Ruby 或是 Ruby on Rails 。 像 Windows 使用者可以參考 [Rails Installer](http://railsinstaller.org)，而 Mac OS X 使用者則有 [Tokaido](https://github.com/tokaido/tokaidoapp) 可以選擇。
 
