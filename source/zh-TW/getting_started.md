@@ -57,11 +57,11 @@ Rails 是一個有先見之明的軟體。
 
 一開始我們會建立一個取名為 `blog` 的 Rails 專案，以一個簡易的網誌作為學習範例。不過在這之前，你要先確定是否已經裝了 Rails 。
 
-TIP: 本文的範例中會用 `$` 來表示類 Unix 系統的命令提示字元，但實際上顯示可能因客制化而不同。如果你是 Windows 的使用者，那命令提示字元會類似如此 `c:\source_code>` 。
+TIP: 本文的範例中會用 `$` 來表示類 Unix 系統的命令提示字元，但實際上顯示可能因客制化而不同。如果你是 Windows 的使用者，那命令提示字元會類似於 `c:\source_code>` 。
 
 ### 學習安裝 Rails
 
-首先打開命令提示視窗。在 Mac OS X 底下請打開 Terminal.app ，如果是在 Windows 下請在開始功能表選擇＂執行＂並且輸入 'cmd.exe' 後開啟. Any commands prefaced with a
+首先打開命令提示視窗。在 Mac OS X 底下請打開 Terminal.app ，如果是在 Windows 下請在開始功能表選擇＂執行＂並且輸入 'cmd.exe' 後開啟命令視窗. Any commands prefaced with a
 dollar sign `$` should be run in the command line. Verify that you have a
 current version of Ruby installed:
 
@@ -72,12 +72,10 @@ $ ruby -v
 ruby 2.0.0p353
 ```
 
-If you don't have Ruby installed have a look at
-[ruby-lang.org](https://www.ruby-lang.org/en/installation/) for possible ways to
-install Ruby on your platform.
+如果你還沒安裝 Ruby ，可以看一下
+[ruby-lang.org](https://www.ruby-lang.org/en/installation/) ，裡面會有針對所用系統的安裝 Ruby 方法。
 
-Many popular UNIX-like OSes ship with an acceptable version of SQLite3. Windows
-users and others can find installation instructions at [the SQLite3 website](http://www.sqlite.org).
+至於 SQLite3 很多熱門的類 Unix 系統都會搭載 acceptable 版本。 Windows 或其他作業系統的安裝教學請參考 [SQLite3 的網站](http://www.sqlite.org).
 Verify that it is correctly installed and in your PATH:
 
 ```bash
@@ -86,7 +84,7 @@ $ sqlite3 --version
 
 The program should report its version.
 
-To install Rails, use the `gem install` command provided by RubyGems:
+使用 RubyGems 提供的命令 `gem install` 來安裝 Rails ：
 
 ```bash
 $ gem install rails
@@ -99,9 +97,9 @@ run the following:
 $ bin/rails --version
 ```
 
-If it says something like "Rails 4.1.1", you are ready to continue.
+如果有看到 "Rails 4.1.1" 的訊息， 那你可以繼續接下來的步驟。
 
-### Creating the Blog Application
+### 建立一個 Blog 應用程式
 
 Rails comes with a number of scripts called generators that are designed to make
 your development life easier by creating everything that's necessary to start
