@@ -164,10 +164,10 @@
       url: rails_application_templates.html
       description: 本篇介紹如何使用應用程式模版。
 -
-  name: 貢獻至 Ruby on Rails
+  name: 貢獻 Ruby on Rails
   documents:
     -
-      name: 貢獻至 Ruby on Rails
+      name: 貢獻 Ruby on Rails
       url: contributing_to_ruby_on_rails.html
       description: Rails 不是“某個人”獨有的框架。本篇介紹如何參與 Rails 開發。
       needs_translation: true
