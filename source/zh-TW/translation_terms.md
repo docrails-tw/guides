@@ -24,6 +24,8 @@
 
 * Cookie
 
+* Initializer
+
 * Session
 
 * Socket
@@ -78,6 +80,8 @@ B
 * Backtick 反引號
 
     `` ` ``
+
+* Block 區塊
 
 * blind carbon copy 密件副本 Bcc
 
