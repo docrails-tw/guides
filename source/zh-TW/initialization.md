@@ -12,40 +12,39 @@ The Rails 啟動過程
 
 --------------------------------------------------------------------------------
 
-本篇針對 Rails 4，走一遍啟動 Ruby on Rails Stack 所需的每個方法呼叫。過程中詳細解釋每個部分的用途，特別針對 `rails server` 到應用程式啟動之間的過程做解說。
+本篇針對 Rails 4，走一遍啟動 Rails 所需的每個方法呼叫。過程中詳細解釋每個步驟的用途，特別針對從 `rails server`， 到應用程式啟動起來之間的過程做解說。
 
-NOTE: 除非有特別聲明，本篇提及的路徑都是相對於 Rails 目錄之下，或 Rails 應用程式的相對路徑。
+NOTE: 除非特別聲明，本篇提及的路徑都是相對於 [Rails 原始碼](https://github.com/rails/rails)的目錄，或相對於 Rails 應用程式的路徑。
 
-TIP: 若想跟著瀏覽 Rails 的[原始碼](https://github.com/rails/rails)，推薦[使用 GitHub 提供的檔案搜索](https://github.com/blog/793-introducing-the-file-finder)功能，來快速找到檔案，按 `t` 即可。
+TIP: 若想跟著瀏覽 Rails 的[原始碼](https://github.com/rails/rails)，推薦[使用 GitHub 提供的檔案搜索](https://github.com/blog/793-introducing-the-file-finder)功能，來快速找到檔案，在 GitHub Repository 頁面按 `t` 即可使用。
 
-Launch!
--------
+啟動！
+----
 
-從初始化與啟動應用程式開始講起。Rails 應用程式通常在執行 `rails server` 或 `rails console` 時會啟動。
+從初始化（Initialize）與啟動（boot）應用程式開始。Rails 應用程式通常在執行 `rails server` 或 `rails console` 時會啟動。
 
 ### `railties/bin/rails`
 
-`rails server` 命令裡的 `rails`，是放在載入路徑下的 Ruby 可執行檔。這個可執行檔內容如下：
+`rails server` 命令裡的 `rails`，是放在載入路徑（load path）下的 Ruby 執行檔。這個執行檔的內容如下：
 
 ```ruby
 version = ">= 0"
 load Gem.bin_path('railties', 'rails', version)
 ```
 
-若在 Rails Console 裡試這個命令，會看到這個命令載入了 `railties/bin/rails`。
+若在 Rails Console 裡試這個命令，會看到這個命令載入了 [`railties/bin/rails`](https://github.com/rails/rails/blob/master/railties/bin/rails)。
 
-`railties/bin/rails` 的內容：
+`railties/bin/rails` 裡有這一行：
 
 ```ruby
 require "rails/cli"
 ```
 
-`railties/lib/rails/cli` 接著呼叫 `Rails::AppRailsLoader.exec_app_rails`。
+[`railties/lib/rails/cli`](https://github.com/rails/rails/blob/master/railties/lib/rails/cli.rb) 接著呼叫 `Rails::AppRailsLoader.exec_app_rails`。
 
-### `railties/lib/rails/app_rails_loader.rb`
+### [`railties/lib/rails/app_rails_loader.rb`](https://github.com/rails/rails/blob/master/railties/lib/rails/app_rails_loader.rb)
 
-`exec_app_rails` 的主要目的是執行應用程式的 `bin/rails`，若當前目錄沒有 `bin/rails`，會往上搜索，看找不找的到 `bin/rails`。這也是為什麼，可以在 rails 應用程式裡的任何一個目錄使用 `rails` 命令。
-
+`exec_app_rails` 的主要目的是執行應用程式的 `bin/rails`，若當前目錄沒有 `bin/rails`，會往上搜索，看找不找的到 `bin/rails`。這也是為什麼可以在 rails 應用程式裡的任何目錄下使用 `rails` 命令。
 
 `rails server` 實際上等於下面這個命令：
 
@@ -73,9 +72,9 @@ ENV['BUNDLE_GEMFILE'] ||= File.expand_path('../../Gemfile', __FILE__)
 require 'bundler/setup' if File.exist?(ENV['BUNDLE_GEMFILE'])
 ```
 
-標準的 Rails 應用程式裡，會有一個宣告所有軟體相依的 `Gemfile`。`config/boot.rb` 將 `ENV['BUNDLE_GEMFILE']` 設為 `Gemfile` 的位置。若 `Gemfile` 存在，則需要 `require 'bundler/setup'`。這一行是 Bundler 用來設定 `Gemfile` 相依軟體的 load path。
+標準的 Rails 應用程式裡，會有一個檔案，裡面記錄所有依賴的 RubyGems：`Gemfile`。`config/boot.rb` 將 `ENV['BUNDLE_GEMFILE']` 設為 `Gemfile` 的位置。若 `Gemfile` 存在，則需要 `require 'bundler/setup'`。這一行是 Bundler 用來設定 `Gemfile` 內所有相依 RubyGems 的載入路徑。
 
-標準的 Rails 應用程式依賴多個 gems：
+標準的 Rails 應用程式依賴以下 RubyGems：
 
 * abstract
 * actionmailer
@@ -103,9 +102,9 @@ require 'bundler/setup' if File.exist?(ENV['BUNDLE_GEMFILE'])
 * treetop
 * tzinfo
 
-### `rails/commands.rb`
+### [`rails/commands.rb`](https://github.com/rails/rails/blob/master/railties/lib/rails/commands.rb)
 
-`config/boot.rb` 結束之後，下個 `require` 的檔案是 `rails/commands`，用來展開 Alias。`rails server` 這個情況裡，`ARGV` 的內容是 `server`，無需展開；若有用 Alias 便會展開成對應的命令：
+`config/boot.rb` 執行完畢後，下個 `require` 的檔案是 `rails/commands`，用來展開命令的別名（alias）。在 `rails server` 這個情況裡，`ARGV` 的內容是 `server`，無需展開：
 
 ```ruby
 ARGV << '--help' if ARGV.empty?
@@ -129,9 +128,9 @@ Rails::CommandsTasks.new(ARGV).run_command!(command)
 
 TIP: 如上所見，`ARGV` 為空時，Rails 會印出幫助訊息。
 
-若是用 `rails s`，Rails 會使用 `aliases` 找到對應的命令。
+若用了別名，如 `rails s`，便會用 `aliases` 展開成對應的命令：
 
-### `rails/commands/command_tasks.rb`
+### [`rails/commands/command_tasks.rb`](https://github.com/rails/rails/blob/master/railties/lib/rails/commands/commands_tasks.rb)
 
 當輸入錯的 Rails 命令時，`run_command!` 負責拋出錯誤訊息。若命令是有效的，則會呼叫與命令同名的方法。
 
@@ -148,13 +147,9 @@ def run_command!(command)
 end
 ```
 
-假設傳入的是 `server` 命令，Rails 會執行以下的程式碼：
+假設傳入的命令是 `server`，Rails 會執行以下的程式碼：
 
 ```ruby
-def set_application_directory!
-  Dir.chdir(File.expand_path('../../', APP_PATH)) unless File.exist?(File.expand_path("config.ru"))
-end
-
 def server
   set_application_directory!
   require_command!("server")
@@ -168,12 +163,18 @@ def server
   end
 end
 
-def require_command!(command)
-  require "rails/commands/#{command}"
-end
+private
+
+  def set_application_directory!
+    Dir.chdir(File.expand_path('../../', APP_PATH)) unless File.exist?(File.expand_path("config.ru"))
+  end
+
+  def require_command!(command)
+    require "rails/commands/#{command}"
+  end
 ```
 
-沒找到 `config.ru` 時，會切換到 Rails 的根目錄（`APP_PATH`，指向 `config/application.rb`，再往上兩層）。接著 `require` `rails/commands/server`，這條命令會設定好 `Rails::Server`。
+沒找到 `config.ru` 時，會切換到 Rails 的根目錄（從 `APP_PATH` 往上兩層，`APP_PATH` 指向 `config/application.rb` ）。接著 `require` `rails/commands/server`（[rails/commands/server.rb](rails/commands/server），會把 `Rails::Server` 類別設定好。
 
 ```ruby
 require 'fileutils'
@@ -187,7 +188,7 @@ module Rails
 
 `fileutils` 和 `optparse` 是 Ruby 的標準函式庫，用來處理檔案與解析命令行參數。
 
-### `actionpack/lib/action_dispatch.rb`
+### [`actionpack/lib/action_dispatch.rb`](https://github.com/rails/rails/blob/master/actionpack/lib/action_dispatch.rb)
 
 Action Dispatch 是 Rails 框架負責處理路由的部份。為 Rails 加入像是路由、Session 以及常見 Middlewares 等功能。
 
