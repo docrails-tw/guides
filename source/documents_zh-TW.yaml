@@ -141,7 +141,6 @@
       work_in_progress: true
       url: initialization.html
       description: 本篇介紹 Rails 內部的啟動過程。
-      needs_translation: true
 -
   name: 擴充 Rails
   documents:

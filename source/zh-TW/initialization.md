@@ -586,9 +586,9 @@ Initializers 都執行完畢後，回到 `Rack::Server`。
 
 ### Rack: lib/rack/server.rb
 
-[View Source](https://github.com/rack/rack/blob/master/lib/rack/server.rb).
+[View Source](https://github.com/rack/rack/blob/master/lib/rack/server.rb)
 
-Last time we left when the `app` method was being defined:
+在 [1.9 小節](#%E5%95%9F%E5%8B%95%EF%BC%81-rack:-lib/rack/server.rb) ，我們看過 `app` 是如何被定義的：
 
 ```ruby
 def app
@@ -613,8 +613,7 @@ private
   end
 ```
 
-At this point `app` is the Rails app itself (a middleware), and what
-happens next is Rack will call all the provided middlewares:
+到了這一步，`app` 便是 Rails 應用程式本身（Middleware），接下來 Rack 會呼叫所有的 Middlewares：
 
 ```ruby
 def build_app(app)
@@ -628,16 +627,13 @@ def build_app(app)
 end
 ```
 
-記得 `wrapped_app` 在 `Server#start` 呼叫了 `build_app` （最後一行）。
-
-Remember, `build_app` was called (by `wrapped_app`) in the last line of `Server#start`.
-Here's how it looked like when we left:
+記得 `wrapped_app` 在 `Server#start` 呼叫了 `build_app` （最後一行）：
 
 ```ruby
 server.run wrapped_app, options, &blk
 ```
 
-到這裡 `server.run` 取決於所使用的伺服器實作。假設用的是 Puma，下面是 Puma 的 `run` 方法：
+到這裡 `server.run` 取決於所使用的伺服器實作是那一個。假設用的是 Puma，下面是 Puma 的 `run` 方法：
 
 ```ruby
 ...
@@ -683,10 +679,6 @@ def self.run(app, options = {})
 end
 ```
 
-We won't dig into the server configuration itself, but this is
-the last piece of our journey in the Rails initialization process.
+伺服器本身的實作不深入探究，但這是 Rails 啟動過程整個旅程的最後一站。
 
-This high level overview will help you understand when your code is
-executed and how, and overall become a better Rails developer. If you
-still want to know more, the Rails source code itself is probably the
-best place to go next.
+希望這高度抽象的綜覽能幫助你更好的了解 Rails 程式是如何執行的，進而成為一個更好的 Rails 開發者。若想了解更多的話，那就閱讀 Rails 的原始碼吧！
