@@ -115,4 +115,6 @@ FileUtils.cd(BASE_PATH.expand_path) do
 end
 
 puts 'Installation Complete!'
-puts "Your repos are at #{BASE_PATH} ^_^..."
+puts "Your repos are cloned at #{BASE_PATH} ^_^..."
+puts 'Fore more information, please visit https://github.com/docrails-tw/guides .'
+
