@@ -1136,6 +1136,8 @@ class ClientsController < ApplicationController
 end
 ```
 
+WARNING: 不要做 `rescue_from Exception` 或 `rescue_from StandardError`，除非有很好的理由。因為這會帶來嚴重的副作用（譬如無法得知異常的細節、無法在開發時追蹤 Backtrace）。若想要動態產生錯誤頁面請參考[自訂錯誤頁面](#自訂錯誤頁面)。
+
 NOTE: 特定的異常只有在 `ApplicationController` 裡面可以捕捉的到，因為他們在 Controller 被實體化出來之前，或動作執行之前便發生了。參考 Pratik Naik 的[文章](http://m.onkey.org/2008/7/20/rescue-from-dispatching)來了解更多關於這個問題的細節。
 
 ### 自訂錯誤頁面
