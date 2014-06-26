@@ -236,6 +236,12 @@ I
 
     給資料庫欄位加上索引，提高檢索時的效率。
 
+* Inline 內聯
+
+* Inline method 內聯方法
+
+* Inline rendering 內聯算繪
+
 * Instance 實體
 
 * Instance variable 實體變數
@@ -274,6 +280,8 @@ K
 
 L
 ------
+
+* Latency 延遲
 
 * Layout 版型、版面
 
@@ -385,6 +393,10 @@ R
 
     指的是 `form_for @article` 能自動分辨出現在是 `edit`、還是 `new`。
 
+* Redirect
+
+    轉址。
+
 * Redirection
 
     轉址。
@@ -463,6 +475,10 @@ S
 * Streaming 串流
 
 * Strong Parameters 核可參數
+
+* Subroutine 副程式
+
+* Sub-template 子模版
 
 T
 ------
