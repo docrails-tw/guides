@@ -7,7 +7,7 @@ Rails 算繪與版型
 
 * 如何使用 Rails 內建的算繪方法。
 * 如何建立有多個內容區域的版型（Layout）。
-* 如何使用部分頁面（Partial）來避免重複。
+* 如何使用局部頁面（Partial）來避免重複。
 * 如何使用嵌套版型（子模版）。
 
 --------------------------------------------------------------------------------
@@ -17,7 +17,7 @@ Rails 算繪與版型
 
 本篇著重介紹 MVC 鐵三角中，Controller 與 View 之間的互動關係。Controller 負責策劃處理請求（Request）的整個過程，但通常會把複雜的事情交給 Model 處理；要把響應（Response）回給使用者時，Controller 把事情交給 View 處理。Controller 如何將工作派給別人便是本篇要介紹的主題。
 
-更完整的說，這個過程包含了，響應要傳送什麼內容，要呼叫那些方法來建立響應。如果響應是完整的 View，Rails 會做些額外工作，譬如會把 View 放到版型裡，或是把某個部分頁面加進來。本篇之後會完整介紹這整個過程。
+更完整的說，這個過程包含了，響應要傳送什麼內容，要呼叫那些方法來建立響應。如果響應是完整的 View，Rails 會做些額外工作，譬如會把 View 放到版型裡，或是把某個局部頁面加進來。本篇之後會完整介紹這整個過程。
 
 建立響應
 ------------------
@@ -701,18 +701,18 @@ Set-Cookie: _blog_session=...snip...; path=/; HttpOnly
 Cache-Control: no-cache
 ```
 
-Structuring Layouts
--------------------
+組織版型
+-------
 
-When Rails renders a view as a response, it does so by combining the view with the current layout, using the rules for finding the current layout that were covered earlier in this guide. Within a layout, you have access to three tools for combining different bits of output to form the overall response:
+當 Rails 算繪 View 作為響應時，首先使用前文所述的慣例找到版型，將 View 與版型結合起來。在版型裡，可以使用三種工具，將每個部分組合在一起，來產生完整的響應：
 
 * Asset tags
-* `yield` and `content_for`
-* Partials
+* `yield` 與 `content_for`
+* 局部頁面
 
-### Asset Tag Helpers
+### Asset Tag 輔助方法
 
-Asset tag helpers provide methods for generating HTML that link views to feeds, JavaScript, stylesheets, images, videos and audios. There are six asset tag helpers available in Rails:
+Asset Tag 輔助方法提供用來產生連結，可以產生連結到 feeds、JavaScript、樣式表、圖片、影片和音訊的 HTML 程式碼。Rails 提供以下六個 Asset Tag 輔助方法：
 
 * `auto_discovery_link_tag`
 * `javascript_include_tag`
@@ -721,137 +721,137 @@ Asset tag helpers provide methods for generating HTML that link views to feeds, 
 * `video_tag`
 * `audio_tag`
 
-You can use these tags in layouts or other views, although the `auto_discovery_link_tag`, `javascript_include_tag`, and `stylesheet_link_tag`, are most commonly used in the `<head>` section of a layout.
+這些方法可以在版型、或其他的 View 裡使用，雖然 `auto_discovery_link_tag`、`javascript_include_tag` 和 `stylesheet_link_tag` 這三個方法一般是在 HTML 裡的 `<head>` 裡使用。
 
-WARNING: The asset tag helpers do _not_ verify the existence of the assets at the specified locations; they simply assume that you know what you're doing and generate the link.
+WARNING: Asset Tag 輔助方法不會檢查 Assets 是否存在，這些方法是假設你知道自己在幹什麼，純粹幫你產生連結出來。
 
-#### Linking to Feeds with the `auto_discovery_link_tag`
+#### 用 `auto_discovery_link_tag` 來連結到 Feeds
 
-The `auto_discovery_link_tag` helper builds HTML that most browsers and feed readers can use to detect the presence of RSS or Atom feeds. It takes the type of the link (`:rss` or `:atom`), a hash of options that are passed through to url_for, and a hash of options for the tag:
+`auto_discovery_link_tag` 輔助方法所產生的 HTML，多數瀏覽器與 Feed 閱讀器都會識別成 RSS 或是 Atom Feeds。這個方法接受的參數有：連結的類型（`:rss` 或 `:atom`），給 `url_for` 的選項（Hash）以及給 `auto_discovery_link_tag` 本身的選項（Hash）：
 
 ```erb
 <%= auto_discovery_link_tag(:rss, {action: "feed"},
   {title: "RSS Feed"}) %>
 ```
 
-There are three tag options available for the `auto_discovery_link_tag`:
+`auto_discovery_link_tag` 可用的選項有三個：
 
-* `:rel` specifies the `rel` value in the link. The default value is "alternate".
-* `:type` specifies an explicit MIME type. Rails will generate an appropriate MIME type automatically.
-* `:title` specifies the title of the link. The default value is the uppercase `:type` value, for example, "ATOM" or "RSS".
+* `:rel` 指定連結的 `rel`。預設值是 `"alternate"`。
+* `:type` 指定 MIME 類型。Rails 會自動產生適當的 MIME 類型。
+* `:title` 指定連結的 `title`。預設值是 `:type` 的值轉大寫，譬如 `"ATOM"` 或 `"RSS"`。
 
-#### Linking to JavaScript Files with the `javascript_include_tag`
+#### 使用 `javascript_include_tag` 來引入 JavaScript
 
-The `javascript_include_tag` helper returns an HTML `script` tag for each source provided.
+`javascript_include_tag` 輔助方法根據提供的來源，回傳 HTML 的 `<script>` 標籤。
 
-If you are using Rails with the [Asset Pipeline](asset_pipeline.html) enabled, this helper will generate a link to `/assets/javascripts/` rather than `public/javascripts` which was used in earlier versions of Rails. This link is then served by the asset pipeline.
+若有啟用 Rails 的 [Asset Pipeline](asset_pipeline.html)，連結會由 Asset Pipeline 來供應。這個方法產生的連結會連到 `/assets/javascripts`，而不是 `public/javascripts`（舊版 Rails，JavaScript 都放在這個目錄下）。
 
-A JavaScript file within a Rails application or Rails engine goes in one of three locations: `app/assets`, `lib/assets` or `vendor/assets`. These locations are explained in detail in the [Asset Organization section in the Asset Pipeline Guide](asset_pipeline.html#asset-organization)
+Rails 應用程式或 Rails Engine 裡的 JavaScript，通常放在三個地方：`app/assets`、`lib/assets` 或 `vendor/assets`。這些擺放的位置在《Asset Pipeline》一文的[〈組織 Asset〉](asset_pipeline.html#asset-organization) 一節裡有更深入的介紹。
 
-You can specify a full path relative to the document root, or a URL, if you prefer. For example, to link to a JavaScript file that is inside a directory called `javascripts` inside of one of `app/assets`, `lib/assets` or `vendor/assets`, you would do this:
+可以指定相對於根目錄的完整路徑，或是 URL 也可以。舉例來說，要連結到放在 `javascripts` 目錄（`app/assets`、`lib/assets` 或是 `vendor/assets`）下的 JavaScript 檔案，可以這麼寫：
 
 ```erb
 <%= javascript_include_tag "main" %>
 ```
 
-Rails will then output a `script` tag such as this:
+Rails 則會輸出像是這樣的 `script` 標籤：
 
 ```html
 <script src='/assets/main.js'></script>
 ```
 
-The request to this asset is then served by the Sprockets gem.
+Asset 的請求則是交給 Sprockets Gem 來處理。
 
-To include multiple files such as `app/assets/javascripts/main.js` and `app/assets/javascripts/columns.js` at the same time:
+要引入多個 JavaScript 檔案，像是一次引入 `app/assets/javascripts/main.js` 和 `app/assets/javascripts/columns.js`：
 
 ```erb
 <%= javascript_include_tag "main", "columns" %>
 ```
 
-To include `app/assets/javascripts/main.js` and `app/assets/javascripts/photos/columns.js`:
+要引入 `app/assets/javascripts/main.js` 和 `app/assets/javascripts/photos/columns.js`：
 
 ```erb
 <%= javascript_include_tag "main", "/photos/columns" %>
 ```
 
-To include `http://example.com/main.js`:
+要引入 `http://example.com/main.js`：
 
 ```erb
 <%= javascript_include_tag "http://example.com/main.js" %>
 ```
 
-#### Linking to CSS Files with the `stylesheet_link_tag`
+#### 使用 `stylesheet_link_tag` 來引入樣式表檔案
 
-The `stylesheet_link_tag` helper returns an HTML `<link>` tag for each source provided.
+`stylesheet_link_tag` 輔助方法根據提供的來源，回傳 HTML 的 `<link>` 標籤。
 
-If you are using Rails with the "Asset Pipeline" enabled, this helper will generate a link to `/assets/stylesheets/`. This link is then processed by the Sprockets gem. A stylesheet file can be stored in one of three locations: `app/assets`, `lib/assets` or `vendor/assets`.
+若有啟用 Rails 的 [Asset Pipeline](asset_pipeline.html)，這個輔助方法會產生指向 `assets/stylesheets` 的連結。接著交給 Sprockets Gem 來處理。樣式表檔案可以存在這三個地方：`app/assets`、`lib/assets` 或 `vendor/assets`。
 
-You can specify a full path relative to the document root, or a URL. For example, to link to a stylesheet file that is inside a directory called `stylesheets` inside of one of `app/assets`, `lib/assets` or `vendor/assets`, you would do this:
+可以指定相對於根目錄的完整路徑，或是 URL 也可以。舉例來說，要連結到放在 `stylesheets` 目錄（`app/assets`、`lib/assets` 或是 `vendor/assets`）下的樣式表檔案，可以這麼寫：
 
 ```erb
 <%= stylesheet_link_tag "main" %>
 ```
 
-To include `app/assets/stylesheets/main.css` and `app/assets/stylesheets/columns.css`:
+要引入 `app/assets/stylesheets/main.css` 和 `app/assets/stylesheets/columns.css`：
 
 ```erb
 <%= stylesheet_link_tag "main", "columns" %>
 ```
 
-To include `app/assets/stylesheets/main.css` and `app/assets/stylesheets/photos/columns.css`:
+要引入 `app/assets/stylesheets/main.css` 和 `app/assets/stylesheets/photos/columns.css`：
 
 ```erb
 <%= stylesheet_link_tag "main", "photos/columns" %>
 ```
 
-To include `http://example.com/main.css`:
+要引入 `http://example.com/main.css`：
 
 ```erb
 <%= stylesheet_link_tag "http://example.com/main.css" %>
 ```
 
-By default, the `stylesheet_link_tag` creates links with `media="screen" rel="stylesheet"`. You can override any of these defaults by specifying an appropriate option (`:media`, `:rel`):
+`stylesheet_link_tag` 建立出 `<link>` 標籤，預設有 `media="screen" rel="stylesheet"` 屬性。可以覆寫這些預設值，使用 `:media`、`:rel` 選項來修改：
 
 ```erb
 <%= stylesheet_link_tag "main_print", media: "print" %>
 ```
 
-#### Linking to Images with the `image_tag`
+#### 使用 `image_tag` 來連結圖片
 
-The `image_tag` helper builds an HTML `<img />` tag to the specified file. By default, files are loaded from `public/images`.
+`image_tag` 輔助方法根據指定的檔案建立出 `<img />` 標籤。預設情況會載入 `public/images` 目錄下的檔案。
 
-WARNING: Note that you must specify the extension of the image.
+WARNING: 必須指定圖片的副檔名。
 
 ```erb
 <%= image_tag "header.png" %>
 ```
 
-You can supply a path to the image if you like:
+可以指定圖片的路徑：
 
 ```erb
 <%= image_tag "icons/delete.gif" %>
 ```
 
-You can supply a hash of additional HTML options:
+也可以提供其它的 HTML 選項：
 
 ```erb
 <%= image_tag "icons/delete.gif", {height: 45} %>
 ```
 
-You can supply alternate text for the image which will be used if the user has images turned off in their browser. If you do not specify an alt text explicitly, it defaults to the file name of the file, capitalized and with no extension. For example, these two image tags would return the same code:
+可以提供當使用者把瀏覽器顯示圖片功能關掉所要顯示的文字。若沒特別指定 `alt` 文字，預設值是檔案名稱（轉成大寫、去掉副檔名）。舉例來說，以下兩個 image 標籤會回傳一樣的 HTML：
 
 ```erb
 <%= image_tag "home.gif" %>
 <%= image_tag "home.gif", alt: "Home" %>
 ```
 
-You can also specify a special size tag, in the format "{width}x{height}":
+也可以指定大小，格式為 `"{width}x{height}"`。
 
 ```erb
 <%= image_tag "home.gif", size: "50x20" %>
 ```
 
-In addition to the above special tags, you can supply a final hash of standard HTML options, such as `:class`, `:id` or `:name`:
+除了上開選項之外，可以提供標準 HTML 所接受的選項，以 Hash 傳入，像是 `:class`、`:id`、`:name`：
 
 ```erb
 <%= image_tag "home.gif", alt: "Go Home",
@@ -859,63 +859,62 @@ In addition to the above special tags, you can supply a final hash of standard H
                           class: "nav_bar" %>
 ```
 
-#### Linking to Videos with the `video_tag`
+#### 使用 `video_tag` 連結到視訊檔案
 
-The `video_tag` helper builds an HTML 5 `<video>` tag to the specified file. By default, files are loaded from `public/videos`.
+`video_tag` 輔助方法根據指定的檔案建立 HTML 5 的 `<video>` 標籤。預設從 `public/videos` 載入檔案。
 
 ```erb
 <%= video_tag "movie.ogg" %>
 ```
 
-Produces
+會產生：
 
 ```erb
 <video src="/videos/movie.ogg" />
 ```
 
-Like an `image_tag` you can supply a path, either absolute, or relative to the `public/videos` directory. Additionally you can specify the `size: "#{width}x#{height}"` option just like an `image_tag`. Video tags can also have any of the HTML options specified at the end (`id`, `class` et al).
+和 `image_tag` 一樣，可以提供路徑，絕對路徑或相對於 `public/videos` 的路徑。除此之外，可以指定大小：`size: "#{width}x#{height}"`。也接受標準 HTML 所接受的選項（`id`、`class` 等）。
 
-The video tag also supports all of the `<video>` HTML options through the HTML options hash, including:
+`video_tag` 也支持所有 `<video>` 所支援的 HTML 選項：
 
-* `poster: "image_name.png"`, provides an image to put in place of the video before it starts playing.
-* `autoplay: true`, starts playing the video on page load.
-* `loop: true`, loops the video once it gets to the end.
-* `controls: true`, provides browser supplied controls for the user to interact with the video.
-* `autobuffer: true`, the video will pre load the file for the user on page load.
+* `poster: "image_name.png"`，提供一張播放前的預覽圖片。
+* `autoplay: true`，頁面載入時自動播放影片。
+* `loop: true`，播放結束時重新播放。
+* `controls: true`，提供瀏覽器支持的控件給使用者，用來與影片做互動。
+* `autobuffer: true`，頁面載入時，會先緩衝影片。
 
-You can also specify multiple videos to play by passing an array of videos to the `video_tag`:
+也可以一次指定多筆要播放的影片：
 
 ```erb
 <%= video_tag ["trailer.ogg", "movie.ogg"] %>
 ```
 
-This will produce:
+會產生：
 
 ```erb
 <video><source src="trailer.ogg" /><source src="movie.ogg" /></video>
 ```
 
-#### Linking to Audio Files with the `audio_tag`
+#### 使用 `audio_tag` 連結到音訊檔案
 
-The `audio_tag` helper builds an HTML 5 `<audio>` tag to the specified file. By default, files are loaded from `public/audios`.
+`audio_tag` 輔助方法根據指定的檔案建立 HTML 5 的 `<audio>` 標籤。預設從 `public/audios` 載入檔案。
 
 ```erb
 <%= audio_tag "music.mp3" %>
 ```
 
-You can supply a path to the audio file if you like:
+可以指定音訊檔案的路徑：
 
 ```erb
 <%= audio_tag "music/first_song.mp3" %>
 ```
+也可以提供標準 HTML 所接受的選項（`id`、`class` 等）。
 
-You can also supply a hash of additional options, such as `:id`, `:class` etc.
+和 `video_tag` 一樣，`audio_tag` 有特殊選項：
 
-Like the `video_tag`, the `audio_tag` has special options:
-
-* `autoplay: true`, starts playing the audio on page load
-* `controls: true`, provides browser supplied controls for the user to interact with the audio.
-* `autobuffer: true`, the audio will pre load the file for the user on page load.
+* `autoplay: true`，頁面載入時自動播放音訊。
+* `controls: true`，提供瀏覽器支持的控件給使用者，用來與音訊檔案做互動。
+* `autobuffer: true`，頁面載入時，會先緩衝音訊檔案。
 
 ### Understanding `yield`
 
