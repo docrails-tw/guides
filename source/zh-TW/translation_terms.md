@@ -236,6 +236,10 @@ I
 
     給資料庫欄位加上索引，提高檢索時的效率。
 
+* Inline 內聯
+
+* Inline method 內聯方法
+
 * Inline rendering 內聯算繪
 
 * Instance 實體
@@ -276,6 +280,8 @@ K
 
 L
 ------
+
+* Latency 延遲
 
 * Layout 版型、版面
 

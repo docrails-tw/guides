@@ -417,9 +417,9 @@ render status: :forbidden
 
 Rails 在 `app/views/layouts` 下尋找與 Controller 同名的檔案作為目前的版型。舉例來說，`PhotosController` 會使用 `app/views/layouts/photos.html.erb`（或是 `app/views/layouts/photos.builder`）。若找不到與 Controller 同名的版型，會使用 `app/views/layouts/application.html.erb` 或是 `app/views/layouts/application.builder` 作為版型。若 `.erb` 版型不存在，Rails 會使用 `.builder` 版型（如果有的話）。Rails 也提供數種方式用來給 Controller 與動作設定版型。
 
-##### Specifying Layouts for Controllers
+##### 給 Controller 指定版型
 
-You can override the default layout conventions in your controllers by using the `layout` declaration. For example:
+在 Controller 使用 `layout` 宣告來覆寫預設的版型：
 
 ```ruby
 class ProductsController < ApplicationController
@@ -428,9 +428,9 @@ class ProductsController < ApplicationController
 end
 ```
 
-With this declaration, all of the views rendered by the `ProductsController` will use `app/views/layouts/inventory.html.erb` as their layout.
+加上這行宣告以後，`ProductsController` 會使用 `app/views/layouts/inventory.html.erb` 作為版型。
 
-To assign a specific layout for the entire application, use a `layout` declaration in your `ApplicationController` class:
+要給整個應用程式指定版型，在 `ApplicationController` 使用 `layout` 來指定：
 
 ```ruby
 class ApplicationController < ActionController::Base
@@ -439,11 +439,11 @@ class ApplicationController < ActionController::Base
 end
 ```
 
-With this declaration, all of the views in the entire application will use `app/views/layouts/main.html.erb` for their layout.
+加上這行宣告以後，應用程式全都使用 `app/views/layouts/main.html.erb` 作為版型。
 
-##### Choosing Layouts at Runtime
+##### 動態指定版型
 
-You can use a symbol to defer the choice of layout until a request is processed:
+可以使用符號來推遲版型的選擇，版型會在處理請求時選擇：
 
 ```ruby
 class ProductsController < ApplicationController
@@ -461,9 +461,9 @@ class ProductsController < ApplicationController
 end
 ```
 
-Now, if the current user is a special user, they'll get a special layout when viewing a product.
+若目前的使用者是一個特殊的使用者，會使用特殊的版型。
 
-You can even use an inline method, such as a Proc, to determine the layout. For example, if you pass a Proc object, the block you give the Proc will be given the `controller` instance, so the layout can be determined based on the current request:
+甚至可以使用一個“內聯方法”，比如 `Proc` 來指定版型。舉例來說，若傳入 `Proc` 物件，這個 `Proc` 會傳給 Controller 的實體，版型則可以在當下的請求裡指定：
 
 ```ruby
 class ProductsController < ApplicationController
@@ -471,9 +471,9 @@ class ProductsController < ApplicationController
 end
 ```
 
-##### Conditional Layouts
+##### 條件式版型
 
-Layouts specified at the controller level support the `:only` and `:except` options. These options take either a method name, or an array of method names, corresponding to method names within the controller:
+在 Controller 裡指定版型還接受 `:only` 與 `:except` 選項。這些選項接受方法名稱、方法名稱組成的陣列。這些名稱對應到 Controller 裡的方法。
 
 ```ruby
 class ProductsController < ApplicationController
@@ -481,11 +481,11 @@ class ProductsController < ApplicationController
 end
 ```
 
-With this declaration, the `product` layout would be used for everything but the `rss` and `index` methods.
+加了上面這條宣告後，`index` 與 `rss` 會使用 `product` 版型。
 
-##### Layout Inheritance
+##### 版型繼承
 
-Layout declarations cascade downward in the hierarchy, and more specific layout declarations always override more general ones. For example:
+版型宣告可以“串接”，會採用最具體的版型指定。舉例來說：
 
 * `application_controller.rb`
 
@@ -528,19 +528,19 @@ Layout declarations cascade downward in the hierarchy, and more specific layout 
     end
     ```
 
-In this application:
+在這個應用程式裡：
 
-* In general, views will be rendered in the `main` layout
-* `ArticlesController#index` will use the `main` layout
-* `SpecialArticlesController#index` will use the `special` layout
-* `OldArticlesController#show` will use no layout at all
-* `OldArticlesController#index` will use the `old` layout
+* View 通常會在 `main` 版型裡算繪。
+* `ArticlesController#index` 會使用 `main` 版型。
+* `SpecialArticlesController#index` 會使用 `special` 版型。
+* `OldArticlesController#show` 不會使用任何版型。
+* `OldArticlesController#index` 會使用 `old` 版型。
 
-#### Avoiding Double Render Errors
+#### 避免雙重算繪錯誤
 
-Sooner or later, most Rails developers will see the error message "Can only render or redirect once per action". While this is annoying, it's relatively easy to fix. Usually it happens because of a fundamental misunderstanding of the way that `render` works.
+多數的 Rails 開發者遲早會看過這個錯誤訊息："Can only render or redirect once per action"。這個提示雖然很討厭，但也很容易修正。通常的發生原因是不了解 `render` 的工作原理。
 
-For example, here's some code that will trigger this error:
+舉例來說，以下是會觸發此錯誤的程式：
 
 ```ruby
 def show
@@ -552,7 +552,7 @@ def show
 end
 ```
 
-If `@book.special?` evaluates to `true`, Rails will start the rendering process to dump the `@book` variable into the `special_show` view. But this will _not_ stop the rest of the code in the `show` action from running, and when Rails hits the end of the action, it will start to render the `regular_show` view - and throw an error. The solution is simple: make sure that you have only one call to `render` or `redirect` in a single code path. One thing that can help is `and return`. Here's a patched version of the method:
+若 `@book.special?` 求值為 `true`，Rails 會把 `@book` 變數放到 `special_show` View 裡算繪。但之後的程式碼還是會執行，會繼續算繪 `regular_show`，進而造成錯誤。解決方法很簡單，確保程式只會執行一次 `render` 或是 `redirect`。或是加上 `and return`，以下是上面程式的修正版本：
 
 ```ruby
 def show
@@ -564,9 +564,9 @@ def show
 end
 ```
 
-Make sure to use `and return` instead of `&& return` because `&& return` will not work due to the operator precedence in the Ruby Language.
+記得要使用 `and return` 而不是 `&& return`，因為 Ruby 運算子優先權的關係，`&& return` 不會有任何作用。
 
-Note that the implicit render done by ActionController detects if `render` has been called, so the following will work without errors:
+注意 `ActionController` 默認會執行 `render`，但會先檢查 `render` 是否有呼叫過，所以下面這段程式不會有錯誤：
 
 ```ruby
 def show
@@ -577,37 +577,37 @@ def show
 end
 ```
 
-This will render a book with `special?` set with the `special_show` template, while other books will render with the default `show` template.
+特殊的書會算繪 `special_view` 模版，而一般的書則會算繪預設的 `show` 模版。
 
-### Using `redirect_to`
+### 使用 `redirect_to`
 
-Another way to handle returning responses to an HTTP request is with `redirect_to`. As you've seen, `render` tells Rails which view (or other asset) to use in constructing a response. The `redirect_to` method does something completely different: it tells the browser to send a new request for a different URL. For example, you could redirect from wherever you are in your code to the index of photos in your application with this call:
+另一種回傳響應給 HTTP 請求的方式是使用 `redirect_to`。`render` 告訴 Rails 要用那個 View （或是其他 Asset）來打造響應。而 `redirect_to` 方法則完全不同，告訴瀏覽器對不同的 URL 發一個新請求。舉例來說，可以在程式碼任何一個地方做轉址，比如轉到 `photos` 的 `index`：
 
 ```ruby
 redirect_to photos_url
 ```
 
-You can use `redirect_to` with any arguments that you could use with `link_to` or `url_for`. There's also a special redirect that sends the user back to the page they just came from:
+可以對 `redirect_to` 使用任何 `link_to` 或 `url_for` 也接受的參數。有一個特殊的轉址，會回到使用者到這頁的“前一頁”：
 
 ```ruby
 redirect_to :back
 ```
 
-#### Getting a Different Redirect Status Code
+#### 獲得不同的狀態碼
 
-Rails uses HTTP status code 302, a temporary redirect, when you call `redirect_to`. If you'd like to use a different status code, perhaps 301, a permanent redirect, you can use the `:status` option:
+當呼叫 `redirect_to` 時，Rails 使用 HTTP 狀態碼 302，即暫時轉址（temporary redirect）。若想使用不同的狀態碼，譬如 301，永久轉址，可以使用 `:status` 選項：
 
 ```ruby
 redirect_to photos_path, status: 301
 ```
 
-Just like the `:status` option for `render`, `:status` for `redirect_to` accepts both numeric and symbolic header designations.
+和 `render` 方法的 `:status` 選項一樣，`redirect_to` 的 `:status` 接受數字與符號來指定狀態碼。
 
-#### The Difference Between `render` and `redirect_to`
+#### `render` 和 `redirect_to` 的差異
 
-Sometimes inexperienced developers think of `redirect_to` as a sort of `goto` command, moving execution from one place to another in your Rails code. This is _not_ correct. Your code stops running and waits for a new request for the browser. It just happens that you've told the browser what request it should make next, by sending back an HTTP 302 status code.
+有時候經驗不足的開發者會認為 `redirect_to` 是某種 `goto` 命令，在 Rails 程式裡從一處跳至另一處。**這是不正確的**。`redirect_to` 方法會讓程式停止執行，等待瀏覽器發起新請求。你需要用 HTTP 302 狀態碼，告訴瀏覽器下個請求是什麼才是。
 
-Consider these actions to see the difference:
+考量下面這幾個動作來看出差異：
 
 ```ruby
 def index
@@ -622,7 +622,7 @@ def show
 end
 ```
 
-With the code in this form, there will likely be a problem if the `@book` variable is `nil`. Remember, a `render :action` doesn't run any code in the target action, so nothing will set up the `@books` variable that the `index` view will probably require. One way to fix this is to redirect instead of rendering:
+在上面的程式裡，若 `@book` 的值為 `nil`，則會有問題。`render :action` 不會執行 `:action` 裡的任何程式，因此不會執行 `index` 裡的 `@books = Book.all`。解決辦法是使用 `redirect_to`：
 
 ```ruby
 def index
@@ -637,11 +637,11 @@ def show
 end
 ```
 
-With this code, the browser will make a fresh request for the index page, the code in the `index` method will run, and all will be well.
+程式改成這樣後，瀏覽器會對 `index` 頁面發一個新的請求，這麼一來便會執行 `index` 方法裡的程式，一切正常。
 
-The only downside to this code is that it requires a round trip to the browser: the browser requested the show action with `/books/1` and the controller finds that there are no books, so the controller sends out a 302 redirect response to the browser telling it to go to `/books/`, the browser complies and sends a new request back to the controller asking now for the `index` action, the controller then gets all the books in the database and renders the index template, sending it back down to the browser which then shows it on your screen.
+這段程式的唯一缺點是，無法直接跳到 `index`，需要經過瀏覽器：瀏覽器起初對 `show` 動作發起 `/books/1`，Controller 發現找不到該本書（`@book.nil?`），Controller 傳送 `302 redirect response` 給瀏覽器，告訴瀏覽器到 `/books/`，瀏覽器按照要求，對 Controller 對 `index` 動作發一個新的請求，Controller 從資料庫將所有的書拿來，算繪 `index` 模版，發回給瀏覽器，最終顯示在螢幕上。
 
-While in a small application, this added latency might not be a problem, it is something to think about if response time is a concern. We can demonstrate one way to handle this with a contrived example:
+小的應用程式裡，這加了一些延遲時間（latency），可能沒什麼問題。但如果響應時間很重要，就需要考慮這個問題。以下用一個假設的例子來示範如何處理這個問題：
 
 ```ruby
 def index
@@ -658,7 +658,7 @@ def show
 end
 ```
 
-This would detect that there are no books with the specified ID, populate the `@books` instance variable with all the books in the model, and then directly render the `index.html.erb` template, returning it to the browser with a flash alert message to tell the user what happened.
+找不到該本書時，會將所有的書取出來，放到 `@books`，在直接算繪 `index.html.erb`，把算繪結果加上一條提示訊息回給瀏覽器，告訴使用者究竟發生了什麼事。
 
 ### Using `head` To Build Header-Only Responses
 
