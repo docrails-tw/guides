@@ -916,7 +916,10 @@ WARNING: 必須指定圖片的副檔名。
 * `controls: true`，提供瀏覽器支持的控件給使用者，用來與音訊檔案做互動。
 * `autobuffer: true`，頁面載入時，會先緩衝音訊檔案。
 
-### Understanding `yield`
+### 理解 `yield`
+
+在版型的上下文裡，`yield` 決定從 View 來的內容要插入到那裡。最簡單的用法就是使用單個 `yield`，
+
 
 Within the context of a layout, `yield` identifies a section where content from the view should be inserted. The simplest way to use this is to have a single `yield`, into which the entire contents of the view currently being rendered is inserted:
 
@@ -930,7 +933,7 @@ Within the context of a layout, `yield` identifies a section where content from 
 </html>
 ```
 
-You can also create a layout with multiple yielding regions:
+可以建立多個 `yield` 區域：
 
 ```html+erb
 <html>
@@ -945,9 +948,9 @@ You can also create a layout with multiple yielding regions:
 
 The main body of the view will always render into the unnamed `yield`. To render content into a named `yield`, you use the `content_for` method.
 
-### Using the `content_for` Method
+### 使用 `content_for` 方法
 
-The `content_for` method allows you to insert content into a named `yield` block in your layout. For example, this view would work with the layout that you just saw:
+`content_for` 方法允許在版型裡插入內容到 `yield` 具名的區塊。舉例來說，上例有 `<%= yield :head %>` 的版型，要結合下面的 `content_for` 使用：
 
 ```html+erb
 <% content_for :head do %>
@@ -957,7 +960,7 @@ The `content_for` method allows you to insert content into a named `yield` block
 <p>Hello, Rails!</p>
 ```
 
-The result of rendering this page into the supplied layout would be this HTML:
+算繪此頁的結果為：
 
 ```html+erb
 <html>
@@ -970,31 +973,34 @@ The result of rendering this page into the supplied layout would be this HTML:
 </html>
 ```
 
-The `content_for` method is very helpful when your layout contains distinct regions such as sidebars and footers that should get their own blocks of content inserted. It's also useful for inserting tags that load page-specific JavaScript or css files into the header of an otherwise generic layout.
+當版型有不同區域，像是邊欄、頁尾等應該有，`content_for` 方法非常有用。
 
-### Using Partials
+ method is very helpful when your layout contains distinct regions such as sidebars and footers that should get their own blocks of content inserted. It's also useful for inserting tags that load page-specific JavaScript or css files into the header of an otherwise generic layout.
 
+### 使用局部頁面
+
+局部頁面模版，如其名“局部頁面”──
 Partial templates - usually just called "partials" - are another device for breaking the rendering process into more manageable chunks. With a partial, you can move the code for rendering a particular piece of a response to its own file.
 
-#### Naming Partials
+#### 局部頁面命名
 
-To render a partial as part of a view, you use the `render` method within the view:
+要算繪局部頁面作為 View 的一部分，可以在 View 裡面使用 `render` 方法：
 
 ```ruby
 <%= render "menu" %>
 ```
 
-This will render a file named `_menu.html.erb` at that point within the view being rendered. Note the leading underscore character: partials are named with a leading underscore to distinguish them from regular views, even though they are referred to without the underscore. This holds true even when you're pulling in a partial from another folder:
+會在呼叫的地方對 `_menu.html.erb` 進行算繪。注意名字開頭有“底線”（`_`）：局部頁面的命名規則是由底線開始，用來和一般的 View 區隔開來，但引入局部頁面時，無需寫底線：
 
 ```ruby
 <%= render "shared/menu" %>
 ```
 
-That code will pull in the partial from `app/views/shared/_menu.html.erb`.
+這段程式碼會從 `app/views/shared/_menu.html.erb` 引入局部頁面。
 
-#### Using Partials to Simplify Views
+#### 使用局部頁面來簡化 View
 
-One way to use partials is to treat them as the equivalent of subroutines: as a way to move details out of a view so that you can grasp what's going on more easily. For example, you might have a view that looked like this:
+使用局部頁面的一種方式是，把它想成是副程式：把細節抽離出去，以便更好理解 View 在做什麼。舉個例子，可能看過這樣寫的 View：
 
 ```erb
 <%= render "shared/ad_banner" %>
@@ -1007,13 +1013,13 @@ One way to use partials is to treat them as the equivalent of subroutines: as a 
 <%= render "shared/footer" %>
 ```
 
-Here, the `_ad_banner.html.erb` and `_footer.html.erb` partials could contain content that is shared among many pages in your application. You don't need to see the details of these sections when you're concentrating on a particular page.
+這裡的 `_ad_banner.html.erb` 和 `_footer.html.erb`，內容可以包含應用程式裡可以共用的內容。這麼一來在撰寫特定頁面時，引用這些局部頁面就好，而無需關注細節。
 
-TIP: For content that is shared among all pages in your application, you can use partials directly from layouts.
+TIP: 對於應用程式裡都可以共用的內容，可以直接在版型裡使用局部頁面。
 
 #### Partial Layouts
 
-A partial can use its own layout file, just as a view can use a layout. For example, you might call a partial like this:
+局部頁面可以使用自己的版型，就跟 View 可以使用版型一樣。舉例來說，可能會這麼呼叫局部頁面：
 
 ```erb
 <%= render partial: "link_area", layout: "graybar" %>

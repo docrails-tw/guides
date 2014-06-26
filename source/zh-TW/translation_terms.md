@@ -476,6 +476,8 @@ S
 
 * Strong Parameters 核可參數
 
+* Subroutine 副程式
+
 T
 ------
 
