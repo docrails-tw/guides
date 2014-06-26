@@ -142,6 +142,8 @@ When your Pull Request got merged on master. It's time to deploy!
 
 `rake guides:deploy`
 
+This will copy all `*.html` from `output/zh-TW` to docrails-tw.github.io.
+
 ## Contribute
 
 Always fork and makes a topic branch!
