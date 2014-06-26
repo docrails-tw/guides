@@ -352,66 +352,66 @@ render status: :forbidden
 
 可以用數字或是符號指定 HTTP 狀態碼：
 
-| 響應類別              | HTTP 狀態碼      | 符號                           |
-| ------------------- | ---------------- | -------------------------------- |
-| **Informational**   | 100              | :continue                        |
-|                     | 101              | :switching_protocols             |
-|                     | 102              | :processing                      |
-| **Success**         | 200              | :ok                              |
-|                     | 201              | :created                         |
-|                     | 202              | :accepted                        |
-|                     | 203              | :non_authoritative_information   |
-|                     | 204              | :no_content                      |
-|                     | 205              | :reset_content                   |
-|                     | 206              | :partial_content                 |
-|                     | 207              | :multi_status                    |
-|                     | 208              | :already_reported                |
-|                     | 226              | :im_used                         |
-| **Redirection**     | 300              | :multiple_choices                |
-|                     | 301              | :moved_permanently               |
-|                     | 302              | :found                           |
-|                     | 303              | :see_other                       |
-|                     | 304              | :not_modified                    |
-|                     | 305              | :use_proxy                       |
-|                     | 306              | :reserved                        |
-|                     | 307              | :temporary_redirect              |
-|                     | 308              | :permanent_redirect              |
-| **Client Error**    | 400              | :bad_request                     |
-|                     | 401              | :unauthorized                    |
-|                     | 402              | :payment_required                |
-|                     | 403              | :forbidden                       |
-|                     | 404              | :not_found                       |
-|                     | 405              | :method_not_allowed              |
-|                     | 406              | :not_acceptable                  |
-|                     | 407              | :proxy_authentication_required   |
-|                     | 408              | :request_timeout                 |
-|                     | 409              | :conflict                        |
-|                     | 410              | :gone                            |
-|                     | 411              | :length_required                 |
-|                     | 412              | :precondition_failed             |
-|                     | 413              | :request_entity_too_large        |
-|                     | 414              | :request_uri_too_long            |
-|                     | 415              | :unsupported_media_type          |
-|                     | 416              | :requested_range_not_satisfiable |
-|                     | 417              | :expectation_failed              |
-|                     | 422              | :unprocessable_entity            |
-|                     | 423              | :locked                          |
-|                     | 424              | :failed_dependency               |
-|                     | 426              | :upgrade_required                |
-|                     | 428              | :precondition_required           |
-|                     | 429              | :too_many_requests               |
-|                     | 431              | :request_header_fields_too_large |
-| **Server Error**    | 500              | :internal_server_error           |
-|                     | 501              | :not_implemented                 |
-|                     | 502              | :bad_gateway                     |
-|                     | 503              | :service_unavailable             |
-|                     | 504              | :gateway_timeout                 |
-|                     | 505              | :http_version_not_supported      |
-|                     | 506              | :variant_also_negotiates         |
-|                     | 507              | :insufficient_storage            |
-|                     | 508              | :loop_detected                   |
-|                     | 510              | :not_extended                    |
-|                     | 511              | :network_authentication_required |
+| 響應類別              | HTTP 狀態碼      | 符號                                |
+| ------------------- | ---------------- | ---------------------------------- |
+| **資訊**             | 100              | `:continue`                        |
+|                     | 101              | `:switching_protocols`             |
+|                     | 102              | `:processing`                      |
+| **成功**             | 200              | `:ok`                              |
+|                     | 201              | `:created`                         |
+|                     | 202              | `:accepted`                        |
+|                     | 203              | `:non_authoritative_information`   |
+|                     | 204              | `:no_content`                      |
+|                     | 205              | `:reset_content`                   |
+|                     | 206              | `:partial_content`                 |
+|                     | 207              | `:multi_status`                    |
+|                     | 208              | `:already_reported`                |
+|                     | 226              | `:im_used`                         |
+| **重新導向**         | 300              | `:multiple_choices`                |
+|                     | 301              | `:moved_permanently`               |
+|                     | 302              | `:found`                           |
+|                     | 303              | `:see_other`                       |
+|                     | 304              | `:not_modified`                    |
+|                     | 305              | `:use_proxy`                       |
+|                     | 306              | `:reserved`                        |
+|                     | 307              | `:temporary_redirect`              |
+|                     | 308              | `:permanent_redirect`              |
+| **用戶端錯誤**        | 400              | `:bad_request`                     |
+|                     | 401              | `:unauthorized`                    |
+|                     | 402              | `:payment_required`                |
+|                     | 403              | `:forbidden`                       |
+|                     | 404              | `:not_found`                       |
+|                     | 405              | `:method_not_allowed`              |
+|                     | 406              | `:not_acceptable`                  |
+|                     | 407              | `:proxy_authentication_required`   |
+|                     | 408              | `:request_timeout`                 |
+|                     | 409              | `:conflict`                        |
+|                     | 410              | `:gone`                            |
+|                     | 411              | `:length_required`                 |
+|                     | 412              | `:precondition_failed`             |
+|                     | 413              | `:request_entity_too_large`        |
+|                     | 414              | `:request_uri_too_long`            |
+|                     | 415              | `:unsupported_media_type`          |
+|                     | 416              | `:requested_range_not_satisfiable` |
+|                     | 417              | `:expectation_failed`              |
+|                     | 422              | `:unprocessable_entity`            |
+|                     | 423              | `:locked`                          |
+|                     | 424              | `:failed_dependency`               |
+|                     | 426              | `:upgrade_required`                |
+|                     | 428              | `:precondition_required`           |
+|                     | 429              | `:too_many_requests`               |
+|                     | 431              | `:request_header_fields_too_large` |
+| **伺服器錯誤**        | 500              | `:internal_server_error`           |
+|                     | 501              | `:not_implemented`                 |
+|                     | 502              | `:bad_gateway`                     |
+|                     | 503              | `:service_unavailable`             |
+|                     | 504              | `:gateway_timeout`                 |
+|                     | 505              | `:http_version_not_supported`      |
+|                     | 506              | `:variant_also_negotiates`         |
+|                     | 507              | `:insufficient_storage`            |
+|                     | 508              | `:loop_detected`                   |
+|                     | 510              | `:not_extended`                    |
+|                     | 511              | `:network_authentication_required` |
 
 #### 尋找版型
 
@@ -973,18 +973,15 @@ The main body of the view will always render into the unnamed `yield`. To render
 </html>
 ```
 
-當版型有不同區域，像是邊欄、頁尾等應該有，`content_for` 方法非常有用。
-
- method is very helpful when your layout contains distinct regions such as sidebars and footers that should get their own blocks of content inserted. It's also useful for inserting tags that load page-specific JavaScript or css files into the header of an otherwise generic layout.
+`content_for` 在版型分多個區域，各個區域內容不同時很有用，像是邊欄、頁尾。`content_for` 也可以用來針對特定頁面插入 JavaScript 或 CSS。
 
 ### 使用局部頁面
 
-局部頁面模版，如其名“局部頁面”──
-Partial templates - usually just called "partials" - are another device for breaking the rendering process into more manageable chunks. With a partial, you can move the code for rendering a particular piece of a response to its own file.
+局部頁面模版，如其名“局部頁面”──是另個可以把算繪過程分成多個片段的工具。有了局部頁面，可以把某些特定內容的算繪移到單獨的檔案。
 
 #### 局部頁面命名
 
-要算繪局部頁面作為 View 的一部分，可以在 View 裡面使用 `render` 方法：
+在 View 算繪局部頁面：
 
 ```ruby
 <%= render "menu" %>
@@ -1017,7 +1014,7 @@ Partial templates - usually just called "partials" - are another device for brea
 
 TIP: 對於應用程式裡都可以共用的內容，可以直接在版型裡使用局部頁面。
 
-#### Partial Layouts
+#### 局部頁面的版型
 
 局部頁面可以使用自己的版型，就跟 View 可以使用版型一樣。舉例來說，可能會這麼呼叫局部頁面：
 
@@ -1025,13 +1022,13 @@ TIP: 對於應用程式裡都可以共用的內容，可以直接在版型裡使
 <%= render partial: "link_area", layout: "graybar" %>
 ```
 
-This would look for a partial named `_link_area.html.erb` and render it using the layout `_graybar.html.erb`. Note that layouts for partials follow the same leading-underscore naming as regular partials, and are placed in the same folder with the partial that they belong to (not in the master `layouts` folder).
+會尋找 `_link_area.html.erb` 的局部頁面，使用 `_grabar.html.erb` 版型來算繪。注意局部頁面的版型，同樣遵循用底線開頭的命名規則。局部頁面的版型和局部頁面放在同一個資料夾裡（而不是放在應用程式的版型目錄裡 `app/views/layouts`）。
 
-Also note that explicitly specifying `:partial` is required when passing additional options such as `:layout`.
+同樣注意到，傳入額外的選項，像是 `:layout` 時，需要明確指定 `:partial`。
 
-#### Passing Local Variables
+#### 傳入區域變數
 
-You can also pass local variables into partials, making them even more powerful and flexible. For example, you can use this technique to reduce duplication between new and edit pages, while still keeping a bit of distinct content:
+可以傳入區域變數到局部頁面裡，這麼一來局部頁面變得更強大靈活。舉個例子，用至這個方法來減少 `new` 與 `edit` 頁面重複的程式碼，但仍保有不同的內容：
 
 * `new.html.erb`
 
@@ -1061,27 +1058,27 @@ You can also pass local variables into partials, making them even more powerful 
     <% end %>
     ```
 
-Although the same partial will be rendered into both views, Action View's submit helper will return "Create Zone" for the new action and "Update Zone" for the edit action.
+雖然 `new` 與 `edit` 使用同樣的局部頁面，Action View 的 `submit` 輔助方法對 `new` 動作會回傳 `"Create Zone"`；而 `edit` 動作則會回傳 `"Update Zone"`。
 
-Every partial also has a local variable with the same name as the partial (minus the underscore). You can pass an object in to this local variable via the `:object` option:
+每個局部頁面都有個與局部頁面同名的區域變數（沒有開頭的底線）。可以用 `:object` 選項把物件傳給這個區域變數：
 
 ```erb
 <%= render partial: "customer", object: @new_customer %>
 ```
 
-Within the `customer` partial, the `customer` variable will refer to `@new_customer` from the parent view.
+在 `customer` 局部頁面裡，`customer` 變數會對應到呼叫時的 `@new_customer`。
 
-If you have an instance of a model to render into a partial, you can use a shorthand syntax:
+若有一個實體變數要傳入局部頁面，可以使用簡寫：
 
 ```erb
 <%= render @customer %>
 ```
 
-Assuming that the `@customer` instance variable contains an instance of the `Customer` model, this will use `_customer.html.erb` to render it and will pass the local variable `customer` into the partial which will refer to the `@customer` instance variable in the parent view.
+假設 `@customer` 實體變數是 `Customer` Model 的實體。上面的程式碼會用 `_customer.html.erb` 來算繪，區域變數 `customer` 的值是 `@customer`。
 
-#### Rendering Collections
+#### 算繪集合
 
-Partials are very useful in rendering collections. When you pass a collection to a partial via the `:collection` option, the partial will be inserted once for each member in the collection:
+局部頁面在算繪集合時非常有用。當使用 `:collection` 選項，會把集合的每個元素插入的局部頁面裡：
 
 * `index.html.erb`
 
@@ -1096,16 +1093,16 @@ Partials are very useful in rendering collections. When you pass a collection to
     <p>Product Name: <%= product.name %></p>
     ```
 
-When a partial is called with a pluralized collection, then the individual instances of the partial have access to the member of the collection being rendered via a variable named after the partial. In this case, the partial is `_product`, and within the `_product` partial, you can refer to `product` to get the instance that is being rendered.
+當局部頁面傳入複數形式的集合時，可以在局部頁面裡透過與局部頁面同名的變數來存取到集合的成員。上例裡，局部頁面是 `_product`，`product` 則是當下被算繪的實體。
 
-There is also a shorthand for this. Assuming `@products` is a collection of `product` instances, you can simply write this in the `index.html.erb` to produce the same result:
+算繪集合有簡寫形式。假設 `@products` 是 `product` 實體的集合，則在 `index.html.erb` 可以這麼寫：
 
 ```html+erb
 <h1>Products</h1>
 <%= render @products %>
 ```
 
-Rails determines the name of the partial to use by looking at the model name in the collection. In fact, you can even create a heterogeneous collection and render it this way, and Rails will choose the proper partial for each member of the collection:
+Rails 根據集合各元素的 Model 名稱，來決定要使用的是那個局部頁面。實際上，集合內的元素可以來自不同的 Model，Rails 會給元素選擇正確的局部頁面進行算繪。
 
 * `index.html.erb`
 
@@ -1126,61 +1123,61 @@ Rails determines the name of the partial to use by looking at the model name in 
     <p>Employee: <%= employee.name %></p>
     ```
 
-In this case, Rails will use the customer or employee partials as appropriate for each member of the collection.
+這個例子裡，Rails 會根據集合成員所屬的 Model，來選擇要使用的局部頁面。
 
-In the event that the collection is empty, `render` will return nil, so it should be fairly simple to provide alternative content.
+若集合為空，則 `render` 方法會回傳 `nil`，所以最好提供集合為空時的替代文字。
 
 ```html+erb
 <h1>Products</h1>
 <%= render(@products) || "There are no products available." %>
 ```
 
-#### Local Variables
+#### 區域變數
 
-To use a custom local variable name within the partial, specify the `:as` option in the call to the partial:
+要在局部頁面裡使用區域變數，在呼叫局部頁面時使用 `:as` 選項：
 
 ```erb
 <%= render partial: "product", collection: @products, as: :item %>
 ```
 
-With this change, you can access an instance of the `@products` collection as the `item` local variable within the partial.
+這樣修改以後，可以在局部頁面裡，用 `item` 來存取到 `@products` 集合裡的成員。
 
-You can also pass in arbitrary local variables to any partial you are rendering with the `locals: {}` option:
+也可以使用 `locals: {}` 選項，給任何的局部頁面，傳入隨意的區域變數。
 
 ```erb
 <%= render partial: "product", collection: @products,
            as: :item, locals: {title: "Products Page"} %>
 ```
 
-In this case, the partial will have access to a local variable `title` with the value "Products Page".
+在這個情況裡，局部頁面裡可以存取到 `title` 區域變數，值是 `"Products Page"`。
 
-TIP: Rails also makes a counter variable available within a partial called by the collection, named after the member of the collection followed by `_counter`. For example, if you're rendering `@products`, within the partial you can refer to `product_counter` to tell you how many times the partial has been rendered. This does not work in conjunction with the `as: :value` option.
+TIP: Rails 也給傳入集合的局部頁面，提供了一個計數器變數。名稱是集合名加上 `_counter`。譬如在算繪 `@products` 時，可以在局部頁面裡使用 `product_counter`，來知道局部頁面被算繪了幾次。但不能和 `as: :value` 選項一起使用。
 
-You can also specify a second partial to be rendered between instances of the main partial by using the `:spacer_template` option:
+在主局部頁面渲染實體之間，可以使用 `:spacer_template` 選項指定第二個局部頁面。
 
-#### Spacer Templates
+#### Spacer 模版
 
 ```erb
 <%= render partial: @products, spacer_template: "product_ruler" %>
 ```
 
-Rails will render the `_product_ruler` partial (with no data passed in to it) between each pair of `_product` partials.
+Rails 會在算繪 `_product` 局部頁面時，在兩次算繪之間，算繪 `_product_ruler` 局部頁面（不傳入任何資料）。
 
-#### Collection Partial Layouts
+#### 集合局部頁面的版型
 
-When rendering collections it is also possible to use the `:layout` option:
+當算繪集合時，也可以使用 `:layout` 選項。
 
 ```erb
 <%= render partial: "product", collection: @products, layout: "special_layout" %>
 ```
 
-The layout will be rendered together with the partial for each item in the collection. The current object and object_counter variables will be available in the layout as well, the same way they do within the partial.
+在算繪集合各元素時，會同時算繪指定的版型。目前的物件和 `object_counter` 變數在版型裡也可以使用。
 
 ### Using Nested Layouts
 
-You may find that your application requires a layout that differs slightly from your regular application layout to support one particular controller. Rather than repeating the main layout and editing it, you can accomplish this by using nested layouts (sometimes called sub-templates). Here's an example:
+可能會需要給特定的 Controller，使用和一般應用程式版型不太一樣的版型。與其重複主版型進行編輯，可以使用嵌套版型來完成（有時候也叫子模版）。以下是個範例。
 
-Suppose you have the following `ApplicationController` layout:
+假設 `ApplicationController` 的版型如下：
 
 * `app/views/layouts/application.html.erb`
 
@@ -1199,7 +1196,7 @@ Suppose you have the following `ApplicationController` layout:
     </html>
     ```
 
-On pages generated by `NewsController`, you want to hide the top menu and add a right menu:
+而由 `NewsController` 產生的頁面，想要把上面的選單隱藏起來，並且在右邊新增一個選單：
 
 * `app/views/layouts/news.html.erb`
 
@@ -1215,6 +1212,6 @@ On pages generated by `NewsController`, you want to hide the top menu and add a 
     <%= render template: "layouts/application" %>
     ```
 
-That's it. The News views will use the new layout, hiding the top menu and adding a new right menu inside the "content" div.
+這樣就可以了。`NewsController` 會使用 `news.html.erb` 版型，隱藏上面的選單，在 `id` 是 `"content"` 的 `div` 右邊加一個選單。
 
-There are several ways of getting similar results with different sub-templating schemes using this technique. Note that there is no limit in nesting levels. One can use the `ActionView::render` method via `render template: 'layouts/news'` to base a new layout on the News layout. If you are sure you will not subtemplate the `News` layout, you can replace the `content_for?(:news_content) ? yield(:news_content) : yield` with simply `yield`.
+有數種使用子模版的方式可以達到同樣的效果。但注意，嵌套層數沒有限制。也可以透過 `render template: 'layout/news'` 來使用 `ActionView::render` 方法，在 `news` 版型的基礎上使用新的版型。若確定 `news` 版型不會有子模版，則可以把 `content_for?(:news_content) ? yield(:news_content) : yield` 換成 `yield` 即可。
