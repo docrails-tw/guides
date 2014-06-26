@@ -15,7 +15,7 @@ Rails 算繪與版型
 綜覽：MVC 協同合作
 -------------------------------------
 
-本篇著重介紹 MVC 鐵三角中，Controller 與 View 之間的互動關係。Controller 負責策劃處理請求（Request）的整個過程，但通常會把複雜的事情交給 Model 處理；要把響應（Response）回給使用者時，Controller 把事情交給 View 處理。Controller 如何將工作派給別人便是本篇要介紹的主題。
+本篇著重介紹 MVC 架構中，Controller 與 View 之間的互動關係。Controller 負責策劃處理請求（Request）的整個過程，但通常會把複雜的事情交給 Model 處理；要把響應（Response）回給使用者時，Controller 把事情交給 View 處理。Controller 如何將工作派給別人便是本篇要介紹的主題。
 
 更完整的說，這個過程包含了，響應要傳送什麼內容，要呼叫那些方法來建立響應。如果響應是完整的 View，Rails 會做些額外工作，譬如會把 View 放到版型裡，或是把某個局部頁面加進來。本篇之後會完整介紹這整個過程。
 
@@ -918,10 +918,7 @@ WARNING: 必須指定圖片的副檔名。
 
 ### 理解 `yield`
 
-在版型的上下文裡，`yield` 決定從 View 來的內容要插入到那裡。最簡單的用法就是使用單個 `yield`，
-
-
-Within the context of a layout, `yield` identifies a section where content from the view should be inserted. The simplest way to use this is to have a single `yield`, into which the entire contents of the view currently being rendered is inserted:
+在版型的上下文裡，`yield` 分出一塊區域，決定應該要插入什麼內容。最簡單就是使用單一個 `yield`，算繪的整個 View 都會插入到這個區域：
 
 ```html+erb
 <html>
@@ -946,7 +943,7 @@ Within the context of a layout, `yield` identifies a section where content from 
 </html>
 ```
 
-The main body of the view will always render into the unnamed `yield`. To render content into a named `yield`, you use the `content_for` method.
+View 的主要內容總是會插入到無名的 `yield`。要把算繪內容到具名的 `yield` 區域，可以使用 `content_for` 方法。
 
 ### 使用 `content_for` 方法
 
