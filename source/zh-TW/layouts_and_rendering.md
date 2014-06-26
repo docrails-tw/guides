@@ -15,9 +15,9 @@ Rails 算繪與版型
 綜覽：MVC 協同合作
 -------------------------------------
 
-本篇著重介紹 MVC 鐵三角中，Controller 與 View 之間的互動關係。Controller 負責策劃處理請求的整個過程，但通常會把複雜的事情推給 Model；要把響應回給使用者時，Controller 把事情交給 View 處理。Controller 如何將工作派給別人便是本篇要介紹的主題。
+本篇著重介紹 MVC 鐵三角中，Controller 與 View 之間的互動關係。Controller 負責策劃處理請求（Request）的整個過程，但通常會把複雜的事情交給 Model 處理；要把響應（Response）回給使用者時，Controller 把事情交給 View 處理。Controller 如何將工作派給別人便是本篇要介紹的主題。
 
-說得更完整些，這個過程包含了，響應要傳送什麼內容，要呼叫那些方法來建立響應。如果響應是完整的 View，Rails 會做些額外工作，會把 View 放到版型裡，或是把某個部分頁面加進來。本篇之後會完整介紹這整個過程。
+更完整的說，這個過程包含了，響應要傳送什麼內容，要呼叫那些方法來建立響應。如果響應是完整的 View，Rails 會做些額外工作，譬如會把 View 放到版型裡，或是把某個部分頁面加進來。本篇之後會完整介紹這整個過程。
 
 建立響應
 ------------------
@@ -95,21 +95,21 @@ end
 
 NOTE: 實際的算繪工作是由 `ActionView::TemplateHandlers` 的子類完成。本篇不深入探討整個過程，但有一點很重要，就是 View 的副檔名，決定了使用的模版處理器。從 Rails 2 起，Rails 標準的模版處理器是 ERB，副檔名是 `.erb`；另一個是 Builder（XML 產生器），副檔名是 `.builder` 。
 
-### Using `render`
+### 使用 `render`
 
-In most cases, the `ActionController::Base#render` method does the heavy lifting of rendering your application's content for use by a browser. There are a variety of ways to customize the behavior of `render`. You can render the default view for a Rails template, or a specific template, or a file, or inline code, or nothing at all. You can render text, JSON, or XML. You can specify the content type or HTTP status of the rendered response as well.
+在多數情況下，`ActionController::Base#render` 方法，負責把應用程式要傳給瀏覽器的內容算繪好。`render` 的行為有多種方法可以客製化。可以給 Rails 的模版算繪預設的 View，或是算繪某個特定的模版，檔案，甚至是一段程式碼，或者什麼都不算繪，都可以。可以算繪純文字內容、JSON 或 XML。也可以指定 Content Type、HTTP 狀態碼等。
 
-TIP: If you want to see the exact results of a call to `render` without needing to inspect it in a browser, you can call `render_to_string`. This method takes exactly the same options as `render`, but it returns a string instead of sending a response back to the browser.
+TIP: 若想不在瀏覽器，來看 `render` 方法的算繪結果，可以呼叫 `render_to_string`。這個方法接受的參數和 `render` 一樣，但回傳的是字串，而不是一般要回給瀏覽器的響應。
 
-#### Rendering Nothing
+#### 什麼都不算繪
 
-Perhaps the simplest thing you can do with `render` is to render nothing at all:
+也許最簡單的 `render` 便是什麼也不算繪：
 
 ```ruby
 render nothing: true
 ```
 
-If you look at the response for this using cURL, you will see the following:
+若使用 cURL 來檢視響應，會看到如下輸出：
 
 ```bash
 $ curl -i 127.0.0.1:3000/books
@@ -125,13 +125,13 @@ Cache-Control: no-cache
 $
 ```
 
-We see there is an empty response (no data after the `Cache-Control` line), but the request was successful because Rails has set the response to 200 OK. You can set the `:status` option on render to change this response. Rendering nothing can be useful for Ajax requests where all you want to send back to the browser is an acknowledgment that the request was completed.
+可以看到一個空的響應（`Cache-Control` 之後沒有資料），但請求本身是成功的，因為 Rails 將響應的狀態設為 `200 OK`。可以透過 `render` 的 `:status` 選項來更改響應的狀態碼。“什麼都不算繪”對於 Ajax 的請求很有用，因為只是要跟瀏覽器確認請求已完成。
 
-TIP: You should probably be using the `head` method, discussed later in this guide, instead of `render :nothing`. This provides additional flexibility and makes it explicit that you're only generating HTTP headers.
+TIP: 應該要使用 `header` 方法，而不是 `render :nothing`，本篇稍後會介紹。`head` 的靈活性更高，明確的指定只需要產生 HTTP 標頭。
 
-#### Rendering an Action's View
+#### 算繪動作的 View
 
-If you want to render the view that corresponds to a different template within the same controller, you can use `render` with the name of the view:
+若想在 Controller 算繪不同的模版，可以使用 `render`，指定模版的名稱：
 
 ```ruby
 def update
@@ -144,9 +144,9 @@ def update
 end
 ```
 
-If the call to `update` fails, calling the `update` action in this controller will render the `edit.html.erb` template belonging to the same controller.
+若 `update` 動作失敗，則 Controller 會 `render` Controller 的 `edit.html.erb` 模版。
 
-If you prefer, you can use a symbol instead of a string to specify the action to render:
+可以使用符號來明確指定要算繪的動作，字串是用來指定模版。
 
 ```ruby
 def update
@@ -159,45 +159,45 @@ def update
 end
 ```
 
-#### Rendering an Action's Template from Another Controller
+#### 從別的 Controller 算繪模版
 
-What if you want to render a template from an entirely different controller from the one that contains the action code? You can also do that with `render`, which accepts the full path (relative to `app/views`) of the template to render. For example, if you're running code in an `AdminProductsController` that lives in `app/controllers/admin`, you can render the results of an action to a template in `app/views/products` this way:
+要是想從別的 Controller 算繪別的 Controller 的模版怎麼辦？也可以使用 `render` 來達成，傳入要算繪模版的（相對於 `app/views`）路徑即可。舉例來說，`AdminProductsController` 放在 `app/controllers/admin`，想在 `AdminProductsController` 算繪 `app/views/products` 的模版可以這麼做：
 
 ```ruby
 render "products/show"
 ```
 
-Rails knows that this view belongs to a different controller because of the embedded slash character in the string. If you want to be explicit, you can use the `:template` option (which was required on Rails 2.2 and earlier):
+Rails 會發現這個 View 屬於不同的 Controller，因為字串裡有斜線 `/`。若想更明確，可以用 `:template` 選項（Rails 2.2 之後）：
 
 ```ruby
 render template: "products/show"
 ```
 
-#### Rendering an Arbitrary File
+#### 算繪任何檔案
 
-The `render` method can also use a view that's entirely outside of your application (perhaps you're sharing views between two Rails applications):
+`render` 方法也接受在應用程式外的 View（也許是兩個 Rails 應用程式之間共享的 View）：
 
 ```ruby
 render "/u/apps/warehouse_app/current/app/views/products/show"
 ```
 
-Rails determines that this is a file render because of the leading slash character. To be explicit, you can use the `:file` option (which was required on Rails 2.2 and earlier):
+Rails 知道這要算繪的是檔案，因為字串開頭有一個斜線。更明確一點可以用 `:file` 選項指定（Rails 2.2 之後）：
 
 ```ruby
 render file: "/u/apps/warehouse_app/current/app/views/products/show"
 ```
 
-The `:file` option takes an absolute file-system path. Of course, you need to have rights to the view that you're using to render the content.
+`:file` 選項接受系統的絕對路徑，要算繪的檔案必須要有權限才行。
 
-NOTE: By default, the file is rendered without using the current layout. If you want Rails to put the file into the current layout, you need to add the `layout: true` option.
+NOTE: 算繪檔案預設不會使用版型。若想 Rails 將算繪的檔案內容放入版型裡，需要加上 `layout: true` 選項。
 
-TIP: If you're running Rails on Microsoft Windows, you should use the `:file` option to render a file, because Windows filenames do not have the same format as Unix filenames.
+TIP: 若想在 Microsoft Windows 執行 Rails，要算繪檔案必須要使用 `:file` 選項，因為 Windows 的檔名跟 Unix 的檔名格式不同。
 
-#### Wrapping it up
+#### 總結
 
-The above three ways of rendering (rendering another template within the controller, rendering a template within another controller and rendering an arbitrary file on the file system) are actually variants of the same action.
+上述三種算繪方法（算繪模版、算繪別的 Controller 的模版、算繪檔案）實際上都是同種動作的不同表現方式。
 
-In fact, in the BooksController class, inside of the update action where we want to render the edit template if the book does not update successfully, all of the following render calls would all render the `edit.html.erb` template in the `views/books` directory:
+實際上，在 `BooksController` 類別裡，在 `update` 動作裡，書本更新失敗時，我們想算繪 `edit` 模版。以下的呼叫都會算繪 `app/views/books` 目錄下的 `edit.html.erb`：
 
 ```ruby
 render :edit
@@ -216,111 +216,100 @@ render file: "/path/to/rails/app/views/books/edit"
 render file: "/path/to/rails/app/views/books/edit.html.erb"
 ```
 
-Which one you use is really a matter of style and convention, but the rule of thumb is to use the simplest one that makes sense for the code you are writing.
+用那一種完全取決於風格與慣例，但最佳實踐表示，用最能反映出程式實際情況的最簡形式最好。
 
-#### Using `render` with `:inline`
+#### 使用 `render` 的 `:inline` 選項
 
-The `render` method can do without a view completely, if you're willing to use the `:inline` option to supply ERB as part of the method call. This is perfectly valid:
+`render` 方法完全可以不使用 View 模版。使用 `:inline` 選項（“內聯算繪”），提供一段 ERB 程式碼即可。以下是完全合法的呼叫：
 
 ```ruby
 render inline: "<% products.each do |p| %><p><%= p.name %></p><% end %>"
 ```
 
-WARNING: There is seldom any good reason to use this option. Mixing ERB into your controllers defeats the MVC orientation of Rails and will make it harder for other developers to follow the logic of your project. Use a separate erb view instead.
+WARNING: 這個選項很少有用它的好理由。把 ERB 混入 Controller 違反了 Rails 的 MVC 原則，這也讓一起開發的開發者，更難理解專案的邏輯。把要算繪的內容放到另一個 ERB 模版比較好。
 
-By default, inline rendering uses ERB. You can force it to use Builder instead with the `:type` option:
+預設的“內聯算繪”使用 ERB 作為模版。可以使用 `:type` 來指定別的模版處理器，譬如使用 Builder：
 
 ```ruby
 render inline: "xml.p {'Horrid coding practice!'}", type: :builder
 ```
 
-#### Rendering Text
+#### 算繪純文字
 
-You can send plain text - with no markup at all - back to the browser by using
-the `:plain` option to `render`:
+要給瀏覽器發純文字，不含標記語言。使用 `render` 的 `:plain` 選項：
 
 ```ruby
 render plain: "OK"
 ```
 
-TIP: Rendering pure text is most useful when you're responding to Ajax or web
-service requests that are expecting something other than proper HTML.
+TIP: 算繪純文字最主要的用途是回應 Ajax ，或只需要回純文字的 Web Service。
 
-NOTE: By default, if you use the `:plain` option, the text is rendered without
-using the current layout. If you want Rails to put the text into the current
-layout, you need to add the `layout: true` option.
+NOTE: 若使用了 `:plain` 選項，文字算繪時不會使用版型。若想 Rails 將算繪的純文字放入版型，需要加上 `layout: true` 選項。
 
-#### Rendering HTML
+#### 算繪 HTML
 
-You can send a HTML string back to the browser by using the `:html` option to
-`render`:
+給瀏覽器發 HTML，使用 `render` 的 `:html` 選項：
 
 ```ruby
 render html: "<strong>Not Found</strong>".html_safe
 ```
 
-TIP: This is useful when you're rendering a small snippet of HTML code.
-However, you might want to consider moving it to a template file if the markup
-is complex.
+TIP: 要算繪一小段 HTML 可能有用。稍微複雜點可能就考慮放到單獨的檔案裡比較好。
 
-NOTE: This option will escape HTML entities if the string is not html safe.
+NOTE: 若字串不是 HTML 安全的，會自動對 HTML 進行跳脫字元處理。
 
-#### Rendering JSON
+#### 算繪 JSON
 
-JSON is a JavaScript data format used by many Ajax libraries. Rails has built-in support for converting objects to JSON and rendering that JSON back to the browser:
+JSON 是一種許多 Ajax 函式庫採用的 JavaScript 資料格式。Rails 原生支援物件到 JSON 的轉換，並將 JSON 算繪完回給瀏覽器：
 
 ```ruby
 render json: @product
 ```
 
-TIP: You don't need to call `to_json` on the object that you want to render. If you use the `:json` option, `render` will automatically call `to_json` for you.
+TIP: 不需要對要算繪的物件呼叫 `to_json`。使用了 `:json` 選項自動會對物件呼叫 `to_json`。
 
-#### Rendering XML
+#### 算繪 XML
 
-Rails also has built-in support for converting objects to XML and rendering that XML back to the caller:
+Rails 也內建轉換物件到 XML、XML 回給呼叫者的支援：
 
 ```ruby
 render xml: @product
 ```
 
-TIP: You don't need to call `to_xml` on the object that you want to render. If you use the `:xml` option, `render` will automatically call `to_xml` for you.
+TIP: 不需要對要算繪的物件呼叫 `to_xml`。使用了 `:json` 選項自動會對物件呼叫 `to_xml`。
 
-#### Rendering Vanilla JavaScript
+#### 算繪純 JavaScript
 
-Rails can render vanilla JavaScript:
+Rails 可以算繪純 JavaScript：
 
 ```ruby
 render js: "alert('Hello Rails');"
 ```
 
-This will send the supplied string to the browser with a MIME type of `text/javascript`.
+這會把 MIME 類型設定為 `text/javascript`，再將字串傳給瀏覽器，
 
-#### Rendering raw body
+#### 算繪未經處理的內容
 
-You can send a raw content back to the browser, without setting any content
-type, by using the `:body` option to `render`:
+可以把未經處理的內容發給瀏覽器，而無需設定 Content-Type，使用 `render` 的 `:body` 選項：
 
 ```ruby
 render body: "raw"
 ```
 
-TIP: This option should be used only if you don't care about the content type of
-the response. Using `:plain` or `:html` might be more appropriate in most of the
-time.
+TIP: 這個選項應該在不在意響應的 Content-Type 時使用。使用 `:plain` 或 `:html` 在多數情況下更合理。
 
-NOTE: Unless overridden, your response returned from this render option will be
-`text/html`, as that is the default content type of Action Dispatch response.
+NOTE: 使用 `:body` 選項，響應的內容類型會是 `text/html`，這是 Action Dispatch 響應預設的 Content-Type。
 
-#### Options for `render`
+#### `render` 接受的選項
 
-Calls to the `render` method generally accept four options:
+`render` 方法通常接受如下選項：
 
 * `:content_type`
 * `:layout`
 * `:location`
 * `:status`
 
-##### The `:content_type` Option
+##### `:content_type` 選項
 
 By default, Rails will serve the results of a rendering operation with the MIME content-type of `text/html` (or `application/json` if you use the `:json` option, or `application/xml` for the `:xml` option.). There are times when you might like to change this, and you can do so by setting the `:content_type` option:
 
@@ -328,7 +317,7 @@ By default, Rails will serve the results of a rendering operation with the MIME 
 render file: filename, content_type: "application/rss"
 ```
 
-##### The `:layout` Option
+##### `:layout` 選項
 
 With most of the options to `render`, the rendered content is displayed as part of the current layout. You'll learn more about layouts and how to use them later in this guide.
 
@@ -344,7 +333,7 @@ You can also tell Rails to render with no layout at all:
 render layout: false
 ```
 
-##### The `:location` Option
+##### `:location` 選項
 
 You can use the `:location` option to set the HTTP `Location` header:
 
@@ -352,7 +341,7 @@ You can use the `:location` option to set the HTTP `Location` header:
 render xml: photo, location: photo_url(photo)
 ```
 
-##### The `:status` Option
+##### `:status` 選項
 
 Rails will automatically generate a response with the correct HTTP status code (in most cases, this is `200 OK`). You can use the `:status` option to change this:
 
@@ -363,7 +352,7 @@ render status: :forbidden
 
 Rails understands both numeric status codes and the corresponding symbols shown below.
 
-| Response Class      | HTTP Status Code | Symbol                           |
+| 響應類別              | HTTP 狀態碼       | 對應符號                           |
 | ------------------- | ---------------- | -------------------------------- |
 | **Informational**   | 100              | :continue                        |
 |                     | 101              | :switching_protocols             |

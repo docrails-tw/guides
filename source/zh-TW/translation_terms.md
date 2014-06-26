@@ -236,6 +236,8 @@ I
 
     給資料庫欄位加上索引，提高檢索時的效率。
 
+* Inline rendering 內聯算繪
+
 * Instance 實體
 
 * Instance variable 實體變數
