@@ -290,7 +290,7 @@ render js: "alert('Hello Rails');"
 
 #### 算繪未經處理的內容
 
-可以把未經處理的內容發給瀏覽器，而無需設定 Content-Type，使用 `render` 的 `:body` 選項：
+可以使用 `render` 的 `:body` 選項，把未經處理的內容發給瀏覽器，而無需設定 Content-Type：
 
 ```ruby
 render body: "raw"
@@ -302,7 +302,7 @@ NOTE: 使用 `:body` 選項，響應的內容類型會是 `text/html`，這是 A
 
 #### `render` 接受的選項
 
-`render` 方法通常接受如下選項：
+`render` 方法一般接受下列四個選項：
 
 * `:content_type`
 * `:layout`
@@ -311,7 +311,7 @@ NOTE: 使用 `:body` 選項，響應的內容類型會是 `text/html`，這是 A
 
 ##### `:content_type` 選項
 
-By default, Rails will serve the results of a rendering operation with the MIME content-type of `text/html` (or `application/json` if you use the `:json` option, or `application/xml` for the `:xml` option.). There are times when you might like to change this, and you can do so by setting the `:content_type` option:
+Rails 算繪操作預設的 MIME Content-Type 為 `text/html`（若用了 `:json` 選項，則為 `application/json`；`:xml` 選項為 `application/xml`）。有時候會想要修改 Content-Type，可以使用 `:content_type` 選項來設定：
 
 ```ruby
 render file: filename, content_type: "application/rss"
@@ -319,15 +319,15 @@ render file: filename, content_type: "application/rss"
 
 ##### `:layout` 選項
 
-With most of the options to `render`, the rendered content is displayed as part of the current layout. You'll learn more about layouts and how to use them later in this guide.
+`render` 方法多數的選項，都會把內容顯示到目前的版型裡。後面會更詳細介紹版型、版型如何使用。
 
-You can use the `:layout` option to tell Rails to use a specific file as the layout for the current action:
+用 `:layout` 選項指定動作要使用的版型：
 
 ```ruby
 render layout: "special_layout"
 ```
 
-You can also tell Rails to render with no layout at all:
+也可以停用版型：
 
 ```ruby
 render layout: false
@@ -335,7 +335,7 @@ render layout: false
 
 ##### `:location` 選項
 
-You can use the `:location` option to set the HTTP `Location` header:
+可以使用 `:location` 選項設定 HTTP 標頭的 `Location`：
 
 ```ruby
 render xml: photo, location: photo_url(photo)
@@ -343,16 +343,16 @@ render xml: photo, location: photo_url(photo)
 
 ##### `:status` 選項
 
-Rails will automatically generate a response with the correct HTTP status code (in most cases, this is `200 OK`). You can use the `:status` option to change this:
+Rails 會自動給響應產生正確的 HTTP 狀態碼（多數情況是 `200 OK`），可以用 `:status` 選項來修改：
 
 ```ruby
 render status: 500
 render status: :forbidden
 ```
 
-Rails understands both numeric status codes and the corresponding symbols shown below.
+可以用數字或是符號指定 HTTP 狀態碼：
 
-| 響應類別              | HTTP 狀態碼       | 對應符號                           |
+| 響應類別              | HTTP 狀態碼      | 符號                           |
 | ------------------- | ---------------- | -------------------------------- |
 | **Informational**   | 100              | :continue                        |
 |                     | 101              | :switching_protocols             |
@@ -413,9 +413,9 @@ Rails understands both numeric status codes and the corresponding symbols shown 
 |                     | 510              | :not_extended                    |
 |                     | 511              | :network_authentication_required |
 
-#### Finding Layouts
+#### 尋找版型
 
-To find the current layout, Rails first looks for a file in `app/views/layouts` with the same base name as the controller. For example, rendering actions from the `PhotosController` class will use `app/views/layouts/photos.html.erb` (or `app/views/layouts/photos.builder`). If there is no such controller-specific layout, Rails will use `app/views/layouts/application.html.erb` or `app/views/layouts/application.builder`. If there is no `.erb` layout, Rails will use a `.builder` layout if one exists. Rails also provides several ways to more precisely assign specific layouts to individual controllers and actions.
+Rails 在 `app/views/layouts` 下尋找與 Controller 同名的檔案作為目前的版型。舉例來說，`PhotosController` 會使用 `app/views/layouts/photos.html.erb`（或是 `app/views/layouts/photos.builder`）。若找不到與 Controller 同名的版型，會使用 `app/views/layouts/application.html.erb` 或是 `app/views/layouts/application.builder` 作為版型。若 `.erb` 版型不存在，Rails 會使用 `.builder` 版型（如果有的話）。Rails 也提供數種方式用來給 Controller 與動作設定版型。
 
 ##### Specifying Layouts for Controllers
 
