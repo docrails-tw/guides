@@ -56,7 +56,6 @@
       name: Rails 算繪與版型
       url: layouts_and_rendering.html
       description: 本篇介紹 Action Controller 與 Action View 基本的版型功能，包含了算繪、重定向、使用 `content_for` 區塊、以及 partial。
-      needs_translation: true
     -
       name: Action View 表單輔助方法
       url: form_helpers.html
