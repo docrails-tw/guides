@@ -1,14 +1,14 @@
-Layouts and Rendering in Rails
-==============================
+Rails 算繪與版型
+===============
 
-This guide covers the basic layout features of Action Controller and Action View.
+本篇介紹 Action Controller 與 Action View 關於版型的基本功能
 
-After reading this guide, you will know:
+讀完本篇，您將了解：
 
-* How to use the various rendering methods built into Rails.
-* How to create layouts with multiple content sections.
-* How to use partials to DRY up your views.
-* How to use nested layouts (sub-templates).
+* 如何使用 Rails 內建的算繪方法。
+* 如何建立有多個內容區域的版型。
+* 如何使用部分視圖來避免重複。
+* 如何使用嵌套版型（子模版）。
 
 --------------------------------------------------------------------------------
 
