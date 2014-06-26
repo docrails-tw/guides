@@ -385,6 +385,10 @@ R
 
     指的是 `form_for @article` 能自動分辨出現在是 `edit`、還是 `new`。
 
+* Redirect
+
+    轉址。
+
 * Redirection
 
     轉址。

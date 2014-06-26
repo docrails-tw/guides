@@ -6,52 +6,52 @@ Rails 算繪與版型
 讀完本篇，您將了解：
 
 * 如何使用 Rails 內建的算繪方法。
-* 如何建立有多個內容區域的版型。
-* 如何使用部分視圖來避免重複。
+* 如何建立有多個內容區域的版型（Layout）。
+* 如何使用部分頁面（Partial）來避免重複。
 * 如何使用嵌套版型（子模版）。
 
 --------------------------------------------------------------------------------
 
-Overview: How the Pieces Fit Together
+綜覽：MVC 協同合作
 -------------------------------------
 
-This guide focuses on the interaction between Controller and View in the Model-View-Controller triangle. As you know, the Controller is responsible for orchestrating the whole process of handling a request in Rails, though it normally hands off any heavy code to the Model. But then, when it's time to send a response back to the user, the Controller hands things off to the View. It's that handoff that is the subject of this guide.
+本篇著重介紹 MVC 鐵三角中，Controller 與 View 之間的互動關係。Controller 負責策劃處理請求的整個過程，但通常會把複雜的事情推給 Model；要把響應回給使用者時，Controller 把事情交給 View 處理。Controller 如何將工作派給別人便是本篇要介紹的主題。
 
-In broad strokes, this involves deciding what should be sent as the response and calling an appropriate method to create that response. If the response is a full-blown view, Rails also does some extra work to wrap the view in a layout and possibly to pull in partial views. You'll see all of those paths later in this guide.
+說得更完整些，這個過程包含了，響應要傳送什麼內容，要呼叫那些方法來建立響應。如果響應是完整的 View，Rails 會做些額外工作，會把 View 放到版型裡，或是把某個部分頁面加進來。本篇之後會完整介紹這整個過程。
 
-Creating Responses
+建立響應
 ------------------
 
-From the controller's point of view, there are three ways to create an HTTP response:
+從 Controller 的觀點來看，有三種方法可以建立 HTTP 響應：
 
-* Call `render` to create a full response to send back to the browser
-* Call `redirect_to` to send an HTTP redirect status code to the browser
-* Call `head` to create a response consisting solely of HTTP headers to send back to the browser
+* 呼叫 `render` 方法，建立完整響應給瀏覽器。
+* 呼叫 `redirect_to` 方法，來寄送 HTTP 轉址狀態給瀏覽器。
+* 呼叫 `head` 方法，來建立只有 HTTP 標頭的響應給瀏覽器。
 
-### Rendering by Default: Convention Over Configuration in Action
+### 預設算繪：慣例勝於設定的實踐
 
-You've heard that Rails promotes "convention over configuration". Default rendering is an excellent example of this. By default, controllers in Rails automatically render views with names that correspond to valid routes. For example, if you have this code in your `BooksController` class:
+你可能聽說過，Rails 遵行“慣例勝於設定”的原則。Rails 預設的算繪功能便是一個很好的例子。Controller 預設會算繪與路由同名的 View。舉例來說，若 `BooksController` 有如下程式：
 
 ```ruby
 class BooksController < ApplicationController
 end
 ```
 
-And the following in your routes file:
+而路由檔案裡有：
 
 ```ruby
 resources :books
 ```
 
-And you have a view file `app/views/books/index.html.erb`:
+並有 View `app/views/books/index.html.erb`：
 
 ```html+erb
 <h1>Books are coming soon!</h1>
 ```
 
-Rails will automatically render `app/views/books/index.html.erb` when you navigate to `/books` and you will see "Books are coming soon!" on your screen.
+則當你瀏覽 `/books` 時，Rails 會自動算繪 `app/views/books/index.html.erb` 這一頁。你會看到網頁裡顯示了 `"Books are coming soon!`。
 
-However a coming soon screen is only minimally useful, so you will soon create your `Book` model and add the index action to `BooksController`:
+然而只顯示 coming soon 的頁面沒有太大用處，很快的便會建立 `Book` Model，並給 `BooksController` 加入 `index` 動作：
 
 ```ruby
 class BooksController < ApplicationController
@@ -61,9 +61,9 @@ class BooksController < ApplicationController
 end
 ```
 
-Note that we don't have explicit render at the end of the index action in accordance with "convention over configuration" principle. The rule is that if you do not explicitly render something at the end of a controller action, Rails will automatically look for the `action_name.html.erb` template in the controller's view path and render it. So in this case, Rails will render the `app/views/books/index.html.erb` file.
+注意到，基於“慣例勝於設定”原則，在 `index` 動作結尾並沒有明確執行“算繪”這個動作。這裡的慣例是，即便沒有在 Controller 動作結尾明確指定要“算繪”的頁面，Rails 也會自動在 Controller 的 View 路徑尋找 `action_name.html.erb` 模版，並算繪之。所以這個情況裡，Rails 會自動算繪 `app/views/books/index.html.erb`。
 
-If we want to display the properties of all the books in our view, we can do so with an ERB template like this:
+若想在 View 裡顯示所有書本的資訊，ERB 可以這麼寫：
 
 ```html+erb
 <h1>Listing Books</h1>
@@ -93,7 +93,7 @@ If we want to display the properties of all the books in our view, we can do so 
 <%= link_to "New book", new_book_path %>
 ```
 
-NOTE: The actual rendering is done by subclasses of `ActionView::TemplateHandlers`. This guide does not dig into that process, but it's important to know that the file extension on your view controls the choice of template handler. Beginning with Rails 2, the standard extensions are `.erb` for ERB (HTML with embedded Ruby), and `.builder` for Builder (XML generator).
+NOTE: 實際的算繪工作是由 `ActionView::TemplateHandlers` 的子類完成。本篇不深入探討整個過程，但有一點很重要，就是 View 的副檔名，決定了使用的模版處理器。從 Rails 2 起，Rails 標準的模版處理器是 ERB，副檔名是 `.erb`；另一個是 Builder（XML 產生器），副檔名是 `.builder` 。
 
 ### Using `render`
 
