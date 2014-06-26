@@ -660,15 +660,15 @@ end
 
 找不到該本書時，會將所有的書取出來，放到 `@books`，在直接算繪 `index.html.erb`，把算繪結果加上一條提示訊息回給瀏覽器，告訴使用者究竟發生了什麼事。
 
-### Using `head` To Build Header-Only Responses
+### 使用 `head` 來建立只含標頭的響應
 
-The `head` method can be used to send responses with only headers to the browser. It provides a more obvious alternative to calling `render :nothing`. The `head` method accepts a number or symbol (see [reference table](#the-status-option)) representing a HTTP status code. The options argument is interpreted as a hash of header names and values. For example, you can return only an error header:
+`head` 方法可以用來建立只有標頭的響應，來傳給瀏覽器。使用 `head` 與 `render :nothing` 比起來，意圖更明確清晰。`head` 方法接受數字或符號（參考 [〈HTTP 狀態選項〉](#:status-選項)一節的表格）。選項參數是一個 Hash，指定標頭的名稱與數值。舉個例子，可以只回傳錯誤標頭：
 
 ```ruby
 head :bad_request
 ```
 
-This would produce the following header:
+會產生出以下的標頭：
 
 ```
 HTTP/1.1 400 Bad Request
@@ -681,13 +681,13 @@ Set-Cookie: _blog_session=...snip...; path=/; HttpOnly
 Cache-Control: no-cache
 ```
 
-Or you can use other HTTP headers to convey other information:
+或可以使用別的 HTTP 標頭來傳遞其他資訊：
 
 ```ruby
 head :created, location: photo_path(@photo)
 ```
 
-Which would produce:
+會產生：
 
 ```
 HTTP/1.1 201 Created
