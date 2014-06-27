@@ -25,6 +25,31 @@ guide.
 Major Features
 --------------
 
+### Foreign key support
+
+The migration DSL now supports adding and removing foreign keys. They are dumped
+to `schema.rb` as well. At this time, only the `mysql`, `mysql2` and `postgresql`
+adapters support foreign keys.
+
+```ruby
+# add a foreign key to `articles.author_id` referencing `authors.id`
+add_foreign_key :articles, :authors
+
+# add a foreign key to `articles.author_id` referencing `users.lng_id`
+add_foreign_key :articles, :users, column: :author_id, primary_key: "lng_id"
+
+# remove the foreign key on `accounts.branch_id`
+remove_foreign_key :accounts, :branches
+
+# remove the foreign key on `accounts.owner_id`
+remove_foreign_key :accounts, column: :owner_id
+```
+
+See the API documentation on
+[add_foreign_key](http://api.rubyonrails.org/v4.2.0/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html#method-i-add_foreign_key)
+and
+[remove_foreign_key](http://api.rubyonrails.org/v4.2.0/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html#method-i-remove_foreign_key)
+for a full description.
 
 
 Railties
@@ -200,6 +225,12 @@ for detailed changes.
   beginnings.
 
   ([Commit](https://github.com/rails/rails/commit/91949e48cf41af9f3e4ffba3e5eecf9b0a08bfc3))
+
+* Deprecated broken support for automatic detection of counter caches on
+  `has_many :through` associations. You should instead manually specify the
+  counter cache on the `has_many` and `belongs_to` associations for the through
+  records.
+  ([Pull Request](https://github.com/rails/rails/pull/15754))
 
 ### Notable changes
 
