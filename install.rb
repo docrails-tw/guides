@@ -17,8 +17,7 @@ def clone_all_for_translator!
 end
 
 def clone_all_for_maintainer!
-  clone_rails!
-  clone_guides!
+  clone_all_for_translator!
   clone_rails_guides_github_pages!
 end
 
