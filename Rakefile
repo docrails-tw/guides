@@ -104,12 +104,6 @@ namespace :guides do
     end
   end
 
-  # Validate guides -------------------------------------------------------------------------
-  desc 'Validate guides, use ONLY=foo to process just "foo.html"'
-  task :validate do
-    ruby "w3c_validator.rb"
-  end
-
   desc "Show help"
   task :help do
     puts <<-help
