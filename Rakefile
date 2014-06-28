@@ -25,14 +25,11 @@ task :sanity_checks do
 end
 
 namespace :guides do
-
   desc 'Generate guides (for authors), use ONLY=foo to process just "foo.md"'
   task :generate => 'generate:html'
 
   desc 'Deploy generated guides to github pages repository'
   task :deploy => :sanity_checks do
-
-
     ENV['RAILS_VERSION'] = get_rails_latest_sha1
     ENV['ALL']  = '1'
     ENV['GUIDES_LANGUAGE'] = 'zh-TW'
