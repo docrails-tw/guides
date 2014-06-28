@@ -14,6 +14,8 @@
 保留原文不譯
 ------------
 
+* Backtrace
+
 * Model
 
 * View
@@ -22,7 +24,11 @@
 
 * Cookie
 
+* Initializer
+
 * Session
+
+* Socket
 
 * Token
 
@@ -46,13 +52,13 @@ A
 
   Controller 的 Action：動作。
 
+* Alias 別名
+
 * Anchor 錨點
 
 * Authentication 認證
 
 * Auxiliary Methods 輔助方法
-
-    使用者認證。
 
 * Adapter 連接器
 
@@ -74,6 +80,8 @@ B
 * Backtick 反引號
 
     `` ` ``
+
+* Block 區塊
 
 * blind carbon copy 密件副本 Bcc
 
@@ -116,13 +124,15 @@ C
 
     版本管理世界的用詞。`git commit`。
 
-* Conditional 條件式
-
 * Compile 編譯
 
 * Computer 計算機
 
     亦作電腦。
+
+* Conditional 條件式
+
+* Context 上下文
 
 * Copy 複本
 
@@ -226,9 +236,17 @@ I
 
     給資料庫欄位加上索引，提高檢索時的效率。
 
+* Inline 內聯
+
+* Inline method 內聯方法
+
+* Inline rendering 內聯算繪
+
 * Instance 實體
 
 * Instance variable 實體變數
+
+    `@foo`
 
 * Instantiate 實體化
 
@@ -263,9 +281,13 @@ K
 L
 ------
 
-* Layout 版型
+* Latency 延遲
+
+* Layout 版型、版面
 
 * Library 函式庫
+
+* Load Path 載入路徑
 
 * Log 記錄檔
 
@@ -331,6 +353,8 @@ P
 
     謂詞，回傳真或假的條件式，比如 `Array#empty?`。
 
+* process 進程
+
 * Program (n.) 程式
 
 * Program (v.) 編程
@@ -368,6 +392,10 @@ R
 * Record Identification 記錄自動識別技術
 
     指的是 `form_for @article` 能自動分辨出現在是 `edit`、還是 `new`。
+
+* Redirect
+
+    轉址。
 
 * Redirection
 
@@ -412,6 +440,10 @@ S
 
 * Scalar Types 純量類型
 
+* SCM 原始碼管理系統
+
+* Source Code Managment 原始碼管理系統
+
 * Seed Data 種子資料
 
     資料庫的初始資料，通常寫在 `db/seeds.rb` 檔案裡。
@@ -443,6 +475,10 @@ S
 * Streaming 串流
 
 * Strong Parameters 核可參數
+
+* Subroutine 副程式
+
+* Sub-template 子模版
 
 T
 ------

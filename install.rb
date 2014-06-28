@@ -8,27 +8,31 @@ def base_path_change?
 end
 
 def has_guides_repo?(base_path)
-  File.directory?((BASE_PATH + 'guides').expand_path)
+  BASE_PATH.join('guides').exist?
 end
 
-def clone_all!
+def clone_all_for_translator!
   clone_rails!
   clone_guides!
+end
+
+def clone_all_for_maintainer!
+  clone_all_for_translator!
   clone_rails_guides_github_pages!
 end
 
 def clone_rails!
-  return if File.exist?((BASE_PATH + 'rails').expand_path)
+  return if BASE_PATH.join('rails').exist?
   `git clone git@github.com:rails/rails.git`
 end
 
 def clone_guides!
-  return if File.exist?((BASE_PATH + 'guides').expand_path)
+  return if BASE_PATH.join('guides').exist?
   `git clone git@github.com:docrails-tw/guides.git`
 end
 
 def clone_rails_guides_github_pages!
-  return if File.exist?((BASE_PATH + 'docrails-tw.github.io').expand_path)
+  return if BASE_PATH.join('docrails-tw.github.io').exist?
   `git clone https://github.com/docrails-tw/docrails-tw.github.io`
 end
 
@@ -37,15 +41,17 @@ def clone_by_option!(option)
     '1' => 'rails/rails',
     '2' => 'docrails-tw/guides',
     '3' => 'docrails-tw/docrails-tw.github.io',
-    '4' => 'all'
+    '4' => 'all for translator',
+    '5' => 'all for maintainer'
   }
 
   case option_map[option]
   when 'rails/rails' then clone_rails!
   when 'docrails-tw/guides' then clone_guides!
   when 'docrails-tw/docrails-tw.github.io' then clone_rails_guides_github_pages!
-  when 'all' then clone_all!
-  else clone_all!
+  when 'all for translator' then clone_all_for_translator!
+  when 'all for maintainer' then clone_all_for_maintainer!
+  else clone_all_for_translator!
   end
 end
 
@@ -63,7 +69,7 @@ end
 # ========== End of Helpers ==========
 
 if yes? 'Do you want to change default base path? (~/docs/rails-guides-translation) (y/N)'
-  puts 'this is the location to clone rails/rails, docrails-tw/guides, docrails-tw/docrails-tw.github.io'
+  puts 'this is the location to clone rails/rails, docrails-tw/guides'
   new_base_path = ask("Where would you like to store those repositories?")
   if new_base_path.empty?
     BASE_PATH = Pathname('./')
@@ -115,4 +121,5 @@ FileUtils.cd(BASE_PATH.expand_path) do
 end
 
 puts 'Installation Complete!'
-puts "Your repos are at #{BASE_PATH} ^_^..."
+puts "Your repos are cloned at #{BASE_PATH} ^_^..."
+puts 'Fore more information, please visit https://github.com/docrails-tw/guides .'

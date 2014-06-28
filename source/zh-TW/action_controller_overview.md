@@ -1136,7 +1136,62 @@ class ClientsController < ApplicationController
 end
 ```
 
+WARNING: 不要做 `rescue_from Exception` 或 `rescue_from StandardError`，除非有很好的理由。因為這會帶來嚴重的副作用（譬如無法得知異常的細節、無法在開發時追蹤 Backtrace）。若想要動態產生錯誤頁面請參考[自訂錯誤頁面](#自訂錯誤頁面)。
+
 NOTE: 特定的異常只有在 `ApplicationController` 裡面可以捕捉的到，因為他們在 Controller 被實體化出來之前，或動作執行之前便發生了。參考 Pratik Naik 的[文章](http://m.onkey.org/2008/7/20/rescue-from-dispatching)來了解更多關於這個問題的細節。
+
+### 自訂錯誤頁面
+
+可以使用 Controller 與 View 來自己客製化錯誤處理的版面。首先定義顯示錯誤頁面的路由。
+
+* `config/application.rb`
+
+  ```ruby
+  config.exceptions_app = self.routes
+  ```
+
+* `config/routes.rb`
+
+  ```ruby
+  get '/404', to: 'errors#not_found'
+  get '/422', to: 'errors#unprocessable_entity'
+  get '/500', to: 'errors#server_error'
+  ```
+
+建立 Controller 與 View。
+
+* `app/controllers/errors_controller.rb`
+
+  ```ruby
+  class ErrorsController < ActionController::Base
+    layout 'error'
+
+    def not_found
+      render status: :not_found
+    end
+
+    def unprocessable_entity
+      render status: :unprocessable_entity
+    end
+
+    def server_error
+      render status: :server_error
+    end
+  end
+  ```
+
+* `app/views`
+
+  ```
+    errors/
+      not_found.html.erb
+      unprocessable_entity.html.erb
+      server_error.html.erb
+    layouts/
+      error.html.erb
+  ```
+
+別忘記在 Controller 設定正確的錯誤碼（如上所示）。錯誤頁面要避免使用資料庫，或進行任何複雜的操作。因為使用者已經到了錯誤頁面這裡，在錯誤頁面產生另外的錯誤會造成不必要的問題。
 
 強制使用 HTTPS 協定
 ------------------------------

@@ -82,8 +82,11 @@ The full list of options for the plugin generator may be seen by typing:
 $ bin/rails plugin --help
 ```
 
-The `--full` option tells the generator that you want to create an engine,
-including a skeleton structure that provides the following:
+The `--mountable` option tells the generator that you want to create a
+"mountable" and namespace-isolated engine. This generator will provide the same
+skeleton structure as would the `--full` option. The `--full` option tells the
+generator that you want to create an engine, including a skeleton structure
+that provides the following:
 
   * An `app` directory tree
   * A `config/routes.rb` file:
@@ -94,7 +97,7 @@ including a skeleton structure that provides the following:
     ```
 
   * A file at `lib/blorgh/engine.rb`, which is identical in function to a
-  * standard Rails application's `config/application.rb` file:
+    standard Rails application's `config/application.rb` file:
 
     ```ruby
     module Blorgh
@@ -103,9 +106,7 @@ including a skeleton structure that provides the following:
     end
     ```
 
-The `--mountable` option tells the generator that you want to create a
-"mountable" and namespace-isolated engine. This generator will provide the same
-skeleton structure as would the `--full` option, and will add:
+The `--mountable` option will add to the `--full` option:
 
   * Asset manifest files (`application.js` and `application.css`)
   * A namespaced `ApplicationController` stub
@@ -471,7 +472,7 @@ called `Blorgh::Comment`. Now run the migration to create our blorgh_comments
 table:
 
 ```bash
-$ bin/rake db:migrate
+$ rake db:migrate
 ```
 
 To show the comments on an article, edit `app/views/blorgh/articles/show.html.erb` and
@@ -682,14 +683,14 @@ engine's models can query them correctly. To copy these migrations into the
 application use this command:
 
 ```bash
-$ bin/rake blorgh:install:migrations
+$ rake blorgh:install:migrations
 ```
 
 If you have multiple engines that need migrations copied over, use
 `railties:install:migrations` instead:
 
 ```bash
-$ bin/rake railties:install:migrations
+$ rake railties:install:migrations
 ```
 
 This command, when run for the first time, will copy over all the migrations
@@ -822,7 +823,7 @@ This migration will need to be run on the application. To do that, it must first
 be copied using this command:
 
 ```bash
-$ bin/rake blorgh:install:migrations
+$ rake blorgh:install:migrations
 ```
 
 Notice that only _one_ migration was copied over here. This is because the first
@@ -839,7 +840,7 @@ with the same name already exists. Copied migration
 Run the migration using:
 
 ```bash
-$ bin/rake db:migrate
+$ rake db:migrate
 ```
 
 Now with all the pieces in place, an action will take place that will associate
