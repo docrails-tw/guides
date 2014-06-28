@@ -10,3 +10,6 @@ group :doc do
 end
 
 gem 'rake'
+
+# Deploy password
+gem 'bcrypt', require: false

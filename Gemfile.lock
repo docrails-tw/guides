@@ -16,6 +16,7 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.1)
       tzinfo (~> 1.1)
+    bcrypt (3.1.7)
     builder (3.2.2)
     erubis (2.7.0)
     i18n (0.6.9)
@@ -42,6 +43,7 @@ PLATFORMS
 DEPENDENCIES
   actionpack
   activesupport
+  bcrypt
   rake
   redcarpet
   w3c_validators

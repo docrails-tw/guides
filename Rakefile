@@ -1,4 +1,5 @@
 require 'pathname'
+require 'bcrypt'
 
 BASE_PATH = Pathname(IO.readlines('./BASE_PATH').first.chomp)
 
@@ -18,6 +19,12 @@ def get_rails_latest_sha1
   sha1[0, 7]
 end
 
+def password_not_correct?
+  encrypted_password = BCrypt::Password.new "$2a$10$oG6OKSLQzn9nnWReqZR8TO1I0eGA12yKvsU/Gg7e5UOsKvK5DJa0y"
+  return true if ENV['RAILS_GUIDES_DEPLOY_KEY'] != encrypted_password
+  false
+end
+
 task :sanity_checks do
   abort("Abort. please clone the rails/rails repo under #{BASE_PATH}") if !File.exist? RAILS_PATH.expand_path
   abort("Abort. please clone the docrails-tw/guides repo under #{BASE_PATH}") if !File.exist? GUIDES_PATH.expand_path
@@ -30,6 +37,9 @@ namespace :guides do
 
   desc 'Deploy generated guides to github pages repository'
   task :deploy => :sanity_checks do
+
+    abort("Incorrect deploy key. Add your deploy key:\n  $ export RAILS_GUIDES_DEPLOY_KEY=YOUR-DEPLOY-KEY") if password_not_correct?
+
     ENV['RAILS_VERSION'] = get_rails_latest_sha1
     ENV['ALL']  = '1'
     ENV['GUIDES_LANGUAGE'] = 'zh-TW'
