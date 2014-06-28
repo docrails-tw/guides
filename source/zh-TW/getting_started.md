@@ -53,13 +53,13 @@ Rails 是一個有先見之明的軟體。
 建立一個新的 Rails 專案
 ----------------------------
 
-閱讀這篇教學，過程中最好照著每個步驟走，不要省略任何的程式片斷或步驟，一步一步腳踏實地去實作範例程式，最後一定可以完成學習。
+閱讀這篇教學，過程中最好照著每個步驟走，不要省略任何的程式片段或步驟，一步一步腳踏實地去實作範例程式，最後一定可以完成學習。
 
 一開始我們會建立一個取名為 `blog` 的 Rails 專案，以一個簡易的網誌作為學習範例。不過在這之前，你要先確定是否已經裝了 Rails 。
 
 TIP: 本文的範例中會用 `$` 來表示類 Unix 系統的命令提示字元，但實際上顯示可能因客制化而不同。如果你是 Windows 的使用者，那命令提示字元會類似於 `c:\source_code>` 。
 
-### 學習安裝 Rails
+### 安裝 Rails
 
 首先打開命令提示視窗。在 Mac OS X 底下請打開 Terminal.app ，如果是在 Windows 下請在開始功能表選擇＂執行＂並且輸入 'cmd.exe' 後開啟命令視窗。只要是有貨幣符號 `$` 開頭的命令都是要在命令列上執行。現在就用命令檢查你是否有安裝最新的 Ruby 版本：
 
@@ -70,26 +70,25 @@ $ ruby -v
 ruby 2.0.0p353
 ```
 
-如果你還沒安裝 Ruby ，可以看一下
-[ruby-lang.org](https://www.ruby-lang.org/en/installation/) ，裡面會有針對所用系統的安裝 Ruby 方法。
+如果還沒安裝 Ruby ，可以看一下
+[ruby-lang.org](https://www.ruby-lang.org/en/installation/) ，裡面會有針對你所用系統的安裝 Ruby 方法。
 
-至於 SQLite3 很多熱門的類 Unix 系統都會搭載 acceptable 版本。 Windows 或其他作業系統的安裝教學請參考 [SQLite3 的網站](http://www.sqlite.org).
-Verify that it is correctly installed and in your PATH:
+而很多熱門的類 Unix 系統都會搭載 SQLite3 的 acceptable 版本。 Windows 或其他作業系統的安裝教學請參考 [SQLite3 的網站](http://www.sqlite.org).
+現在來確定是否有正確安裝或正確新增到 Path 環境變數中:
 
 ```bash
 $ sqlite3 --version
 ```
 
-The program should report its version.
+SQLite 會在命令列上顯示版本資訊。
 
-使用 RubyGems 提供的命令 `gem install` 來安裝 Rails ：
+接下來使用 RubyGems 提供的命令 `gem install` 來安裝 Rails ：
 
 ```bash
 $ gem install rails
 ```
 
-To verify that you have everything installed correctly, you should be able to
-run the following:
+如果不確定是否 Rails 有正確安裝的話，應該輸入以下命令確認：
 
 ```bash
 $ bin/rails --version
@@ -99,52 +98,43 @@ $ bin/rails --version
 
 ### 建立一個 Blog 應用程式
 
-Rails comes with a number of scripts called generators that are designed to make
-your development life easier by creating everything that's necessary to start
-working on a particular task. One of these is the new application generator,
-which will provide you with the foundation of a fresh Rails application so that
-you don't have to write it yourself.
+Rails 中有許多被稱之為產生器（generators）的腳本（scripts），主要用來配置開發所需要的檔案及工具，讓開發可以更加順手。
+而現在要用的其中一種產生器就是可以幫助我們建構出一個新的 Rails 應用專案，如此一來就不用再花時間重頭寫起。
 
-To use this generator, open a terminal, navigate to a directory where you have
-rights to create files, and type:
+要使用產生器之前，請先打開命令提示視窗，切換到有存取權限的目錄接著輸入：
 
 ```bash
 $ rails new blog
 ```
 
-This will create a Rails application called Blog in a `blog` directory and
-install the gem dependencies that are already mentioned in `Gemfile` using
-`bundle install`.
+執行完後會建立一個名為 `Blog` 的 Rails 應用專案，存放在 blog 目錄下，執行過程中會透過 `bundle install` 命令安裝在 `Gemfile` 上所提的 gem 相依套件。
 
-TIP: You can see all of the command line options that the Rails application
-builder accepts by running `rails new -h`.
+TIP: 你可以執行 `rails new -h` 看到所有 Rails application builder 可接受的命令列參數。
 
-After you create the blog application, switch to its folder:
+創建完 blog 專案之後，切換到它的目錄下：
 
 ```bash
 $ cd blog
 ```
 
-The `blog` directory has a number of auto-generated files and folders that make
-up the structure of a Rails application. Most of the work in this tutorial will
-happen in the `app` folder, but here's a basic rundown on the function of each
-of the files and folders that Rails created by default:
+在 `blog` 這個目錄中有許多自動生成的檔案和資料夾，而這些就是構成 Rails 應用專案的重要元素
+本篇教學中大部份會著重在 `app` 這個資料夾中，話雖如此，這裡還是附上一個表格，將所有預設的檔案及資料夾的功能都做個簡單介紹：
 
-| File/Folder | Purpose |
+| 檔案/資料夾 | 用途 |
 | ----------- | ------- |
-|app/|Contains the controllers, models, views, helpers, mailers and assets for your application. You'll focus on this folder for the remainder of this guide.|
-|bin/|Contains the rails script that starts your app and can contain other scripts you use to setup, deploy or run your application.|
-|config/|Configure your application's routes, database, and more. This is covered in more detail in [Configuring Rails Applications](configuring.html).|
+|app/|包含著應用程式的 controllers, models, views, helpers, mailers and assets。 接下來的教學中，你將會花多數的心力在這個資料夾上。|
+|bin/|包含許多命令的執行檔，像是一開始建構應用專案的 rails 腳本（script）以及環境的配置（setup）、應用程式的佈署（deploy）、執行應用程式（run）的其他腳本（scripts）。|
+|config/|可以設定應用程式的路由、資料庫，以及其他等等。詳細請參考 [設定 Rails 應用程式](configuring.html)。|
 |config.ru|Rack configuration for Rack based servers used to start the application.|
-|db/|Contains your current database schema, as well as the database migrations.|
-|Gemfile<br>Gemfile.lock|These files allow you to specify what gem dependencies are needed for your Rails application. These files are used by the Bundler gem. For more information about Bundler, see [the Bundler website](http://bundler.io).|
-|lib/|Extended modules for your application.|
-|log/|Application log files.|
-|public/|The only folder seen by the world as-is. Contains static files and compiled assets.|
-|Rakefile|This file locates and loads tasks that can be run from the command line. The task definitions are defined throughout the components of Rails. Rather than changing Rakefile, you should add your own tasks by adding files to the lib/tasks directory of your application.|
-|README.rdoc|This is a brief instruction manual for your application. You should edit this file to tell others what your application does, how to set it up, and so on.|
-|test/|Unit tests, fixtures, and other test apparatus. These are covered in [Testing Rails Applications](testing.html).|
-|tmp/|Temporary files (like cache, pid, and session files).|
+|db/|包含現行資料庫的綱要（Schema），可以方便日後資料庫的移轉。|
+|Gemfile<br>Gemfile.lock|這兩個檔案定義了 Rails application 所要安裝的 gem 相依套件，並且交由 Bundler gem 做管理。 更多關於 Bundler 的資訊請看 [Bundler 的網站](http://bundler.io).|
+|lib/|包含應用程式的擴充模組。|
+|log/|包含應用程式的log檔案。|
+|public/|唯一能再網路上被檢索的目錄，裡面包含著靜態檔案和編譯過後的一些資源（assets）。|
+|Rakefile|Rakefile 主要目的是找到並載入可以從命令列執行的任務。其中內建任務的定義是存在各個 Rails 元件當中。若想新增自己寫的任務，不要直接修改 Rakefile，我們傾向把自訂的任務新增到 lib/tasks 目錄下。|
+|README.rdoc|這是一份應用程式的操作手冊。你可以編輯這個檔案來告訴別人你的應用程式的功能，以及如何安裝配置等等。|
+|test/|包含單元測試、fixtures ( 建立模擬資料 )，還有其他的測試工具. 詳細請參考[測試 Rails 應用程式](testing.html).|
+|tmp/|包含一些暫存檔（像是快取、PID、session 暫存檔）。|
 |vendor/|A place for all third-party code. In a typical Rails application this includes vendored gems.|
 
 Hello, Rails!
