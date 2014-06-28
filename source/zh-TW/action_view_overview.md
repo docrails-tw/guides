@@ -80,9 +80,9 @@ Hi, Mr. <% puts "Frodo" %>
 
 #### Builder
 
-Builder templates are a more programmatic alternative to ERB. They are especially useful for generating XML content. An XmlMarkup object named `xml` is automatically made available to templates with a `.builder` extension.
+Builder 模版 ERB 的替代方案，比 ERB 需要更多程式設計。在產生 XML 時特別有用。在副檔名為 `.builder` 的模版裡，可以直接使用名為 `xml` 的 `XmlMarkup` 物件。
 
-Here are some basic examples:
+以下是一些簡單的範例：
 
 ```ruby
 xml.em("emphasized")
@@ -91,7 +91,7 @@ xml.a("A Link", "href" => "http://rubyonrails.org")
 xml.target("name" => "compile", "option" => "fast")
 ```
 
-which would produce:
+會產生：
 
 ```html
 <em>emphasized</em>
@@ -100,7 +100,7 @@ which would produce:
 <target option="fast" name="compile" />
 ```
 
-Any method with a block will be treated as an XML markup tag with nested markup in the block. For example, the following:
+方法所接受的區塊，會被視為 XML 的標籤，會嵌套在該方法裡。見下例：
 
 ```ruby
 xml.div {
@@ -109,7 +109,7 @@ xml.div {
 }
 ```
 
-would produce something like:
+會輸出像是：
 
 ```html
 <div>
@@ -118,7 +118,7 @@ would produce something like:
 </div>
 ```
 
-Below is a full-length RSS example actually used on Basecamp:
+以下是 Basecamp 用來產生 RSS 的範例：
 
 ```ruby
 xml.rss("version" => "2.0", "xmlns:dc" => "http://purl.org/dc/elements/1.1/") do
@@ -143,7 +143,9 @@ xml.rss("version" => "2.0", "xmlns:dc" => "http://purl.org/dc/elements/1.1/") do
 end
 ```
 
-#### Template Caching
+#### 模版快取
+
+
 
 By default, Rails will compile each template to a method in order to render it. When you alter a template, Rails will check the file's modification time and recompile it in development mode.
 
