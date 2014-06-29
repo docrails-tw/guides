@@ -61,7 +61,7 @@ TIP: 本文的範例中會用 `$` 來表示類 Unix 系統的命令提示字元�
 
 ### 安裝 Rails
 
-首先打開命令提示視窗。在 Mac OS X 底下請打開 Terminal.app ，如果是在 Windows 下請在開始功能表選擇＂執行＂並且輸入 'cmd.exe' 後開啟命令視窗。只要是有貨幣符號 `$` 開頭的命令都是要在命令列上執行。現在就用命令檢查你是否有安裝最新的 Ruby 版本：
+首先打開命令提示視窗。在 Mac OS X 底下請打開 Terminal.app ，如果是在 Windows 下請在開始功能表選擇＂執行＂並且輸入 'cmd.exe' 後開啟命令視窗。只要是有貨幣符號 `$` 開頭的命令都是要在命令列上執行。現在就用命令檢查是否已安裝最新的 Ruby 版本：
 
 TIP: 其實有很多工具可以幫助你在系統上快速安裝 Ruby 或是 Ruby on Rails 。 像 Windows 使用者可以參考 [Rails Installer](http://railsinstaller.org)，而 Mac OS X 使用者則有 [Tokaido](https://github.com/tokaido/tokaidoapp) 可以選擇。
 
@@ -71,9 +71,9 @@ ruby 2.0.0p353
 ```
 
 如果還沒安裝 Ruby ，可以看一下
-[ruby-lang.org](https://www.ruby-lang.org/en/installation/) ，裡面會有針對你所用系統的安裝 Ruby 方法。
+[ruby-lang.org](https://www.ruby-lang.org/en/installation/) ，連結裡會有針對你所用系統的 Ruby 安裝方法。
 
-而很多熱門的類 Unix 系統都會搭載 SQLite3 的 acceptable 版本。 Windows 或其他作業系統的安裝教學請參考 [SQLite3 的網站](http://www.sqlite.org).
+很多熱門的類 Unix 系統都會搭載 SQLite3 的 acceptable 版本。而 Windows 或其他作業系統的安裝教學請參考 [SQLite3 的網站](http://www.sqlite.org)。
 現在來確定是否有正確安裝或正確新增到 Path 環境變數中:
 
 ```bash
@@ -88,7 +88,7 @@ SQLite 會在命令列上顯示版本資訊。
 $ gem install rails
 ```
 
-如果不確定是否 Rails 有正確安裝的話，應該輸入以下命令確認：
+如果不確定 Rails 是否有正確安裝的話，請輸入以下命令做確認：
 
 ```bash
 $ bin/rails --version
@@ -107,9 +107,9 @@ Rails 中有許多被稱之為產生器（generators）的腳本（scripts），
 $ rails new blog
 ```
 
-執行完後會建立一個名為 `Blog` 的 Rails 應用專案，存放在 blog 目錄下，執行過程中會透過 `bundle install` 命令安裝在 `Gemfile` 上所提的 gem 相依套件。
+執行完後會建立一個名為 `Blog` 的 Rails 應用專案，存放在 blog 目錄下，執行過程中會透過 `bundle install` 命令安裝在 `Gemfile` 上所提到的 gem 相依套件。
 
-TIP: 你可以執行 `rails new -h` 看到所有 Rails application builder 可接受的命令列參數。
+TIP: 你可以執行 `rails new -h` 看到所有 Rails 應用專案生成器（Rails application builder）可接受的命令列參數。
 
 創建完 blog 專案之後，切換到它的目錄下：
 
@@ -118,24 +118,24 @@ $ cd blog
 ```
 
 在 `blog` 這個目錄中有許多自動生成的檔案和資料夾，而這些就是構成 Rails 應用專案的重要元素
-本篇教學中大部份會著重在 `app` 這個資料夾中，話雖如此，這裡還是附上一個表格，將所有預設的檔案及資料夾的功能都做個簡單介紹：
+本篇教學中大部份會著重在 `app` 這個資料夾，話雖如此，這裡還是附上表格，將所有預設的檔案及資料夾的功能都做個簡單介紹：
 
 | 檔案/資料夾 | 用途 |
 | ----------- | ------- |
 |app/|包含著應用程式的 controllers, models, views, helpers, mailers and assets。 接下來的教學中，你將會花多數的心力在這個資料夾上。|
-|bin/|包含許多命令的執行檔，像是一開始建構應用專案的 rails 腳本（script）以及環境的配置（setup）、應用程式的佈署（deploy）、執行應用程式（run）的其他腳本（scripts）。|
-|config/|可以設定應用程式的路由、資料庫，以及其他等等。詳細請參考 [設定 Rails 應用程式](configuring.html)。|
-|config.ru|Rack configuration for Rack based servers used to start the application.|
-|db/|包含現行資料庫的綱要（Schema），可以方便日後資料庫的移轉。|
-|Gemfile<br>Gemfile.lock|這兩個檔案定義了 Rails application 所要安裝的 gem 相依套件，並且交由 Bundler gem 做管理。 更多關於 Bundler 的資訊請看 [Bundler 的網站](http://bundler.io).|
+|bin/|包含許多像是一開始建構應用專案的 rails 腳本（script）以及環境的配置（setup）、應用程式的佈署（deploy）、執行應用程式（run）的其他腳本（scripts）。|
+|config/|可以設定應用程式的路由、資料庫、以及其他等等。詳細請參考 [設定 Rails 應用程式](configuring.html)。|
+|config.ru|用來啟動應用程式的 Rack 設定檔|
+|db/|包含現行資料庫的綱要（schema），方便日後資料庫的移轉。|
+|Gemfile<br>Gemfile.lock|這兩個檔案可以指定 Rails application 所要安裝的 gem 相依套件，並且交由 Bundler gem 做管理。 更多關於 Bundler 的資訊請看 [Bundler 的網站](http://bundler.io).|
 |lib/|包含應用程式的擴充模組。|
 |log/|包含應用程式的log檔案。|
 |public/|唯一能再網路上被檢索的目錄，裡面包含著靜態檔案和編譯過後的一些資源（assets）。|
 |Rakefile|Rakefile 主要目的是找到並載入可以從命令列執行的任務。其中內建任務的定義是存在各個 Rails 元件當中。若想新增自己寫的任務，不要直接修改 Rakefile，我們傾向把自訂的任務新增到 lib/tasks 目錄下。|
 |README.rdoc|這是一份應用程式的操作手冊。你可以編輯這個檔案來告訴別人你的應用程式的功能，以及如何安裝配置等等。|
-|test/|包含單元測試、fixtures ( 建立模擬資料 )，還有其他的測試工具. 詳細請參考[測試 Rails 應用程式](testing.html).|
-|tmp/|包含一些暫存檔（像是快取、PID、session 暫存檔）。|
-|vendor/|A place for all third-party code. In a typical Rails application this includes vendored gems.|
+|test/|包含單元測試、fixtures ( 建立模擬資料 )，還有其他的測試工具。 詳細請參考[測試 Rails 應用程式](testing.html).|
+|tmp/|包含一些暫存檔（像是快取、PID、 session 暫存檔）。|
+|vendor/|主要放置第三方的程式碼。 通常 Rails 應用專案會在這放置第三方的 gem 套件。|
 
 Hello, Rails!
 -------------
