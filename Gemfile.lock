@@ -16,9 +16,12 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.1)
       tzinfo (~> 1.1)
+<<<<<<< HEAD
     amatch (0.3.0)
       tins (~> 1.0)
     bcrypt (3.1.7)
+=======
+>>>>>>> parent of cdb6808... Add deploy key permission using bcrypt.
     builder (3.2.2)
     erubis (2.7.0)
     i18n (0.6.9)
@@ -46,8 +49,11 @@ PLATFORMS
 DEPENDENCIES
   actionpack
   activesupport
+<<<<<<< HEAD
   amatch
   bcrypt
+=======
+>>>>>>> parent of cdb6808... Add deploy key permission using bcrypt.
   rake
   redcarpet
   w3c_validators

@@ -11,8 +11,5 @@ end
 
 gem 'rake'
 
-# Deploy password
-gem 'bcrypt', require: false
-
 # for calculating levenshtein distance
 gem 'amatch'
