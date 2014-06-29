@@ -113,7 +113,6 @@
       name: Rake 任務與 Rails 命令列工具
       url: command_line.html
       description: 本篇介紹 Rails 提供的 Rake 任務與命令列功能。
-      needs_translation: true
     -
       name: Rails 快取
       work_in_progress: true
@@ -198,7 +197,6 @@
       url: 4_2_release_notes.html
       description: Rails 4.2 的發佈記。
       work_in_progress: true
-      needs_translation: true
     -
       name: Ruby on Rails 4.1 發佈記
       url: 4_1_release_notes.html
