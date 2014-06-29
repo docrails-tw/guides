@@ -140,26 +140,18 @@ $ cd blog
 Hello, Rails!
 -------------
 
-To begin with, let's get some text up on screen quickly. To do this, you need to
-get your Rails application server running.
+一開始，我們會希望有個簡單的執行結果。那就要先啟動 Rails 應用服務來執行。
 
-### Starting up the Web Server
+### 啟動 Web 服務
 
-You actually have a functional Rails application already. To see it, you need to
-start a web server on your development machine. You can do this by running the
-following in the `blog` directory:
+事實上，你已經有一個簡單功能的 Rails 應用專案。如果想看程式執行結果，那就必須在開發設備中啟動 web 服務，請在 `blog` 目錄輸入以下的命令：
 
 ```bash
 $ bin/rails server
 ```
 
-TIP: Compiling CoffeeScript to JavaScript requires a JavaScript runtime and the
-absence of a runtime will give you an `execjs` error. Usually Mac OS X and
-Windows come with a JavaScript runtime installed. Rails adds the `therubyracer`
-gem to the generated `Gemfile` in a commented line for new apps and you can
-uncomment if you need it. `therubyrhino` is the recommended runtime for JRuby
-users and is added by default to the `Gemfile` in apps generated under JRuby.
-You can investigate about all the supported runtimes at
+TIP: 從 CoffeeScript 編譯到 JavaScript 需要一個 JavaScript 直譯器。如果少了直譯器就執行，命令列就會跳出 `execjs` 錯誤。通常 Mac OS X 以及 Windows 都會搭載 JavaScript 直譯器。 如果有需要直譯器，在新增的應用專案中 Rails 會將 `therubyracer` gem 套件註解在 `Gemfile` 中，你只要將他反註解然後就可以安裝了。 `therubyrhino` 是一個 JRuby 使用者推薦的直譯器套件，所以在 JRuby 中是直接把它定義在 `Gemfile` 。
+其他有支援的直譯器請參考
 [ExecJS](https://github.com/sstephenson/execjs#readme).
 
 This will fire up WEBrick, a web server distributed with Ruby by default. To see
