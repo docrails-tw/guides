@@ -61,7 +61,7 @@ TIP: 本文的範例中會用 `$` 來表示類 Unix 系統的命令提示字元�
 
 ### 安裝 Rails
 
-首先打開命令提示視窗。在 Mac OS X 底下請打開 Terminal.app ，如果是在 Windows 下請在開始功能表選擇＂執行＂並且輸入 'cmd.exe' 後開啟命令視窗。只要是有貨幣符號 `$` 開頭的命令都是要在命令列上執行。現在就用命令檢查是否已安裝最新的 Ruby 版本：
+首先打開命令提示視窗。在 Mac OS X 底下請打開 Terminal.app ，如果是在 Windows 下請在開始功能表選擇＂執行＂並且輸入 'cmd.exe' 後開啟命令視窗。只要是有錢號 `$` 開頭的命令都是要在命令列上執行。現在就用命令檢查是否已安裝最新的 Ruby 版本：
 
 TIP: 其實有很多工具可以幫助你在系統上快速安裝 Ruby 或是 Ruby on Rails 。 像 Windows 使用者可以參考 [Rails Installer](http://railsinstaller.org)，而 Mac OS X 使用者則有 [Tokaido](https://github.com/tokaido/tokaidoapp) 可以選擇。
 
@@ -111,14 +111,14 @@ $ rails new blog
 
 TIP: 你可以執行 `rails new -h` 看到所有 Rails 應用專案生成器（Rails application builder）可接受的命令列參數。
 
-創建完 blog 專案之後，切換到它的目錄下：
+建立 blog 專案之後，切換到它的目錄下：
 
 ```bash
 $ cd blog
 ```
 
-在 `blog` 這個目錄中有許多自動生成的檔案和資料夾，而這些就是構成 Rails 應用專案的重要元素
-本篇教學中大部份會著重在 `app` 這個資料夾，話雖如此，這裡還是附上表格，將所有預設的檔案及資料夾的功能都做個簡單介紹：
+在 `blog` 這個目錄中有許多自動生成的檔案和資料夾，而這些都是構成 Rails 應用專案的重要元素
+本篇教學中大部份會著重在 `app` 這個資料夾，話雖如此，這裡還是附上表格，將所有預設的檔案及資料夾的功能做個簡單介紹：
 
 | 檔案/資料夾 | 用途 |
 | ----------- | ------- |
@@ -140,11 +140,11 @@ $ cd blog
 Hello, Rails!
 -------------
 
-一開始，我們會希望有個簡單的執行結果。那就要先啟動 Rails 應用服務來執行。
+一開始，如果希望有個簡單的執行結果。而你必須先啟動 Rails 應用服務來執行。
 
 ### 啟動 Web 服務
 
-事實上，你已經有一個簡單功能的 Rails 應用專案。如果想看程式執行結果，那就必須在開發設備中啟動 web 服務，請在 `blog` 目錄輸入以下的命令：
+事實上， Rails 應用專案已經有一個簡單功能。如果想看執行結果，那就必須在開發設備中啟動 web 服務，請在 `blog` 目錄輸入以下的命令：
 
 ```bash
 $ bin/rails server
@@ -154,25 +154,16 @@ TIP: 從 CoffeeScript 編譯到 JavaScript 需要一個 JavaScript 直譯器。�
 其他有支援的直譯器請參考
 [ExecJS](https://github.com/sstephenson/execjs#readme).
 
-This will fire up WEBrick, a web server distributed with Ruby by default. To see
-your application in action, open a browser window and navigate to
-<http://localhost:3000>. You should see the Rails default information page:
+這將會啟動 WEBrick，一個 Ruby 預設的 web 伺服器。接下來要如何看執行中的應用程式，請打開瀏覽器並在網址列上輸入 <http://localhost:3000> 。你就會看到 Rails 的預設資訊頁面。
 
 ![Welcome aboard screenshot](images/getting_started/rails_welcome.png)
 
-TIP: To stop the web server, hit Ctrl+C in the terminal window where it's
-running. To verify the server has stopped you should see your command prompt
-cursor again. For most UNIX-like systems including Mac OS X this will be a
-dollar sign `$`. In development mode, Rails does not generally require you to
-restart the server; changes you make in files will be automatically picked up by
-the server.
+TIP: 如想停止 web 服務，請在已執行中的命令視窗按下 Ctrl+C 跳回命令提示字元就可以終止服務。
+大多數類 UNIX 系統，其中也包含 Mac OS X 會再次看到錢符 `$`。在開發模式中, Rails 通常是不會要求你重新起動服務；只要有修改過的檔案伺服器就會自動重新載入。
 
-The "Welcome aboard" page is the _smoke test_ for a new Rails application: it
-makes sure that you have your software configured correctly enough to serve a
-page. You can also click on the _About your application's environment_ link to
-see a summary of your application's environment.
+＂Welcome aboard＂這個頁面對於新建 Rails 應用程式來說是一個_煙霧測試（smoke test）_：測試設定上是否正確，來讓此頁面可以正確執行。你也可以透過點擊_About your application's environment_連結來看應用程式環境相關資訊的摘要。
 
-### Say "Hello", Rails
+### Rails 說 "Hello" 
 
 To get Rails saying "Hello", you need to create at minimum a _controller_ and a
 _view_.
