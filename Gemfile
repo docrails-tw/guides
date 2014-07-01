@@ -8,5 +8,7 @@ group :doc do
   gem 'redcarpet'
 end
 
+gem 'nokogiri'
+
 gem 'rake'
 
