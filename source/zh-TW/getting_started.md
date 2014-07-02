@@ -48,7 +48,7 @@ Rails 是一個有先見之明的軟體。
   representation within a system. (系統中每個功能的構思都必須要有單一、明確且讓人認同的表達方式)"
 	儘量避免一再重複的相同資訊，所寫的程式才容易維護、有擴展性且不容易出現 bug 。
 	
-* **Convention Over Configuration(約定優於配置):** Rails 不希望你浪費太多時間無止境的配置設定檔，而是把最好的一些 Web 開發方法直接作為預設，讓你熟悉之後就可以上手了。
+* **Convention Over Configuration(約定優於配置):** Rails 不希望你浪費太多時間無止境的配置設定檔，而是直接把最好的一些 Web 開發方法作為預設，讓你熟悉之後就可以上手了。
 
 建立一個新的 Rails 專案
 ----------------------------
@@ -161,35 +161,23 @@ TIP: 從 CoffeeScript 編譯到 JavaScript 需要一個 JavaScript 直譯器。�
 TIP: 如想停止 web 服務，請在已執行中的命令視窗按下 Ctrl+C 跳回命令提示字元就可以終止服務。
 大多數類 UNIX 系統，其中也包含 Mac OS X 會再次看到錢符 `$`。在開發模式中, Rails 通常是不會要求你重新起動服務；只要有修改過的檔案伺服器就會自動重新載入。
 
-＂Welcome aboard＂這個頁面對於新建 Rails 應用程式來說是一個_煙霧測試（smoke test）_：測試設定上是否正確，來讓此頁面可以正確執行。你也可以透過點擊_About your application's environment_連結來看應用程式環境相關資訊的摘要。
+＂Welcome aboard＂這個頁面對於新建 Rails 應用程式來說是一個_煙霧測試（smoke test）_：測試設定上是否正確，來讓此頁面正確執行。你也可以透過點擊 _About your application's environment_ 連結來看應用程式環境相關資訊的摘要。
 
 ### Rails 說 "Hello" 
 
-To get Rails saying "Hello", you need to create at minimum a _controller_ and a
-_view_.
+為了讓 Rails 可以顯示 "Hello"，你必須建立一個簡單的 _controller_ 跟 _view_。
 
-A controller's purpose is to receive specific requests for the application.
-_Routing_ decides which controller receives which requests. Often, there is more
-than one route to each controller, and different routes can be served by
-different _actions_. Each action's purpose is to collect information to provide
-it to a view.
+Controller 的功能是去接收對於應用程式的 Http 請求。而 _Routing_ 則是決定由那一個 controller 去接收請求，通常一個 controller 會有一個以上的 route 的規則對應，藉由不同的 actions 來處理這些不同的 routes 所決定的請求 。Action 的功能就是收集資訊並提供給 view 使用。
 
-A view's purpose is to display this information in a human readable format. An
-important distinction to make is that it is the _controller_, not the view,
-where information is collected. The view should just display that information.
-By default, view templates are written in a language called eRuby (Embedded
-Ruby) which is processed by the request cycle in Rails before being sent to the
-user.
+View 的功能是將資訊用常人可讀的方式呈現出來。 View 跟 controller 最大的差別就是 controller 負責資訊的收集，而 view 只是負責資訊的呈現。預設的 view 模版是用 eRuby （Embedded Ruby）所寫的，這部份要在所有結果送到使用者之前才會被 Rails 中 request cycle （從 route 到 view 的一系列請求）執行到。
 
-To create a new controller, you will need to run the "controller" generator and
-tell it you want a controller called "welcome" with an action called "index",
-just like this:
+要建立一個 controller ，你將必須執行 controller 的產生器，並且附上 controller 名稱以及 action 名稱的參數，就像這樣子：
 
 ```bash
 $ bin/rails generate controller welcome index
 ```
 
-Rails will create several files and a route for you.
+Rails 會幫你建立幾個檔案和一個 route 。
 
 ```bash
 create  app/controllers/welcome_controller.rb
@@ -210,13 +198,9 @@ invoke    scss
 create      app/assets/stylesheets/welcome.css.scss
 ```
 
-Most important of these are of course the controller, located at
-`app/controllers/welcome_controller.rb` and the view, located at
-`app/views/welcome/index.html.erb`.
+在這些檔案中最重要的當然是其中兩個檔案，一個是位於 `app/controllers/welcome_controller.rb` 的 controller ，而另一個則是位於 `app/views/welcome/index.html.erb` 的 view 。
 
-Open the `app/views/welcome/index.html.erb` file in your text editor. Delete all
-of the existing code in the file, and replace it with the following single line
-of code:
+接下來用文字編輯器打開 `app/views/welcome/index.html.erb` ，並且將檔案所有內容替換成以下的程式碼：
 
 ```html
 <h1>Hello, Rails!</h1>
