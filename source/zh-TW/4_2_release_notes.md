@@ -12,8 +12,28 @@ Rails 4.2 精華摘要：
 
 如果您正試著升級現有的應用程式，最好有廣的測試覆蓋度。首先應先升級至 4.1，確保應用程式仍正常工作，接著再升上 4.2。升級需要注意的事項在 [Ruby on Rails 升級指南](upgrading_ruby_on_rails.html#upgrading-from-rails-4-1-to-rails-4-2)可以找到。
 
-主要的新功能
+重要新功能
 --------------
+
+### 外鍵支援
+
+遷移 DSL 現在支援新增、移除外鍵，也會導出到 `schema.rb`。目前只有 `mysql`、`mysql2` 以及 `postgresql` 的連接器支援外鍵。
+
+```ruby
+# add a foreign key to `articles.author_id` referencing `authors.id`
+add_foreign_key :articles, :authors
+
+# add a foreign key to `articles.author_id` referencing `users.lng_id`
+add_foreign_key :articles, :users, column: :author_id, primary_key: "lng_id"
+
+# remove the foreign key on `accounts.branch_id`
+remove_foreign_key :accounts, :branches
+
+# remove the foreign key on `accounts.owner_id`
+remove_foreign_key :accounts, column: :owner_id
+```
+
+完整說明請參考 API 文件：[add_foreign_key](http://api.rubyonrails.org/v4.2.0/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html#method-i-add_foreign_key) 和 [remove_foreign_key](http://api.rubyonrails.org/v4.2.0/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html#method-i-remove_foreign_key)。
 
 Railties
 --------
@@ -46,8 +66,7 @@ Action Pack
 
 ### 棄用
 
-* Deprecated support for setting the `to:` option of a router to a symbol or a
-  string that does not contain a `#` character:
+* 棄用路由的 `:to` 選項裡，`:to` 可以指向符號或不含井號的字串這兩個功能。
 
       get '/posts', to: MyRackApp    => (No change necessary)
       get '/posts', to: 'post#index' => (No change necessary)
@@ -96,6 +115,23 @@ Action Pack
 * 新增關掉記錄 CSRF 失敗的選項。
   ([Pull Request](https://github.com/rails/rails/pull/14280))
 
+Action View
+-------------
+
+請參考 [CHANGELOG][AV-CHANGELOG] 來了解更多細節。
+
+### 棄用
+
+* 棄用 `AbstractController::Base.parent_prefixes`。想修改尋找 View 的位置，
+  請覆寫 `AbstractController::Base.local_prefixes`。
+  ([Pull Request](https://github.com/rails/rails/pull/15026))
+
+* 棄用 `ActionView::Digestor#digest(name, format, finder, options = {})`，
+  現在參數改用 Hash 傳入。
+  ([Pull Request](https://github.com/rails/rails/pull/14243))
+
+### 值得一提的變化
+
 Action Mailer
 -------------
 
@@ -108,7 +144,30 @@ Active Record
 
 請參考 [CHANGELOG][AR-CHANGELOG] 來了解更多細節。
 
+### 移除
+
+* 移除已棄用的方法 `ActiveRecord::Base.quoted_locking_column`.
+  ([Pull Request](https://github.com/rails/rails/pull/15612))
+
+* 移除已棄用的方法 `ActiveRecord::Migrator.proper_table_name`。
+  請改用 `ActiveRecord::Migration` 的實體方法：`proper_table_name`。
+  ([Pull Request](https://github.com/rails/rails/pull/15512))
+
+* 移除 `cache_attributes` 以及其它相關的方法，所有的屬性現在都會快取了。
+  ([Pull Request](https://github.com/rails/rails/pull/15429))
+
+* 移除了未使用的 `:timestamp` 類型。把所有 `timestamp` 類型都改為 `:datetime` 的別名。
+  修正在 `ActiveRecord` 之外，欄位類型不一致的問題，譬如 XML 序列化。
+  ([Pull Request](https://github.com/rails/rails/pull/15184))
+
 ### 棄用
+
+* 棄用了當欄位不存在時，還會從 `column_for_attribute` 回傳 `nil` 的情況。
+  Rails 5.0 將會回傳 Null Object。
+  ([Pull Request](https://github.com/rails/rails/pull/15878))
+
+* 棄用了 `serialized_attributes`，沒有替代方案。
+  ([Pull Request](https://github.com/rails/rails/pull/15704))
 
 * 依賴實體狀態（有定義接受參數的作用域）的關聯現在不能使用 `.joins`、`.preload` 以及 `.eager_load` 了。
   ([Commit](https://github.com/rails/rails/commit/ed56e596a0467390011bc9d56d462539776adac1))
@@ -117,11 +176,15 @@ Active Record
   (Commit [1](https://github.com/rails/rails/commit/d92ae6ccca3bcfd73546d612efaea011270bd270),
   [2](https://github.com/rails/rails/commit/d35f0033c7dec2b8d8b52058fb8db495d49596f7))
 
-* 棄用半支持的 PostgreSQL 範圍數值（不包含起始值）。目前我們把 PostgreSQL 的範圍對應到 Ruby 的範圍。但由於 Ruby 的範圍不支援不包含起始值，所以無法完全轉換。
+* 棄用僅支持一半的 PostgreSQL 範圍數值（不包含起始值）。目前我們把 PostgreSQL 的範圍對應到 Ruby 的範圍。但由於 Ruby 的範圍不支援不包含起始值，所以無法完全轉換。
 
   目前的解決方法是將起始數遞增，這是不對的，已經棄用了。關於不知如何遞增的子類型（比如沒有定義 `#succ`）會對不包含起始值的拋出 `ArgumentError`。
 
   ([Commit](https://github.com/rails/rails/commit/91949e48cf41af9f3e4ffba3e5eecf9b0a08bfc3))
+
+* 棄用對 `has_many :through` 自動偵測 counter cache 的支持。要自己對 `has_many` 與
+  `belongs_to` 關聯，給 `through` 的紀錄手動設定。
+  ([Pull Request](https://github.com/rails/rails/pull/15754))
 
 ### 值得一提的變化
 
@@ -155,6 +218,11 @@ Active Model
 ------------
 
 請參考 [CHANGELOG][AM-CHANGELOG] 來了解更多細節。
+
+### 移除
+
+* 移除了 `Validator#setup`，沒有替代方案。
+  ([Pull Request](https://github.com/rails/rails/pull/15617))
 
 ### 值得一提的變化
 
@@ -200,7 +268,8 @@ Active Support
 許多人花了寶貴的時間貢獻至 Rails 專案，使 Rails 成為更穩定、更強韌的網路框架，參考[完整的 Rails 貢獻者清單](http://contributors.rubyonrails.org/)，感謝所有的貢獻者！
 
 [rails]: https://github.com/rails/rails
-[Railties-CHANGELOG]: https://github.com/rails/rails/blob/4-1-stable/railties/CHANGELOG.md
-[AR-CHANGELOG]: https://github.com/rails/rails/blob/4-1-stable/activerecord/CHANGELOG.md
-[AP-CHANGELOG]: https://github.com/rails/rails/blob/4-1-stable/actionpack/CHANGELOG.md
-[AM-CHANGELOG]: https://github.com/rails/rails/blob/4-1-stable/activemodel/CHANGELOG.md
+[Railties-CHANGELOG]: https://github.com/rails/rails/blob/4-2-stable/railties/CHANGELOG.md
+[AR-CHANGELOG]: https://github.com/rails/rails/blob/4-2-stable/activerecord/CHANGELOG.md
+[AP-CHANGELOG]: https://github.com/rails/rails/blob/4-2-stable/actionpack/CHANGELOG.md
+[AM-CHANGELOG]: https://github.com/rails/rails/blob/4-2-stable/activemodel/CHANGELOG.md
+[AV-CHANGELOG]: https://github.com/rails/rails/blob/4-2-stable/actionview/CHANGELOG.md

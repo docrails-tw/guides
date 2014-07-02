@@ -80,9 +80,9 @@ require 'bundler/setup' if File.exist?(ENV['BUNDLE_GEMFILE'])
 
 標準的 Rails 應用程式依賴以下 RubyGems：
 
-* abstract
 * actionmailer
 * actionpack
+* actionview
 * activemodel
 * activerecord
 * activesupport
@@ -101,7 +101,7 @@ require 'bundler/setup' if File.exist?(ENV['BUNDLE_GEMFILE'])
 * rails
 * railties
 * rake
-* sqlite3-ruby
+* sqlite3
 * thor
 * treetop
 * tzinfo

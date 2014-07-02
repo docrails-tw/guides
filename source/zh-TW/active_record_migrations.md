@@ -390,6 +390,34 @@ TIP: 和 `change_column`（以及 `change_column_default`）不同，`change_col
 
 某些連接器可能支援其他選項，請參考與連接器相關的 API 文件來了解更多資訊。
 
+### 外鍵
+
+雖然不是必須的，但可能會想加入外鍵約束來保證[參照的完整性](#active-record-與參照完整性)。
+
+```ruby
+add_foreign_key :articles, :authors
+```
+
+上例會給 `articles` 資料表新增外鍵欄位：`author_id`。外鍵會使用 `articles` 資料表的主鍵 `id` 作為參照。若參照的欄位名稱不能從資料表名稱推測出來，可以使用 `:column` 與 `primary_key` 選項。
+
+
+Rails 會給每個外鍵產生一個名字，由 `fk_rails_` 前綴加上 10 個隨機字元。可以用 `:name` 選項來修改。
+
+NOTE: Active Record 只支援單欄外鍵。需要用組合外鍵請使用 `execute` 與 `structure.sql`。
+
+移除外鍵也很簡單：
+
+```ruby
+# let Active Record figure out the column name
+remove_foreign_key :accounts, :branches
+
+# remove foreign key for a specific column
+remove_foreign_key :accounts, column: :owner_id
+
+# remove foreign key by name
+remove_foreign_key :accounts, name: :special_fk_name
+```
+
 ### 輔助方法不夠用怎麼辦
 
 Active Record 提供的輔助方法不夠用的時候，可以使用 `execute` 方法來執行任何 SQL 語句：
@@ -438,24 +466,23 @@ Product.connection.execute('UPDATE `products` SET `price`=`free` WHERE 1')
 ```ruby
 class ExampleMigration < ActiveRecord::Migration
   def change
-    create_table :products do |t|
-      t.references :category
+    create_table :distributors do |t|
+      t.string :zipcode
     end
 
     reversible do |dir|
       dir.up do
-        #add a foreign key
+        # add a CHECK constraint
         execute <<-SQL
-          ALTER TABLE products
-            ADD CONSTRAINT fk_products_categories
-            FOREIGN KEY (category_id)
-            REFERENCES categories(id)
+          ALTER TABLE distributors
+            ADD CONSTRAINT zipchk
+              CHECK (char_length(zipcode) = 5) NO INHERIT;
         SQL
       end
       dir.down do
         execute <<-SQL
-          ALTER TABLE products
-            DROP FOREIGN KEY fk_products_categories
+          ALTER TABLE distributors
+            DROP CONSTRAINT zipchk
         SQL
       end
     end
@@ -466,7 +493,7 @@ class ExampleMigration < ActiveRecord::Migration
 end
 ```
 
-使用 `reversible` 會確保執行順序的正確性。上例的遷移取消時（回滾），`down` 區塊會在 `home_page_url` 欄位移除前，以及 `products` 資料表刪除前，執行 `down` 區塊裡的內容。
+使用 `reversible` 會確保執行順序的正確性。上例的遷移取消時（回滾），`down` 區塊會在 `home_page_url` 欄位移除前，以及 `distributors` 資料表刪除前，執行 `down` 區塊裡的內容。
 
 
 有時候遷移做了怎麼樣都不可逆的操作，比如，可能是刪除資料。這種情況下，Active Record 會在試著取消遷移時，拋出一個 `ActiveRecord::IrreversibleMigration`，表示無法恢復先前的操作。
@@ -480,16 +507,15 @@ end
 ```ruby
 class ExampleMigration < ActiveRecord::Migration
   def up
-    create_table :products do |t|
-      t.references :category
+    create_table :distributors do |t|
+      t.string :zipcode
     end
 
-    # add a foreign key
+    # add a CHECK constraint
     execute <<-SQL
-      ALTER TABLE products
-        ADD CONSTRAINT fk_products_categories
-        FOREIGN KEY (category_id)
-        REFERENCES categories(id)
+      ALTER TABLE distributors
+        ADD CONSTRAINT zipchk
+        CHECK (char_length(zipcode) = 5);
     SQL
 
     add_column :users, :home_page_url, :string
@@ -501,11 +527,11 @@ class ExampleMigration < ActiveRecord::Migration
     remove_column :users, :home_page_url
 
     execute <<-SQL
-      ALTER TABLE products
-        DROP FOREIGN KEY fk_products_categories
+      ALTER TABLE distributors
+        DROP CONSTRAINT zipchk
     SQL
 
-    drop_table :products
+    drop_table :distributors
   end
 end
 ```
@@ -530,42 +556,26 @@ class FixupExampleMigration < ActiveRecord::Migration
 end
 ```
 
-`revert` 方法也接受區塊，具體取消的操作寫在區塊裡，這在只取消部份的遷移的場景下很有用。舉個例子，假設 `ExampleMigration` 已經遷移了，之後覺得還是序列化產品清單（下例的 `product_list`）好了，於是要取消遷移，可以這麼寫：
+`revert` 方法也接受區塊，具體取消的操作寫在區塊裡，這在只取消部份的遷移的場景下很有用。舉個例子，假設 `ExampleMigration` 已經遷移了，之後覺得還是用 Active Record 的驗證，在 `CHECK` 約束條件的地方來驗證郵遞區號。
 
 ```ruby
-class SerializeProductListMigration < ActiveRecord::Migration
+class DontUseConstraintForZipcodeValidationMigration < ActiveRecord::Migration
   def change
-    add_column :categories, :product_list
-
-    reversible do |dir|
-      dir.up do
-        # transfer data from Products to Category#product_list
-      end
-      dir.down do
-        # create Products from Category#product_list
-      end
-    end
-
     revert do
       # copy-pasted code from ExampleMigration
-      create_table :products do |t|
-        t.references :category
-      end
-
       reversible do |dir|
         dir.up do
-          #add a foreign key
+          # add a CHECK constraint
           execute <<-SQL
-            ALTER TABLE products
-              ADD CONSTRAINT fk_products_categories
-              FOREIGN KEY (category_id)
-              REFERENCES categories(id)
+            ALTER TABLE distributors
+              ADD CONSTRAINT zipchk
+                CHECK (char_length(zipcode) = 5);
           SQL
         end
         dir.down do
           execute <<-SQL
-            ALTER TABLE products
-              DROP FOREIGN KEY fk_products_categories
+            ALTER TABLE distributors
+              DROP CONSTRAINT zipchk
           SQL
         end
       end
@@ -753,7 +763,7 @@ end
 
 多數情況下，這便是資料庫裡有的東西。這個檔案是檢查資料庫之後，用 `create_table`、`add_index` 這些輔助方法用來表示資料庫的結構。這與使用何種資料庫無關，可以加載到任何 Active Record 所支援的資料庫。如果應用程式要發佈到多種資料庫的時候，這個檔案非常有用。
 
-但魚與熊掌不可兼得：`db/schema.rb` 不能表達資料庫特有的功能，像是外鍵約束、觸發器（triggers）、或是儲存過程（stored procedure）。但是在遷移裡可以執行任何自訂的 SQL 語句，但資料庫綱要的程式，無法從資料庫重建出這些 SQL 語句。如果要執行自訂的 SQL，記得將資料庫綱要的導出格式設定為 `:sql`。
+但魚與熊掌不可兼得：`db/schema.rb` 不能表達資料庫特有的功能，像是觸發器（triggers）、或是儲存過程（stored procedure）。但在遷移裡可以執行任何自訂的 SQL 語句，但資料庫綱要的導出程式，無法從資料庫重建出這些 SQL 語句。若要執行自訂的 SQL，記得將資料庫綱要的導出格式設定為 `:sql`。
 
 與其使用 Active Record 提供的資料庫綱要導出程式，可以用特定資料庫的導出工具（透過 `db:structure:dump` 任務來導出 `db/structure.sql`）。舉例來說，PostgreSQL 使用 `pg_dump` 這個工具來導出 SQL。而 MySQL 呢，資料庫綱要只不過是多張資料表的 `SHOW CREATE TABLE` 的結果。
 
@@ -766,11 +776,11 @@ end
 Active Record 與參照完整性
 ----------------------------
 
-Active Record 認為事情要在 model 裡處理好，而不是在資料庫。也是因為這個原因，像是觸發器或外鍵約束，這種需要在資料庫實作的功能，不常使用。
+Active Record 認為事情要在 model 裡處理好，而不是在資料庫。也是因為這個原因，需要在資料庫實作的功能，不常使用像是觸發器或約束條件。
 
-像 `validates :foreign_key, uniqueness: true` 這樣的驗證，是加強資料整合性的方法之一。`:dependet` 選項讓 Model 可以自動刪除關聯的資料。某些人認為像是這種操作，以及所有在應用程式層級執行的操作，無法保證參照的完整性，要跟外鍵約束一樣，放在資料庫解決才是。
+像 `validates :foreign_key, uniqueness: true` 這樣的驗證，是 Model 可以增強資料整合性的一種方法。`:dependet` 選項讓 Model 可以自動刪除關聯的資料。某些人認為像是這種操作，以及所有在應用程式層級執行的操作，無法保證參照的完整性，要跟[外鍵約束](#外鍵)一樣，放在資料庫解決才是。
 
-雖然 Active Record 沒有直接提供任何工具來解決這件事，但可以用 `execute` 方法來執行任何的 SQL 語句，也可以使用像是 [foreigner](https://github.com/matthuhiggins/foreigner) 這種 RubyGem。Foreigner 給 Active Record 加入外鍵的支援（支援導出外鍵到 `db/schema.rb`）。
+雖然 Active Record 沒有直接提供任何工具來解決這件事，但可以用 `execute` 方法來執行任何的 SQL 語句。
 
 遷移與種子資料
 ----------------------------
