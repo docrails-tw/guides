@@ -198,7 +198,7 @@ invoke    scss
 create      app/assets/stylesheets/welcome.css.scss
 ```
 
-在這些檔案中最重要的當然是其中兩個檔案，一個是位於 `app/controllers/welcome_controller.rb` 的 controller ，而另一個則是位於 `app/views/welcome/index.html.erb` 的 view 。
+在這些檔案中最重要的當然是位於 `app/controllers/welcome_controller.rb` 的 controller 以及位於 `app/views/welcome/index.html.erb` 的 view 。
 
 接下來用文字編輯器打開 `app/views/welcome/index.html.erb` ，並且將檔案所有內容替換成以下的程式碼：
 
@@ -208,7 +208,7 @@ create      app/assets/stylesheets/welcome.css.scss
 
 ### 設置應用程式首頁
 
-現在我們已經完成了 controller 和 view ，剩下就是決定什麼時候讓 Rails 執行顯示 "Hello, Rails!" 。在這個例子中，我們想在連結網站首頁 <http://localhost:3000> 時來顯示這段訊息。不過目前畫面依舊是 "Welcome aboard" 。
+現在我們已經完成了 controller 和 view ，再來就是決定什麼時候讓 Rails 執行顯示 "Hello, Rails!" 。這個例子中，我們想在連結網站首頁 <http://localhost:3000> 時來顯示這段訊息。不過目前畫面依舊是 "Welcome aboard" 。
 
 所以接下來，我們要告訴 Rails 正確首頁的所在位置。
 
