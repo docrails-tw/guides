@@ -206,16 +206,13 @@ create      app/assets/stylesheets/welcome.css.scss
 <h1>Hello, Rails!</h1>
 ```
 
-### Setting the Application Home Page
+### 設置應用程式首頁
 
-Now that we have made the controller and view, we need to tell Rails when we
-want "Hello, Rails!" to show up. In our case, we want it to show up when we
-navigate to the root URL of our site, <http://localhost:3000>. At the moment,
-"Welcome aboard" is occupying that spot.
+現在我們已經完成了 controller 和 view ，剩下就是決定什麼時候讓 Rails 執行顯示 "Hello, Rails!" 。在這個例子中，我們想在連結網站首頁 <http://localhost:3000> 時來顯示這段訊息。不過目前畫面依舊是 "Welcome aboard" 。
 
-Next, you have to tell Rails where your actual home page is located.
+所以接下來，我們要告訴 Rails 正確首頁的所在位置。
 
-Open the file `config/routes.rb` in your editor.
+首先用文字編輯器打開 `config/routes.rb` 。
 
 ```ruby
 Rails.application.routes.draw do
