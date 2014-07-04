@@ -208,7 +208,7 @@ create      app/assets/stylesheets/welcome.css.scss
 
 ### 設置應用程式首頁
 
-現在我們已經完成了 controller 和 view ，再來就是決定什麼時候讓 Rails 執行顯示 "Hello, Rails!" 。這個例子中，我們想在連結網站首頁 <http://localhost:3000> 時來顯示這段訊息。不過目前畫面依舊是 "Welcome aboard" 。
+現在我們已經完成了 controller 和 view ，再來就是決定什麼時候讓 Rails 執行顯示 "Hello, Rails!" 。這個例子中，我們想在連結應用程式首頁 <http://localhost:3000> 時來顯示這段訊息。不過目前畫面依舊是 "Welcome aboard" 。
 
 所以接下來，我們要告訴 Rails 正確首頁的所在位置。
 
@@ -227,30 +227,17 @@ Rails.application.routes.draw do
   # ...
 ```
 
-This is your application's _routing file_ which holds entries in a special DSL
-(domain-specific language) that tells Rails how to connect incoming requests to
-controllers and actions. This file contains many sample routes on commented
-lines, and one of them actually shows you how to connect the root of your site
-to a specific controller and action. Find the line beginning with `root` and
-uncomment it. It should look something like the following:
+這個是應用程式的 _routing file（路由檔案）_ ，內容是用特殊的 DSL (domain-specific language 專屬領域語言) 所寫的，透過這些設定，可以告訴 Rails 要如何將連進來的要求連結到 controllers 和 actions 。這個檔案包含許多已註解的 routes 規則範例，其中有一條規則是把連到網站根目錄的請求對應到特定的 controller 和 action 做處理。我們從開頭為 `root` 找到這條規則，並且反註解它，看起來會像這樣：
 
 ```ruby
 root 'welcome#index'
 ```
 
-`root 'welcome#index'` tells Rails to map requests to the root of the
-application to the welcome controller's index action and `get 'welcome/index'`
-tells Rails to map requests to <http://localhost:3000/welcome/index> to the
-welcome controller's index action. This was created earlier when you ran the
-controller generator (`rails generate controller welcome index`).
+這一行 `root 'welcome#index'` 是告訴 Rails 把連應用程式根目錄的請求對應到 welcome controller 的 index action 作處理。而另一行 `get 'welcome/index'` 則是告訴 Rails 把連 <http://localhost:3000/welcome/index> 的請求對應到 welcome controller 的 index action 作處理。當你執行過 controller 產生器 (`rails generate controller welcome index`) 這些設定都會被新增在檔案中。
 
-Launch the web server again if you stopped it to generate the controller (`rails
-server`) and navigate to <http://localhost:3000> in your browser. You'll see the
-"Hello, Rails!" message you put into `app/views/welcome/index.html.erb`,
-indicating that this new route is indeed going to `WelcomeController`'s `index`
-action and is rendering the view correctly.
+剛剛如果你為了要執行產生器而關掉 web 伺服器，那就再次啟動它 (`rails server`) 。並且用瀏覽器連上 <http://localhost:3000> 。 你將會看到那些被你放在 `app/views/welcome/index.html.erb` 的 "Hello, Rails!" 訊息，這說明了這個新的 route 將這個請求交給 `WelcomeController` 的 `index` action 處理了，並且透過 view 把正確結果顯示出來。
 
-TIP: For more information about routing, refer to [Rails Routing from the Outside In](routing.html).
+TIP: 更多關於 routing 資訊，請參考 [Rails Routing from the Outside In](routing.html).
 
 Getting Up and Running
 ----------------------
