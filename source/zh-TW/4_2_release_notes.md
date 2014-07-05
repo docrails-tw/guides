@@ -214,6 +214,9 @@ Active Record
 * 新增 PostgreSQL 連接器的使用自建的範圍類型支持。
   ([Commit](https://github.com/rails/rails/commit/4cb47167e747e8f9dc12b0ddaf82bdb68c03e032))
 
+* 單數關聯增加 `:required` 選項，用來定義關聯的存在性驗證。
+  ([Pull Request](https://github.com/rails/rails/pull/16056))
+
 Active Model
 ------------
 
@@ -261,6 +264,10 @@ Active Support
 * 導入 `Concern#class_methods` 來取代 `module ClassMethods` 以及 `Kernel#concern`，
   來避免使用 `module Foo; extend ActiveSupport::Concern; end` 這樣的樣板。
   ([Commit](https://github.com/rails/rails/commit/b16c36e688970df2f96f793a759365b248b582ad))
+
+* 新增 `Hash#transform_values` 與 `Hash#transform_values!` 方法，來簡化 Hash
+  值需要更新、但鍵保留不變這樣的常見模式。
+  ([Pull Request](https://github.com/rails/rails/pull/15819))
 
 致謝
 ----
