@@ -235,7 +235,7 @@ Active Model
 Active Support
 --------------
 
-請參考 [CHANGELOG][ative-support] 來了解更多細節。
+請參考 [CHANGELOG][active-support] 來了解更多細節。
 
 ### 移除
 
@@ -274,10 +274,10 @@ Active Support
 
 許多人花費寶貴的時間貢獻至 Rails 專案，使 Rails 成為更穩定、更強韌的網路框架，參考[完整的 Rails 貢獻者清單](http://contributors.rubyonrails.org/)，感謝所有的貢獻者！
 
-[railties]: https://github.com/rails/rails/blob/4-2-stable/railties/CHANGELOG.md
-[action-pack]: https://github.com/rails/rails/blob/4-2-stable/actionpack/CHANGELOG.md
-[action-view]: https://github.com/rails/rails/blob/4-2-stable/actionview/CHANGELOG.md
-[action-mailer]: (https://github.com/rails/rails/blob/4-2-stable/actionmailer/CHANGELOG.md)
-[active-record]: https://github.com/rails/rails/blob/4-2-stable/activerecord/CHANGELOG.md
-[active-model]: https://github.com/rails/rails/blob/4-2-stable/activemodel/CHANGELOG.md
-[ative-support]: (https://github.com/rails/rails/blob/4-2-stable/activesupport/CHANGELOG.md)
+[railties]:       https://github.com/rails/rails/blob/4-2-stable/railties/CHANGELOG.md
+[action-pack]:    https://github.com/rails/rails/blob/4-2-stable/actionpack/CHANGELOG.md
+[action-view]:    https://github.com/rails/rails/blob/4-2-stable/actionview/CHANGELOG.md
+[action-mailer]:  https://github.com/rails/rails/blob/4-2-stable/actionmailer/CHANGELOG.md
+[active-record]:  https://github.com/rails/rails/blob/4-2-stable/activerecord/CHANGELOG.md
+[active-model]:   https://github.com/rails/rails/blob/4-2-stable/activemodel/CHANGELOG.md
+[active-support]: https://github.com/rails/rails/blob/4-2-stable/activesupport/CHANGELOG.md
