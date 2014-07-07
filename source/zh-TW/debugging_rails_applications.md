@@ -6,7 +6,6 @@
 讀完本篇，您將了解：
 
 * 除錯的目的。
-* 如何追蹤應用程式問題。
 * 如何追蹤測試沒有找出的問題。
 * 各種除錯方法。
 * 如何分析 Stack Trace。
@@ -24,7 +23,7 @@
 
 ### `debug`
 
-`debug` 輔助方法會對物件以 YAML 格式算繪，把結果放在 `<pre>` 內回傳。任何物件皆可產生出可讀的資料。譬如，View 有如下程式：
+`debug` 輔助方法會對物件以 YAML 格式算繪，把結果包在 `<pre>` 標籤內回傳。譬如，View 有如下程式：
 
 ```html+erb
 <%= debug @article %>
@@ -63,7 +62,7 @@ Title: Rails debugging guide
 </p>
 ```
 
-`to_yaml` 方法把物件轉成可讀性比較高的 YAML 格式，接著 `simple_format` 會使用和終端同樣的方法來算繪物件。`debug` 方法其實就是這兩者的結合：
+`to_yaml` 方法把物件轉成可讀性比較高的 YAML 格式，接著 `simple_format` 會使用和終端同樣的方法來算繪物件。`debug` 方法其實就是結合了這兩者：
 
 上例輸出結果：
 
@@ -83,7 +82,7 @@ Title: Rails debugging guide
 
 ### `inspect`
 
-另一個顯示物件數值的有用方法是 `inspect`，陣列或 Hash 尤其有用。會把物件的數值以字串形式印出，譬如：
+另一個顯示物件數值的有用方法是 `inspect`，對陣列或 Hash 尤其有用。會把物件的數值以字串形式印出，譬如：
 
 ```html+erb
 <%= [1, 2, 3, 4, 5].inspect %>
@@ -104,7 +103,7 @@ Title: Rails debugging guide
 Logger
 ------
 
-程式執行時寫入資訊到記錄檔很有用。Rails 替每個環境都準備了一個記錄檔。
+程式執行時，寫入資訊到記錄檔很有用。而 Rails 替每個環境都準備了一個記錄檔。
 
 ### 什麼是 Logger？
 
@@ -117,7 +116,7 @@ Rails.logger = Logger.new(STDOUT)
 Rails.logger = Log4r::Logger.new("Application Log")
 ```
 
-或在 `Initializer` 加入下列任一種：
+或在 `Initializer` 加入下面任一行：
 
 ```ruby
 config.logger = Logger.new(STDOUT)
@@ -130,20 +129,20 @@ TIP: 記錄檔預設存在 `Rails.root/log/` 目錄下，記錄檔以應用程�
 
 當產生的 Log 訊息層級高過設定的 Log 層級時，就會把 Log 記錄到對應的記錄檔裡。若想知道當前的 Log 層級，可以呼叫 `Rails.logger.level` 方法。
 
-可用 Log 層級有：`:debug`、`:info`、`:warn`、`:error`、`:fatal` 以及 `:unknown`，分別對應到數字 `0` 到 `5`。要修改預設 Log 層級，使用：
+可用 Log 層級有：`:debug`、`:info`、`:warn`、`:error`、`:fatal` 以及 `:unknown`，分別對應到數字 `0` 到 `5`。修改預設 Log 層級：
 
 ```ruby
 config.log_level = :warn # In any environment initializer, or
 Rails.logger.level = 0 # at any time
 ```
 
-這在開發與準上線環境（Staging）很有用，但上線環境不會寫入大量不必要的資訊。
+這在開發和準上線環境（Staging）下很有用，也能避免上線環境寫入大量不必要的資訊。
 
 TIP: Rails 預設上線環境的 Log 層級是 `info`，開發與測試環境是 `debug`。
 
 ### 寫入訊息
 
-要寫入訊息到目前的記錄檔裡，在 Controller、Model、Mailer 使用 `logger.(debug|info|warn|error|fatal)`：
+要寫入訊息到目前的記錄檔裡，在 Controller、Model 或 Mailer 裡使用 `logger.(debug|info|warn|error|fatal)`：
 
 ```ruby
 logger.debug "Person attributes hash: #{@person.attributes.inspect}"
@@ -151,7 +150,7 @@ logger.info "Processing the request..."
 logger.fatal "Terminating application, raised unrecoverable error!!!"
 ```
 
-以下是額外記錄的方法範例：
+以下是有額外記錄資訊的方法：
 
 ```ruby
 class ArticlesController < ApplicationController
@@ -195,11 +194,11 @@ Redirected to # Article:0x20af760>
 Completed in 0.01224 (81 reqs/sec) | DB: 0.00044 (3%) | 302 Found [http://localhost/articles]
 ```
 
-增加額外的記錄可以更容易找到異常行為。若需要更多記錄，記得設定合理的 Log 等級，避免在上線環境的紀錄檔裡寫入不必要的訊息。
+增加額外的記錄可以更容易在記錄檔裡找到異常行為。若需要記錄更多資訊，記得設定合理的 Log 等級，避免在上線環境的紀錄檔裡寫入不必要的訊息。
 
 ### 給記錄打標籤
 
-執行多使用者、多帳號的應用程式時，可以使用自訂規則來過濾記錄檔很有用。Active Support 的 `TaggedLogging` 為此而生。可以在記錄裡加入像是子域名、請求 ID 等其它有助於除錯的訊息。
+執行多使用者、多帳號的應用程式時，可以使用自訂規則來過濾記錄檔很有用。Active Support 的 `TaggedLogging` 便為此而生。可以在記錄裡加入像是子域名、請求 ID 等，其它有助於除錯的訊息。
 
 ```ruby
 logger = ActiveSupport::TaggedLogging.new(Logger.new(STDOUT))
@@ -220,26 +219,26 @@ logger.tagged("BCX") { logger.tagged("Jason") { logger.info "Stuff" } } # Logs "
 logger.debug "Person attributes hash: #{@person.attributes.inspect}"
 ```
 
-在上例裡，即便 Logger 層級不包含 `:debug` 也會影響效能。因為 Ruby 需要對這些字串做求值，便需要實體化這些字串，處理字串插值，這些都需要時間。
+在上例裡，即便 Logger 層級不包含 `:debug` 也會影響效能。因為 Ruby 需要對這些字串做求值，求值便需要實體化這些字串，再處理字串插值，這些都需要時間。
 
-因此 `logger` 方法傳入區塊比較好，區塊只在 Logger 層級相符時才會求值（即惰性加載）。上例可改寫為：
+因此使用 `logger` 方法時，傳入區塊會比較好。區塊只在 Logger 層級相符時才會求值（即惰性加載）。上例可改寫為：
 
 ```ruby
 logger.debug {"Person attributes hash: #{@person.attributes.inspect}"}
 ```
 
-區塊的內容只在 `:debug` 層級的紀錄啟用時才會求值。省下的效能只在大量記錄時會體現出來，但這是可以採納的良好實踐。
+區塊的內容只在 `:debug` 層級的紀錄啟用時才會求值。省下的效能只在記錄大量資料時會體現出來，但這是可以遵循的良好實踐。
 
 使用 `byebug` Gem 來除錯
 -----------------------
 
-當程式不按預期執行時，可以試著印出 Log 或查看終端來找出問題。不幸的是，有時候這些方法無法有效的找出問題的根源。當需要一步一步追蹤執行的程式碼時，除錯器是你最好的幫手。
+當程式不按預期執行時，可以試著印出 Log 或在終端裡查看來找出問題。不幸的是，有時這些方法無法有效的找出問題所在。當需要逐步追蹤程式碼如何執行，除錯器是你的最佳夥伴。
 
-除錯器也可以幫助你了解 Rails 的原始碼。若不知道從何下手，從任何一個請求切入，運用下面教你的方法，一步一步深入 Rails 原始碼。
+除錯器也可以幫助你了解 Rails 的原始碼。若不知道從何下手，從任何一個請求切入，再運用下面教你的方法，一步一步深入 Rails 原始碼。
 
 ### 設定
 
-使用 `byebug` gem 來下斷點，在正在執行的程式裡逐步執行。安裝 `byebug`：
+使用 `byebug` gem 來下斷點，即可在正在執行的程式裡逐步執行。首先要安裝 `byebug`：
 
 ```bash
 $ gem install byebug
@@ -312,7 +311,7 @@ Processing by ArticlesController#index as HTML
 (byebug)
 ```
 
-現在是時候深入程式一探究竟了。一開始先看看有什麼可以用，輸入 `help`：
+現在是時候深入程式一探究竟了。先看看有什麼命令可以用，輸入 `help`：
 
 ```
 (byebug) help
@@ -329,7 +328,7 @@ condition  down     finish  irb        p       quit      show     trace
 continue   edit     frame   kill       pp      reload    skip     undisplay
 ```
 
-TIP: 要查看任何命令，請使用 `help <command-name>`，譬如 `help list`。也可以使用縮寫，比如 `list` 可用 `l` 即可，例如：
+TIP: 要查看任何命令的說明文件，請使用 `help <command-name>`，譬如 `help list`。也可以使用縮寫（輸入足夠與其他命令區別的字元即可），比如 `list` 可用 `l` 即可，例如：
 
 要列出前十行程式，可以使用 `list-` 或 `l-`：
 
@@ -350,7 +349,7 @@ TIP: 要查看任何命令，請使用 `help <command-name>`，譬如 `help list
 
 ```
 
-這樣便可看 `byebug` 呼叫，上面與下面的程式碼。最後，要回到 `byebug` 停下來的地方，輸入 `list=`：
+這樣便可看 `byebug` 上面與下面的程式碼。最後，要回到 `byebug` 停下來的地方，輸入 `list=`：
 
 ```
 (byebug) list=
@@ -374,9 +373,9 @@ TIP: 要查看任何命令，請使用 `help <command-name>`，譬如 `help list
 
 開始除錯應用程式時，會在不同的上下文裡跳轉。
 
-除錯器停在某個地方（或觸發事件時）建立一個上下文，上下文有當下暫停程式的資訊，讓除錯器可以檢查 Frame Stack、以當下程式的角度對變數求值，並具有程式暫停的位置資訊。
+除錯器停在某個地方（或觸發事件時），會建立一個上下文，上下文有當下暫停程式的資訊，讓除錯器可以檢查 Frame Stack、以當下程式的角度對變數求值，並擁有程式暫停的位置資訊。
 
-任何時候都可以使用 `backtrace`（別名 `where`）來印出應用程式的 Backtrace。這可以知道是怎麼到程式的這一點。若困惑程式是如何執行到這裡的，執行 `backtrace` 便有答案。
+任何時候都可以使用 `backtrace`（別名 `where`）來印出應用程式的 Backtrace。這可以知道程式是怎麼跑到這裡來。若困惑程式是如何執行到這裡，執行 `backtrace` 便可找到答案。
 
 ```
 (byebug) where
@@ -391,7 +390,7 @@ TIP: 要查看任何命令，請使用 `help <command-name>`，譬如 `help list
 ...
 ```
 
-當下的 Frame 會以 `-->` 註記。可以使用 `frame n` 命令移動到 Frame 的任何地方，`n` 是 Frame 的號碼。移動時，`byebug` 會同時顯示新的上下文。
+當下的 Frame 會以 `-->` 註記。可以使用 `frame n` 命令移動到 Frame 的任何地方，`n` 是 Frame 的編號。移動時，`byebug` 會同時顯示新的上下文。
 
 ```
 (byebug) frame 2
@@ -411,7 +410,7 @@ TIP: 要查看任何命令，請使用 `help <command-name>`，譬如 `help list
 (byebug)
 ```
 
-也可以使用 `up [n]` 或 `down [n]` 來往上或下幾個 Frames。`n` 預設是 `1`。往上會往數字較高的 Frame 走；而下是往數字較低的 Frame。
+也可以使用 `up [n]` 或 `down [n]` 來往上或下幾個 Frame。`n` 預設是 `1`。往上會往編號較高的 Frame 走；而下是往編號較低的 Frame 去。
 
 ### 執行緒
 
@@ -423,11 +422,11 @@ TIP: 要查看任何命令，請使用 `help <command-name>`，譬如 `help list
 * `thread resume n`：繼續執行緒 `n`。
 * `thread switch n`：切換當前的執行緒到執行緒 `n`。
 
-這條命令相當有用，在需要除錯當前執行緒，需要檢查是否有競態條件時很有用。
+這條命令在需要除錯當前執行緒時很有用，比如可以檢查執行緒是否有競態條件。
 
 ### 查看變數
 
-當前的上下文裡可以執行任何表達式。要對表達式做求值，輸入即可！
+當前的上下文裡可以執行任何表達式。要對表達式做求值，輸入表達式即可！
 
 下例示範如何在當下的上下文裡印出實體變數：
 
@@ -450,7 +449,7 @@ TIP: 要查看任何命令，請使用 `help <command-name>`，譬如 `help list
  :@_response_body, :@marked_for_same_origin_verification, :@_config]
 ```
 
-你可能看出來了，所有 Controller 可以存取的變數都印出來了。這個變數清單會隨著程式執行而改變。譬如使用 `next` 跳到下一行（之後會解釋 `next`）：
+你可能看出來了，所有 Controller 可以存取的變數都印出來了。這個變數清單會隨程式執行而變。譬如使用 `next` 可跳到下一行：
 
 ```
 (byebug) next
@@ -478,7 +477,7 @@ true
 
 現在 `@articles` 被加到實體變數清單裡了，因為定義 `@articles` 的那一行已經被執行了。
 
-TIP: 也可以切換到 `irb` 模式，使用 `irb` 命令即可。會在當下的上下文裡，起一個新的 irb，但這個功能還在實驗階段。
+TIP: 也可以切換到 `irb` 模式，使用 `irb` 命令即可。會在當下的上下文裡，起一個新的 irb 起來，但這個功能還在實驗階段。
 
 `var` 是用來顯示變數的方法，說明文件如下：
 
@@ -491,7 +490,7 @@ v[ar] i[nstance] <object>       show instance variables of object
 v[ar] l[ocal]                   show local variables
 ```
 
-這是用來檢視當下上下文變數的好方法。舉個例子，看有沒有定義任何區域變數：
+這是用來檢視當前上下文變數的好方法。舉個例子，看有沒有定義任何區域變數：
 
 ```
 (byebug) var local
@@ -511,24 +510,24 @@ v[ar] l[ocal]                   show local variables
 ...
 ```
 
-TIP: `p`（print）和 `pp`（pretty print）可以用來對 Ruby 表達式求值，和顯示變數的值到終端。
+TIP: `p`（print）和 `pp`（pretty print）可以用來對 Ruby 表達式求值、顯示變數的值到終端。
 
-也可用 `display` 來“關注”變數。這是執行時追蹤變數值的好方法。
+也可用 `display` 來“關注”變數。這是程式執行時，用來追蹤變數值的好方法。
 
 ```
 (byebug) display @articles
 1: @articles = nil
 ```
 
-在 `display` 關注清單的變數會在上下文切換時印出來。要停止關注變數，`undisplay n`，`n` 是變數前的號碼（上例 `1`）。
+在 `display` 關注清單的變數，會在上下文切換時印出來。要停止關注變數，`undisplay n`，`n` 是變數前的編號（上例 `1`）。
 
 ### 逐步執行
 
 現在應該了解如何知道自己在執行程式的位置，並能印出變數。接著看程式如何執行。
 
-使用 `step`（縮寫 `s`）來繼續執行程式，直到下個斷點，控制權會轉移回除錯器。
+使用 `step`（縮寫 `s`）來繼續執行程式直到下個斷點，控制權會轉移回除錯器。
 
-也可以使用 `next`，跟 `step` 類似，但會略過該行內的程式。
+也可以使用 `next`，跟 `step` 類似，但會略過行內的程式執行。
 
 TIP: 可以用 `step n` 或 `next n` 來一次往前 `n` 步。
 
@@ -596,7 +595,7 @@ Next went up a frame because previous frame finished
 
 這是找出 Bug 最好的方法之一，或者說這是在 Ruby on Rails 框架裡最好的除錯方法。
 
-### Breakpoints
+### 斷點
 
 斷點可使程式在執行到某處時停下來，會在該處起一個 Shell。
 
