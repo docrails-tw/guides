@@ -572,12 +572,12 @@ NOTE: Defined in `active_support/core_ext/module/aliasing.rb`.
 
 #### `alias_attribute`
 
-Model attributes have a reader, a writer, and a predicate. You can alias a model attribute having the corresponding three methods defined for you in one shot. As in other aliasing methods, the new name is the first argument, and the old name is the second (my mnemonic is they go in the same order as if you did an assignment):
+Model attributes have a reader, a writer, and a predicate. You can alias a model attribute having the corresponding three methods defined for you in one shot. As in other aliasing methods, the new name is the first argument, and the old name is the second (one mnemonic is that they go in the same order as if you did an assignment):
 
 ```ruby
 class User < ActiveRecord::Base
-  # let me refer to the email column as "login",
-  # possibly meaningful for authentication code
+  # You can refer to the email column as "login".
+  # This can be meaningful for authentication code.
   alias_attribute :login, :email
 end
 ```
@@ -761,7 +761,7 @@ Arguments may be bare constant names:
 Math.qualified_const_get("E") # => 2.718281828459045
 ```
 
-These methods are analogous to their builtin counterparts. In particular,
+These methods are analogous to their built-in counterparts. In particular,
 `qualified_constant_defined?` accepts an optional second argument to be
 able to say whether you want the predicate to look in the ancestors.
 This flag is taken into account for each constant in the expression while
@@ -792,7 +792,7 @@ N.qualified_const_defined?("C::X")        # => true
 As the last example implies, the second argument defaults to true,
 as in `const_defined?`.
 
-For coherence with the builtin methods only relative paths are accepted.
+For coherence with the built-in methods only relative paths are accepted.
 Absolute qualified constant names like `::Math::PI` raise `NameError`.
 
 NOTE: Defined in `active_support/core_ext/module/qualified_const.rb`.
@@ -964,20 +964,7 @@ NOTE: Defined in `active_support/core_ext/module/delegation.rb`
 
 There are cases where you need to define a method with `define_method`, but don't know whether a method with that name already exists. If it does, a warning is issued if they are enabled. No big deal, but not clean either.
 
-The method `redefine_method` prevents such a potential warning, removing the existing method before if needed. Rails uses it in a few places, for instance when it generates an association's API:
-
-```ruby
-redefine_method("#{reflection.name}=") do |new_value|
-  association = association_instance_get(reflection.name)
-
-  if association.nil? || association.target != new_value
-    association = association_proxy_class.new(self, reflection)
-  end
-
-  association.replace(new_value)
-  association_instance_set(reflection.name, new_value.nil? ? nil : association)
-end
-```
+The method `redefine_method` prevents such a potential warning, removing the existing method before if needed.
 
 NOTE: Defined in `active_support/core_ext/module/remove_method.rb`
 
@@ -1119,7 +1106,7 @@ end
 
 A model may find it useful to set `:instance_accessor` to `false` as a way to prevent mass-assignment from setting the attribute.
 
-NOTE: Defined in `active_support/core_ext/module/attribute_accessors.rb`. `active_support/core_ext/class/attribute_accessors.rb` is deprecated and will be removed in Ruby on Rails 4.2.
+NOTE: Defined in `active_support/core_ext/module/attribute_accessors.rb`.
 
 ### Subclasses & Descendants
 
@@ -1644,6 +1631,9 @@ Given a string with a qualified constant name, `demodulize` returns the very con
 "Product".demodulize                        # => "Product"
 "Backoffice::UsersController".demodulize    # => "UsersController"
 "Admin::Hotel::ReservationUtils".demodulize # => "ReservationUtils"
+"::Inflections".demodulize                  # => "Inflections"
+"".demodulize                               # => ""
+
 ```
 
 Active Record for example uses this method to compute the name of a counter cache column:
@@ -1778,21 +1768,36 @@ NOTE: Defined in `active_support/core_ext/string/inflections.rb`.
 
 #### `humanize`
 
-The method `humanize` gives you a sensible name for display out of an attribute name. To do so it replaces underscores with spaces, removes any "_id" suffix, and capitalizes the first word:
+The method `humanize` tweaks an attribute name for display to end users.
+
+Specifically performs these transformations:
+
+  * Applies human inflection rules to the argument.
+  * Deletes leading underscores, if any.
+  * Removes a "_id" suffix if present.
+  * Replaces underscores with spaces, if any.
+  * Downcases all words except acronyms.
+  * Capitalizes the first word.
+
+The capitalization of the first word can be turned off by setting the
++:capitalize+ option to false (default is true).
 
 ```ruby
-"name".humanize           # => "Name"
-"author_id".humanize      # => "Author"
-"comments_count".humanize # => "Comments count"
-```
-
-The capitalization of the first word can be turned off by setting the optional parameter `capitalize` to false:
-
-```ruby
+"name".humanize                         # => "Name"
+"author_id".humanize                    # => "Author"
 "author_id".humanize(capitalize: false) # => "author"
+"comments_count".humanize               # => "Comments count"
+"_id".humanize                          # => "Id"
 ```
 
-The helper method `full_messages` uses `humanize` as a fallback to include attribute names:
+If "SSL" was defined to be an acronym:
+
+```ruby
+'ssl_error'.humanize # => "SSL error"
+```
+
+The helper method `full_messages` uses `humanize` as a fallback to include
+attribute names:
 
 ```ruby
 def full_messages
@@ -3667,9 +3672,9 @@ t.advance(seconds: 1)
 
 #### `Time.current`
 
-Active Support defines `Time.current` to be today in the current time zone. That's like `Time.now`, except that it honors the user time zone, if defined. It also defines `Time.yesterday` and `Time.tomorrow`, and the instance predicates `past?`, `today?`, and `future?`, all of them relative to `Time.current`.
+Active Support defines `Time.current` to be today in the current time zone. That's like `Time.now`, except that it honors the user time zone, if defined. It also defines the instance predicates `past?`, `today?`, and `future?`, all of them relative to `Time.current`.
 
-When making Time comparisons using methods which honor the user time zone, make sure to use `Time.current` and not `Time.now`. There are cases where the user time zone might be in the future compared to the system time zone, which `Time.today` uses by default. This means `Time.now` may equal `Time.yesterday`.
+When making Time comparisons using methods which honor the user time zone, make sure to use `Time.current` instead of `Time.now`. There are cases where the user time zone might be in the future compared to the system time zone, which `Time.now` uses by default. This means `Time.now.to_date` may equal `Date.yesterday`.
 
 #### `all_day`, `all_week`, `all_month`, `all_quarter` and `all_year`
 
@@ -3847,7 +3852,7 @@ rescue NameError => e
 end
 ```
 
-NOTE: Defined in `actionpack/lib/abstract_controller/helpers.rb`.
+NOTE: Defined in `active_support/core_ext/name_error.rb`.
 
 Extensions to `LoadError`
 -------------------------
@@ -3870,4 +3875,4 @@ rescue NameError => e
 end
 ```
 
-NOTE: Defined in `actionpack/lib/abstract_controller/helpers.rb`.
+NOTE: Defined in `active_support/core_ext/load_error.rb`.
