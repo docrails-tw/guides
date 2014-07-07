@@ -298,7 +298,7 @@ $ bin/rails console staging
 
 ```bash
 $ bin/rails console --sandbox
-Loading development environment in sandbox (Rails 4.0.0)
+Loading development environment in sandbox (Rails 4.2.0)
 Any modifications you make will be rolled back on exit
 irb(main):001:0>
 ```
