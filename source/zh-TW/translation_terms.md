@@ -153,6 +153,8 @@ D
 
 * Debug 除錯
 
+* Debugger 除錯器
+
 * Directory 目錄
 
 * Drop 刪除
@@ -353,7 +355,9 @@ P
 
     謂詞，回傳真或假的條件式，比如 `Array#empty?`。
 
-* process 進程
+* Process 進程
+
+* Production 上線環境
 
 * Program (n.) 程式
 
@@ -490,6 +494,8 @@ T
     Rake 任務。
 
 * Template 模版
+
+* Thread 執行緒
 
 * Transaction 交易
 
