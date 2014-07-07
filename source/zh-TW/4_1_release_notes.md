@@ -137,7 +137,7 @@ end
 
 預設這些 preview class 產生在 `test/mailers/previews`、可以透過 `preview_path` 選項來調整存放的位置。
 
-參見 [Action Mailer 的文件](http://api.rubyonrails.org/v4.1.0/classes/ActionMailer/Base.html)來了解更多細節。
+參見 [Action Mailer 的文件](http://api.rubyonrails.org/v4.1.0/classes/ActionMailer/Base.html#class-ActionMailer::Base-label-Previewing+emails)來了解更多細節。
 
 ### Active Record enums
 
