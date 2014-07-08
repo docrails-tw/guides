@@ -239,21 +239,17 @@ root 'welcome#index'
 
 TIP: 更多關於 routing 資訊，請參考 [Rails Routing from the Outside In](routing.html).
 
-Getting Up and Running
+開始實作
 ----------------------
 
-Now that you've seen how to create a controller, an action and a view, let's
-create something with a bit more substance.
+現在你已經知道如何建立 controller 、 action 還有 view, 接下來讓我們一起建立更實質的一些功能。
 
-In the Blog application, you will now create a new _resource_. A resource is the
-term used for a collection of similar objects, such as articles, people or
+在這 Blog 應用程式中, 你將需要創造新的 _resource_. Resource 是一個類似物件的集合, 就像 articles, people 或是
 animals.
-You can create, read, update and destroy items for a resource and these
-operations are referred to as _CRUD_ operations.
+對於resource的項目你可以 create建立, read讀取, update更新 and destroy刪除 而這些操作可以被簡稱為 _CRUD_ 操作.
 
-Rails provides a `resources` method which can be used to declare a standard REST
-resource. Here's what `config/routes.rb` should look like after the
-_article resource_ is declared.
+Rails 提供一個 `resources` 方法 這個方法可以用來宣告一個標準的 REST
+resource. 這裡將示範如何在 `config/routes.rb` 宣告一個 _article resource_.
 
 ```ruby
 Rails.application.routes.draw do
@@ -264,10 +260,7 @@ Rails.application.routes.draw do
 end
 ```
 
-If you run `rake routes`, you'll see that it has defined routes for all the
-standard RESTful actions.  The meaning of the prefix column (and other columns)
-will be seen later, but for now notice that Rails has inferred the
-singular form `article` and makes meaningful use of the distinction.
+如果你執行 `rake routes`, 你將會看到他對於標準的 RESTful actions 已經定義了許多 routes.  至於prefix 欄 (還有其他欄位) 的意思我們晚點再提, 但要注意到 Rails 已經對於單數型態的 `article` 有特別的解釋並且對於複數型別有意義上的區別.
 
 ```bash
 $ bin/rake routes
@@ -283,65 +276,52 @@ edit_article GET    /articles/:id/edit(.:format) articles#edit
         root GET    /                            welcome#index
 ```
 
-In the next section, you will add the ability to create new articles in your
-application and be able to view them. This is the "C" and the "R" from CRUD:
-creation and reading. The form for doing this will look like this:
+在下一個段落, 你將可以在你的應用程式新增文章並且檢視它. 這就是 CRUD 中的 "C" 跟 "R":
+creation(建立) and reading(檢視). 而新增文章的表單將會長的像如此:
 
 ![The new article form](images/getting_started/new_article.png)
 
-It will look a little basic for now, but that's ok. We'll look at improving the
-styling for it afterwards.
+雖然現在看起來有些簡單，但是還可以使用. 之後如有需要再來回頭檢視樣式設計的改善.
 
-### Laying down the ground work
+### 建立基本功能
 
-Firstly, you need a place within the application to create a new article. A
-great place for that would be at `/articles/new`. With the route already
-defined, requests can now be made to `/articles/new` in the application.
-Navigate to <http://localhost:3000/articles/new> and you'll see a routing
-error:
+一開始, 在應用程式中需要一個頁面來建立新增的文章. 有一個不錯的選擇就是在 `/articles/new`. 由於應用程式已經定義了 route， 所以可以向 `/articles/new` 發送請求.
+連到 <http://localhost:3000/articles/new> 你將會看到一個 routing
+錯誤:
 
 ![Another routing error, uninitialized constant ArticlesController](images/getting_started/routing_error_no_controller.png)
 
-This error occurs because the route needs to have a controller defined in order
-to serve the request. The solution to this particular problem is simple: create
-a controller called `ArticlesController`. You can do this by running this
-command:
+這個錯誤會發生是因為這個route規則需要定義一個 controller 來處理請求，所以這個問題的解決方法很簡單：建立一個名為`Articlescontroller` 的 controller，你可以透過執行以下命令來完成動作。 
 
 ```bash
 $ bin/rails g controller articles
 ```
 
-If you open up the newly generated `app/controllers/articles_controller.rb`
-you'll see a fairly empty controller:
+如果你打開剛產生的 `app/controllers/articles_controller.rb`
+你會看到一個還未有內容的controller:
 
 ```ruby
 class ArticlesController < ApplicationController
 end
 ```
 
-A controller is simply a class that is defined to inherit from
-`ApplicationController`.
-It's inside this class that you'll define methods that will become the actions
-for this controller. These actions will perform CRUD operations on the articles
-within our system.
+這個 controller 是繼承於 `ApplicationController` 的一個簡單類別.
+在這個類別中你必須定義 method 來做 controller 的 action. 在 blog 系統中這些 actions 將可以完成對於 articles 的 CRUD 操作.
 
-NOTE: There are `public`, `private` and `protected` methods in Ruby,
-but only `public` methods can be actions for controllers.
-For more details check out [Programming Ruby](http://www.ruby-doc.org/docs/ProgrammingRuby/).
+NOTE: 在 ruby 中有這幾種 `public`, `private`, `protected` methods,
+但只有 `public` methods 才能當 controllers 的 actions.
+更多詳細資訊請參考 [Programming Ruby](http://www.ruby-doc.org/docs/ProgrammingRuby/).
 
-If you refresh <http://localhost:3000/articles/new> now, you'll get a new error:
+如果現在你重新整理這個頁面 <http://localhost:3000/articles/new> , 你將又得到一個新的錯誤:
 
 ![Unknown action new for ArticlesController!](images/getting_started/unknown_action_new_for_articles.png)
 
-This error indicates that Rails cannot find the `new` action inside the
-`ArticlesController` that you just generated. This is because when controllers
-are generated in Rails they are empty by default, unless you tell it
-your wanted actions during the generation process.
+這個錯誤指出 Rails 找不到剛剛產生的 `ArticlesController` 中有 `new` action
+. 這是因為當 controllers 被產生在 Rails 中的時候，他們內容預設都是空的, 除非在產生controller的時候就要指定什麼名稱的 actions.
 
-To manually define an action inside a controller, all you need to do is to
-define a new method inside the controller. Open
-`app/controllers/articles_controller.rb` and inside the `ArticlesController`
-class, define a `new` method so that the controller now looks like this:
+想在 controller 中手動定義一個 action, 你只要在 controller 中新增一個 method. 打開
+`app/controllers/articles_controller.rb` 並且在 `ArticlesController`
+類別裡面新增一個 `new` method 如此一來 controller 現在會長的像如此:
 
 ```ruby
 class ArticlesController < ApplicationController
@@ -350,64 +330,43 @@ class ArticlesController < ApplicationController
 end
 ```
 
-With the `new` method defined in `ArticlesController`, if you refresh
-<http://localhost:3000/articles/new> you'll see another error:
+由於在 `ArticlesController` 中定義了 `new` method, 如果你此時重新整理頁面
+<http://localhost:3000/articles/new> 你將會看到另外一個錯誤:
 
 ![Template is missing for articles/new]
 (images/getting_started/template_is_missing_articles_new.png)
 
-You're getting this error now because Rails expects plain actions like this one
-to have views associated with them to display their information. With no view
-available, Rails errors out.
+你現在會得到這個錯誤是因為 Rails 希望空白的 actions 能夠跟 views 連結來展示 actions 所要呈現的資訊. 由於沒有可用的 view, Rails 則出現錯誤.
 
-In the above image, the bottom line has been truncated. Let's see what the full
-thing looks like:
+在上面圖片中的最後一行剛好被截掉. 我們一起看看完整的訊息:
 
 <blockquote>
 Missing template articles/new, application/new with {locale:[:en], formats:[:html], handlers:[:erb, :builder, :coffee]}. Searched in: * "/path/to/blog/app/views"
 </blockquote>
 
-That's quite a lot of text! Let's quickly go through and understand what each
-part of it does.
+還滿長的一段文字! 我們一起快速瀏覽並且了解每個部份的用意.
 
-The first part identifies what template is missing. In this case, it's the
-`articles/new` template. Rails will first look for this template. If not found,
-then it will attempt to load a template called `application/new`. It looks for
-one here because the `ArticlesController` inherits from `ApplicationController`.
+第一個部份我們可以找出缺少了什麼 template. 再這個例子中, 我們缺少的就是
+`articles/new` template. Rails 一開始會試著找這個 template. 如果找不到他才會嘗試載入一個名為 `application/new` 的 template. 這是因為 `ArticlesController` 是繼承於 `ApplicationController`的關係.
 
-The next part of the message contains a hash. The `:locale` key in this hash
-simply indicates what spoken language template should be retrieved. By default,
-this is the English - or "en" - template. The next key, `:formats` specifies the
-format of template to be served in response. The default format is `:html`, and
-so Rails is looking for an HTML template. The final key, `:handlers`, is telling
-us what _template handlers_ could be used to render our template. `:erb` is most
-commonly used for HTML templates, `:builder` is used for XML templates, and
-`:coffee` uses CoffeeScript to build JavaScript templates.
+下一個部份包含了一個 hash. 再這個 hash，其中 `:locale` key
+簡單的指出要使用什麼國際語言的 template. 而預設是使用簡稱 "en" 的英文 template. 而下一個 key, `:formats` 是指 template 在 回覆的處理上要使用什麼格式. 預設的格式是 `:html`, 所以這邊 Rails 是在尋找一個 HTML template. 最後一個 key, `:handlers` 是告訴我們要使用什麼 _template handlers_ 來將我們的 template 編譯並把結果顯示出來. 對於 HTML templates 我們通常會使用 `:erb`,  而對於 XML templates 我們會選擇使用 `:builder`, 然而
+`:coffee` 是使用 CoffeeScript 來編譯 JavaScript templates.
 
-The final part of this message tells us where Rails has looked for the templates.
-Templates within a basic Rails application like this are kept in a single
-location, but in more complex applications it could be many different paths.
+這段文字的最後一個部份是告訴我們 Rails 是在哪個地方尋找 templates.
+Templates 在像這個簡單的 Rails 應用專案中通常會放在單一個地方, 但是比較複雜的應用專案可能會有好幾種不同的路徑.
 
-The simplest template that would work in this case would be one located at
-`app/views/articles/new.html.erb`. The extension of this file name is key: the
-first extension is the _format_ of the template, and the second extension is the
-_handler_ that will be used. Rails is attempting to find a template called
-`articles/new` within `app/views` for the application. The format for this
-template can only be `html` and the handler must be one of `erb`, `builder` or
-`coffee`. Because you want to create a new HTML form, you will be using the `ERB`
-language. Therefore the file should be called `articles/new.html.erb` and needs
-to be located inside the `app/views` directory of the application.
+再這個例子中位於 `app/views/articles/new.html.erb` 的簡單 template 將會執行. 然而檔案的副檔名則有特殊意義: 第一個副檔名是表示 template 的_format_, 而第二個則是表示使用什麼
+_handler_ . Rails 試著在應用程式的 `app/views` 中找到一個名為`articles/new` 的 template. 
+而這個 template 的 format 只能是 `html` ，不過它的 handler 只要是 `erb`, `builder` 或是 `coffee` 的其中之一就行. 但因為你想新增一個 HTML 表單, 所以你一定要用 `ERB` 語言. 因此這個檔案的名稱應該為 `articles/new.html.erb` 並且須位於應用專案的 `app/views` 目錄中.
 
-Go ahead now and create a new file at `app/views/articles/new.html.erb` and
-write this content in it:
+前往該目錄然後新增此檔案 `app/views/articles/new.html.erb` 並且寫上以下內容:
 
 ```html
 <h1>New Article</h1>
 ```
 
-When you refresh <http://localhost:3000/articles/new> you'll now see that the
-page has a title. The route, controller, action and view are now working
-harmoniously! It's time to create the form for a new article.
+當你重新整理此頁面 <http://localhost:3000/articles/new> 你將會看到標題. 這也表示 route, controller, action 跟 view 運作的十分順利! 現來就來新增建立 article的表單.
 
 ### The first form
 
