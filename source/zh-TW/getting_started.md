@@ -433,21 +433,15 @@ edit_article GET    /articles/:id/edit(.:format) articles#edit
         root GET    /                            welcome#index
 ```
 
-The `articles_path` helper tells Rails to point the form to the URI Pattern
-associated with the `articles` prefix; and the form will (by default) send a
-`POST` request to that route. This is associated with the `create` action of
-the current controller, the `ArticlesController`.
+`articles_path` helper 會提示 Rails 將 form 指向 Prefix 為 `articles` 的 URI Pattern;
+再加上form預設是送`POST` 請求到 route ，如此一來將會對應到目前 controller `ArticlesController` 的 `create` action
 
-With the form and its associated route defined, you will be able to fill in the
-form and then click the submit button to begin the process of creating a new
-article, so go ahead and do that. When you submit the form, you should see a
-familiar error:
+有了表單和已經定義好的 route , 你將能夠開始填表單而且還可以按下送出開始建立新文章的程序, 所以就這樣繼續. 當你送出了表單時, 你會看到一個熟悉的錯誤:
 
 ![Unknown action create for ArticlesController]
 (images/getting_started/unknown_action_create_for_articles.png)
 
-You now need to create the `create` action within the `ArticlesController` for
-this to work.
+你現在必須要在 `ArticlesController` 建立一個 `create` action 來讓程式正常執行.
 
 ### Creating articles
 
