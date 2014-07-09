@@ -24,7 +24,7 @@ PostgreSQL 提供許多具體的資料類型。以下是 PostgreSQL 連接器所
 ### Bytea 類型
 
 * [類型定義](http://www.postgresql.org/docs/9.3/static/datatype-binary.html)
-* [函數與運算元](http://www.postgresql.org/docs/9.3/static/functions-binarystring.html)
+* [函式與運算元](http://www.postgresql.org/docs/9.3/static/functions-binarystring.html)
 
 ```ruby
 # db/migrate/20140207133952_create_documents.rb
@@ -44,7 +44,7 @@ Document.create payload: data
 ### 陣列類型
 
 * [類型定義](http://www.postgresql.org/docs/9.3/static/arrays.html)
-* [函數與運算元](http://www.postgresql.org/docs/9.3/static/functions-array.html)
+* [函式與運算元](http://www.postgresql.org/docs/9.3/static/functions-array.html)
 
 ```ruby
 # db/migrate/20140207133952_create_books.rb
@@ -110,7 +110,7 @@ profile.save!
 ### JSON 類型
 
 * [類型定義](http://www.postgresql.org/docs/9.3/static/datatype-json.html)
-* [函數與運算元](http://www.postgresql.org/docs/9.3/static/functions-json.html)
+* [函式與運算元](http://www.postgresql.org/docs/9.3/static/functions-json.html)
 
 ```ruby
 # db/migrate/20131220144913_create_events.rb
@@ -135,7 +135,7 @@ Event.where("payload->'kind' = ?", "user_renamed")
 ### Range 類型
 
 * [類型定義](http://www.postgresql.org/docs/9.3/static/rangetypes.html)
-* [函數與運算元](http://www.postgresql.org/docs/9.3/static/functions-range.html)
+* [函式與運算元](http://www.postgresql.org/docs/9.3/static/functions-range.html)
 
 此類型映射到 Ruby 的 [`Range`](http://www.ruby-doc.org/core-2.1.1/Range.html) 物件
 
@@ -237,7 +237,7 @@ article.save!
 ### UUID 類型
 
 * [類型定義](http://www.postgresql.org/docs/9.3/static/datatype-uuid.html)
-* [產生器函數](http://www.postgresql.org/docs/9.3/static/uuid-ossp.html)
+* [產生器函式](http://www.postgresql.org/docs/9.3/static/uuid-ossp.html)
 
 ```ruby
 # db/migrate/20131220144913_create_revisions.rb
@@ -259,7 +259,7 @@ revision.identifier # => "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
 ### 位元字串類型
 
 * [類型定義](http://www.postgresql.org/docs/9.3/static/datatype-bit.html)
-* [函數與運算元](http://www.postgresql.org/docs/9.3/static/functions-bitstring.html)
+* [函式與運算元](http://www.postgresql.org/docs/9.3/static/functions-bitstring.html)
 
 ```ruby
 # db/migrate/20131220144913_create_users.rb

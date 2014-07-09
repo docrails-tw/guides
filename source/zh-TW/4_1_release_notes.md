@@ -511,7 +511,7 @@ Active Support
 
 * 新增 `ActiveSupport::Testing::TimeHelpers#travel_back`。這個方法將當下時間回到原本的狀態。透過移除 `travel` 與 `travel_to` 加入的 stubs 辦到。 [PR#13884](https://github.com/rails/rails/pull/13884)
 
-* 新增 `Numeric#in_milliseconds`，像是 1 小時有幾毫秒：`1.hour.in_milliseconds`。可以將時間轉成毫秒，再餵給 JavaScript 的 `getTime()` 函數。[Commit](https://github.com/rails/rails/commit/423249504a2b468d7a273cbe6accf4f21cb0e643)
+* 新增 `Numeric#in_milliseconds`，像是 1 小時有幾毫秒：`1.hour.in_milliseconds`。可以將時間轉成毫秒，再餵給 JavaScript 的 `getTime()` 函式。[Commit](https://github.com/rails/rails/commit/423249504a2b468d7a273cbe6accf4f21cb0e643)
 
 * 新增了 `Date#middle_of_day`、`DateTime#middle_of_day` 與 `Time#middle_of_day`
   方法。同時添加了 `midday`、`noon`、`at_midday`、`at_noon`、`at_middle_of_day` 作為別名。[PR#10879](https://github.com/rails/rails/pull/10879)
