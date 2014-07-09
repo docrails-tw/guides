@@ -212,9 +212,7 @@ person.valid?                        # => raises ActiveModel::StrictValidationFa
 
 ### ActiveModel::Naming
 
-Naming adds a number of class methods which make the naming and routing
-easier to manage. The module defines the `model_name` class method which
-will define a number of accessors using some `ActiveSupport::Inflector` methods.
+`Naming` 模組加入幾個幫助管理命名和路由的模組。這個模組定義了 `model_name` 類別方法，這個方法用 `ActiveSupport::Inflector` 定義了許多存取器（accessor）方法。
 
 ```ruby
 class Person
