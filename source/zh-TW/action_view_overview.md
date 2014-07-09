@@ -3,7 +3,7 @@ Action View 綜覽
 
 讀完本篇，您將了解：
 
-* 什麼是 Action Views、如何在 Rails 裡使用。
+* 什麼是 Action View、如何在 Rails 裡使用。
 * 如何善用模版，局部頁面與版型。
 * Action View 提供的輔助方法、如何自己寫輔助方法。
 * 如何使用本地化的 View。
