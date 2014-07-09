@@ -368,12 +368,11 @@ _handler_ . Rails 試著在應用程式的 `app/views` 中找到一個名為`art
 
 當你重新整理此頁面 <http://localhost:3000/articles/new> 你將會看到標題. 這也表示 route, controller, action 跟 view 運作的十分順利! 現來就來新增建立 article的表單.
 
-### The first form
+### 開始第一個表單
 
-To create a form within this template, you will use a <em>form
-builder</em>. The primary form builder for Rails is provided by a helper
-method called `form_for`. To use this method, add this code into
-`app/views/articles/new.html.erb`:
+想要在這個 template 中建立一個表單, 你會使用到一個 <em>form
+builder</em>. 這個基本的 form builder 是由 Rails 中的 helper method 所提供，叫作 `form_for` . 
+想使用這個 method 的話, 先將以下程式碼新增到 `app/views/articles/new.html.erb`:
 
 ```html+erb
 <%= form_for :article do |f| %>
@@ -393,37 +392,32 @@ method called `form_for`. To use this method, add this code into
 <% end %>
 ```
 
-If you refresh the page now, you'll see the exact same form as in the example.
-Building forms in Rails is really just that easy!
+如果你現在重新整理頁面, 你就會看到跟範例相同的表單了.
+在rails中建立表單就是如此簡單!
 
-When you call `form_for`, you pass it an identifying object for this
-form. In this case, it's the symbol `:article`. This tells the `form_for`
-helper what this form is for. Inside the block for this method, the
-`FormBuilder` object - represented by `f` - is used to build two labels and two
-text fields, one each for the title and text of an article. Finally, a call to
-`submit` on the `f` object will create a submit button for the form.
+當你呼叫了 `form_for`, 你必須傳遞一個 identifying object 給這個表單. 
+再這個例子中, 是如此表示 `:article`. 這樣可以告訴 `form_for`
+helper 這個表單的用途. 在這個 method 的程式區塊中，有個用 `f` 表示的 `FormBuilder` object
+他是被用來建立兩個文字標籤以及兩個文字方塊, 其中兩個文字方塊一個是做為文章的標題另一個是作為文章內文. 
+最後再 `f` object 上呼叫一個 `submit`，如此一來就可以再這個表單上建立一個submit按鈕.
 
-There's one problem with this form though. If you inspect the HTML that is
-generated, by viewing the source of the page, you will see that the `action`
-attribute for the form is pointing at `/articles/new`. This is a problem because
-this route goes to the very page that you're on right at the moment, and that
-route should only be used to display the form for a new article.
+不過這個表單仍然會有一個問題. 如果你檢視這個頁面的 HTML 原始碼, 你將會看到一個form的屬性`action`
+是指向 `/articles/new`. 這會是一個問題因為route導向的頁面正是現在所在的頁面, 
+而且那個route單純是用來顯示新增文章的表單而已.
 
-The form needs to use a different URL in order to go somewhere else.
-This can be done quite simply with the `:url` option of `form_for`.
-Typically in Rails, the action that is used for new form submissions
-like this is called "create", and so the form should be pointed to that action.
+這個表單而是需要一個到不同目的地的URL.
+然而這其實只是簡單新增 `form_for` 的選項 `:url` 就可以完成.
+通常在 Rails, action 是用來處理表單送出的資料
+像這邊的動作就是 "create", 所以表單就會將資料送到create動作處理.
 
-Edit the `form_for` line inside `app/views/articles/new.html.erb` to look like
-this:
+現在就來編輯 `app/views/articles/new.html.erb` 中的 `form_for` 那行，結果應該會像這樣:
 
 ```html+erb
 <%= form_for :article, url: articles_path do |f| %>
 ```
 
-In this example, the `articles_path` helper is passed to the `:url` option.
-To see what Rails will do with this, we look back at the output of
-`rake routes`:
+再這個範例中，是將 `articles_path` helper 代入`:url` 選項中.
+為了知道 Rails 將如何運行這個選項, 我們再次看 `rake routes` 的輸出結果:
 
 ```bash
 $ bin/rake routes
