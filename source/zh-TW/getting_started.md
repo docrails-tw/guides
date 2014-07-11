@@ -503,17 +503,14 @@ $ bin/rails generate model Article title:string text:text
 
 TIP: Active Record 可以很聰明的將欄位名稱對應到模型的屬性, 這意思是說你不用再Rails模型中宣告屬性, 因為 Active Record 會自動處理好這部份.
 
-### Running a Migration
+### 執行一個 Migration
 
-As we've just seen, `rails generate model` created a _database migration_ file
-inside the `db/migrate` directory. Migrations are Ruby classes that are
-designed to make it simple to create and modify database tables. Rails uses
-rake commands to run migrations, and it's possible to undo a migration after
-it's been applied to your database. Migration filenames include a timestamp to
-ensure that they're processed in the order that they were created.
+就如同我們所看到的, 執行 `rails generate model` 會在 `db/migrate` 的目錄中建立一個 _database migration_ 的檔案. 
+Migrations 是Ruby 的一種類別 這些被設計來讓建立或修改資料庫中的表格能夠更容易.
+Rails 使用 rake 命令來執行 migrations, 而且即使資料庫已經套用設定但還是可以回復migration 動作.
+Migration 的檔名中包含著時間戳記，如此可以確保按造檔案建立的順序來執行.
 
-If you look in the `db/migrate/20140120191729_create_articles.rb` file (remember,
-yours will have a slightly different name), here's what you'll find:
+如果你打開這個檔案`db/migrate/20140120191729_create_articles.rb` (還記得檔案名稱會有些許不同), 而你會看到:
 
 ```ruby
 class CreateArticles < ActiveRecord::Migration
@@ -528,24 +525,22 @@ class CreateArticles < ActiveRecord::Migration
 end
 ```
 
-The above migration creates a method named `change` which will be called when
-you run this migration. The action defined in this method is also reversible,
-which means Rails knows how to reverse the change made by this migration,
-in case you want to reverse it later. When you run this migration it will create
-an `articles` table with one string column and a text column. It also creates
-two timestamp fields to allow Rails to track article creation and update times.
+再上面的 migration 建立了一個名為 `change` 的method ，當執行 這個 migration的時候會呼叫到這個method. 
+再這個 method 中定義的 action 都是可逆的
+這意思是 Rails 知道如何回復這個 migration 所做的更動,
+以免有一天你想回復它. 當你執行這個 migration 他將會建立一個 `articles` 表格 其中包含著string型態的欄位以及text型態的欄位. 
+他也建立了兩個時間戳記的欄位來讓Rails可以紀錄article建立以及更新的時間
 
-TIP: For more information about migrations, refer to [Rails Database Migrations]
+TIP: 更多關於 migrations 的資訊, 請參考 [Rails Database Migrations]
 (migrations.html).
 
-At this point, you can use a rake command to run the migration:
+此時, 你可以使用 rake 命令來執行 migration:
 
 ```bash
 $ bin/rake db:migrate
 ```
 
-Rails will execute this migration command and tell you it created the Articles
-table.
+Rails 將會執行這個 migration 的命令 並且顯示建立 Articles 資料表的訊息.
 
 ```bash
 ==  CreateArticles: migrating ==================================================
@@ -554,11 +549,9 @@ table.
 ==  CreateArticles: migrated (0.0020s) =========================================
 ```
 
-NOTE. Because you're working in the development environment by default, this
-command will apply to the database defined in the `development` section of your
-`config/database.yml` file. If you would like to execute migrations in another
-environment, for instance in production, you must explicitly pass it when
-invoking the command: `rake db:migrate RAILS_ENV=production`.
+NOTE. 由於你目前的所有操作都在名為development的預設環境下,
+這個命令會將定義在`config/database.yml` 中的 `development` 設定區塊套用到資料庫上 
+如果你想再其他環境執行 migrations, 像是 production, 你就可以明確的名稱代入到下達的命令: `rake db:migrate RAILS_ENV=production`.
 
 ### Saving data in the controller
 
