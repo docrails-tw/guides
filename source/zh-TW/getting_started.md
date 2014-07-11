@@ -396,7 +396,7 @@ builder</em>. 這個基本的 form builder 是由 Rails 中的 helper method 所
 在rails中建立表單就是如此簡單!
 
 當你呼叫了 `form_for`, 你必須傳遞一個 identifying object 給這個表單. 
-再這個例子中, 是如此表示 `:article`. 這樣可以告訴 `form_for`
+再這個例子中, 是用symbol表示 `:article`. 這樣可以告訴 `form_for`
 helper 這個表單的用途. 在這個 method 的程式區塊中，有個用 `f` 表示的 `FormBuilder` object
 他是被用來建立兩個文字標籤以及兩個文字方塊, 其中兩個文字方塊一個是做為文章的標題另一個是作為文章內文. 
 最後再 `f` object 上呼叫一個 `submit`，如此一來就可以再這個表單上建立一個submit按鈕.
@@ -443,11 +443,9 @@ edit_article GET    /articles/:id/edit(.:format) articles#edit
 
 你現在必須要在 `ArticlesController` 建立一個 `create` action 來讓程式正常執行.
 
-### Creating articles
+### 新增文章
 
-To make the "Unknown action" go away, you can define a `create` action within
-the `ArticlesController` class in `app/controllers/articles_controller.rb`,
-underneath the `new` action, as shown:
+如果想讓 "Unknown action" 錯誤消失的話, 你可以先打開 `app/controllers/articles_controller.rb` 並且在 `ArticlesController` 類別中的 `new` action 下定義一個 `create` action，如下所示：
 
 ```ruby
 class ArticlesController < ApplicationController
@@ -459,14 +457,10 @@ class ArticlesController < ApplicationController
 end
 ```
 
-If you re-submit the form now, you'll see another familiar error: a template is
-missing. That's ok, we can ignore that for now. What the `create` action should
-be doing is saving our new article to the database.
+如果你現在又再次送出表單, 你會看定另一個熟悉的錯誤: a template is
+missing. 不過沒關係, 我們可以暫且忽略他. `create` action 所要做的是將我們新增的文章存進資料庫中.
 
-When a form is submitted, the fields of the form are sent to Rails as
-_parameters_. These parameters can then be referenced inside the controller
-actions, typically to perform a particular task. To see what these parameters
-look like, change the `create` action to this:
+當表單被送出時, 表單的欄位值會被當作 _parameters_ 送給 Rails . 所以這些 parameters 可以在controller 的 actions 中被使用, 通常是用來執行特定的 task . 現在來看看這些 parameters 長什麼樣子，把 `create` action 替換如下:
 
 ```ruby
 def create
@@ -474,50 +468,40 @@ def create
 end
 ```
 
-The `render` method here is taking a very simple hash with a key of `plain` and
-value of `params[:article].inspect`. The `params` method is the object which
-represents the parameters (or fields) coming in from the form. The `params`
-method returns an `ActiveSupport::HashWithIndifferentAccess` object, which
-allows you to access the keys of the hash using either strings or symbols. In
-this situation, the only parameters that matter are the ones from the form.
+這裡的 `render` method 的設定是用 key 為 `plain` 以及 value 為 `params[:article].inspect` 的簡單 hash. 
+而 `params` method 則是一種物件，它代表的是透過表單送出的 parameters (或欄位值) . 
+這個 `params` method 所回傳是一種類型為 `ActiveSupport::HashWithIndifferentAccess` 的物件, 而這種物件可以讓你使用字串或symbols 表示的key 來得到hash中所相對應的值. 
+目前狀況下, 我們只在乎從表單送出的 parameters.
 
-TIP: Ensure you have a firm grasp of the `params` method, as you'll use it fairly regularly. Let's consider an example URL: **http://www.example.com/?username=dhh&email=dhh@email.com**. In this URL, `params[:username]` would equal "dhh" and `params[:email]` would equal "dhh@email.com".
+TIP: 你要確定是否掌握了 `params` method 的用法, 因為以後會滿常用到它的. 現在來一起思考這個範例網址: **http://www.example.com/?username=dhh&email=dhh@email.com**. 在這網址中， `params[:username]` 的值應該會是 "dhh" 而 `params[:email]` 的值也應該會是 "dhh@email.com".
 
 If you re-submit the form one more time you'll now no longer get the missing
 template error. Instead, you'll see something that looks like the following:
+如果你再次重送這個表單，你將不會再看到 the missing template 錯誤。而是看到如下的訊息：
 
 ```ruby
 {"title"=>"First article!", "text"=>"This is my first article."}
 ```
 
-This action is now displaying the parameters for the article that are coming in
-from the form. However, this isn't really all that helpful. Yes, you can see the
-parameters but nothing in particular is being done with them.
+這個 action 把透過表單送出的 parameters 顯示出來. 
+然而，這並沒有什麼實質的用處. 是的, 你除了觀看 parameters 之外沒有其他作用.
 
-### Creating the Article model
+### 建立 Article 模型
 
-Models in Rails use a singular name, and their corresponding database tables
-use a plural name. Rails provides a generator for creating models, which most
-Rails developers tend to use when creating new models. To create the new model,
-run this command in your terminal:
+對於Rails 中的模型，我們習慣用單數來命名, 而且所對應的資料庫表格，我們習慣用複數來命名 
+Rails 提供一個開發者喜歡用來創造模型的generator.
+想要創造模型的話，請執行以下的命令:
 
 ```bash
 $ bin/rails generate model Article title:string text:text
 ```
 
-With that command we told Rails that we want a `Article` model, together
-with a _title_ attribute of type string, and a _text_ attribute
-of type text. Those attributes are automatically added to the `articles`
-table in the database and mapped to the `Article` model.
+透過這個命令我們告訴 Rails 我們要一個連同型別為string的 _title_ 屬性, and 型別為text的 _text_ 屬性的`Article`模型
+這些屬性會自動的新增到資料庫的 `articles` 表格中並且對應到 `Article` 模型.
 
-Rails responded by creating a bunch of files. For now, we're only interested
-in `app/models/article.rb` and `db/migrate/20140120191729_create_articles.rb`
-(your name could be a bit different). The latter is responsible for creating
-the database structure, which is what we'll look at next.
+執行完後 Rails 會建立一長串的檔案. 現在我們有興趣的是 `app/models/article.rb` 以及 `db/migrate/20140120191729_create_articles.rb` (檔名可能略有不同). 後面那個檔案是負責建立資料庫的結構, 這部份是我們下一步所要了解的.
 
-TIP: Active Record is smart enough to automatically map column names to model
-attributes, which means you don't have to declare attributes inside Rails
-models, as that will be done automatically by Active Record.
+TIP: Active Record 可以很聰明的將欄位名稱對應到模型的屬性, 這意思是說你不用再Rails模型中宣告屬性, 因為 Active Record 會自動處理好這部份.
 
 ### Running a Migration
 
