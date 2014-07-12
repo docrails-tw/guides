@@ -553,12 +553,10 @@ NOTE. 由於你目前的所有操作都在名為development的預設環境下,
 這個命令會將定義在`config/database.yml` 中的 `development` 設定區塊套用到資料庫上 
 如果你想再其他環境執行 migrations, 像是 production, 你就可以明確的名稱代入到下達的命令: `rake db:migrate RAILS_ENV=production`.
 
-### Saving data in the controller
+### 在 controller 中儲存資料
 
-Back in `ArticlesController`, we need to change the `create` action
-to use the new `Article` model to save the data in the database.
-Open `app/controllers/articles_controller.rb` and change the `create` action to
-look like this:
+回到剛剛的 `ArticlesController`, 我們必須要在 `create` action 中使用新增的 `Article` 模型來將資料存進資料庫.
+打開 `app/controllers/articles_controller.rb` 並且將 `create` action 內容替換成以下:
 
 ```ruby
 def create
@@ -569,51 +567,42 @@ def create
 end
 ```
 
-Here's what's going on: every Rails model can be initialized with its
+我們來看看這段程式碼做了什麼: every Rails model can be initialized with its
 respective attributes, which are automatically mapped to the respective
-database columns. In the first line we do just that (remember that
-`params[:article]` contains the attributes we're interested in). Then,
-`@article.save` is responsible for saving the model in the database. Finally,
-we redirect the user to the `show` action, which we'll define later.
+database columns.
+第一行中我們做的就只是所剛剛提到的 (還記得 `params[:article]` 包含著我們有興趣的屬性). 
+接下來, `@article.save` 是負責將模型的資料存進資料庫. 
+最後再將頁面導向晚點會定義的`show` action.
 
-TIP: You might be wondering why the `A` in `Article.new` is capitalized above, whereas most other references to articles in this guide have used lowercase. In this context, we are referring to the class named `Article` that is defined in `\models\article.rb`. Class names in Ruby must begin with a capital letter.
+TIP: 你應該會想知道為什麼 `Article.new` 的 `A` 是大寫的, 而卻在本文中其他地方有出現過article都是使用小寫.
+在上面的程式碼中, 我們所使用的是定義在 `\models\article.rb` 中名為 `Article` 的類別. 在 Ruby 中類別都是以開頭為大寫的方式命名.
 
-TIP: As we'll see later, `@article.save` returns a boolean indicating whether
-the article was saved or not.
+TIP: `@article.save` 執行完會回傳一個boolean值來確定是否成功存進資料庫，詳細的我們晚點介紹.
 
-If you now go to <http://localhost:3000/articles/new> you'll *almost* be able
-to create an article. Try it! You should get an error that looks like this:
+如果你現在連到 <http://localhost:3000/articles/new> 你將 *幾乎* 快完成新增文章的動作. 再試一下! 你應該會得到一個長的像以下的錯誤:
 
 ![Forbidden attributes for new article]
 (images/getting_started/forbidden_attributes_for_new_article.png)
 
-Rails has several security features that help you write secure applications,
-and you're running into one of them now. This one is called `[strong_parameters]
+Rails 有許多安全的機制可以幫助你開發出安全的應用程式,
+現在你將執行其中之一的機制. 這個被稱做 `[strong_parameters]
 (http://guides.rubyonrails.org/action_controller_overview.html#strong-parameters)`,
-which requires us to tell Rails exactly which parameters are allowed into our
-controller actions.
+他需要我們告訴 Rails 確切可代入 controller actions的參數.
 
-Why do you have to bother? The ability to grab and automatically assign all
-controller parameters to your model in one shot makes the programmer's job
-easier, but this convenience also allows malicious use. What if a request to
-the server was crafted to look like a new article form submit but also included
-extra fields with values that violated your applications integrity? They would
-be 'mass assigned' into your model and then into the database along with the
-good stuff - potentially breaking your application or worse.
+那你還有什麼好抱怨的? 這可以一次將要代入你的模型的controller的參數可以自動帶入，來讓開發者的工作可以更輕鬆,
+但是這個方便卻也帶來使用上的危險. 要是一個向server的請求被偽裝成一個新增文章的表單送出資料而且還包含會侵犯你的應用程式正常運作的欄位值? 
+這些將會隨著正常資料 'mass assigned（大量的植入）' 到你的模型以及資料庫 - 潛在的破壞你的應用程式或是更糟的情況.
 
-We have to whitelist our controller parameters to prevent wrongful mass
-assignment. In this case, we want to both allow and require the `title` and
-`text` parameters for valid use of `create`. The syntax for this introduces
-`require` and `permit`. The change will involve one line in the `create` action:
+我們必須設置 controller parameters 的白名單來預防大量的錯誤植入. 
+再這個例子中, 我們想要同時允許而且需要 `title` and
+`text` parameters 來做實質的`create` 動作. 而語法就像如此
+`require` and `permit`. 在 `create` action 我們稍做一行修正:
 
 ```ruby
   @article = Article.new(params.require(:article).permit(:title, :text))
 ```
 
-This is often factored out into its own method so it can be reused by multiple
-actions in the same controller, for example `create` and `update`. Above and
-beyond mass assignment issues, the method is often made `private` to make sure
-it can't be called outside its intended context. Here is the result:
+這會經常把處理好的在代到它的method如此一來可以在相同的controller中的多個action裡重複使用, for example `create` and `update`. 超出 mass assignment 的相關問題, 通常會使用 `private`method 來確保他不會再它的intended context外面被呼叫. 這就是結果:
 
 ```ruby
 def create
@@ -629,7 +618,7 @@ private
   end
 ```
 
-TIP: For more information, refer to the reference above and
+TIP: 更多資訊, 請參考
 [this blog article about Strong Parameters]
 (http://weblog.rubyonrails.org/2012/3/21/strong-parameters/).
 
