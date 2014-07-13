@@ -505,12 +505,12 @@ TIP: Active Record 可以很聰明的將欄位名稱對應到模型的屬性, �
 
 ### 執行一個 Migration
 
-就如同我們所看到的, 執行 `rails generate model` 會在 `db/migrate` 的目錄中建立一個 _database migration_ 的檔案. 
+就如同我們所看到的, 執行完 `rails generate model` 會在 `db/migrate` 的目錄中建立一個 _database migration_ 的檔案. 
 Migrations 是Ruby 的一種類別 這些被設計來讓建立或修改資料庫中的表格能夠更容易.
-Rails 使用 rake 命令來執行 migrations, 而且即使資料庫已經套用設定但還是可以回復migration 動作.
-Migration 的檔名中包含著時間戳記，如此可以確保按造檔案建立的順序來執行.
+Rails 是使用 rake 命令來執行 migrations, 而且即使資料庫已經套用設定但還是可以回復migration 動作.
+Migration 的檔名中包含著時間戳記，如此可以確保依照檔案建立的順序來先後執行.
 
-如果你打開這個檔案`db/migrate/20140120191729_create_articles.rb` (還記得檔案名稱會有些許不同), 而你會看到:
+如果你打開這個檔案`db/migrate/20140120191729_create_articles.rb` (記住這個檔案名稱會有些許不同), 你將會看到:
 
 ```ruby
 class CreateArticles < ActiveRecord::Migration
@@ -525,16 +525,16 @@ class CreateArticles < ActiveRecord::Migration
 end
 ```
 
-再上面的 migration 建立了一個名為 `change` 的method ，當執行 這個 migration的時候會呼叫到這個method. 
-再這個 method 中定義的 action 都是可逆的
+再上面的 migration 建立了一個名為 `change` 的method ，當執行這個 migration 的時候會呼叫到這個method. 
+而定義在這個 method 中的 action 是可逆的
 這意思是 Rails 知道如何回復這個 migration 所做的更動,
-以免有一天你想回復它. 當你執行這個 migration 他將會建立一個 `articles` 表格 其中包含著string型態的欄位以及text型態的欄位. 
-他也建立了兩個時間戳記的欄位來讓Rails可以紀錄article建立以及更新的時間
+以免有一天你想回復它. 當你執行這個 migration 的時候他會建立一個 `articles` 資料表，其中包含著一個 string 型態的欄位以及一個 text 型態的欄位. 
+同時也會建立兩個時間戳記的欄位來讓 Rails 可以紀錄 article 建立以及更新的時間
 
 TIP: 更多關於 migrations 的資訊, 請參考 [Rails Database Migrations]
 (migrations.html).
 
-此時, 你可以使用 rake 命令來執行 migration:
+此時, 你可以使用 rake 命令來執行 migration 動作:
 
 ```bash
 $ bin/rake db:migrate
@@ -549,13 +549,13 @@ Rails 將會執行這個 migration 的命令 並且顯示建立 Articles 資料�
 ==  CreateArticles: migrated (0.0020s) =========================================
 ```
 
-NOTE. 由於你目前的所有操作都在名為development的預設環境下,
-這個命令會將定義在`config/database.yml` 中的 `development` 設定區塊套用到資料庫上 
-如果你想再其他環境執行 migrations, 像是 production, 你就可以明確的名稱代入到下達的命令: `rake db:migrate RAILS_ENV=production`.
+NOTE. 由於你目前的所有操作都在名為 development 的預設環境下,
+所以這個命令會將套用定義在`config/database.yml` 中 `development` 區塊的資料庫 
+如果你想再其他環境執行 migrations, 像是 production, 你就可以將明確的名稱代入到所下達的命令: `rake db:migrate RAILS_ENV=production`.
 
 ### 在 controller 中儲存資料
 
-回到剛剛的 `ArticlesController`, 我們必須要在 `create` action 中使用新增的 `Article` 模型來將資料存進資料庫.
+現在回頭看 `ArticlesController` , 我們必須要在 `create` action 中使用新增的 `Article` 模型來將資料存進資料庫.
 打開 `app/controllers/articles_controller.rb` 並且將 `create` action 內容替換成以下:
 
 ```ruby
@@ -567,42 +567,37 @@ def create
 end
 ```
 
-我們來看看這段程式碼做了什麼: every Rails model can be initialized with its
-respective attributes, which are automatically mapped to the respective
-database columns.
-第一行中我們做的就只是所剛剛提到的 (還記得 `params[:article]` 包含著我們有興趣的屬性). 
-接下來, `@article.save` 是負責將模型的資料存進資料庫. 
-最後再將頁面導向晚點會定義的`show` action.
+我們來看看這段程式碼進行了什麼動作: Rails 模型可以藉由多個別的屬性的賦值來初始化（實體化）, 這些屬性也將會個別的自動對應到資料庫的欄位.
+第一行中我們做的就只是所剛剛說的 (記住 `params[:article]` 中包含著我們有興趣的屬性). 
+接下來, `@article.save` 是負責將模型中資料存進資料庫. 
+最後在將頁面導向晚點會定義的`show` action.
 
 TIP: 你應該會想知道為什麼 `Article.new` 的 `A` 是大寫的, 而卻在本文中其他地方有出現過article都是使用小寫.
-在上面的程式碼中, 我們所使用的是定義在 `\models\article.rb` 中名為 `Article` 的類別. 在 Ruby 中類別都是以開頭為大寫的方式命名.
+在上面的程式碼中, 我們所使用的是定義在 `\models\article.rb` 中名為 `Article` 的類別. 在 Ruby 中類別名稱都是以開頭為大寫的方式命名.
 
 TIP: `@article.save` 執行完會回傳一個boolean值來確定是否成功存進資料庫，詳細的我們晚點介紹.
 
-如果你現在連到 <http://localhost:3000/articles/new> 你將 *幾乎* 快完成新增文章的動作. 再試一下! 你應該會得到一個長的像以下的錯誤:
+如果你現在連到 <http://localhost:3000/articles/new> 你 *幾乎* 快完成新增文章的動作了. 再加把勁! 現在你應該會遇到以下的錯誤:
 
 ![Forbidden attributes for new article]
 (images/getting_started/forbidden_attributes_for_new_article.png)
 
-Rails 有許多安全的機制可以幫助你開發出安全的應用程式,
-現在你將執行其中之一的機制. 這個被稱做 `[strong_parameters]
+Rails 有許多安全的機制可以幫助你開發出有安全性應用程式,
+現在你將使用其中的一個機制. 它被稱做 `[strong_parameters]
 (http://guides.rubyonrails.org/action_controller_overview.html#strong-parameters)`,
-他需要我們告訴 Rails 確切可代入 controller actions的參數.
+這個機制需要我們告訴 Rails 哪些 parameters 是可以在 controller 的 action 中使用.
 
-那你還有什麼好抱怨的? 這可以一次將要代入你的模型的controller的參數可以自動帶入，來讓開發者的工作可以更輕鬆,
-但是這個方便卻也帶來使用上的危險. 要是一個向server的請求被偽裝成一個新增文章的表單送出資料而且還包含會侵犯你的應用程式正常運作的欄位值? 
-這些將會隨著正常資料 'mass assigned（大量的植入）' 到你的模型以及資料庫 - 潛在的破壞你的應用程式或是更糟的情況.
+為什麼還要這麼麻煩呢? 雖然原本作法可以將 parameters 自動地從 controller 一次代入到模型中，讓開發者的工作簡單了許多,但是這個方便的方法卻也允許了一些惡意的使用方式. 如果出現一個向 server 發出的請求，而且這個請求被偽裝成新增文章表單所送出的資料，其中也包含著會破壞應用程式正常運作的額外欄位值，這時候該怎麼辦? 這些惡意資料將會隨著正常資料 'mass assigned（大量賦值）' 進到模型中以及資料庫 - 如此一來應用程式就有被破壞的潛在性或是更糟的情況.
 
-我們必須設置 controller parameters 的白名單來預防大量的錯誤植入. 
-再這個例子中, 我們想要同時允許而且需要 `title` and
-`text` parameters 來做實質的`create` 動作. 而語法就像如此
-`require` and `permit`. 在 `create` action 我們稍做一行修正:
+我們必須將  controller parameters 設置白名單來避免錯誤的 mass assignment
+在這個例子中，我們不但需要 `title` 和 `text` 這兩個 parameters 還要將這兩個 parameters 加入允許清單之後才能夠正確執行 create 動作 
+要達成上述動作會用到的兩個語法 `require` 和 `permit`。 現在我們在 `create` action 稍作一行修正:
 
 ```ruby
   @article = Article.new(params.require(:article).permit(:title, :text))
 ```
 
-這會經常把處理好的在代到它的method如此一來可以在相同的controller中的多個action裡重複使用, for example `create` and `update`. 超出 mass assignment 的相關問題, 通常會使用 `private`method 來確保他不會再它的intended context外面被呼叫. 這就是結果:
+而修改後的 parameters 部份習慣上會被提出來放到屬於他自己的 method 中，如此一來便可在同一個 controller 不同 action 中使用, 就像 `create` 和 `update`. 除了解決 mass assignment 問題之外, 這裡通常會使用 `private` method 來確保不會在非預期的地方被呼叫. 以下是修改後的結果:
 
 ```ruby
 def create
