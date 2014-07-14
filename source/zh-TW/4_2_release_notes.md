@@ -12,8 +12,8 @@ Rails 4.2 精華摘要：
 
 如果您正試著升級現有的應用程式，最好有廣的測試覆蓋度。首先應先升級至 4.1，確保應用程式仍正常工作，接著再升上 4.2。升級需要注意的事項在 [Ruby on Rails 升級指南](upgrading_ruby_on_rails.html#upgrading-from-rails-4-1-to-rails-4-2)可以找到。
 
-重要新功能
---------------
+新功能
+------
 
 ### 外鍵支援
 
@@ -42,10 +42,18 @@ Railties
 
 ### 移除
 
-* 移除了 `rails application` 命令。
+* 移除 `rails application` 命令。
   ([Pull Request](https://github.com/rails/rails/pull/11616))
 
+### 棄用
+
+* 棄用 `Rails::Rack::LogTailer`，沒有替代方案。
+  ([Commit](https://github.com/rails/rails/commit/84a13e019e93efaa8994b3f8303d635a7702dbce))
+
 ### 值得一提的變化
+
+* 產生器新增 `--skip-gems` 選項，可以在產生應用時忽略像是 `turbolinks` 和 `coffee-rails` 等 Gem。
+  ([Commit](https://github.com/rails/rails/commit/10565895805887d4faf004a6f71219da177f78b7))
 
 * 導入 `bin/setup` 腳本來啟動應用程式。
   ([Pull Request](https://github.com/rails/rails/pull/15189))
@@ -78,6 +86,13 @@ Action Pack
     ([Commit](https://github.com/rails/rails/commit/cc26b6b7bccf0eea2e2c1a9ebdcc9d30ca7390d9))
 
 ### 值得一提的變化
+
+* `render nothing: true` 或算繪 `nil` 不再加入一個空白到響應主體。
+  ([Pull Request](https://github.com/rails/rails/pull/14883))
+
+* 導入 `always_permitted_parameters` 選項，用來設定全局允許賦值的參數。
+  預設值是 `['controller', 'action']`。
+  ([Pull Request](https://github.com/rails/rails/pull/15933))
 
 * `*_filter` 方法已經從文件中移除，已經不鼓勵使用。偏好使用 `*_action` 方法：
 
@@ -134,12 +149,18 @@ Action View
 
 ### 值得一提的變化
 
+* 隱藏欄位的表單輔助方法不再產生含有行內樣式表的 `<div>` 元素。
+  ([Pull Request](https://github.com/rails/rails/pull/14738))
+
 Action Mailer
 -------------
 
 請參考 [CHANGELOG][action-mailer] 來了解更多細節。
 
 ### 值得一提的變化
+
+* 新增 `show_previews` 選項，用來在開發環境之外啟用郵件預覽功能。
+  ([Pull Request](https://github.com/rails/rails/pull/15970))
 
 Active Record
 -------------
@@ -148,6 +169,9 @@ Active Record
 
 ### 移除
 
+* 移除 `cache_attributes` 以及其它相關的方法。現在所有屬性都有快取。
+  ([Pull Request](https://github.com/rails/rails/pull/15429))
+
 * 移除已棄用的方法 `ActiveRecord::Base.quoted_locking_column`.
   ([Pull Request](https://github.com/rails/rails/pull/15612))
 
@@ -155,21 +179,22 @@ Active Record
   請改用 `ActiveRecord::Migration` 的實體方法：`proper_table_name`。
   ([Pull Request](https://github.com/rails/rails/pull/15512))
 
-* 移除 `cache_attributes` 以及其它相關的方法，所有的屬性現在都會快取了。
-  ([Pull Request](https://github.com/rails/rails/pull/15429))
-
 * 移除了未使用的 `:timestamp` 類型。把所有 `timestamp` 類型都改為 `:datetime` 的別名。
   修正在 `ActiveRecord` 之外，欄位類型不一致的問題，譬如 XML 序列化。
   ([Pull Request](https://github.com/rails/rails/pull/15184))
 
 ### 棄用
 
-* 棄用了當欄位不存在時，還會從 `column_for_attribute` 回傳 `nil` 的情況。
-  Rails 5.0 將會回傳 Null Object。
-  ([Pull Request](https://github.com/rails/rails/pull/15878))
+* 棄用對 `has_many :through` 自動偵測 counter cache 的支持。要自己對 `has_many` 與
+  `belongs_to` 關聯，給 `through` 的紀錄手動設定。
+  ([Pull Request](https://github.com/rails/rails/pull/15754))
 
 * 棄用了 `serialized_attributes`，沒有替代方案。
   ([Pull Request](https://github.com/rails/rails/pull/15704))
+
+* 棄用了當欄位不存在時，還會從 `column_for_attribute` 回傳 `nil` 的情況。
+  Rails 5.0 將會回傳 Null Object。
+  ([Pull Request](https://github.com/rails/rails/pull/15878))
 
 * 依賴實體狀態（有定義接受參數的作用域）的關聯現在不能使用 `.joins`、`.preload` 以及 `.eager_load` 了。
   ([Commit](https://github.com/rails/rails/commit/ed56e596a0467390011bc9d56d462539776adac1))
@@ -184,11 +209,26 @@ Active Record
 
     ([Commit](https://github.com/rails/rails/commit/91949e48cf41af9f3e4ffba3e5eecf9b0a08bfc3))
 
-* 棄用對 `has_many :through` 自動偵測 counter cache 的支持。要自己對 `has_many` 與
-  `belongs_to` 關聯，給 `through` 的紀錄手動設定。
-  ([Pull Request](https://github.com/rails/rails/pull/15754))
-
 ### 值得一提的變化
+
+* 單數關聯增加 `:required` 選項，用來定義關聯的存在性驗證。
+  ([Pull Request](https://github.com/rails/rails/pull/16056))
+
+* 導入 `ActiveRecord::Base#validate!`，會在記錄不合法時拋出 `RecordInvalid` 異常。
+  ([Pull Request](https://github.com/rails/rails/pull/8639))
+
+* `ActiveRecord::Base#reload` 行為同 `m = Model.find(m.id)`，代表自訂的 `select` 不再保有額外的屬性。
+  meaning that it no longer retains the extra attributes from custom `select`s.
+  ([Pull Request](https://github.com/rails/rails/pull/15866))
+
+* 導入 `bin/rake db:purge` 任務，用來清空當前環境的資料庫。
+  ([Commit](https://github.com/rails/rails/commit/e2f232aba15937a4b9d14bd91e0392c6d55be58d))
+
+* `ActiveRecord::Dirty` 現在會偵測可變數值的改變。序列化過的屬性有變更才會儲存。
+  修復了像是 PostgreSQL 不會偵測到變更的字串欄位、JSON 欄位。
+  (Pull Requests [1](https://github.com/rails/rails/pull/15674),
+  [2](https://github.com/rails/rails/pull/15786),
+  [3](https://github.com/rails/rails/pull/15788))
 
 * 新增 `ActiveRecord::Base` 物件的 `#pretty_print` 方法。
   ([Pull Request](https://github.com/rails/rails/pull/15172))
@@ -216,9 +256,6 @@ Active Record
 * 新增 PostgreSQL 連接器的使用自建的範圍類型支持。
   ([Commit](https://github.com/rails/rails/commit/4cb47167e747e8f9dc12b0ddaf82bdb68c03e032))
 
-* 單數關聯增加 `:required` 選項，用來定義關聯的存在性驗證。
-  ([Pull Request](https://github.com/rails/rails/pull/16056))
-
 Active Model
 ------------
 
@@ -230,6 +267,12 @@ Active Model
   ([Pull Request](https://github.com/rails/rails/pull/15617))
 
 ### 值得一提的變化
+
+* `ActiveModel::Dirty` 導入 `undo_changes` 方法，用來回復更改的屬性到先前的數值。
+  ([Pull Request](https://github.com/rails/rails/pull/14861))
+
+* 驗證啟用時，`has_secure_password` 現在會檢查密碼是否少於 72 個字元。
+  ([Pull Request](https://github.com/rails/rails/pull/15708))
 
 * 引入 `#validate` 作為 `#valid?` 的別名。
   ([Pull Request](https://github.com/rails/rails/pull/14456))
@@ -257,19 +300,16 @@ Active Support
 
 ### 值得一提的變化
 
+* 新增 `Hash#transform_values` 與 `Hash#transform_values!` 方法，來簡化 Hash
+  值需要更新、但鍵保留不變這樣的常見模式。
+  ([Pull Request](https://github.com/rails/rails/pull/15819))
+
 * `humanize` 現在會去掉前面的底線。
   ([Commit](https://github.com/rails/rails/commit/daaa21bc7d20f2e4ff451637423a25ff2d5e75c7))
-
-* 新增 `SecureRandom::uuid_v3` 和 `SecureRandom::uuid_v5` 方法。
-  ([Pull Request](https://github.com/rails/rails/pull/12016))
 
 * 導入 `Concern#class_methods` 來取代 `module ClassMethods` 以及 `Kernel#concern`，
   來避免使用 `module Foo; extend ActiveSupport::Concern; end` 這樣的樣板。
   ([Commit](https://github.com/rails/rails/commit/b16c36e688970df2f96f793a759365b248b582ad))
-
-* 新增 `Hash#transform_values` 與 `Hash#transform_values!` 方法，來簡化 Hash
-  值需要更新、但鍵保留不變這樣的常見模式。
-  ([Pull Request](https://github.com/rails/rails/pull/15819))
 
 致謝
 ----
