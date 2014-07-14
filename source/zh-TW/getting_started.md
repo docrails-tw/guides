@@ -617,32 +617,25 @@ TIP: 更多資訊, 請參考
 [this blog article about Strong Parameters]
 (http://weblog.rubyonrails.org/2012/3/21/strong-parameters/).
 
-### Showing Articles
+### 顯示文章
 
-If you submit the form again now, Rails will complain about not finding the
-`show` action. That's not very useful though, so let's add the `show` action
-before proceeding.
+如果你再次送出表單, Rails 會提示找不到`show` action. 
+這個提示用處不大, 所以我們還是先新增 `show` action.
 
-As we have seen in the output of `rake routes`, the route for `show` action is
-as follows:
+如同之前我們所看 `rake routes` 的輸出結果, 關於 `show` action 的 route 規則如下：
 
 ```
 article GET    /articles/:id(.:format)      articles#show
 ```
 
-The special syntax `:id` tells rails that this route expects an `:id`
-parameter, which in our case will be the id of the article.
+這個特別的語法 `:id` 告訴了 rails 這個 route 規則預期會收到一個 `:id`
+parameter, 在我們的例子中這個 parameter 會是文章的 id.
 
-As we did before, we need to add the `show` action in
-`app/controllers/articles_controller.rb` and its respective view.
+如同之前我們所做過的, 我們要在 `app/controllers/articles_controller.rb` 中新增 `show` action 以及新增相對應的 view.
 
-NOTE: A frequent practice is to place the standard CRUD actions in each
-controller in the following order: `index`, `show`, `new`, `edit`, `create`, `update`
-and `destroy`. You may use any order you choose, but keep in mind that these
-are public methods; as mentioned earlier in this guide, they must be placed
-before any private or protected method in the controller in order to work.
+NOTE: 我們有一個習慣性作法就是將在 controller 中的標準 CRUD actions 按照以下順序擺放: `index`, `show`, `new`, `edit`, `create`, `update`, `destroy`. 當然你可以使用自己的擺放順序, 但是請記住一些像之前所提到過的 public methods, 這些 methods 在 controller 中一定要放在 private 或 protected method 之前才行.
 
-Given that, let's add the `show` action, as follows:
+考慮上述的習慣作法, 我們來新增 `show` action, 如下:
 
 ```ruby
 class ArticlesController < ApplicationController
@@ -656,14 +649,10 @@ class ArticlesController < ApplicationController
   # snipped for brevity
 ```
 
-A couple of things to note. We use `Article.find` to find the article we're
-interested in, passing in `params[:id]` to get the `:id` parameter from the
-request. We also use an instance variable (prefixed by `@`) to hold a
-reference to the article object. We do this because Rails will pass all instance
-variables to the view.
+這邊有幾件事要記下來. 我們透過 `params[:id]` 來取得在請求中 `:id` parameter，並且將此 parameter 代入到 `Article.find` 來找到我們想看的文章。
+我們也要使用一個 instance variable（實例變數） (以`@`開頭) 來參考到一個文章物件. 我們會這麼做是因為 Rails 會將所有的 instance variable 送到 view 中.
 
-Now, create a new file `app/views/articles/show.html.erb` with the following
-content:
+現在就來建立 view `app/views/articles/show.html.erb` 並且新增以下內容:
 
 ```html+erb
 <p>
@@ -677,24 +666,22 @@ content:
 </p>
 ```
 
-With this change, you should finally be able to create new articles.
-Visit <http://localhost:3000/articles/new> and give it a try!
+完成以上步驟後, 你現在應該總算可以新增一篇文章了.
+現在就連到 <http://localhost:3000/articles/new> 並且試試看!
 
 ![Show action for articles](images/getting_started/show_action_for_articles.png)
 
-### Listing all articles
+### 顯示所有文章
 
-We still need a way to list all our articles, so let's do that.
-The route for this as per output of `rake routes` is:
+目前我們仍然需要一個條列出所有文章的功能, 所以一起來完成它吧.
+根據 `rake routes` 的輸出結果，有一條 route 規則正是為此制定:
 
 ```
 articles GET    /articles(.:format)          articles#index
 ```
 
-Add the corresponding `index` action for that route inside the
-`ArticlesController` in the `app/controllers/articles_controller.rb` file.
-When we write an `index` action, the usual practice is to place it as the
-first method in the controller. Let's do it:
+接下來先找到 `app/controllers/articles_controller.rb` ，並且將檔案裡頭的 `ArticlesController` 中加入相對應於這個 route 規則的 `index` action.
+在我們新增 `index` action 的時候, 通常習慣的作法是放在 controller 的第一個 method 的位置上，那我們就開始動手作:
 
 ```ruby
 class ArticlesController < ApplicationController
@@ -712,8 +699,7 @@ class ArticlesController < ApplicationController
   # snipped for brevity
 ```
 
-And then finally, add the view for this action, located at
-`app/views/articles/index.html.erb`:
+最後,我們在替這個 action 新增一個 view 檔案 `app/views/articles/index.html.erb`:
 
 ```html+erb
 <h1>Listing articles</h1>
@@ -733,37 +719,31 @@ And then finally, add the view for this action, located at
 </table>
 ```
 
-Now if you go to `http://localhost:3000/articles` you will see a list of all the
-articles that you have created.
+現在如果你連到 `http://localhost:3000/articles` 你將會看到一整列你所新增的文章.
 
-### Adding links
+### 建立連結
 
-You can now create, show, and list articles. Now let's add some links to
-navigate through pages.
+你現在可以新增文章，顯示文章，並且顯示文章清單. 現在就來建立一些連結來前往這些頁面.
 
-Open `app/views/welcome/index.html.erb` and modify it as follows:
+打開 `app/views/welcome/index.html.erb` 並且修改成如下:
 
 ```html+erb
 <h1>Hello, Rails!</h1>
 <%= link_to 'My Blog', controller: 'articles' %>
 ```
 
-The `link_to` method is one of Rails' built-in view helpers. It creates a
-hyperlink based on text to display and where to go - in this case, to the path
-for articles.
+這個 `link_to` method 是Rails' 內建的其中一個view helpers. 他是用來建立一個文字超連結，除了顯示之外還可以連結指定頁面- 在這個例子中, 是連結到顯示文章列表的頁面.
 
-Let's add links to the other views as well, starting with adding this
-"New Article" link to `app/views/articles/index.html.erb`, placing it above the
-`<table>` tag:
+我們也將其他 views 建立連結, 首先將這個
+"New Article" 連結新增到 `app/views/articles/index.html.erb`, 並且放在 `<table>` 上面:
 
 ```erb
 <%= link_to 'New article', new_article_path %>
 ```
 
-This link will allow you to bring up the form that lets you create a new article.
+這個連結將會連到新增文章的表單頁面.
 
-Now, add another link in `app/views/articles/new.html.erb`, underneath the
-form, to go back to the `index` action:
+在 `app/views/articles/new.html.erb` 中 form 的底下新增一個連結來返回到 `index` action:
 
 ```erb
 <%= form_for :article, url: articles_path do |f| %>
@@ -773,9 +753,7 @@ form, to go back to the `index` action:
 <%= link_to 'Back', articles_path %>
 ```
 
-Finally, add a link to the `app/views/articles/show.html.erb` template to
-go back to the `index` action as well, so that people who are viewing a single
-article can go back and view the whole list again:
+最後，在將 `app/views/articles/show.html.erb` 這個 template 也新增一個可以返回 `index` action 的連結, 如此一來觀看單篇文章的人也可以返回文章清單來觀看:
 
 ```html+erb
 <p>
@@ -791,13 +769,9 @@ article can go back and view the whole list again:
 <%= link_to 'Back', articles_path %>
 ```
 
-TIP: If you want to link to an action in the same controller, you don't need to
-specify the `:controller` option, as Rails will use the current controller by
-default.
+TIP: 如果你要連到的 action 都在同一個 controller 下, 你無需再次定義這個 `:controller` 選項, 因為 Rails 預設的情況下會使用當前的 controller.
 
-TIP: In development mode (which is what you're working in by default), Rails
-reloads your application with every browser request, so there's no need to stop
-and restart the web server when a change is made.
+TIP: 在 development 模式下 (你現在所有的操作都在此預設模式下), 當瀏覽器發出請求的時候 Rails 就會重新載入你的應用程式, 所以即使做了一點修改也無需停止並重新啟動 web 服務.
 
 ### Adding Some Validation
 
