@@ -773,23 +773,20 @@ TIP: 如果你要連到的 action 都在同一個 controller 下, 你無需再�
 
 TIP: 在 development 模式下 (你現在所有的操作都在此預設模式下), 當瀏覽器發出請求的時候 Rails 就會重新載入你的應用程式, 所以即使做了一點修改也無需停止並重新啟動 web 服務.
 
-### Adding Some Validation
+### 加入一些驗證
 
-The model file, `app/models/article.rb` is about as simple as it can get:
+目前的模型檔案 `app/models/article.rb` 目前內容非常簡單:
 
 ```ruby
 class Article < ActiveRecord::Base
 end
 ```
 
-There isn't much to this file - but note that the `Article` class inherits from
-`ActiveRecord::Base`. Active Record supplies a great deal of functionality to
-your Rails models for free, including basic database CRUD (Create, Read, Update,
-Destroy) operations, data validation, as well as sophisticated search support
-and the ability to relate multiple models to one another.
+雖然這個檔案內容並不多 - 但是請注意 `Article` 類別是繼承於 `ActiveRecord::Base` . 
+Active Record 提供很多的功能來讓你的 Rails models 很大的自由性, 包含著一些基本的資料庫的操作 CRUD (Create, Read, Update, Destroy), 資料的驗證, 複雜的搜尋，還有將多個模型彼此關聯的功能.
 
-Rails includes methods to help you validate the data that you send to models.
-Open the `app/models/article.rb` file and edit it:
+Rails 提供了一些 methods 來幫你把送到模型的資料作驗證動作.
+打開 `app/models/article.rb` 並且編輯:
 
 ```ruby
 class Article < ActiveRecord::Base
@@ -798,19 +795,13 @@ class Article < ActiveRecord::Base
 end
 ```
 
-These changes will ensure that all articles have a title that is at least five
-characters long. Rails can validate a variety of conditions in a model,
-including the presence or uniqueness of columns, their format, and the
-existence of associated objects. Validations are covered in detail in [Active
-Record Validations](active_record_validations.html).
+如此一來所有的文章的title字元長度將限制至少五個字元. 除此之外 Rails 還可以在模型中驗證其他不同的條件,
+其中包含欄位是否存在或是否唯一, 欄位的資料格式, 以及是否存在相對應的物件. 
+驗證的部份 在 [Active Record Validations](active_record_validations.html) 有更詳盡的介紹.
 
-With the validation now in place, when you call `@article.save` on an invalid
-article, it will return `false`. If you open
-`app/controllers/articles_controller.rb` again, you'll notice that we don't
-check the result of calling `@article.save` inside the `create` action.
-If `@article.save` fails in this situation, we need to show the form back to the
-user. To do this, change the `new` and `create` actions inside
-`app/controllers/articles_controller.rb` to these:
+有了驗證機制之後, 在文章資料不正確的情況下呼叫了 `@article.save`, 它會回傳 `false`. 如果你再次打開
+`app/controllers/articles_controller.rb`, 你將會注意到我們並沒有在 `create` action 中檢查 `@article.save` 的回傳結果.
+假如 `@article.save` 目前是執行失敗的, 那頁面應該要回到新增文章的頁面. 要完成這項機制, 要編輯位於  `app/controllers/articles_controller.rb` 的 `new` 以及 `create` actions:
 
 ```ruby
 def new
@@ -833,21 +824,14 @@ private
   end
 ```
 
-The `new` action is now creating a new instance variable called `@article`, and
-you'll see why that is in just a few moments.
+這個 `new` action 新建立了一個名為 `@article` 的實體變數, 至於為什麼要這麼做了晚一點你就會知道了.
 
-Notice that inside the `create` action we use `render` instead of `redirect_to`
-when `save` returns `false`. The `render` method is used so that the `@article`
-object is passed back to the `new` template when it is rendered. This rendering
-is done within the same request as the form submission, whereas the
-`redirect_to` will tell the browser to issue another request.
+值得注意，在 `create` action 的 `save` 回傳 `false` 時，我們是用 `render` 而不是 `redirect_to`. 
+當使用`render` method 時，可讓 `@article` 物件被傳回到 `new` template，
+這樣一來，當render完成後，表單仍然可以保留送出前的結果, 反之 `redirect_to` 則是讓瀏覽器去發出一個新的請求.
 
-If you reload
-<http://localhost:3000/articles/new> and
-try to save an article without a title, Rails will send you back to the
-form, but that's not very useful. You need to tell the user that
-something went wrong. To do that, you'll modify
-`app/views/articles/new.html.erb` to check for error messages:
+如果你重新整理了 <http://localhost:3000/articles/new> 並且嘗試送出一個沒有標題的文章, Rails 將會導回送出前的表單頁面, 但這功能還不夠完整. 我們還必須要讓使用者知道在哪邊出錯. 為了這個功能，你需修改
+`app/views/articles/new.html.erb` 來新增錯誤訊息的提示:
 
 ```html+erb
 <%= form_for :article, url: articles_path do |f| %>
@@ -885,24 +869,15 @@ something went wrong. To do that, you'll modify
 <%= link_to 'Back', articles_path %>
 ```
 
-A few things are going on. We check if there are any errors with
-`@article.errors.any?`, and in that case we show a list of all
-errors with `@article.errors.full_messages`.
+繼續看到新增的部份. 我們用 `@article.errors.any?` 來檢查是否出現錯誤, 如果有，我們就用 `@article.errors.full_messages` 來顯示錯誤清單.
 
-`pluralize` is a rails helper that takes a number and a string as its
-arguments. If the number is greater than one, the string will be automatically
-pluralized.
+`pluralize` 是一個 rails helper ，它需要代入兩個分別為數字及字串的參數. 而當數字參數大於一時, 字串變數就會使用複數型態.
 
-The reason why we added `@article = Article.new` in the `ArticlesController` is
-that otherwise `@article` would be `nil` in our view, and calling
-`@article.errors.any?` would throw an error.
+這也是為什麼我們要在`ArticlesController`加入`@article = Article.new`的理由，因為如果不這麼做，在view中的 `@article` 將會是`nil` , 在呼叫`@article.errors.any?` 時就會出現錯誤.
 
-TIP: Rails automatically wraps fields that contain an error with a div
-with class `field_with_errors`. You can define a css rule to make them
-standout.
+TIP: Rails 會自動的將有錯誤的欄位用class 為 `field_with_errors` 的 div 包起來. 此時你可以定義css規則將這些特別標示出來。
 
-Now you'll get a nice error message when saving an article without title when
-you attempt to do just that on the new article form
+現在你將會得到一個有用的錯誤提示當你在嘗試去送出新增文章表單卻忘了輸入標題
 [(http://localhost:3000/articles/new)](http://localhost:3000/articles/new).
 
 ![Form With Errors](images/getting_started/form_with_errors.png)
