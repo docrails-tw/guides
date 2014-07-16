@@ -52,6 +52,11 @@ Upgrading from Rails 4.1 to Rails 4.2
 
 NOTE: This section is a work in progress.
 
+### Serialized attributes
+
+When assigning `nil` to a serialized attribute, it will be saved to the database
+as `NULL` instead of passing the `nil` value through the coder (e.g. `"null"`
+when using the `JSON` coder).
 
 Upgrading from Rails 4.0 to Rails 4.1
 -------------------------------------
@@ -240,6 +245,16 @@ part of the rewrite, the following features have been removed from the encoder:
 If your application depends on one of these features, you can get them back by
 adding the [`activesupport-json_encoder`](https://github.com/rails/activesupport-json_encoder)
 gem to your Gemfile.
+
+#### JSON representation of Time objects
+
+`#as_json` for objects with time component (`Time`, `DateTime`, `ActiveSupport::TimeWithZone`)
+now returns millisecond precision by default. If you need to keep old behavior with no millisecond
+precision, set the following in an initializer:
+
+```
+ActiveSupport::JSON::Encoding.time_precision = 0
+```
 
 ### Usage of `return` within inline callback blocks
 
