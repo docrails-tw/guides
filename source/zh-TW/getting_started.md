@@ -882,13 +882,12 @@ TIP: Rails 會自動的將有錯誤的欄位用class 為 `field_with_errors` 的
 
 ![Form With Errors](images/getting_started/form_with_errors.png)
 
-### Updating Articles
+### 更新文章
 
-We've covered the "CR" part of CRUD. Now let's focus on the "U" part, updating
-articles.
+我們已經看過了 CRUD 的 "CR" 部份了. 現在我們來著重在 "U" 這部份, updating
+articles（更新文章）.
 
-The first step we'll take is adding an `edit` action to the `ArticlesController`,
-generally between the `new` and `create` actions, as shown:
+我們第一個採取的步驟是在 `ArticlesController` 中新增 `edit` action ，通常這個 action 會擺放在 `new` 跟 `creat` actions 之間，如下所示：
 
 ```ruby
 def new
@@ -910,9 +909,7 @@ def create
 end
 ```
 
-The view will contain a form similar to the one we used when creating
-new articles. Create a file called `app/views/articles/edit.html.erb` and make
-it look as follows:
+接下要建立的 view 可能會包含一個類似於新增文章時所用到的表單. 先建立並命名這個檔案 `app/views/articles/edit.html.erb`並且編輯內容如下:
 
 ```html+erb
 <h1>Editing article</h1>
@@ -952,23 +949,16 @@ it look as follows:
 <%= link_to 'Back', articles_path %>
 ```
 
-This time we point the form to the `update` action, which is not defined yet
-but will be very soon.
+這個表單之後會被 `update` action 所使用, 雖然目前還沒定義，不過也快了.
 
-The `method: :patch` option tells Rails that we want this form to be submitted
-via the `PATCH` HTTP method which is the HTTP method you're expected to use to
-**update** resources according to the REST protocol.
+表單中的 `method: :patch` 選項告訴 Rails 我們想使用 `PATCH` HTTP method 來送出表單，而我們會想使用這個 HTTP method 來更新資料的因素，根據的就是 REST protocol .
 
-The first parameter of `form_for` can be an object, say, `@article` which would
-cause the helper to fill in the form with the fields of the object. Passing in a
-symbol (`:article`) with the same name as the instance variable (`@article`)
-also automagically leads to the same behavior. This is what is happening here.
-More details can be found in [form_for documentation]
+`form_for` 的第一個參數可以是一個物件,例如 `@article` ，而這個物件會讓 helper 使用它的欄位值來填入表單. 傳入一個跟instance variable (`@article`)相同名子的symbol (`:article`) 是一樣的意思. 以上是這邊的介紹.
+更多詳細細節請參考 [form_for documentation]
 (http://api.rubyonrails.org/classes/ActionView/Helpers/FormHelper.html#method-i-form_for).
 
-Next, we need to create the `update` action in
-`app/controllers/articles_controller.rb`.
-Add it between the `create` action and the `private` method:
+下一步，我們需要在 `app/controllers/articles_controller.rb` 建立一個 `update` action.
+並且擺放在 `create` action 跟 `private` method 之間:
 
 ```ruby
 def create
@@ -997,22 +987,13 @@ private
   end
 ```
 
-The new method, `update`, is used when you want to update a record
-that already exists, and it accepts a hash containing the attributes
-that you want to update. As before, if there was an error updating the
-article we want to show the form back to the user.
+當你想更新一個存在的資料時，你就會使用這個新增的method `update`, 而這個 method 會接受傳入一個Hash，其中包含著你想更新的屬性. 如果更新送出的時候發生錯誤，那我們就如同之前的作法，回到表單頁面.
 
-We reuse the `article_params` method that we defined earlier for the create
-action.
+`article_params` method 是在新增 create action 的時候所定義的，現在我們再次的使用它.
 
-TIP: You don't need to pass all attributes to `update`. For
-example, if you'd call `@article.update(title: 'A new title')`
-Rails would only update the `title` attribute, leaving all other
-attributes untouched.
+TIP: 你並不需要將所有的要更新的屬性傳入到 `update`. 舉例來說, 如果你呼叫了 `@article.update(title: 'A new title')` 那麼 Rails 只會更新 `title` 的屬性, 並不會動到其他部份.
 
-Finally, we want to show a link to the `edit` action in the list of all the
-articles, so let's add that now to `app/views/articles/index.html.erb` to make
-it appear next to the "Show" link:
+最後，我們希望在文章列表中新增一個可以對應到`edit` action 的連結, 於是我們在 `app/views/articles/index.html.erb` 中"Show"連結的隔壁新增這個連結:
 
 ```html+erb
 <table>
@@ -1033,9 +1014,7 @@ it appear next to the "Show" link:
 </table>
 ```
 
-And we'll also add one to the `app/views/articles/show.html.erb` template as
-well, so that there's also an "Edit" link on an article's page. Add this at the
-bottom of the template:
+現在我們也在 `app/views/articles/show.html.erb` template 一樣新增連結, 如此一來就會有一個 "Edit" 連結在顯示 article 的頁面出現. 這裡我們選擇擺放在 template 的最下面:
 
 ```html+erb
 ...
@@ -1044,7 +1023,7 @@ bottom of the template:
 <%= link_to 'Edit', edit_article_path(@article) %>
 ```
 
-And here's how our app looks so far:
+這就是目前我們的應用程式長的樣子:
 
 ![Index action with edit link](images/getting_started/index_action_with_edit_link.png)
 
