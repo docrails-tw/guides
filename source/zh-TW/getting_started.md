@@ -1027,18 +1027,13 @@ TIP: 你並不需要將所有的要更新的屬性傳入到 `update`. 舉例來�
 
 ![Index action with edit link](images/getting_started/index_action_with_edit_link.png)
 
-### Using partials to clean up duplication in views
+### 使用 partials 刪除 views 中重複部份
 
-Our `edit` page looks very similar to the `new` page; in fact, they
-both share the same code for displaying the form. Let's remove this
-duplication by using a view partial. By convention, partial files are
-prefixed by an underscore.
+我們的 `edit` 頁面是非常相似 `new` 頁面; 事實上, 他們在顯示表單的部份是相同的. 我們現在就用 view partial 刪除重複的部份. 在習慣上, partial 的檔案會以底線為開頭命名.
 
-TIP: You can read more about partials in the
-[Layouts and Rendering in Rails](layouts_and_rendering.html) guide.
+TIP: 你可以從 [Layouts and Rendering in Rails](layouts_and_rendering.html) 讀到更多關於 partials.
 
-Create a new file `app/views/articles/_form.html.erb` with the following
-content:
+先建立檔案 `app/views/articles/_form.html.erb` 並且新增以下內容:
 
 ```html+erb
 <%= form_for @article do |f| %>
@@ -1074,16 +1069,13 @@ content:
 <% end %>
 ```
 
-Everything except for the `form_for` declaration remained the same.
-The reason we can use this shorter, simpler `form_for` declaration
-to stand in for either of the other forms is that `@article` is a *resource*
-corresponding to a full set of RESTful routes, and Rails is able to infer
-which URI and method to use.
-For more information about this use of `form_for`, see [Resource-oriented style]
+基本上除了 `form_for` 的宣告部份以外，其他都是一樣的.
+而在這我們可以簡化縮短 `form_for` 的宣告來替換其他 view 中的寫法是因為 `@article` 是一個 *resource*
+，而這個 resource 對應到 RESTful 的 routes, 這樣 Rails 就可以判斷要使用哪個 URI 以及 method.
+更多關於 `form_for` 的使用, 請看 [Resource-oriented style]
 (http://api.rubyonrails.org/classes/ActionView/Helpers/FormHelper.html#method-i-form_for-label-Resource-oriented+style).
 
-Now, let's update the `app/views/articles/new.html.erb` view to use this new
-partial, rewriting it completely:
+現在我們編輯位於 `app/views/articles/new.html.erb` 的 view ，並且在 view 中使用新建立的 partial, 整個改寫成如下:
 
 ```html+erb
 <h1>New article</h1>
@@ -1093,7 +1085,7 @@ partial, rewriting it completely:
 <%= link_to 'Back', articles_path %>
 ```
 
-Then do the same for the `app/views/articles/edit.html.erb` view:
+在 `app/views/articles/edit.html.erb` 的 view 也是相同的動作:
 
 ```html+erb
 <h1>Edit article</h1>
@@ -1103,29 +1095,22 @@ Then do the same for the `app/views/articles/edit.html.erb` view:
 <%= link_to 'Back', articles_path %>
 ```
 
-### Deleting Articles
+### 刪除文章
 
-We're now ready to cover the "D" part of CRUD, deleting articles from the
-database. Following the REST convention, the route for
-deleting articles as per output of `rake routes` is:
+我們現在要進入到 CRUD 的 "D" 部份, 從資料庫刪除文章. 遵循 REST 設計慣例, 根據 `rake routes` 的輸出結果，其中有一個 rout 是用在刪除文章的動作:
 
 ```ruby
 DELETE /articles/:id(.:format)      articles#destroy
 ```
 
-The `delete` routing method should be used for routes that destroy
-resources. If this was left as a typical `get` route, it could be possible for
-people to craft malicious URLs like this:
+對於針對刪除資料的 routes 應該使用 `delete` routing method，
+如果仍然使用常見的 `get` 方式的 route, 其他人將有機會使用像這樣惡意的 URLs :
 
 ```html
 <a href='http://example.com/articles/1/destroy'>look at this cat!</a>
 ```
 
-We use the `delete` method for destroying resources, and this route is mapped
-to the `destroy` action inside `app/controllers/articles_controller.rb`, which
-doesn't exist yet. The `destroy` method is generally the last CRUD action in
-the controller, and like the other public CRUD actions, it must be placed
-before any `private` or `protected` methods. Let's add it:
+這裡我們使用 `delete` method 來刪除資料, 而這條 route 將會對應到在 `app/controllers/articles_controller.rb` 中的 `destroy` action,雖然這個action我們還沒定義. 在controller中 `destroy` method 通常是 CRUD action 中最後的 action, 就像其他 public CRUD actions 一樣, 你只需將他擺放在任何 `private` 或 `protected` methods 之前就行. 現在就來新增:
 
 ```ruby
 def destroy
@@ -1136,8 +1121,7 @@ def destroy
 end
 ```
 
-The complete `ArticlesController` in the
-`app/controllers/articles_controller.rb` file should now look like this:
+在 `app/controllers/articles_controller.rb` 中 `ArticlesController` 的完整內容應該長的像如此:
 
 ```ruby
 class ArticlesController < ApplicationController
