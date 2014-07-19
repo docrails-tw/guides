@@ -1175,12 +1175,10 @@ class ArticlesController < ApplicationController
 end
 ```
 
-You can call `destroy` on Active Record objects when you want to delete
-them from the database. Note that we don't need to add a view for this
-action since we're redirecting to the `index` action.
+當你想刪除Active Record 物件時，你可以對這些物件呼叫 `destroy`. 注意到我們不需要去為了這個action去新增一個view，因為我們將會重新導回 `index` action.
 
-Finally, add a 'Destroy' link to your `index` action template
-(`app/views/articles/index.html.erb`) to wrap everything together.
+最後, 我們會在 `index` action template (`app/views/articles/index.html.erb`) 新增一個 'Destroy' 連結
+ to wrap everything together.
 
 ```html+erb
 <h1>Listing Articles</h1>
@@ -1206,22 +1204,19 @@ Finally, add a 'Destroy' link to your `index` action template
 </table>
 ```
 
-Here we're using `link_to` in a different way. We pass the named route as the
-second argument, and then the options as another argument. The `:method` and
-`:'data-confirm'` options are used as HTML5 attributes so that when the link is
-clicked, Rails will first show a confirm dialog to the user, and then submit the
-link with method `delete`.  This is done via the JavaScript file `jquery_ujs`
-which is automatically included into your application's layout
-(`app/views/layouts/application.html.erb`) when you generated the application.
-Without this file, the confirmation dialog box wouldn't appear.
+在這裡我們使用 `link_to` 的不同用法. 
+我們用 route 名稱作為第二個引數傳入，而其他選項也依序以引數的方式傳入
+`:method` 以及 `:'data-confirm'` 這兩個選項是用來作 HTML5 屬性設定，如此一來當按下連結時, Rails 將會先顯示確認對話視窗, 才用 `delete` method 送出連結.  
+這是透過 JavaScript 檔案 `jquery_ujs` 來完成的
+而這個 JavaScript 檔案在你在產生應用專案時就自動被包含在應用程式的 layout(版面配置) 中
+(`app/views/layouts/application.html.erb`) .
+少了這個檔案,確認對話視窗就不會顯示.
 
 ![Confirm Dialog](images/getting_started/confirm_dialog.png)
 
-Congratulations, you can now create, show, list, update and destroy
-articles.
+恭喜, 你現在已經可以 create, show, list, update 以及 destroy 文章了.
 
-TIP: In general, Rails encourages using resources objects instead of
-declaring routes manually. For more information about routing, see
+TIP: 一般來說, Rails 鼓勵使用 resources 物件而不是去宣告 routes manually. 更多關於 routing 的資訊, 請看
 [Rails Routing from the Outside In](routing.html).
 
 Adding a Second Model
