@@ -1219,32 +1219,30 @@ end
 TIP: 一般來說, Rails 鼓勵使用 resources 物件而不是去宣告 routes manually. 更多關於 routing 的資訊, 請看
 [Rails Routing from the Outside In](routing.html).
 
-Adding a Second Model
+加入第二個模型
 ---------------------
 
-It's time to add a second model to the application. The second model will handle
-comments on articles.
+現在我們要加入第二個模型到應用專案中. 而這個模型將會處理文章留言的部份.
 
-### Generating a Model
+### 產生一個模型
 
-We're going to see the same generator that we used before when creating
-the `Article` model. This time we'll create a `Comment` model to hold
-reference of article comments. Run this command in your terminal:
+我們現在會使用一個跟建立 `Article` 模型時相同的 generator
+. 在這我們建立一個 `Comment` 模型to hold reference of 文章留言. 在終端機下輸入以下命令:
 
 ```bash
 $ bin/rails generate model Comment commenter:string body:text article:references
 ```
 
-This command will generate four files:
+這個命令會產生四個檔案:
 
-| File                                         | Purpose                                                                                                |
+| 檔案                                         | 用途                                                                                                   |
 | -------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
-| db/migrate/20140120201010_create_comments.rb | Migration to create the comments table in your database (your name will include a different timestamp) |
-| app/models/comment.rb                        | The Comment model                                                                                      |
+| db/migrate/20140120201010_create_comments.rb | 這個 Migration 檔案是用來在資料庫中建立留言的資料表 (這邊名稱會包含不同的時間戳記) |
+| app/models/comment.rb                        | 一個 Comment 模型                                                                                      |
 | test/models/comment_test.rb                  | Testing harness for the comments model                                                                 |
 | test/fixtures/comments.yml                   | Sample comments for use in testing                                                                     |
 
-First, take a look at `app/models/comment.rb`:
+首先我們看到 `app/models/comment.rb`:
 
 ```ruby
 class Comment < ActiveRecord::Base
@@ -1252,12 +1250,10 @@ class Comment < ActiveRecord::Base
 end
 ```
 
-This is very similar to the `Article` model that you saw earlier. The difference
-is the line `belongs_to :article`, which sets up an Active Record _association_.
-You'll learn a little about associations in the next section of this guide.
+這部份跟我們之前看到的 `Article` 模型十分相似. 不同之處就在 `belongs_to :article` 這一行, which sets up an Active Record _association_.
+在下一節中你將會學到一些關於 associations.
 
-In addition to the model, Rails has also made a migration to create the
-corresponding database table:
+除了 model 的部份, Rails 還新增了一個 migration 檔案，用來建立所需的資料庫資料表:
 
 ```ruby
 class CreateComments < ActiveRecord::Migration
@@ -1275,16 +1271,14 @@ class CreateComments < ActiveRecord::Migration
 end
 ```
 
-The `t.references` line sets up a foreign key column for the association between
-the two models. An index for this association is also created on this column.
-Go ahead and run the migration:
+`t.references` 這行程式設定了一個 foreign key 的欄位來關聯兩個模型. 並且在這欄位上為關聯建立引索.
+我們繼續並且執行 migration:
 
 ```bash
 $ bin/rake db:migrate
 ```
 
-Rails is smart enough to only execute the migrations that have not already been
-run against the current database, so in this case you will just see:
+Rails 非常聰明的只會執行現行資料庫還沒執行的 migration ，所以這裡你只會看到部份執行的結果：
 
 ```bash
 ==  CreateComments: migrating =================================================
@@ -1293,18 +1287,15 @@ run against the current database, so in this case you will just see:
 ==  CreateComments: migrated (0.0119s) ========================================
 ```
 
-### Associating Models
+### 關聯模型
 
-Active Record associations let you easily declare the relationship between two
-models. In the case of comments and articles, you could write out the
-relationships this way:
+Active Record associations 讓你可以很簡單的宣告 two models 之間的關係. 就 comments 以及 articles 來說, 兩個模型之間的關係是如此:
 
-* Each comment belongs to one article.
-* One article can have many comments.
+* 每個留言會有一個所屬的文章.
+* 一個文章可以有多個留言.
 
-In fact, this is very close to the syntax that Rails uses to declare this
-association. You've already seen the line of code inside the `Comment` model
-(app/models/comment.rb) that makes each comment belong to an Article:
+事實上, 這已經非常接近 Rails 宣告關聯所使用的語法. 你剛剛已經看過在 `Comment` 模型
+(app/models/comment.rb) 的那行就是可以讓每個留言都有一個所屬文章的程式碼:
 
 ```ruby
 class Comment < ActiveRecord::Base
@@ -1312,8 +1303,7 @@ class Comment < ActiveRecord::Base
 end
 ```
 
-You'll need to edit `app/models/article.rb` to add the other side of the
-association:
+你現在需要編輯 `app/models/article.rb` 來新增另一個關聯法則：
 
 ```ruby
 class Article < ActiveRecord::Base
@@ -1323,19 +1313,15 @@ class Article < ActiveRecord::Base
 end
 ```
 
-These two declarations enable a good bit of automatic behavior. For example, if
-you have an instance variable `@article` containing an article, you can retrieve
-all the comments belonging to that article as an array using
-`@article.comments`.
+這兩個宣告可以自動執行許多動作. 舉例來說, 如果你有一個為 `@article` 的 instance variable 且這個變數包含了一篇文章, 你可以透過 `@article.comments` 來取得所屬文章的所有留言，並且用陣列來表示.
 
-TIP: For more information on Active Record associations, see the [Active Record
-Associations](association_basics.html) guide.
+TIP: 更多關於 Active Record associations 的部份, 請看 [Active Record
+Associations](association_basics.html).
 
-### Adding a Route for Comments
+### 替留言新增 Route 規則
 
-As with the `welcome` controller, we will need to add a route so that Rails
-knows where we would like to navigate to see `comments`. Open up the
-`config/routes.rb` file again, and edit it as follows:
+如同 `welcome` controller, 我們必須要修改 route 來讓 Rails
+知道我們想要連什麼頁面來看 `comments`. 再次打開 `config/routes.rb` , 並且編輯成如下:
 
 ```ruby
 resources :articles do
@@ -1343,36 +1329,31 @@ resources :articles do
 end
 ```
 
-This creates `comments` as a _nested resource_ within `articles`. This is
-another part of capturing the hierarchical relationship that exists between
-articles and comments.
+這將會在`articles`中建立一個名為 `comments` 的 _nested resource（嵌套 resource）_ . 從這邊我們可以得知 articles 跟 comments 是存在一種階層關係.
 
-TIP: For more information on routing, see the [Rails Routing](routing.html)
-guide.
+TIP: 關於 routing 的更多訊息, 請看 [Rails Routing](routing.html).
 
-### Generating a Controller
+### 產生一個 Controller
 
-With the model in hand, you can turn your attention to creating a matching
-controller. Again, we'll use the same generator we used before:
+有了模型之後, 你可以將你的注意力放在建立相對應的 controller 上. 這邊我們再次用到跟之前相同的 generator :
 
 ```bash
 $ bin/rails generate controller Comments
 ```
 
-This creates six files and one empty directory:
+這將會建立六個檔案以及一個空白目錄:
 
-| File/Directory                               | Purpose                                  |
+| 檔案/目錄                                    | 用途                                     |
 | -------------------------------------------- | ---------------------------------------- |
-| app/controllers/comments_controller.rb       | The Comments controller                  |
-| app/views/comments/                          | Views of the controller are stored here  |
+| app/controllers/comments_controller.rb       | Comments 的 controller                   |
+| app/views/comments/                          | controller 所用到的 view 檔案皆放在這裡  |
 | test/controllers/comments_controller_test.rb | The test for the controller              |
 | app/helpers/comments_helper.rb               | A view helper file                       |
 | test/helpers/comments_helper_test.rb         | The test for the helper                  |
 | app/assets/javascripts/comment.js.coffee     | CoffeeScript for the controller          |
 | app/assets/stylesheets/comment.css.scss      | Cascading style sheet for the controller |
 
-Like with any blog, our readers will create their comments directly after
-reading the article, and once they have added their comment, will be sent back
+就像在任何一個部落格, 讀者通常會在閱讀文章之後建立留言, and once they have added their comment, will be sent back
 to the article show page to see their comment now listed. Due to this, our
 `CommentsController` is there to provide a method to create comments and delete
 spam comments when they arrive.
