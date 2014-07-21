@@ -188,39 +188,39 @@ Rail 預設會編譯所有的模版來進行算繪。當你修改某個模板後
 
 #### `as` 及 `object` 選項
 
-By default `ActionView::Partials::PartialRenderer` has its object in a local variable with the same name as the template. So, given:
+`ActionView::Partials::PartialRenderer` 預設會有個物件，存在與模版名稱相同的變數中。例如：
 
 ```erb
 <%= render partial: "product" %>
 ```
 
-within product we'll get `@product` in the local variable `product`, as if we had written:
+在局部頁面中，我們會把 `@product` 存在區域變數 `product` 中。就如同我們寫了：
 
 ```erb
 <%= render partial: "product", locals: {product: @product} %>
 ```
 
-With the `as` option we can specify a different name for the local variable. For example, if we wanted it to be `item` instead of `product` we would do:
+用 `as` 選項，我們可以改用其它的區域變數名稱。例如當我們想用 `item` 取代 `product` 時，我們會這樣寫：
 
 ```erb
 <%= render partial: "product", as: "item" %>
 ```
 
-The `object` option can be used to directly specify which object is rendered into the partial; useful when the template's object is elsewhere (eg. in a different instance variable or in a local variable).
+而 `object` 選項讓我們可以直接指定要算繪到局部頁面中的物件。這會用於模版頁面的物件存在其它地方時。(例如： 要算繪的物件是另一個實例物件，或是存在某個區域變數裡。)
 
-For example, instead of:
+例如想用這種方法寫時：
 
 ```erb
 <%= render partial: "product", locals: {product: @item} %>
 ```
 
-we would do:
+我們會改成這樣：
 
 ```erb
 <%= render partial: "product", object: @item %>
 ```
 
-The `object` and `as` options can also be used together:
+`object` 及 `as` 選項可以同時用：
 
 ```erb
 <%= render partial: "product", object: @item, as: "item" %>
