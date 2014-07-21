@@ -14,8 +14,7 @@ Action View 綜覽
 什麼是 Action View？
 ------------------
 
-Action View 與 Action Controller 是 Action Pack 的兩個主要元件。 在 Rails 裡，網路請求是由 Action Pack 負責處理，處理過程分成處理邏輯的 Controller 步驟以及算繪模版的 View 步驟。通常 Action
- Controller 是與資料庫溝通，根據需求來執行 CRUD 操作。而 Action View 則接著負責編譯響應。
+Action View 與 Action Controller 是 Action Pack 中的兩個主要元件。 在 Rails 裡，網路請求是由 Action Pack 負責處理的。此過程分成處理邏輯的 controller 步驟，及算繪模版的 view 步驟。通常 Action Controller 是與資料庫溝通，根據需求來執行 CRUD 操作。而 Action View 則接著負責編譯出回應。
 
 Action View 模版是由嵌入 HTML 的 Ruby 撰寫而成。為了避免模版充斥混亂的程式碼，Action View 提供了許多輔助方法，用來撰寫表單、日期及字串等。當應用程式成長時，加入自訂的輔助方法也很容易。
 
@@ -100,7 +99,7 @@ xml.target("name" => "compile", "option" => "fast")
 <target option="fast" name="compile" />
 ```
 
-方法所接受的區塊，會被視為 XML 的標籤，會嵌套在該方法裡。見下例：
+傳入區塊的方法會被當成一個巢狀 XML 標籤的外層，區塊內容則會嵌套成內層的標籤來處理。見下例：
 
 ```ruby
 xml.div {
@@ -109,7 +108,7 @@ xml.div {
 }
 ```
 
-會輸出像是：
+會生成：
 
 ```html
 <div>
@@ -118,7 +117,7 @@ xml.div {
 </div>
 ```
 
-以下是 Basecamp 用來產生 RSS 的範例：
+以下是一個 Basecamp 中實際用到的完整 RSS 範例：
 
 ```ruby
 xml.rss("version" => "2.0", "xmlns:dc" => "http://purl.org/dc/elements/1.1/") do
@@ -146,32 +145,31 @@ end
 #### 模版快取
 
 
+Rail 預設會編譯所有的模版來進行算繪。當你修改某個模板後，development 模式下的 Rails 會重新檢查及編譯它。
 
-By default, Rails will compile each template to a method in order to render it. When you alter a template, Rails will check the file's modification time and recompile it in development mode.
+### 局部頁面
 
-### Partials
+局部頁面模板 - 簡稱局部頁面 - 用來把算繪過程拆成更好管理的小片段的工具。有了局部頁面，可以把某些特定內容的算繪移到單獨的檔案。
 
-Partial templates - usually just called "partials" - are another device for breaking the rendering process into more manageable chunks. With partials, you can extract pieces of code from your templates to separate files and also reuse them throughout your templates.
+#### 局部頁面命名
 
-#### Naming Partials
-
-To render a partial as part of a view, you use the `render` method within the view:
+在 view 檔案中，你要用 `render` 來算繪局部頁面
 
 ```erb
 <%= render "menu" %>
 ```
 
-This will render a file named `_menu.html.erb` at that point within the view that is being rendered. Note the leading underscore character: partials are named with a leading underscore to distinguish them from regular views, even though they are referred to without the underscore. This holds true even when you're pulling in a partial from another folder:
+這樣會在呼叫的地方，找到目前資料夾下的 `_meun.html.erb` 檔案來算繪。注意名字開頭的"底線" (_): 局部頁面的命名規則是由底線開頭。用來與一般的 view 區別。但在引用局部頁面時，呼叫的語法不用加上底線。如果要呼叫其它資料夾下的局部頁面也是一樣不加底線：
 
 ```erb
 <%= render "shared/menu" %>
 ```
 
-That code will pull in the partial from `app/views/shared/_menu.html.erb`.
+這樣會去找到 `app/views/shared/_menu.html.erb` 檔案來引入。
 
-#### Using Partials to simplify Views
+#### 使用局部頁面來簡化 Views
 
-One way to use partials is to treat them as the equivalent of subroutines; a way to move details out of a view so that you can grasp what's going on more easily. For example, you might have a view that looks like this:
+局部頁面的一個用途是把它拿來當副程式；把細節的部份拆出去，讓你更容易理解 view 的全局。舉例來說，你可能看過長這樣的 view：
 
 ```html+erb
 <%= render "shared/ad_banner" %>
@@ -186,43 +184,43 @@ One way to use partials is to treat them as the equivalent of subroutines; a way
 <%= render "shared/footer" %>
 ```
 
-Here, the `_ad_banner.html.erb` and `_footer.html.erb` partials could contain content that is shared among many pages in your application. You don't need to see the details of these sections when you're concentrating on a particular page.
+這裡的 `_ad_banner.html.erb` 及 `_footer.html.erb` 局部頁面可以包含你的應用程式裡其它頁面可以共用的內容。這樣一來在寫各個頁面時，就不需要去關注這些瑣碎的細節。
 
-#### The `as` and `object` options
+#### `as` 及 `object` 選項
 
-By default `ActionView::Partials::PartialRenderer` has its object in a local variable with the same name as the template. So, given:
+`ActionView::Partials::PartialRenderer` 預設會有個物件，存在與模版名稱相同的變數中。例如：
 
 ```erb
 <%= render partial: "product" %>
 ```
 
-within product we'll get `@product` in the local variable `product`, as if we had written:
+在局部頁面中，我們會把 `@product` 存在區域變數 `product` 中。就如同我們寫了：
 
 ```erb
 <%= render partial: "product", locals: {product: @product} %>
 ```
 
-With the `as` option we can specify a different name for the local variable. For example, if we wanted it to be `item` instead of `product` we would do:
+用 `as` 選項，我們可以改用其它的區域變數名稱。例如當我們想用 `item` 取代 `product` 時，我們會這樣寫：
 
 ```erb
 <%= render partial: "product", as: "item" %>
 ```
 
-The `object` option can be used to directly specify which object is rendered into the partial; useful when the template's object is elsewhere (eg. in a different instance variable or in a local variable).
+而 `object` 選項讓我們可以直接指定要算繪到局部頁面中的物件。這會用於模版頁面的物件存在其它地方時。(例如： 要算繪的物件是另一個實例物件，或是存在某個區域變數裡。)
 
-For example, instead of:
+例如想用這種方法寫時：
 
 ```erb
 <%= render partial: "product", locals: {product: @item} %>
 ```
 
-we would do:
+我們會改成這樣：
 
 ```erb
 <%= render partial: "product", object: @item %>
 ```
 
-The `object` and `as` options can also be used together:
+`object` 及 `as` 選項可以同時用：
 
 ```erb
 <%= render partial: "product", object: @item, as: "item" %>
