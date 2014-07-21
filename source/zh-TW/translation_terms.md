@@ -104,6 +104,8 @@ C
 
     Ruby 的 `Class`
 
+* Client 用戶端
+
 * CamelCase 駝峰形式
 
 * Code 程式碼

@@ -1,31 +1,32 @@
-Action View Overview
-====================
+Action View 綜覽
+================
 
 讀完本篇，您將了解：
 
-* 什麼是 Action Views，及如何在 Rails 中使用它。
+* 什麼是 Action View、如何在 Rails 裡使用。
 * 如何善用模版，局部頁面與版型。
-* Action View 提供了哪些輔助方法，以及如何製作自己的輔助方法。
-* 如何使用本地化的 views。
-* 如何在 Rails 以外的地方使用 Action View。
+* Action View 提供的輔助方法、如何自己寫輔助方法。
+* 如何使用本地化的 View。
+* 如何在 Rails 之外使用 Action View。
 
 --------------------------------------------------------------------------------
 
 什麼是 Action View？
---------------------
+------------------
 
-Action View 與 Action Controller 是 Action Pack 中的兩個主要元件。 在 Rails 裡，網路請求是由 Action Pack 負責處理的。此過程分成處理邏輯的controller 步驟，及算繪模版的 view 步驟。通常 Action Controller 是與資料庫溝通，根據需求來執行 CRUD 操作。而 Action View 則接著負責編譯出回應。
+Action View 與 Action Controller 是 Action Pack 的兩個主要元件。 在 Rails 裡，網路請求是由 Action Pack 負責處理，處理過程分成處理邏輯的 Controller 步驟以及算繪模版的 View 步驟。通常 Action
+ Controller 是與資料庫溝通，根據需求來執行 CRUD 操作。而 Action View 則接著負責編譯響應。
 
-Action View 模版是由嵌入式 Ruby 標籤與 HTML 交織編排成的。為了避免模版中被混亂的程式碼片段堆滿，有很多輔助方法類別為表單、日期及字串提供了常用的功能。當你的應用程式成長時，加入你自訂的輔助方法也是相當容易的。
+Action View 模版是由嵌入 HTML 的 Ruby 撰寫而成。為了避免模版充斥混亂的程式碼，Action View 提供了許多輔助方法，用來撰寫表單、日期及字串等。當應用程式成長時，加入自訂的輔助方法也很容易。
 
-NOTD: 有部份 Action View 的功能與 Active Record 聯結。但這不代表 Action View 依賴 Action Record。Active View 是個獨立的套件，可以與任何其它的 Ruby 套件庫一起使用。
+NOTE: 部份 Action View 的功能與 Active Record 綁在一起。但這不代表 Action View 依賴於 Action Record。Active View 是個獨立的函式庫，可以和其它的 Ruby 函式庫一起使用。
 
 在 Rails 中使用 Action View
-----------------------------
+--------------------------
 
-每個 controller 在 `app/views` 中都會有一個對應的資料夾，裡面包含了組成 view 的模板檔案。這些檔案用來顯示該 controller 各個動作的結果頁面。
+每個 Controller 在 `app/views` 中都會有一個對應的資料夾，裡面包含了該 Controller 的模板檔案。這些檔案用來顯示 Controller 各個動作的結果頁面。
 
-我們來看看 Rails 用 scaffold 命令建立一個新的資源時，預設會產生哪些檔案：
+看看 Rails 用 `scaffold` 命令建立新資源時，預設會產生哪些檔案：
 
 ```bash
 $ bin/rails generate scaffold article
@@ -42,28 +43,24 @@ $ bin/rails generate scaffold article
       [...]
 ```
 
-在 Rails 中 view 會遵循慣例來命名。通常 view 的檔名會對應到 controller 的動作名稱。正如你在上面看到的一樣。
-例如 `articles_controller.rb` 的 index controller 動作，會使用 `app/views/articles` 資料夾中的 `index.html.erb` 這個 view 檔案。
-回傳給客戶端的 HTML 是由這張 ERB 檔案，加上包裹它的版型模版，以及所有這張 view 會引用到的局部頁面所組成的。 在這份教學後面的章節中，會有這三個元件更詳細的說明文件。
-
+Rails 的 View 有命名慣例。通常 View 的檔名和 Controller 的動作同名，如上所示。例如 `articles_controller.rb` 的 `index` 動作使用 `app/views/articles` 資料夾中的 `index.html.erb` 這個 View 檔案。回傳給用戶端的完整 HTML 是由這個 ERB 檔案、版型，以及其它引用的局部頁面組成。本篇之後會對這三種 View 做更詳細的介紹。
 
 模版、局部頁面及版型
--------------------------------
+-----------------
 
-上面有提到過，最終的 HTML 輸出是由三種 Rails 元素所組成的： `模版`(Templates)、`局部頁面`(Partials)以及`版型`(Layouts)。
-底下將簡單的介紹這三種元素。
+上面有提到過，最終輸出的 HTML 由三種 Rails 元素組成：模版、局部頁面以及版型。底下簡單介紹這三種元素。
 
 ### 模版
 
-Action View 的模版有數種不同的寫法。如果模版的副檔名是 `erb` 的話，那麼這個模版是由 ERB (Embedded Ruby) 及 HTML 寫成的。若模版的副檔名是 `.builder`，則這個模版使用了 `Builder::XmlMarkup` 函式庫。
+Action View 的模版有數種不同的寫法。如果模版的副檔名是 `erb` 的話，那麼這個模版是混合 ERB （Ruby 內建）和 HTML。若模版的副檔名是 `.builder`，則是使用了 `Builder::XmlMarkup` 函式庫。
 
-Rails 支援多種模版系統，並使用副檔名來分辨它們。例如一個使用了 ERB 模版系統的 HTML 檔案，副檔名就會是 `.html.erb`
+Rails 支援多種模版系統，使用副檔名來做區隔。例如使用 ERB 模版系統的 HTML 檔案，副檔名是 `.html.erb`。
 
 #### ERB
 
-在一個 ERB 模版中，Ruby 程式碼會放在 `<% %>` 或是 `<%= %>` 標籤中。`<% %>` 標籤是用來執行不會回傳任何值的 Ruby 程式碼，例如條件判斷、迴圈或是區塊等等，而 `<%= %>` 標籤則是用來顯示執行結果的。
+在 ERB 模版裡，Ruby 程式碼會放在 `<% %>` 或是 `<%= %>` 標籤裡。`<% %>` 標籤是用來執行不會回傳任何值的 Ruby 程式碼，例如條件判斷、迴圈或是區塊等等，而 `<%= %>` 標籤則是用來輸出結果。
 
-看一下這個顯示 names 的迴圈
+考慮以下 `names` 迴圈：
 
 ```html+erb
 <h1>Names of all the people</h1>
@@ -72,20 +69,20 @@ Rails 支援多種模版系統，並使用副檔名來分辨它們。例如一�
 <% end %>
 ```
 
-迴圈的程式碼放在一般的標籤 `<% %>` 裡，而需要顯示的 name 則是放在顯示結果的標籤 (`<%= %>`) 中。要注意這不是單純的使用建議而己，一般的輸出函式如 `print` 或是 `puts` 無法將結果顯示在 ERB 模版中。例如底下這個範例是錯的：
+迴圈放在普通嵌入標籤（`<% %>`）裡，而需要顯示的 `name` 則是放在會輸出結果的標籤（`<%= %>`）中。注意這不是建議的使用方法，Ruby 一般的輸出函式如 `print` 或是 `puts` 是無法將結果顯示在 ERB 模版裡。所以以下的範例是不正確的：
 
 ```html+erb
 <%# WRONG %>
 Hi, Mr. <% puts "Frodo" %>
 ```
 
-要去掉開頭或是結尾的空白，你可以用 `<%-` `-%>` 來取代 `<%` 及 `%>`
+要去掉開頭或結尾的空白，可以用 `<%-` `-%>` 來取代 `<%` 及 `%>`。
 
 #### Builder
 
-Builder templates are a more programmatic alternative to ERB. They are especially useful for generating XML content. An XmlMarkup object named `xml` is automatically made available to templates with a `.builder` extension.
+Builder 模版 ERB 的替代方案，比 ERB 需要更多程式設計。在產生 XML 時特別有用。在副檔名為 `.builder` 的模版裡，可以直接使用名為 `xml` 的 `XmlMarkup` 物件。
 
-Here are some basic examples:
+以下是一些簡單的範例：
 
 ```ruby
 xml.em("emphasized")
@@ -94,7 +91,7 @@ xml.a("A Link", "href" => "http://rubyonrails.org")
 xml.target("name" => "compile", "option" => "fast")
 ```
 
-which would produce:
+會產生：
 
 ```html
 <em>emphasized</em>
@@ -103,7 +100,7 @@ which would produce:
 <target option="fast" name="compile" />
 ```
 
-Any method with a block will be treated as an XML markup tag with nested markup in the block. For example, the following:
+方法所接受的區塊，會被視為 XML 的標籤，會嵌套在該方法裡。見下例：
 
 ```ruby
 xml.div {
@@ -112,7 +109,7 @@ xml.div {
 }
 ```
 
-would produce something like:
+會輸出像是：
 
 ```html
 <div>
@@ -121,7 +118,7 @@ would produce something like:
 </div>
 ```
 
-Below is a full-length RSS example actually used on Basecamp:
+以下是 Basecamp 用來產生 RSS 的範例：
 
 ```ruby
 xml.rss("version" => "2.0", "xmlns:dc" => "http://purl.org/dc/elements/1.1/") do
@@ -146,7 +143,9 @@ xml.rss("version" => "2.0", "xmlns:dc" => "http://purl.org/dc/elements/1.1/") do
 end
 ```
 
-#### Template Caching
+#### 模版快取
+
+
 
 By default, Rails will compile each template to a method in order to render it. When you alter a template, Rails will check the file's modification time and recompile it in development mode.
 
