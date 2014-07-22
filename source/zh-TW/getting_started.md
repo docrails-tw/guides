@@ -1238,9 +1238,9 @@ $ bin/rails generate model Comment commenter:string body:text article:references
 | 檔案                                         | 用途                                                                                                   |
 | -------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
 | db/migrate/20140120201010_create_comments.rb | 這個 Migration 檔案是用來在資料庫中建立留言的資料表 (這邊名稱會包含不同的時間戳記) |
-| app/models/comment.rb                        | 一個 Comment 模型                                                                                      |
+| app/models/comment.rb                        | Comment 模型                                                                                      |
 | test/models/comment_test.rb                  | Testing harness for the comments model                                                                 |
-| test/fixtures/comments.yml                   | Sample comments for use in testing                                                                     |
+| test/fixtures/comments.yml                   | 用於測試的 comments 樣本資料                                                                           |
 
 首先我們看到 `app/models/comment.rb`:
 
@@ -1345,21 +1345,18 @@ $ bin/rails generate controller Comments
 
 | 檔案/目錄                                    | 用途                                     |
 | -------------------------------------------- | ---------------------------------------- |
-| app/controllers/comments_controller.rb       | Comments 的 controller                   |
+| app/controllers/comments_controller.rb       | Comments controller                      |
 | app/views/comments/                          | controller 所用到的 view 檔案皆放在這裡  |
-| test/controllers/comments_controller_test.rb | The test for the controller              |
-| app/helpers/comments_helper.rb               | A view helper file                       |
-| test/helpers/comments_helper_test.rb         | The test for the helper                  |
-| app/assets/javascripts/comment.js.coffee     | CoffeeScript for the controller          |
-| app/assets/stylesheets/comment.css.scss      | Cascading style sheet for the controller |
+| test/controllers/comments_controller_test.rb | 用於 controller 的測試檔案               |
+| app/helpers/comments_helper.rb               | View helper 檔案                         |
+| test/helpers/comments_helper_test.rb         | 用於 helper 的測試檔案                   |
+| app/assets/javascripts/comment.js.coffee     | Controller 所用到的 CoffeeScript         |
+| app/assets/stylesheets/comment.css.scss      | Controller 所用到的 Cascading style sheet|
 
-就像在任何一個部落格, 讀者通常會在閱讀文章之後建立留言, and once they have added their comment, will be sent back
-to the article show page to see their comment now listed. Due to this, our
-`CommentsController` is there to provide a method to create comments and delete
-spam comments when they arrive.
+就像在任何一個部落格, 讀者通常會在閱讀文章之後新增留言, 並且新增完之後會被導回到文章的顯示頁面，來看看剛剛是否成功新增. 所以說在 `CommentsController` 中就需要有可以新增留言以及刪除垃圾留言的 methods.
 
-So first, we'll wire up the Article show template
-(`app/views/articles/show.html.erb`) to let us make a new comment:
+首先,  我們要修改文章的顯示模版
+(`app/views/articles/show.html.erb`) 來讓我們可以建立新的留言:
 
 ```html+erb
 <p>
@@ -1391,11 +1388,9 @@ So first, we'll wire up the Article show template
 <%= link_to 'Edit', edit_article_path(@article) %>
 ```
 
-This adds a form on the `Article` show page that creates a new comment by
-calling the `CommentsController` `create` action. The `form_for` call here uses
-an array, which will build a nested route, such as `/articles/1/comments`.
+這將在 `Article` 顯示頁面上新增一個表單，並藉由 `CommentsController` `create` action 來建立新的留言.`form_for` 在這使用到一個陣列,這個陣列會建立一個 nested route(嵌套 route), 就像這樣 `/articles/1/comments`.
 
-Let's wire up the `create` in `app/controllers/comments_controller.rb`:
+ 現在我們在 `app/controllers/comments_controller.rb` 新增一個 `create`:
 
 ```ruby
 class CommentsController < ApplicationController
@@ -1412,22 +1407,15 @@ class CommentsController < ApplicationController
 end
 ```
 
-You'll see a bit more complexity here than you did in the controller for
-articles. That's a side-effect of the nesting that you've set up. Each request
-for a comment has to keep track of the article to which the comment is attached,
-thus the initial call to the `find` method of the `Article` model to get the
-article in question.
+這部份你可能會覺得比修改文章的controller還要來的複雜. 那是因為是在設置 nesting 過程中所造成的影響. 
+而每個新增留言的請求都必須知道留言所屬的文章, 因此一開始就要呼叫在 `Article` 模型中的 `find` method ，藉此來取得被評論的文章.
 
-In addition, the code takes advantage of some of the methods available for an
-association. We use the `create` method on `@article.comments` to create and
-save the comment. This will automatically link the comment so that it belongs to
-that particular article.
+再加上, 這段程式碼善用了這些針對關聯可用的 methods . 
+我們使用在 `@article.comments` 的 `create` method 來建立並儲存 comment. 
+這將會自動的把comment跟article建立關係，讓comment在所屬article之下.
 
-Once we have made the new comment, we send the user back to the original article
-using the `article_path(@article)` helper. As we have already seen, this calls
-the `show` action of the `ArticlesController` which in turn renders the
-`show.html.erb` template. This is where we want the comment to show, so let's
-add that to the `app/views/articles/show.html.erb`.
+當完成了留言後, 我們會使用 `article_path(@article)` helper 將使用者導回原來的文章頁面. 
+就如同我們所看到的, 這個 helper 會呼叫 `ArticlesController` 的 `show` action 來 render `show.html.erb` template. 而這裡就是我們想要顯示留言的位置所在, 所以我們將下面程式碼新增到 `app/views/articles/show.html.erb` 中.
 
 ```html+erb
 <p>
@@ -1472,8 +1460,7 @@ add that to the `app/views/articles/show.html.erb`.
 <%= link_to 'Back to Articles', articles_path %>
 ```
 
-Now you can add articles and comments to your blog and have them show up in the
-right places.
+現在你可以新增文章並且可以留言，而且可以在正確位置顯示.
 
 ![Article with Comments](images/getting_started/article_with_comments.png)
 
