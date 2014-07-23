@@ -1575,12 +1575,9 @@ end
 刪除 Comments
 -----------------
 
-Another important feature of a blog is being able to delete spam comments. To do
-this, we need to implement a link of some sort in the view and a `destroy`
-action in the `CommentsController`.
+而 blog 的另外一個重要功能就是要能夠刪除垃圾留言. 要完成這個功能之前, 我們必須在view 檔案中建立一些這種連結以及在 `CommentsController` 中新增 `destroy` action.
 
-So first, let's add the delete link in the
-`app/views/comments/_comment.html.erb` partial:
+所以一開始, 我要在 `app/views/comments/_comment.html.erb` partial 中建立刪除連結:
 
 ```html+erb
 <p>
@@ -1600,10 +1597,9 @@ So first, let's add the delete link in the
 </p>
 ```
 
-Clicking this new "Destroy Comment" link will fire off a `DELETE
-/articles/:article_id/comments/:id` to our `CommentsController`, which can then
-use this to find the comment we want to delete, so let's add a `destroy` action
-to our controller (`app/controllers/comments_controller.rb`):
+點擊新增的 "Destroy Comment" 連結將會送出一個 `DELETE
+/articles/:article_id/comments/:id` 的請求到 `CommentsController`, 而 controller 可以透過這個請求找到我們所想刪的留言, 因此我們要新增一個 `destroy` action
+到 controller (`app/controllers/comments_controller.rb`):
 
 ```ruby
 class CommentsController < ApplicationController
@@ -1627,17 +1623,12 @@ class CommentsController < ApplicationController
 end
 ```
 
-The `destroy` action will find the article we are looking at, locate the comment
-within the `@article.comments` collection, and then remove it from the
-database and send us back to the show action for the article.
+這個 `destroy` action 會先找到留言的所屬文章, 並且在 `@article.comments` collection 找出要刪除的留言, 將這筆資料從資料庫刪除，最後才回到文章的顯示頁面.
 
 
-### Deleting Associated Objects
+### 刪除 Associated 物件
 
-If you delete an article, its associated comments will also need to be
-deleted, otherwise they would simply occupy space in the database. Rails allows
-you to use the `dependent` option of an association to achieve this. Modify the
-Article model, `app/models/article.rb`, as follows:
+如果你刪除了一篇文章, 那這篇文章相關的留言也必定要被刪除, 否則這些留言將會佔用資料庫的空間. 這裡你可以使用 Rails 針對 association 所提供的 `dependent` 設定選項來達成以上所述的目的. 現在就來修改 Article model `app/models/article.rb`, 內容如下:
 
 ```ruby
 class Article < ActiveRecord::Base
