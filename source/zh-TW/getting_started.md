@@ -1464,18 +1464,15 @@ end
 
 ![Article with Comments](images/getting_started/article_with_comments.png)
 
-Refactoring
+重構
 -----------
 
-Now that we have articles and comments working, take a look at the
-`app/views/articles/show.html.erb` template. It is getting long and awkward. We
-can use partials to clean it up.
+現在我們文章和留言功能已經能順利運作, 回頭再看
+`app/views/articles/show.html.erb` template. 這個檔案似乎有點長而且有點奇怪. 我們在這使用 partials 來修正.
 
 ### Rendering Partial Collections
 
-First, we will make a comment partial to extract showing all the comments for
-the article. Create the file `app/views/comments/_comment.html.erb` and put the
-following into it:
+首先, 我們要建立一個 comment partial 將文章的顯示所有留言部份提出來. 建立檔案 `app/views/comments/_comment.html.erb` 並且新增以下內容:
 
 ```html+erb
 <p>
@@ -1489,8 +1486,7 @@ following into it:
 </p>
 ```
 
-Then you can change `app/views/articles/show.html.erb` to look like the
-following:
+接下來編輯 `app/views/articles/show.html.erb` 如下所示:
 
 ```html+erb
 <p>
@@ -1525,16 +1521,12 @@ following:
 <%= link_to 'Back to Articles', articles_path %>
 ```
 
-This will now render the partial in `app/views/comments/_comment.html.erb` once
-for each comment that is in the `@article.comments` collection. As the `render`
-method iterates over the `@article.comments` collection, it assigns each
-comment to a local variable named the same as the partial, in this case
-`comment` which is then available in the partial for us to show.
+如此一來，這將會 render 這個 partial 檔案 `app/views/comments/_comment.html.erb` ，而且只要 `@article.comments` collection 有幾個 comment 就會 render 幾次. 
+當 `render` method 根據 `@article.comments` collection 反覆執行時, 它會給每個 comment 一個區域變數，名稱就如同 partial, 在這個例子裡被稱為 `comment`， 是一個在 partial 中用於顯示的區域變數.
 
 ### Rendering a Partial Form
 
-Let us also move that new comment section out to its own partial. Again, you
-create a file `app/views/comments/_form.html.erb` containing:
+現在我們也要把新增留言的表單區塊搬到所屬的 partial 中. 新增檔案 `app/views/comments/_form.html.erb` 其中內容包含著:
 
 ```html+erb
 <%= form_for([@article, @article.comments.build]) do |f| %>
@@ -1552,7 +1544,7 @@ create a file `app/views/comments/_form.html.erb` containing:
 <% end %>
 ```
 
-Then you make the `app/views/articles/show.html.erb` look like the following:
+接下來編輯 `app/views/articles/show.html.erb` ，內容如下所示:
 
 ```html+erb
 <p>
@@ -1575,15 +1567,12 @@ Then you make the `app/views/articles/show.html.erb` look like the following:
 <%= link_to 'Back to Articles', articles_path %>
 ```
 
-The second render just defines the partial template we want to render,
-`comments/form`. Rails is smart enough to spot the forward slash in that
-string and realize that you want to render the `_form.html.erb` file in
-the `app/views/comments` directory.
+在第二次 render 時， 我們只定義了想 render 的 partial template `comments/form`. 
+但是 Rails 相當厲害，透過這段字串中的前斜號 forward slash 來辨別你所要 render 的檔案 `_form.html.erb` 以及其所在的路徑位置 `app/views/comments`.
 
-The `@article` object is available to any partials rendered in the view because
-we defined it as an instance variable.
+`@article` 物件是在任何會被 view render 的 partials 中都可以使用，因為它是一個 instance variable.
 
-Deleting Comments
+刪除 Comments
 -----------------
 
 Another important feature of a blog is being able to delete spam comments. To do
