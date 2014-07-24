@@ -1698,29 +1698,20 @@ class CommentsController < ApplicationController
 後續
 ------------
 
-現在你已經完成了你的第一個 Rails 應用程式, you should feel free to
-update it and experiment on your own. But you don't have to do everything
-without help. As you need assistance getting up and running with Rails, feel
-free to consult these support resources:
+現在你已經完成你的第一個 Rails 應用程式, 你可以自在的更新這個應用或是實驗新的功能. 
+但你現在還無法不靠任何幫助來完成所有的事情. 當你對 Rails 建立或執行上如果有需要協助的部份, 你可以參考或請教以下學習資源:
 
-* The [Ruby on Rails Guides](index.html)
-* The [Ruby on Rails Tutorial](http://railstutorial.org/book)
-* The [Ruby on Rails mailing list](http://groups.google.com/group/rubyonrails-talk)
-* The [#rubyonrails](irc://irc.freenode.net/#rubyonrails) channel on irc.freenode.net
+* [Ruby on Rails Guides](index.html)
+* [Ruby on Rails Tutorial](http://railstutorial.org/book)
+* [Ruby on Rails mailing list](http://groups.google.com/group/rubyonrails-talk)
+* [#rubyonrails](irc://irc.freenode.net/#rubyonrails) 一個 irc.freenode.net 上的頻道
 
-Rails also comes with built-in help that you can generate using the rake
-command-line utility:
+Rails 本身也有內建的 help ，你可以透過 rake 這個命令列工具來產生:
 
-* Running `rake doc:guides` will put a full copy of the Rails Guides in the
-  `doc/guides` folder of your application. Open `doc/guides/index.html` in your
-  web browser to explore the Guides.
-* Running `rake doc:rails` will put a full copy of the API documentation for
-  Rails in the `doc/api` folder of your application. Open `doc/api/index.html`
-  in your web browser to explore the API documentation.
+* 執行 `rake doc:guides` 之後，這個指令會將 Rails 指南文件複製到應用專案中 `doc/guides` 的資料夾 . 用瀏覽器打開 `doc/guides/index.html` 並且開始使用這份文件.
+* 執行 `rake doc:rails` 之後，這個指令會將 Rails API 文件複製到應用專案中 `doc/api` 的資料夾. 用瀏覽器打開 `doc/api/index.htm` 開始使用這份文件.
 
-TIP: To be able to generate the Rails Guides locally with the `doc:guides` rake
-task you need to install the RedCloth gem. Add it to your `Gemfile` and run
-`bundle install` and you're ready to go.
+TIP: 想要在本地端產生一份 Rails 指南就必需使用一個名為 `doc:guides` 的 rake 任務， 不過在執行前需先安裝 RedCloth gem 套件. 所以我們在 `Gemfile` 中新增此套件並且執行 `bundle install` ，最後才能順利執行任務.
 
 Configuration Gotchas
 ---------------------
