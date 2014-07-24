@@ -1638,26 +1638,21 @@ class Article < ActiveRecord::Base
 end
 ```
 
-Security
+安全行
 --------
 
-### Basic Authentication
+### 基本認證
 
-If you were to publish your blog online, anyone would be able to add, edit and
-delete articles or delete comments.
+假如你可以在線上發佈你的 blog , 那麼相信其他人也能夠作 add, edit 以及 delete 文章或 delete 留言等等的動作.
 
-Rails provides a very simple HTTP authentication system that will work nicely in
-this situation.
+這裡 Rails 提供了一個非常簡單的 HTTP 認證系統，而這個系統很適合用在目前的狀況.
 
-In the `ArticlesController` we need to have a way to block access to the
-various actions if the person is not authenticated. Here we can use the Rails
-`http_basic_authenticate_with` method, which allows access to the requested
-action if that method allows it.
+我們必須要在 `ArticlesController` 中用一個方法來拒絕未經認證的使用者對於不同 actions 的請求. 
+這裡我們可以使用 Rails 的 `http_basic_authenticate_with` method, 通過這個 method 允許之後，才能夠使用所請求的 action.
 
-To use the authentication system, we specify it at the top of our
-`ArticlesController` in `app/controllers/articles_controller.rb`. In our case,
-we want the user to be authenticated on every action except `index` and `show`,
-so we write that:
+想使用這個認證系統, 那我們就必需在 `app/controllers/articles_controller.rb` 中的 `ArticlesController` 一開始就要設定. 
+在例子中, 除了`index` 和 `show` 之外的 actions ，使用者都必須經過認證才能使用,
+所以我們會如此設定:
 
 ```ruby
 class ArticlesController < ApplicationController
@@ -1671,8 +1666,7 @@ class ArticlesController < ApplicationController
   # snipped for brevity
 ```
 
-We also want to allow only authenticated users to delete comments, so in the
-`CommentsController` (`app/controllers/comments_controller.rb`) we write:
+我們也想讓經過認證的使用者可以有刪除留言的動作, 所以在 `CommentsController` (`app/controllers/comments_controller.rb`) 我們這樣子設定:
 
 ```ruby
 class CommentsController < ApplicationController
@@ -1687,29 +1681,24 @@ class CommentsController < ApplicationController
   # snipped for brevity
 ```
 
-Now if you try to create a new article, you will be greeted with a basic HTTP
-Authentication challenge:
+現在如果你想建立一篇新文章, 那你就閉需先通過基本 HTTP 認證視窗才行:
 
 ![Basic HTTP Authentication Challenge](images/getting_started/challenge.png)
 
-Other authentication methods are available for Rails applications. Two popular
-authentication add-ons for Rails are the
-[Devise](https://github.com/plataformatec/devise) rails engine and
-the [Authlogic](https://github.com/binarylogic/authlogic) gem,
-along with a number of others.
+對於 Rails applications 來說還有很多不錯的authentication methods. 而 Rails 中常見的兩個 authentication add-ons 應該就是
+[Devise](https://github.com/plataformatec/devise) rails engine 以及
+[Authlogic](https://github.com/binarylogic/authlogic) gem.
 
 
-### Other Security Considerations
+### 其他安全性考量
 
-Security, especially in web applications, is a broad and detailed area. Security
-in your Rails application is covered in more depth in
-the [Ruby on Rails Security Guide](security.html).
+資訊安全，尤其在 web 應用方面，是一個具深度及廣度的領域. 如果想更詳盡探討 Rails 應用程式的安全性，請參考  [Ruby on Rails Security Guide](security.html).
 
 
-What's Next?
+後續
 ------------
 
-Now that you've seen your first Rails application, you should feel free to
+現在你已經完成了你的第一個 Rails 應用程式, you should feel free to
 update it and experiment on your own. But you don't have to do everything
 without help. As you need assistance getting up and running with Rails, feel
 free to consult these support resources:
