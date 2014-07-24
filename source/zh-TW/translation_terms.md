@@ -1,9 +1,9 @@
 翻譯術語
 ===================
 
-參考了業界先進張文鈿（ihower）先生於其書[《Rails 實戰聖經》裡的〈翻譯術語表〉](http://ihower.tw/rails3/translation.html)以及[藍一婷](https://twitter.com/etblue)小姐的[翻譯詞彙表](https://docs.google.com/spreadsheet/ccc?key=0AkNsS2a-Qx8ZdDJzTUlNeVlvRy1BYnZDUnRjZUpWWGc&hl=en#gid=0)。
+參考業界先進張文鈿（ihower）先生於其書[《Rails 實戰聖經》裡的〈翻譯術語表〉](http://ihower.tw/rails3/translation.html)以及[藍一婷](https://twitter.com/etblue)小姐的[翻譯詞彙表](https://docs.google.com/spreadsheet/ccc?key=0AkNsS2a-Qx8ZdDJzTUlNeVlvRy1BYnZDUnRjZUpWWGc&hl=en#gid=0)。
 
-我提倡應該要試著使用中文來描述英文術語，否則將永遠不會有共同的術語。
+我提倡應該要試著使用中文來描述英文術語（不論是好是壞），否則將永遠不會有共同的術語。
 
 更好的譯法，請不吝指教，感謝。
 
@@ -11,8 +11,8 @@
 
 ------------------------------------------------------------------
 
-保留原文不譯
-------------
+沒想到譯法
+---------
 
 * Backtrace
 
@@ -104,6 +104,8 @@ C
 
     Ruby 的 `Class`
 
+* Client 用戶端
+
 * CamelCase 駝峰形式
 
 * Code 程式碼
@@ -134,6 +136,8 @@ C
 
 * Context 上下文
 
+* Controller 控制器
+
 * Copy 複本
 
 * Constructor 建構子
@@ -152,6 +156,8 @@ D
     [Transactional DDL in PostgreSQL: A Competitive Analysis - PostgreSQL wiki](https://wiki.postgresql.org/wiki/Transactional_DDL_in_PostgreSQL:_A_Competitive_Analysis)
 
 * Debug 除錯
+
+* Debugger 除錯器
 
 * Directory 目錄
 
@@ -175,6 +181,8 @@ F
 
 * Flash Message 提示訊息
 
+* Focus 焦點
+
 * Foreign Key 外鍵
 
 * Foreign Key Constraint 外鍵約束
@@ -186,6 +194,8 @@ F
 * Form Helpers 表單輔助方法
 
 * Form Builder 表單構造器
+
+* Function 函式
 
 * File 檔案
 
@@ -212,6 +222,8 @@ G
 
 * Generic 通用
 
+* Getter 取值方法
+
 * Globbing 通配符號
 
 H
@@ -219,15 +231,17 @@ H
 
 * Hash 散列
 
-* Handler 處理函數
+* Handler 處理函式
 
-    JavaScript 給元素綁定的函數。
+    JavaScript 給元素綁定的函式。
 
 * Header 標頭
 
 * Helpers 輔助方法
 
 * Host 主機
+
+* Hyperlinks 超連結
 
 I
 ------
@@ -241,6 +255,8 @@ I
 * Inline method 內聯方法
 
 * Inline rendering 內聯算繪
+
+* Input box 輸入框
 
 * Instance 實體
 
@@ -261,6 +277,8 @@ I
 * Integrity 完整性
 
 * Iterate 迭代
+
+* Iterator 迭代器
 
 J
 ------
@@ -353,7 +371,9 @@ P
 
     謂詞，回傳真或假的條件式，比如 `Array#empty?`。
 
-* process 進程
+* Process 進程
+
+* Production 上線環境
 
 * Program (n.) 程式
 
@@ -419,6 +439,10 @@ R
 
     為 HTTP 協定裡的專有名詞，HTTP Response。
 
+* Reset 重置
+
+* Restore 回復
+
 * Rollback 回滾
 
     資料庫恢復至以前的狀態。
@@ -458,6 +482,8 @@ S
 
 * Serialization 序列化
 
+* Setter 設值方法
+
 * Shallow Nesting 淺層嵌套
 
 * Singular resource 單數資源
@@ -485,11 +511,15 @@ T
 
 * Table 資料表
 
+* Tag 標籤
+
 * Task 任務
 
     Rake 任務。
 
 * Template 模版
+
+* Thread 線程
 
 * Transaction 交易
 
@@ -510,8 +540,14 @@ V
 
 * Vanilla JavaScript 純 JavaScript
 
+* View 文件顯示層
+
 W
 ------
+
+* Web Applications 應用網站
+
+* Web Pages 網頁文件
 
 * Web Service Web 服務
 

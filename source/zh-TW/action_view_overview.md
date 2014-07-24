@@ -1,31 +1,31 @@
-Action View Overview
-====================
+Action View 綜覽
+================
 
 讀完本篇，您將了解：
 
-* 什麼是 Action Views，及如何在 Rails 中使用它。
+* 什麼是 Action View、如何在 Rails 裡使用。
 * 如何善用模版，局部頁面與版型。
-* Action View 提供了哪些輔助方法，以及如何製作自己的輔助方法。
-* 如何使用本地化的 views。
-* 如何在 Rails 以外的地方使用 Action View。
+* Action View 提供的輔助方法、如何自己寫輔助方法。
+* 如何使用本地化的 View。
+* 如何在 Rails 之外使用 Action View。
 
 --------------------------------------------------------------------------------
 
 什麼是 Action View？
---------------------
+------------------
 
-Action View 與 Action Controller 是 Action Pack 中的兩個主要元件。 在 Rails 裡，網路請求是由 Action Pack 負責處理的。此過程分成處理邏輯的controller 步驟，及算繪模版的 view 步驟。通常 Action Controller 是與資料庫溝通，根據需求來執行 CRUD 操作。而 Action View 則接著負責編譯出回應。
+Action View 與 Action Controller 是 Action Pack 中的兩個主要元件。 在 Rails 裡，網路請求是由 Action Pack 負責處理的。此過程分成處理邏輯的 controller 步驟，及算繪模版的 view 步驟。通常 Action Controller 是與資料庫溝通，根據需求來執行 CRUD 操作。而 Action View 則接著負責編譯出回應。
 
-Action View 模版是由嵌入式 Ruby 標籤與 HTML 交織編排成的。為了避免模版中被混亂的程式碼片段堆滿，有很多輔助方法類別為表單、日期及字串提供了常用的功能。當你的應用程式成長時，加入你自訂的輔助方法也是相當容易的。
+Action View 模版是由嵌入 HTML 的 Ruby 撰寫而成。為了避免模版充斥混亂的程式碼，Action View 提供了許多輔助方法，用來撰寫表單、日期及字串等。當應用程式成長時，加入自訂的輔助方法也很容易。
 
-NOTD: 有部份 Action View 的功能與 Active Record 聯結。但這不代表 Action View 依賴 Action Record。Active View 是個獨立的套件，可以與任何其它的 Ruby 套件庫一起使用。
+NOTE: 部份 Action View 的功能與 Active Record 綁在一起。但這不代表 Action View 依賴於 Action Record。Active View 是個獨立的函式庫，可以和其它的 Ruby 函式庫一起使用。
 
 在 Rails 中使用 Action View
-----------------------------
+--------------------------
 
-每個 controller 在 `app/views` 中都會有一個對應的資料夾，裡面包含了組成 view 的模板檔案。這些檔案用來顯示該 controller 各個動作的結果頁面。
+每個 Controller 在 `app/views` 中都會有一個對應的資料夾，裡面包含了該 Controller 的模板檔案。這些檔案用來顯示 Controller 各個動作的結果頁面。
 
-我們來看看 Rails 用 scaffold 命令建立一個新的資源時，預設會產生哪些檔案：
+看看 Rails 用 `scaffold` 命令建立新資源時，預設會產生哪些檔案：
 
 ```bash
 $ bin/rails generate scaffold article
@@ -42,28 +42,24 @@ $ bin/rails generate scaffold article
       [...]
 ```
 
-在 Rails 中 view 會遵循慣例來命名。通常 view 的檔名會對應到 controller 的動作名稱。正如你在上面看到的一樣。
-例如 `articles_controller.rb` 的 index controller 動作，會使用 `app/views/articles` 資料夾中的 `index.html.erb` 這個 view 檔案。
-回傳給客戶端的 HTML 是由這張 ERB 檔案，加上包裹它的版型模版，以及所有這張 view 會引用到的局部頁面所組成的。 在這份教學後面的章節中，會有這三個元件更詳細的說明文件。
-
+Rails 的 View 有命名慣例。通常 View 的檔名和 Controller 的動作同名，如上所示。例如 `articles_controller.rb` 的 `index` 動作使用 `app/views/articles` 資料夾中的 `index.html.erb` 這個 View 檔案。回傳給用戶端的完整 HTML 是由這個 ERB 檔案、版型，以及其它引用的局部頁面組成。本篇之後會對這三種 View 做更詳細的介紹。
 
 模版、局部頁面及版型
--------------------------------
+-----------------
 
-上面有提到過，最終的 HTML 輸出是由三種 Rails 元素所組成的： `模版`(Templates)、`局部頁面`(Partials)以及`版型`(Layouts)。
-底下將簡單的介紹這三種元素。
+上面有提到過，最終輸出的 HTML 由三種 Rails 元素組成：模版、局部頁面以及版型。底下簡單介紹這三種元素。
 
 ### 模版
 
-Action View 的模版有數種不同的寫法。如果模版的副檔名是 `erb` 的話，那麼這個模版是由 ERB (Embedded Ruby) 及 HTML 寫成的。若模版的副檔名是 `.builder`，則這個模版使用了 `Builder::XmlMarkup` 函式庫。
+Action View 的模版有數種不同的寫法。如果模版的副檔名是 `erb` 的話，那麼這個模版是混合 ERB （Ruby 內建）和 HTML。若模版的副檔名是 `.builder`，則是使用了 `Builder::XmlMarkup` 函式庫。
 
-Rails 支援多種模版系統，並使用副檔名來分辨它們。例如一個使用了 ERB 模版系統的 HTML 檔案，副檔名就會是 `.html.erb`
+Rails 支援多種模版系統，使用副檔名來做區隔。例如使用 ERB 模版系統的 HTML 檔案，副檔名是 `.html.erb`。
 
 #### ERB
 
-在一個 ERB 模版中，Ruby 程式碼會放在 `<% %>` 或是 `<%= %>` 標籤中。`<% %>` 標籤是用來執行不會回傳任何值的 Ruby 程式碼，例如條件判斷、迴圈或是區塊等等，而 `<%= %>` 標籤則是用來顯示執行結果的。
+在 ERB 模版裡，Ruby 程式碼會放在 `<% %>` 或是 `<%= %>` 標籤裡。`<% %>` 標籤是用來執行不會回傳任何值的 Ruby 程式碼，例如條件判斷、迴圈或是區塊等等，而 `<%= %>` 標籤則是用來輸出結果。
 
-看一下這個顯示 names 的迴圈
+考慮以下 `names` 迴圈：
 
 ```html+erb
 <h1>Names of all the people</h1>
@@ -72,20 +68,20 @@ Rails 支援多種模版系統，並使用副檔名來分辨它們。例如一�
 <% end %>
 ```
 
-迴圈的程式碼放在一般的標籤 `<% %>` 裡，而需要顯示的 name 則是放在顯示結果的標籤 (`<%= %>`) 中。要注意這不是單純的使用建議而己，一般的輸出函式如 `print` 或是 `puts` 無法將結果顯示在 ERB 模版中。例如底下這個範例是錯的：
+迴圈放在普通嵌入標籤（`<% %>`）裡，而需要顯示的 `name` 則是放在會輸出結果的標籤（`<%= %>`）中。注意這不是建議的使用方法，Ruby 一般的輸出函式如 `print` 或是 `puts` 是無法將結果顯示在 ERB 模版裡。所以以下的範例是不正確的：
 
 ```html+erb
 <%# WRONG %>
 Hi, Mr. <% puts "Frodo" %>
 ```
 
-要去掉開頭或是結尾的空白，你可以用 `<%-` `-%>` 來取代 `<%` 及 `%>`
+要去掉開頭或結尾的空白，可以用 `<%-` `-%>` 來取代 `<%` 及 `%>`。
 
 #### Builder
 
-Builder templates are a more programmatic alternative to ERB. They are especially useful for generating XML content. An XmlMarkup object named `xml` is automatically made available to templates with a `.builder` extension.
+Builder 模版 ERB 的替代方案，比 ERB 需要更多程式設計。在產生 XML 時特別有用。在副檔名為 `.builder` 的模版裡，可以直接使用名為 `xml` 的 `XmlMarkup` 物件。
 
-Here are some basic examples:
+以下是一些簡單的範例：
 
 ```ruby
 xml.em("emphasized")
@@ -94,7 +90,7 @@ xml.a("A Link", "href" => "http://rubyonrails.org")
 xml.target("name" => "compile", "option" => "fast")
 ```
 
-which would produce:
+會產生：
 
 ```html
 <em>emphasized</em>
@@ -103,7 +99,7 @@ which would produce:
 <target option="fast" name="compile" />
 ```
 
-Any method with a block will be treated as an XML markup tag with nested markup in the block. For example, the following:
+傳入區塊的方法會被當成一個巢狀 XML 標籤的外層，區塊內容則會嵌套成內層的標籤來處理。見下例：
 
 ```ruby
 xml.div {
@@ -112,7 +108,7 @@ xml.div {
 }
 ```
 
-would produce something like:
+會生成：
 
 ```html
 <div>
@@ -121,7 +117,7 @@ would produce something like:
 </div>
 ```
 
-Below is a full-length RSS example actually used on Basecamp:
+以下是一個 Basecamp 中實際用到的完整 RSS 範例：
 
 ```ruby
 xml.rss("version" => "2.0", "xmlns:dc" => "http://purl.org/dc/elements/1.1/") do
@@ -146,33 +142,34 @@ xml.rss("version" => "2.0", "xmlns:dc" => "http://purl.org/dc/elements/1.1/") do
 end
 ```
 
-#### Template Caching
+#### 模版快取
 
-By default, Rails will compile each template to a method in order to render it. When you alter a template, Rails will check the file's modification time and recompile it in development mode.
 
-### Partials
+Rail 預設會編譯所有的模版來進行算繪。當你修改某個模板後，development 模式下的 Rails 會重新檢查及編譯它。
 
-Partial templates - usually just called "partials" - are another device for breaking the rendering process into more manageable chunks. With partials, you can extract pieces of code from your templates to separate files and also reuse them throughout your templates.
+### 局部頁面
 
-#### Naming Partials
+局部頁面模板 - 簡稱局部頁面 - 用來把算繪過程拆成更好管理的小片段的工具。有了局部頁面，可以把某些特定內容的算繪移到單獨的檔案。
 
-To render a partial as part of a view, you use the `render` method within the view:
+#### 局部頁面命名
+
+在 view 檔案中，你要用 `render` 來算繪局部頁面
 
 ```erb
 <%= render "menu" %>
 ```
 
-This will render a file named `_menu.html.erb` at that point within the view that is being rendered. Note the leading underscore character: partials are named with a leading underscore to distinguish them from regular views, even though they are referred to without the underscore. This holds true even when you're pulling in a partial from another folder:
+這樣會在呼叫的地方，找到目前資料夾下的 `_meun.html.erb` 檔案來算繪。注意名字開頭的"底線" (_): 局部頁面的命名規則是由底線開頭。用來與一般的 view 區別。但在引用局部頁面時，呼叫的語法不用加上底線。如果要呼叫其它資料夾下的局部頁面也是一樣不加底線：
 
 ```erb
 <%= render "shared/menu" %>
 ```
 
-That code will pull in the partial from `app/views/shared/_menu.html.erb`.
+這樣會去找到 `app/views/shared/_menu.html.erb` 檔案來引入。
 
-#### Using Partials to simplify Views
+#### 使用局部頁面來簡化 Views
 
-One way to use partials is to treat them as the equivalent of subroutines; a way to move details out of a view so that you can grasp what's going on more easily. For example, you might have a view that looks like this:
+局部頁面的一個用途是把它拿來當副程式；把細節的部份拆出去，讓你更容易理解 view 的全局。舉例來說，你可能看過長這樣的 view：
 
 ```html+erb
 <%= render "shared/ad_banner" %>
@@ -187,43 +184,43 @@ One way to use partials is to treat them as the equivalent of subroutines; a way
 <%= render "shared/footer" %>
 ```
 
-Here, the `_ad_banner.html.erb` and `_footer.html.erb` partials could contain content that is shared among many pages in your application. You don't need to see the details of these sections when you're concentrating on a particular page.
+這裡的 `_ad_banner.html.erb` 及 `_footer.html.erb` 局部頁面可以包含你的應用程式裡其它頁面可以共用的內容。這樣一來在寫各個頁面時，就不需要去關注這些瑣碎的細節。
 
-#### The `as` and `object` options
+#### `as` 及 `object` 選項
 
-By default `ActionView::Partials::PartialRenderer` has its object in a local variable with the same name as the template. So, given:
+`ActionView::Partials::PartialRenderer` 預設會有個物件，存在與模版名稱相同的變數中。例如：
 
 ```erb
 <%= render partial: "product" %>
 ```
 
-within product we'll get `@product` in the local variable `product`, as if we had written:
+在局部頁面中，我們會把 `@product` 存在區域變數 `product` 中。就如同我們寫了：
 
 ```erb
 <%= render partial: "product", locals: {product: @product} %>
 ```
 
-With the `as` option we can specify a different name for the local variable. For example, if we wanted it to be `item` instead of `product` we would do:
+用 `as` 選項，我們可以改用其它的區域變數名稱。例如當我們想用 `item` 取代 `product` 時，我們會這樣寫：
 
 ```erb
 <%= render partial: "product", as: "item" %>
 ```
 
-The `object` option can be used to directly specify which object is rendered into the partial; useful when the template's object is elsewhere (eg. in a different instance variable or in a local variable).
+而 `object` 選項讓我們可以直接指定要算繪到局部頁面中的物件。這會用於模版頁面的物件存在其它地方時。(例如： 要算繪的物件是另一個實例物件，或是存在某個區域變數裡。)
 
-For example, instead of:
+例如想用這種方法寫時：
 
 ```erb
 <%= render partial: "product", locals: {product: @item} %>
 ```
 
-we would do:
+我們會改成這樣：
 
 ```erb
 <%= render partial: "product", object: @item %>
 ```
 
-The `object` and `as` options can also be used together:
+`object` 及 `as` 選項可以同時用：
 
 ```erb
 <%= render partial: "product", object: @item, as: "item" %>

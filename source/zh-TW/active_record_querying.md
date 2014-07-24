@@ -93,9 +93,9 @@ Finder 方法有：
 
 Active Record 提供數種方式來取出一個物件。
 
-#### 透過主鍵
+#### `find`
 
-使用 `Model.find(primary_key)` 來取出給定主鍵的物件，比如：
+使用 `find` 來取出給定主鍵（primary key）的物件，比如：
 
 ```ruby
 # Find the client with primary key (id) 10.
@@ -109,11 +109,27 @@ client = Client.find(10)
 SELECT * FROM clients WHERE (clients.id = 10) LIMIT 1
 ```
 
-如果 `Model.find(primary_key)` 沒找到符合條件的記錄，則會拋出 `ActiveRecord::RecordNotFound` 異常。
+如果 `find` 沒找到符合條件的記錄，則會拋出 `ActiveRecord::RecordNotFound` 異常。
+
+也可以用來查詢多個物件：傳給 `find` 一個主鍵陣列即可。會回傳陣列所有提供的主鍵所找到的紀錄，譬如：
+
+```ruby
+# Find the clients with primary keys 1 and 10.
+client = Client.find([1, 10]) # Or even Client.find(1, 10)
+# => [#<Client id: 1, first_name: "Lifo">, #<Client id: 10, first_name: "Ryan">]
+```
+
+上例等效的 SQL：
+
+```sql
+SELECT * FROM clients WHERE (clients.id IN (1,10))
+```
+
+WARNING: 若不是所有提供的主鍵都有找到匹配的物件，則 `find` 方法會拋出 `ActiveRecord::RecordNotFound` 異常。
 
 #### `take`
 
-`Model.take` 從資料庫取出一筆記錄，不考慮順序，比如：
+`take` 方法取出 `limit` 筆記錄，不特別排序，比如：
 
 ```ruby
 client = Client.take
@@ -126,13 +142,31 @@ client = Client.take
 SELECT * FROM clients LIMIT 1
 ```
 
-如果沒找到記錄，`Model.take` 會回傳 `nil`，不會拋出異常。
+若沒找到記錄會拋出異常，`take` 則回傳 `nil`。
 
-TIP: 取得的記錄根據使用的資料庫引擎會有不同結果。
+可以傳一個數值參數給 `take`，會回傳多筆結果。比如：
+
+```ruby
+client = Client.take(2)
+# => [
+  #<Client id: 1, first_name: "Lifo">,
+  #<Client id: 220, first_name: "Sara">
+]
+```
+
+對應的 SQL：
+
+```sql
+SELECT * FROM clients LIMIT 2
+```
+
+`take!` 的行為同 `take`，但在沒找到記錄時會拋出 `ActiveRecord::RecordNotFound`。
+
+TIP: 取出記錄的結果可能隨資料庫引擎的不同而變化。
 
 #### `first`
 
-`Model.first` 按主鍵排序，取出第一筆資料，比如：
+`first` 按主鍵排序，取出第一筆資料，比如：
 
 ```ruby
 client = Client.first
@@ -142,14 +176,16 @@ client = Client.first
 對應的 SQL：
 
 ```sql
-SELECT * FROM clients ORDER BY clients.id ASC LIMIT 1
+SELECT * FROM clients LIMIT 1
 ```
 
-如果沒找到記錄，`Model.first` 會回傳 `nil`，不會拋出異常。
+如果沒找到記錄，`first` 會回傳 `nil`，不會拋出異常。
+
+`first!` 的行為同 `first`，但在沒找到記錄時會拋出 `ActiveRecord::RecordNotFound` 異常。
 
 #### `last`
 
-`Model.last` 按主鍵排序，取出最後一筆資料，比如：
+`last` 按主鍵排序，取出最後一筆資料，比如：
 
 ```ruby
 client = Client.last
@@ -162,11 +198,30 @@ client = Client.last
 SELECT * FROM clients ORDER BY clients.id DESC LIMIT 1
 ```
 
-如果沒找到記錄，`Model.last` 會回傳 `nil`，不會拋出異常。
+如果沒找到記錄，`last` 會回傳 `nil`，不會拋出異常。
+
+可傳數值參數給 `last`，會回傳最後幾筆結果，譬如：
+
+```ruby
+client = Client.last(3)
+# => [
+  #<Client id: 219, first_name: "James">,
+  #<Client id: 220, first_name: "Sara">,
+  #<Client id: 221, first_name: "Russel">
+]
+```
+
+上例對應 SQL：
+
+```sql
+SELECT * FROM clients ORDER BY clients.id DESC LIMIT 3
+```
+
+`last!` 行為同 `last`，但在沒找到記錄時會拋出 `ActiveRecord::RecordNotFound` 異常。
 
 #### `find_by`
 
-`Model.find_by` 找第一筆符合條件的記錄：
+`find_by` 找出第一筆符合條件的記錄，譬如：
 
 ```ruby
 Client.find_by first_name: 'Lifo'
@@ -182,121 +237,26 @@ Client.find_by first_name: 'Jon'
 Client.where(first_name: 'Lifo').take
 ```
 
-#### `take!`
-
-`Model.take!` 從資料庫取出一筆記錄，不考慮任何順序，比如：
+`find_by!` 行為同 `find_by`，只是在沒找到符合條件的紀錄時會拋出 `ActiveRecord::RecordNotFound`，譬如：
 
 ```ruby
-client = Client.take!
-# => #<Client id: 1, first_name: "Lifo">
-```
-
-對應的 SQL：
-
-```sql
-SELECT * FROM clients LIMIT 1
-```
-
-如果沒找到記錄，`Model.take!` 會拋出 `ActiveRecord::RecordNotFound`。
-
-#### `first!`
-
-`Model.first!` 按主鍵排序，取出第一筆資料，比如：
-
-```ruby
-client = Client.first!
-# => #<Client id: 1, first_name: "Lifo">
-```
-
-對應的 SQL：
-
-```sql
-SELECT * FROM clients ORDER BY clients.id ASC LIMIT 1
-```
-
-如果沒找到記錄，`Model.first!` 會拋出 `ActiveRecord::RecordNotFound` 異常。
-
-#### `last!`
-
-`Model.last!` 按主鍵排序，取出最後一筆資料，比如：
-
-```ruby
-client = Client.last!
-# => #<Client id: 221, first_name: "Russel">
-```
-
-對應的 SQL：
-
-```sql
-SELECT * FROM clients ORDER BY clients.id DESC LIMIT 1
-```
-
-如果沒找到記錄，`Model.last!` 會拋出 `ActiveRecord::RecordNotFound` 異常。
-
-#### `find_by!`
-
-`Model.find_by!` 找第一筆符合條件的紀錄。
-
-```ruby
-Client.find_by! first_name: 'Lifo'
-# => #<Client id: 1, first_name: "Lifo">
-
-Client.find_by! first_name: 'Jon'
+Client.find_by! first_name: 'does not exist'
 # => ActiveRecord::RecordNotFound
 ```
 
 等同於：
 
 ```ruby
-Client.where(first_name: 'Lifo').take!
-```
-
-如果沒找到符合條件的記錄，`Model.find_by!` 會拋出 `ActiveRecord::RecordNotFound` 異常。
-
-### 取出多個物件
-
-#### 使用多個主鍵
-
-`Model.find(array_of_primary_key)` 接受以主鍵組成的陣列，並以陣列形式返回所有匹配的結果，比如：
-
-```ruby
-# Find the clients with primary keys 1 and 10.
-client = Client.find([1, 10]) # Or even Client.find(1, 10)
-# => [#<Client id: 1, first_name: "Lifo">, #<Client id: 10, first_name: "Ryan">]
-```
-
-對應的 SQL：
-
-```sql
-SELECT * FROM clients WHERE (clients.id IN (1,10))
-```
-
-WARNING: 只要有一個主鍵沒找到對應的紀錄，`Model.find(array_of_primary_key)` 會拋出 ActiveRecord::RecordNotFound` 異常。
-
-#### `take`
-
-`Model.take(limit)` 取出 `limit` 筆記錄，不考慮順序：
-
-```ruby
-Client.take(2)
-# => [#<Client id: 1, first_name: "Lifo">,
-      #<Client id: 2, first_name: "Raf">]
-```
-
-對應的 SQL：
-
-```sql
-SELECT * FROM clients LIMIT 2
+Client.where(first_name: 'does not exist').take!
 ```
 
 #### `first`
 
-`Model.first(limit)` 按主鍵排序，取出 `limit` 筆記錄：
+`first`取出 `limit` 筆記錄，按主鍵排序：
 
 ```ruby
-Client.first(2)
-# => [#<Client id: 1, first_name: "Lifo">,
-      #<Client id: 2, first_name: "Raf">]
+client = Client.first
+# => #<Client id: 1, first_name: "Lifo">
 ```
 
 對應的 SQL：
@@ -346,7 +306,15 @@ TIP: `find_each` 與 `find_in_batches` 方法專門用來解決大量記錄，�
 
 ```ruby
 User.find_each do |user|
-  NewsLetter.weekly_deliver(user)
+  NewsMailer.weekly(user).deliver
+end
+```
+
+要給 `find_each` 加上條件，可以像用 `where` 一樣連鎖使用：
+
+```ruby
+User.where(weekly_subscriber: true).find_each do |user|
+  NewsMailer.weekly(user).deliver
 end
 ```
 
@@ -708,7 +676,7 @@ HAVING sum(price) > 100
 可以使用 `unscope` 來指定要移除的特定條件，譬如：
 
 ```ruby
-Article.where('id > 10').limit(20).order('id asc').except(:order)
+Article.where('id > 10').limit(20).order('id asc').unscope(:order)
 ```
 
 執行的 SQL 可能是：
@@ -757,8 +725,6 @@ SELECT "articles".* FROM "articles" WHERE (id > 10) ORDER BY id desc LIMIT 20
 
 ```ruby
 class Article < ActiveRecord::Base
-  ..
-  ..
   has_many :comments, -> { order('posted_at DESC') }
 end
 
@@ -1436,6 +1402,11 @@ nick.save
 Client.find_by_sql("SELECT * FROM clients
   INNER JOIN orders ON clients.id = orders.client_id
   ORDER clients.created_at desc")
+# =>  [
+  #<Client id: 1, first_name: "Lucas" >,
+  #<Client id: 2, first_name: "Jan" >,
+  # ...
+]
 ```
 
 `find_by_sql` 提供自定查詢的簡單方式，並會將取出的物件實體化。
@@ -1445,7 +1416,11 @@ Client.find_by_sql("SELECT * FROM clients
 `find_by_sql` 有個類似的方法：`connection#select_all`。 `select_all` 會使用自定的 SQL 語句從資料庫取出物件，但不會實體化物件。會回傳一個 `ActiveRecord::Result` 物件，可以使用 `to_ary` 或 `to_hash` 將 `ActiveRecord::Result` 轉成陣列，每筆記錄皆是陣列裡的一個 Hash。
 
 ```ruby
-Client.connection.select_all("SELECT * FROM clients WHERE id = '1'")
+Client.connection.select_all("SELECT first_name, created_at FROM clients WHERE id = '1'")
+# => [
+  {"first_name"=>"Rafael", "created_at"=>"2012-11-10 23:23:45.281189"},
+  {"first_name"=>"Eileen", "created_at"=>"2013-12-09 11:22:35.221282"}
+]
 ```
 
 ### `pluck`

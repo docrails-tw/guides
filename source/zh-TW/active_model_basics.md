@@ -209,3 +209,24 @@ person.valid?                        # => true
 person.token = nil
 person.valid?                        # => raises ActiveModel::StrictValidationFailed
 ```
+
+### ActiveModel::Naming
+
+`Naming` 模組加入幾個幫助管理命名和路由的模組。這個模組定義了 `model_name` 類別方法，這個方法用 `ActiveSupport::Inflector` 定義了許多存取器（accessor）方法。
+
+```ruby
+class Person
+  extend ActiveModel::Naming
+end
+
+Person.model_name.name                # => "Person"
+Person.model_name.singular            # => "person"
+Person.model_name.plural              # => "people"
+Person.model_name.element             # => "person"
+Person.model_name.human               # => "Person"
+Person.model_name.collection          # => "people"
+Person.model_name.param_key           # => "person"
+Person.model_name.i18n_key            # => :person
+Person.model_name.route_key           # => "people"
+Person.model_name.singular_route_key  # => "person"
+```

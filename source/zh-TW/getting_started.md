@@ -94,7 +94,7 @@ $ gem install rails
 $ bin/rails --version
 ```
 
-如果有看到 "Rails 4.2.1" 的訊息， 那你可以繼續接下來的步驟。
+如果有看到 "Rails 4.2.0" 的訊息， 那你可以繼續接下來的步驟。
 
 ### 建立一個 Blog 應用程式
 

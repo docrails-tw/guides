@@ -7,7 +7,6 @@ Rails 命令列
 * 如何產生 Models、Controllers、資料庫遷移以及單元測試。
 * 如何啟動開發伺服器。
 * 如何用互動的 Shell 來實驗物件。
-* 如何測量應用程式的瓶頸。
 
 --------------------------------------------------------------------------------
 
@@ -298,7 +297,7 @@ $ bin/rails console staging
 
 ```bash
 $ bin/rails console --sandbox
-Loading development environment in sandbox (Rails 4.0.0)
+Loading development environment in sandbox (Rails 4.2.0)
 Any modifications you make will be rolled back on exit
 irb(main):001:0>
 ```

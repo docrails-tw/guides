@@ -75,7 +75,7 @@ paintIt = (element, backgroundColor, textColor) ->
 <a href="#" onclick="paintIt(this, '#000099', '#FFFFFF')">Paint it blue</a>
 ```
 
-很不 DRY 啊。可以使用事件來簡化。給每個連結加上 `data-*` 屬性，接著給每個連結的 click 事件，加上一個處理函數：
+很不 DRY 啊。可以使用事件來簡化。給每個連結加上 `data-*` 屬性，接著給每個連結的 click 事件，加上一個處理函式：
 
 ```coffeescript
 paintIt = (element, backgroundColor, textColor) ->
@@ -109,7 +109,7 @@ Rails 在 View 提供了許多用 Ruby 寫的幫助方法來產生 HTML。會想
 
 Rails 的 “Ajax 幫助方法” 實際上分成用 JavaScript 所寫的幫助方法，與用 Ruby 所寫成的幫助方法。
 
-用 JavaScript 寫的部分可以在這找到 [rails.js][rails-js]，而用 Ruby 寫的部份就是 View 的幫助方法，用來給 DOM 新增適當的標籤。rails.js 裡的 CoffeeScript 會監聽這些屬性，執行相應的處理函數。
+用 JavaScript 寫的部分可以在這找到 [rails.js][rails-js]，而用 Ruby 寫的部份就是 View 的幫助方法，用來給 DOM 新增適當的標籤。rails.js 裡的 CoffeeScript 會監聽這些屬性，執行相應的處理函式。
 
 ### form_for
 
@@ -296,7 +296,7 @@ Rails 4 出廠內建 [Turbolinks RubyGem](https://github.com/rails/turbolinks)�
 
 ### Turbolinks 工作原理
 
-Turbolinks 給頁面上所有的 `a` 標籤添加了一個 click 處理函數。如果瀏覽器支援 [PushState][ps]，Turbolinks 會對頁面發出 Ajax 請求，解析伺服器回過來的響應，把頁面整個 `<body>` 用響應回傳的 `<body>` 換掉。接著 Turbolinks 會利用 PushState 把 URL 換成正確的，看起來就像重新整理一樣，仍保有漂亮的 URL。
+Turbolinks 給頁面上所有的 `a` 標籤添加了一個 click 處理函式。如果瀏覽器支援 [PushState][ps]，Turbolinks 會對頁面發出 Ajax 請求，解析伺服器回過來的響應，把頁面整個 `<body>` 用響應回傳的 `<body>` 換掉。接著 Turbolinks 會利用 PushState 把 URL 換成正確的，看起來就像重新整理一樣，仍保有漂亮的 URL。
 
 啟用 Turbolinks 只需在 `Gemfile` 加入：
 

@@ -102,8 +102,7 @@
     -
       name: 除錯 Rails 應用程式
       url: debugging_rails_applications.html
-      description: 本篇介紹如何給 Rails 應用程式除錯。包含了多種除錯技巧、如何理解與了解程式碼背後究竟發生了什麼事。
-      needs_translation: true
+      description: 本篇介紹如何除錯 Rails 應用程式。包含了多種除錯技巧、如何理解程式碼背後究竟發生了什麼事。
     -
       name: Rails 應用程式設定
       url: configuring.html

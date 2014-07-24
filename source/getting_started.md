@@ -123,7 +123,7 @@ run the following:
 $ bin/rails --version
 ```
 
-If it says something like "Rails 4.1.1", you are ready to continue.
+If it says something like "Rails 4.2.0", you are ready to continue.
 
 ### Creating the Blog Application
 
@@ -450,9 +450,7 @@ available, Rails errors out.
 In the above image, the bottom line has been truncated. Let's see what the full
 thing looks like:
 
-<blockquote>
-Missing template articles/new, application/new with {locale:[:en], formats:[:html], handlers:[:erb, :builder, :coffee]}. Searched in: * "/path/to/blog/app/views"
-</blockquote>
+>Missing template articles/new, application/new with {locale:[:en], formats:[:html], handlers:[:erb, :builder, :coffee]}. Searched in: * "/path/to/blog/app/views"
 
 That's quite a lot of text! Let's quickly go through and understand what each
 part of it does.
@@ -498,8 +496,8 @@ harmoniously! It's time to create the form for a new article.
 
 ### The first form
 
-To create a form within this template, you will use a <em>form
-builder</em>. The primary form builder for Rails is provided by a helper
+To create a form within this template, you will use a *form
+builder*. The primary form builder for Rails is provided by a helper
 method called `form_for`. To use this method, add this code into
 `app/views/articles/new.html.erb`:
 
@@ -751,8 +749,7 @@ to create an article. Try it! You should get an error that looks like this:
 (images/getting_started/forbidden_attributes_for_new_article.png)
 
 Rails has several security features that help you write secure applications,
-and you're running into one of them now. This one is called `[strong_parameters]
-(http://guides.rubyonrails.org/action_controller_overview.html#strong-parameters)`,
+and you're running into one of them now. This one is called [strong parameters](http://guides.rubyonrails.org/action_controller_overview.html#strong-parameters),
 which requires us to tell Rails exactly which parameters are allowed into our
 controller actions.
 

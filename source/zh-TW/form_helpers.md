@@ -857,7 +857,7 @@ end
 
 ### 嵌套表單
 
-下面的表單允許使用者建立 `Person` 的實體，以及相關的地址。
+下面的表單允許使用者用 `Person` 的實體來建立地址。
 
 ```html+erb
 <%= form_for @person do |f| %>
