@@ -94,7 +94,7 @@ $ gem install rails
 $ bin/rails --version
 ```
 
-如果有看到 "Rails 4.1.1" 的訊息， 那你可以繼續接下來的步驟。
+如果有看到 "Rails 4.2.1" 的訊息， 那你可以繼續接下來的步驟。
 
 ### 建立一個 Blog 應用程式
 
@@ -1681,7 +1681,7 @@ class CommentsController < ApplicationController
   # snipped for brevity
 ```
 
-現在如果你想建立一篇新文章, 那你就閉需先通過基本 HTTP 認證視窗才行:
+現在如果你想建立一篇新文章, 那你就必需先通過基本 HTTP 認證視窗才行:
 
 ![Basic HTTP Authentication Challenge](images/getting_started/challenge.png)
 
