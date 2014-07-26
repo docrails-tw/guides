@@ -26,7 +26,11 @@ body {
 }
 
 body p {
-  letter-spacing: 1px;
+  letter-spacing: .7px;
+}
+
+body code {
+  letter-spacing: .2px;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -46,7 +50,6 @@ dd { margin-left: 1.5em;}
 pre, code {
   font-size: 1em;
   font-family: "Source Code Pro", "Anonymous Pro", "Inconsolata", "Menlo", "Consolas", "Bitstream Vera Sans Mono", "Courier New", monospace;
-  font-weight: 500;
   line-height: 1.5;
   margin: 1.5em 0;
   overflow: auto;
