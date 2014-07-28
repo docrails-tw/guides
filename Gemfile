@@ -12,3 +12,6 @@ gem 'nokogiri'
 
 gem 'rake'
 
+gem 'sass'
+
+gem 'compass'
