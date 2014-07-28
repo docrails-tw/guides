@@ -175,7 +175,7 @@ Action Mailer 會自動對標頭（header）與信件主體（body）裡的多�
 
 Action Mailer 把新增附件變得非常簡單。
 
-* 傳入檔名與內容，Action Mailer 與 [Mail gem](https://github.com/mikel/mail) 會自動推出 `mime_type`，設定編碼、建立附件。
+* 傳入檔名與內容，Action Mailer 與 [Mail gem](https://github.com/mikel/mail) 會自動推論出 `mime_type`，設定編碼、建立附件。
 
     ```ruby
     attachments['filename.jpg'] = File.read('/path/to/filename.jpg')
