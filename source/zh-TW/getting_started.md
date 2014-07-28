@@ -1713,34 +1713,20 @@ Rails 本身也有內建的 help ，你可以透過 rake 這個命令列工具�
 
 TIP: 想要在本地端產生一份 Rails 指南就必需使用一個名為 `doc:guides` 的 rake 任務， 不過在執行前需先安裝 RedCloth gem 套件. 所以我們在 `Gemfile` 中新增此套件並且執行 `bundle install` ，最後才能順利執行任務.
 
-Configuration Gotchas
+設定上相關問題
 ---------------------
 
-The easiest way to work with Rails is to store all external data as UTF-8. If
-you don't, Ruby libraries and Rails will often be able to convert your native
-data into UTF-8, but this doesn't always work reliably, so you're better off
-ensuring that all external data is UTF-8.
+在 Rails 中最簡單的方式就是將所有的外部資料存成 UTF-8 ，如果你不這麼做, Ruby 函式庫 以及 Rails 大多時候會將原始資料轉成 UTF-8, 但這不確定每次都會轉存成功, 所以你最好能確定所有的外部資料都是 UTF-8.
 
-If you have made a mistake in this area, the most common symptom is a black
-diamond with a question mark inside appearing in the browser. Another common
-symptom is characters like "Ã¼" appearing instead of "ü". Rails takes a number
-of internal steps to mitigate common causes of these problems that can be
-automatically detected and corrected. However, if you have external data that is
-not stored as UTF-8, it can occasionally result in these kinds of issues that
-cannot be automatically detected by Rails and corrected.
+如果你在這部份設定上有弄錯的話，一般會看到黑方塊白問號的符號出現顯示在瀏覽器上，
+或者是一些字元會有顯示錯誤的狀況，就像本來要顯示"ü"結果卻顯示成"Ã¼"，
+對此 Rails 採取本身既有的步驟並且透過自動偵測和修正來減少這些問題，
+然而，你的外部資料的編碼格式如不是使用UTF-8，這就有可能造成一些錯誤是無法透過 Rails 偵測和修正的，
 
-Two very common sources of data that are not UTF-8:
+有兩種常見的不會存成UTF-8的資料來源
 
-* Your text editor: Most text editors (such as TextMate), default to saving
-  files as UTF-8. If your text editor does not, this can result in special
-  characters that you enter in your templates (such as é) to appear as a diamond
-  with a question mark inside in the browser. This also applies to your i18n
-  translation files. Most editors that do not already default to UTF-8 (such as
-  some versions of Dreamweaver) offer a way to change the default to UTF-8. Do
-  so.
-* Your database: Rails defaults to converting data from your database into UTF-8
-  at the boundary. However, if your database is not using UTF-8 internally, it
-  may not be able to store all characters that your users enter. For instance,
-  if your database is using Latin-1 internally, and your user enters a Russian,
-  Hebrew, or Japanese character, the data will be lost forever once it enters
-  the database. If possible, use UTF-8 as the internal storage of your database.
+* 你的文字編譯器：大多數的文字編譯器（就像是 TextMate ），預設都是將資料存成UTF-8。如果你的文字編譯器預設不是如此，這將導致你在template中輸入的一些特別字元(就像是 é)，這些字元會在瀏覽器中顯示出黑方塊白問號的符號，這跟你在i18n翻譯檔案也一樣，大多數文字編輯器預設並不是UTF-8，就像是Dreamweaver一樣，但是都會提供一個方法將預設改為UTF-8，通常我們也會這樣子做
+* 你的資料庫： Rails 預設會將你的資料庫資料有限度的自動轉成UTF-8
+	然而，如果你所使用的資料庫並不是使用UTF-8，這樣可能就無法將使用者輸入的所有字元存下來
+	舉例來說，如果你所使用的資料庫是Latin-1，然而你的使用者卻是輸入了Russian，Hebrew,或是Japanese 字元
+	那麼所輸入的資料在存進資料庫時將會遺失，如果可以的話，最好使用UTF-8來作資料庫內部儲存的編碼
