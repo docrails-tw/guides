@@ -353,7 +353,7 @@ end
 除了 `only_integer` 之外，這個方法也接受下列選項，用來限制允許的數值：
 
 * `:greater_than` - 屬性的值必須大於指定的值。預設錯誤訊息是 _"must be greater than %{count}"_。
-* `:greater_than_or_equal_to` - 屬性的值必須大於指定的值。預設錯誤訊息是 _"must be greater than or equal to %{count}"_。
+* `:greater_than_or_equal_to` - 屬性的值必須大於等於指定的值。預設錯誤訊息是 _"must be greater than or equal to %{count}"_。
 * `:equal_to` - 屬性的值必須等於指定的值。預設錯誤訊息是 _"must be equal to %{count}"_。
 * `:less_than` - 屬性的值必須小於指定的值。預設錯誤訊息是 _"must be less than %{count}"_。
 * `:less_than_or_equal_to` - 屬性的值必須小於等於指定的值。預設錯誤訊息是 _"must be less than or equal to %{count}"_。
