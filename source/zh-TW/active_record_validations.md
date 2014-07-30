@@ -423,10 +423,6 @@ class Order < ActiveRecord::Base
 end
 ```
 
-If you validate the absence of an object associated via a `has_one` or
-`has_many` relationship, it will check that the object is neither `present?` nor
-`marked_for_destruction?`.
-
 如透過 `has_one` 或 `has_many` 關係來驗證關聯的物件是否存在，則會對該物件呼叫 `present?` 與 `marked_for_destruction?`，來確定不存在性。
 
 由於 `false.present?` 為 `false`，如果想驗證布林欄位的存在性，應該要使用 `validates :field_name, exclusion: { in: [true, false] }`。
