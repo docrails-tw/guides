@@ -644,6 +644,8 @@ match 'photos', to: 'photos#show', via: :all
 
 NOTE: 將 `GET` 與 `POST` 請求路由到單一的動作有安全隱憂。除非有很好的理由，通常應該要避免將所有 HTTP 動詞對應到一個動作上。
 
+NOTE: Rails 裡執行 `GET` 不會檢查 CSRF token。永遠不要讓 `GET` 請求可以執行資料庫寫入動作，更多資訊請參考[《安全指南》](security.html#csrf-countermeasures) 關於 〈CSRF countermeasures〉 一節。
+
 ### 片段約束
 
 使用 `:constraints` 選項限制動態片段的格式：
