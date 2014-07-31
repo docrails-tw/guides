@@ -414,6 +414,8 @@ globally in `config/application.rb`:
 config.action_mailer.default_url_options = { host: 'example.com' }
 ```
 
+ㄓ
+
 #### generating URLs with `url_for`
 
 You need to pass the `only_path: false` option when using `url_for`. This will

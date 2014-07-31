@@ -339,6 +339,20 @@ HTML 部分會使用 `my_layout.html.erb`，而純文字部分則會使用一般
 config.action_mailer.default_url_options = { host: 'example.com' }
 ```
 
+因為這個設定的關係，Email 裡不可以使用任何的 `*_path` 輔助方法，要用 `*_url`。譬如之前是：
+
+```
+<%= link_to 'welcome', welcome_path %>
+```
+
+會需要改為：
+
+```
+<%= link_to 'welcome', welcome_url %>
+```
+
+使用完整的 URL，Email 裡的連結才會正常工作。
+
 #### 使用 `url_for` 產生 URL
 
 使用 `url_for` 時，需要傳入 `only_path: false` 選項。確保產生的是絕對 URL，因為 `url_for` 輔助方法預設會產生相對 URL。
