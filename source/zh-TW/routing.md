@@ -680,7 +680,7 @@ get '/:username', to: 'users#show'
 基於 `request` 物件的約束條件的宣告方式與片段約束條件相同：
 
 ```ruby
-get 'photos', constraints: { subdomain: 'admin' }
+get 'photos', to: 'photos#index', constraints: { subdomain: 'admin' }
 ```
 
 約束條件也可以使用區塊形式：
