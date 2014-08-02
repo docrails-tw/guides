@@ -414,7 +414,21 @@ globally in `config/application.rb`:
 config.action_mailer.default_url_options = { host: 'example.com' }
 ```
 
-ㄓ
+Because of this behavior you cannot use any of the `*_path` helpers inside of
+an email. Instead you will need to use the associated `*_url` helper. For example
+instead of using
+
+```
+<%= link_to 'welcome', welcome_path %>
+```
+
+You will need to use:
+
+```
+<%= link_to 'welcome', welcome_url %>
+```
+
+By using the full URL, your links will now work in your emails.
 
 #### generating URLs with `url_for`
 
