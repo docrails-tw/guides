@@ -3,9 +3,9 @@ Rails 起步走
 
 本文將介紹如何使用 Ruby on Rails。
 
-在你讀過這篇之後，將學到：
+在你讀過這篇之後，應可以學習到：
 
-* 如何安裝 Rails，建立一個 Rails 應用專案，並且連接到資料庫。
+* 如何安裝 Rails，如何新建立一個 Rails 應用專案，並且如何連接到資料庫。
 * Rails 應用專案的一般配置。
 * MVC (Model, View, Controller) 跟 RESTful 設計的基本原則。
 * 如何快速產生可執行的 Rails 應用程式。
