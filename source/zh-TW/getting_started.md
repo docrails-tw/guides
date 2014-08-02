@@ -3,11 +3,11 @@ Rails 起步走
 
 本文將介紹如何使用 Ruby on Rails。
 
-在你讀過這篇之後，應可以學習到：
+在你讀過這篇之後，將學到：
 
-* 如何安裝 Rails，如何新建立一個 Rails 應用專案，並且如何連接到資料庫。
+* 如何安裝 Rails，建立一個 Rails 應用專案，並且連接到資料庫。
 * Rails 應用專案的一般配置。
-* MVC (Model, View, Controller) 跟 RESTful 設計的基本原理。
+* MVC (Model, View, Controller) 跟 RESTful 設計的基本原則。
 * 如何快速產生可執行的 Rails 應用程式。
 
 --------------------------------------------------------------------------------
@@ -15,7 +15,7 @@ Rails 起步走
 學前所需的知識
 -----------------
 
-本文是為了想從頭學 Rails 的初學者所寫，所以不需要具備任何 Rails 的開發經驗。當然如果你想更快上手的話，最好有以下的基礎：
+本文是為了想從頭學 Rails 的初學者所寫，所以不需要具備任何 Rails 的開發經驗。不過你須先安裝：
 
 * [Ruby](http://www.ruby-lang.org/en/downloads) 1.9.3 及以上版本。
 * [RubyGems](http://rubygems.org) 一個伴隨 Ruby 1.9+ 安裝的套件管理程式。如果想學習更多有關於 RubyGems，請參考 [RubyGems Guides](http://guides.rubygems.org)。
@@ -26,7 +26,7 @@ Rails 是一個使用 Ruby 開發的 Web 框架。如果沒有 Ruby 相關的經
 * [Ruby Programming Language 官方網站](https://www.ruby-lang.org/en/documentation/)
 * [reSRC 免費程式設計書單](http://resrc.io/list/10/list-of-free-programming-books/#ruby)
 
-值得注意的，有些不錯的線上資源他們是用較常見的 Ruby 1.8 版或較舊的 1.6 版，所以 Rails 現行版本中部份語法是這些線上資源所沒有涵蓋到的。
+值得注意的，有些不錯的線上資源一般是 Ruby 1.8 版或更舊的 1.6 版，所以這些線上資源沒有涵蓋 Rails 一些新的語法。
 
 Rails 是什麼？
 --------------
