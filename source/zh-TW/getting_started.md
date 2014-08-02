@@ -18,13 +18,13 @@ Rails 起步走
 本文是為了想從頭學 Rails 的初學者所寫，所以不需要具備任何 Rails 的開發經驗。不過你須先安裝：
 
 * [Ruby](http://www.ruby-lang.org/en/downloads) 1.9.3 及以上版本。
-* [RubyGems](http://rubygems.org) 一個伴隨 Ruby 1.9+ 安裝的套件管理程式。如果想學習更多有關於 RubyGems，請參考 [RubyGems Guides](http://guides.rubygems.org)。
-* [SQLite3 資料庫](http://www.sqlite.org)。
+* [RubyGems](http://rubygems.org) 一個伴隨 Ruby 1.9+ 安裝的套件管理程式。如果想學習更多有關於 RubyGems，請參考 [RubyGems Guides](http://guides.rubygems.org) 。
+* [SQLite3 資料庫](http://www.sqlite.org) 。
 
 Rails 是一個使用 Ruby 開發的 Web 框架。如果沒有 Ruby 相關的經驗就開始學 Rails，你將會發現這是一條陡峭的學習曲線。這裡提供幾個 Ruby 學習的線上資源：
 
-* [Ruby Programming Language 官方網站](https://www.ruby-lang.org/en/documentation/)
-* [reSRC 免費程式設計書單](http://resrc.io/list/10/list-of-free-programming-books/#ruby)
+* [Ruby Programming Language 官方網站](https://www.ruby-lang.org/en/documentation/) 。
+* [reSRC 免費程式設計書單](http://resrc.io/list/10/list-of-free-programming-books/#ruby) 。
 
 值得注意的，有些不錯的線上資源一般是 Ruby 1.8 版或更舊的 1.6 版，所以這些線上資源沒有涵蓋 Rails 一些新的語法。
 
@@ -32,23 +32,23 @@ Rails 是什麼？
 --------------
 
 Rails 是一個用 Ruby 所寫的 Web 開發框架。
-它把開發過程的細節的都設想周到，讓開發 Web 應用程式變成一件簡單的事情。
+這個框架把開發過程的細節的都設想周到，讓開發 Web 應用程式變成一件簡單的事情。
 與其他程式語言或開發框架比較的話，它可以讓你用更簡短的程式碼來實現相同或更完整的功能。
 多數資深的 Rails 開發者認為 Rails 可以使開發 Web 應用程式變的更加有趣。
 
 Rails 是一個有先見之明的軟體。
 當事情有最好的處理方法，他的設計會傾向讓你去使用這個方法，而不是花很多時間去找尋跟嘗試。
-所以當學完＂The Rails Way＂之後，那你的開發效率將會進展到另一個境界。
-但前提是你不能堅持把其他程式語言的開發習慣或思維帶到 Rails 中，否則一開始對 Rails 會有不好的印象。
+所以當學完 "The Rails Way" 之後，那你的開發效率將會進展到另一個境界。
+但有個前提就是你不能堅持把其他程式語言的開發習慣或思維帶到 Rails 中，否則一開始會對 Rails 有不好的印象。
 
 在 Rails 開發哲學中有著兩個主要的原則：
 
-* **Don't Repeat Yourself(不要重複你自己):** DRY 是一個軟體工程的開發原則，是如此描述
+* **Don't Repeat Yourself (不要重複你自己)： ** DRY 是一個軟體工程的開發原則，是如此描述
 	"Every piece of knowledge must have a single, unambiguous, authoritative
   representation within a system. (系統中每個功能的構思都必須要有單一、明確且讓人認同的表達方式)"
 	儘量避免一再重複的相同資訊，所寫的程式才容易維護、有擴展性且不容易出現 bug 。
 	
-* **Convention Over Configuration(約定優於配置):** Rails 不希望你浪費太多時間無止境的配置設定檔，而是直接把最好的一些 Web 開發方法作為預設，讓你熟悉之後就可以上手了。
+* **Convention Over Configuration (約定優於配置)： ** Rails 不希望你浪費太多時間無止境的配置設定檔，而是直接把最好的一些 Web 開發方式作為預設，讓你熟悉之後就可以上手了。
 
 建立一個新的 Rails 專案
 ----------------------------
@@ -70,11 +70,10 @@ $ ruby -v
 ruby 2.0.0p353
 ```
 
-如果還沒安裝 Ruby ，可以看一下
-[ruby-lang.org](https://www.ruby-lang.org/en/installation/) ，連結裡會有針對你所用系統的 Ruby 安裝方法。
+如果還沒安裝 Ruby ，可以看一下 [ruby-lang.org](https://www.ruby-lang.org/en/installation/) ，連結裡會有針對你所用系統的 Ruby 安裝方法。
 
-很多熱門的類 Unix 系統都會搭載 SQLite3 的 acceptable 版本。而 Windows 或其他作業系統的安裝教學請參考 [SQLite3 的網站](http://www.sqlite.org)。
-現在來確定是否有正確安裝或正確新增到 Path 環境變數中:
+很多熱門的類 Unix 系統都會搭載 SQLite3 的 acceptable 版本。而 Windows 或其他作業系統的安裝教學請參考 [SQLite3 的網站](http://www.sqlite.org) 。
+現在來確定是否有正確安裝或正確新增到 Path 環境變數中：
 
 ```bash
 $ sqlite3 --version
@@ -94,11 +93,11 @@ $ gem install rails
 $ bin/rails --version
 ```
 
-如果有看到 "Rails 4.2.0" 的訊息， 那你可以繼續接下來的步驟。
+如果有看到 "Rails 4.2.0" 的訊息，那你可以繼續接下來的步驟。
 
 ### 建立一個 Blog 應用程式
 
-Rails 中有許多被稱之為產生器（generators）的腳本（scripts），主要用來配置開發所需要的檔案及工具，讓開發可以更加順手。
+Rails 中有許多被稱之為產生器 (generators) 的腳本 (scripts) ，主要用來配置開發所需要的檔案及工具，讓開發可以更加順手。
 而現在要用的其中一種產生器就是可以幫助我們建構出一個新的 Rails 應用專案，如此一來就不用再花時間重頭寫起。
 
 要使用產生器之前，請先打開命令提示視窗，切換到有存取權限的目錄接著輸入：
@@ -107,9 +106,9 @@ Rails 中有許多被稱之為產生器（generators）的腳本（scripts），
 $ rails new blog
 ```
 
-執行完後會建立一個名為 `Blog` 的 Rails 應用專案，存放在 blog 目錄下，執行過程中會透過 `bundle install` 命令安裝在 `Gemfile` 上所提到的 gem 相依套件。
+執行完後會在 blog 目錄下建立一個名為 `Blog` 的 Rails 應用專案，而執行過程中會透過 `bundle install` 命令安裝在 `Gemfile` 上所提到的 gem 相依套件。
 
-TIP: 你可以執行 `rails new -h` 看到所有 Rails 應用專案生成器（Rails application builder）可接受的命令列參數。
+TIP: 你可以執行 `rails new -h` 看到所有 Rails 應用專案生成器 (Rails application builder) 可接受的命令列參數 (command line options) 。
 
 建立 blog 專案之後，切換到它的目錄下：
 
@@ -118,23 +117,23 @@ $ cd blog
 ```
 
 在 `blog` 這個目錄中有許多自動生成的檔案和資料夾，而這些都是構成 Rails 應用專案的重要元素
-本篇教學中大部份會著重在 `app` 這個資料夾，話雖如此，這裡還是附上表格，將所有預設的檔案及資料夾的功能做個簡單介紹：
+本篇教學中，大部份會著重在 `app` 這個資料夾，話雖如此，這裡還是附上表格，將所有預設的檔案及資料夾的功能做個簡單介紹：
 
-| 檔案/資料夾 | 用途 |
+| 檔案／資料夾| 用途    |
 | ----------- | ------- |
-|app/|包含著應用程式的 controllers, models, views, helpers, mailers and assets。 接下來的教學中，你將會花多數的心力在這個資料夾上。|
-|bin/|包含許多像是一開始建構應用專案的 rails 腳本（script）以及環境的配置（setup）、應用程式的佈署（deploy）、執行應用程式（run）的其他腳本（scripts）。|
-|config/|可以設定應用程式的路由、資料庫、以及其他等等。詳細請參考 [設定 Rails 應用程式](configuring.html)。|
+|app/|包含著應用程式的 controllers 、 models 、 views 、 helpers 、 mailers 以及 assets 等部份。 接下來的教學中，你將會花多數的心力在這個資料夾上。|
+|bin/|包含著像是一開始建構應用專案的 rails 腳本 (script) 以及環境的配置 (setup) 、應用程式的佈署 (deploy) 、執行應用程式 (run) 的其他腳本 (scripts) 。|
+|config/|可以設定應用程式的路由 (routes) 、資料庫、以及其他等等。詳細請參考 [設定 Rails 應用程式](configuring.html) 。|
 |config.ru|用來啟動應用程式的 Rack 設定檔|
-|db/|包含現行資料庫的綱要（schema），方便日後資料庫的移轉。|
-|Gemfile<br>Gemfile.lock|這兩個檔案可以指定 Rails application 所要安裝的 gem 相依套件，並且交由 Bundler gem 做管理。 更多關於 Bundler 的資訊請看 [Bundler 的網站](http://bundler.io).|
+|db/|包含現行資料庫的綱要 (schema) ，方便日後資料庫的移轉。|
+|Gemfile<br>Gemfile.lock|這兩個檔案可以指定 Rails application 所要安裝的 gem 相依套件，並且交由 Bundler gem 做管理。更多關於 Bundler 的資訊請看 [Bundler 的網站](http://bundler.io) 。|
 |lib/|包含應用程式的擴充模組。|
-|log/|包含應用程式的log檔案。|
-|public/|唯一能再網路上被檢索的目錄，裡面包含著靜態檔案和編譯過後的一些資源（assets）。|
-|Rakefile|Rakefile 主要目的是找到並載入可以從命令列執行的任務。其中內建任務的定義是存在各個 Rails 元件當中。若想新增自己寫的任務，不要直接修改 Rakefile，我們傾向把自訂的任務新增到 lib/tasks 目錄下。|
+|log/|包含應用程式的 log 檔案。|
+|public/|唯一能再網路上被檢索的目錄，裡面包含著靜態檔案和編譯過後的一些資源 (assets) 。|
+|Rakefile|Rakefile 主要目的是找到並載入可從命令列執行的任務。其中內建任務是定義在各個 Rails 元件當中。若想新增自己寫的任務，不要直接修改 Rakefile，我們傾向把自訂的任務新增到 lib/tasks 目錄下。|
 |README.rdoc|這是一份應用程式的操作手冊。你可以編輯這個檔案來告訴別人你的應用程式的功能，以及如何安裝配置等等。|
-|test/|包含單元測試、fixtures ( 建立模擬資料 )，還有其他的測試工具。 詳細請參考[測試 Rails 應用程式](testing.html).|
-|tmp/|包含一些暫存檔（像是快取、PID、 session 暫存檔）。|
+|test/|包含單元測試、 fixtures (建立模擬資料) ，還有其他的測試工具。 詳細請參考[測試 Rails 應用程式](testing.html) 。|
+|tmp/|包含一些暫存檔（像是快取、 PID 、 session 暫存檔） 。|
 |vendor/|主要放置第三方的程式碼。 通常 Rails 應用專案會在這放置第三方的 gem 套件。|
 
 Hello, Rails!
@@ -150,34 +149,34 @@ Hello, Rails!
 $ bin/rails server
 ```
 
-TIP: 從 CoffeeScript 編譯到 JavaScript 需要一個 JavaScript 直譯器。如果少了直譯器就執行，命令列就會跳出 `execjs` 錯誤。通常 Mac OS X 以及 Windows 都會搭載 JavaScript 直譯器。 如果有需要直譯器，在新增的應用專案中 Rails 會將 `therubyracer` gem 套件註解在 `Gemfile` 中，你只要將他反註解然後就可以安裝了。 `therubyrhino` 是一個 JRuby 使用者推薦的直譯器套件，所以在 JRuby 中是直接把它定義在 `Gemfile` 。
-其他有支援的直譯器請參考
+TIP: 從 CoffeeScript 編譯到 JavaScript 需要一個 JavaScript 直譯器 (runtime) 。如果少了直譯器就執行，命令列就會跳出 `execjs` 錯誤。通常 Mac OS X 以及 Windows 都會搭載 JavaScript 直譯器。對於沒有搭載的系統，由於在新增的應用專案的時候， Rails 會將 `therubyracer` gem 套件註解在 `Gemfile` 中，所以你只要將這行反註解然後就可以安裝。 `therubyrhino` 是一個 JRuby 使用者推薦的直譯器套件，所以在 JRuby 中是直接把它定義在 `Gemfile` 。
+其他一樣有支援的直譯器請參考
 [ExecJS](https://github.com/sstephenson/execjs#readme).
 
-這將會啟動 WEBrick，一個 Ruby 預設的 web 伺服器。接下來要如何看執行中的應用程式，請打開瀏覽器並在網址列上輸入 <http://localhost:3000> 。你就會看到 Rails 的預設資訊頁面。
+這將會啟動 WEBrick ，一個 Ruby 預設的 web 伺服器。想看應用程式執行中的畫面，請打開瀏覽器並在網址列上輸入 <http://localhost:3000> 。你就會看到 Rails 的預設資訊頁面了。
 
 ![Welcome aboard screenshot](images/getting_started/rails_welcome.png)
 
 TIP: 如想停止 web 服務，請在已執行中的命令視窗按下 Ctrl+C 跳回命令提示字元就可以終止服務。
-大多數類 UNIX 系統，其中也包含 Mac OS X 會再次看到錢符 `$`。在開發模式中, Rails 通常是不會要求你重新起動服務；只要有修改過的檔案伺服器就會自動重新載入。
+大多數類 UNIX 系統，其中也包含 Mac OS X 將會再次看到錢符 `$` 。在開發模式中, Rails 通常是不會要求你重新起動服務；只要有修改過的檔案伺服器就會自動重新載入。
 
-＂Welcome aboard＂這個頁面對於新建 Rails 應用程式來說是一個_煙霧測試（smoke test）_：測試設定上是否正確，來讓此頁面正確執行。你也可以透過點擊 _About your application's environment_ 連結來看應用程式環境相關資訊的摘要。
+＂Welcome aboard＂這個頁面對於新建 Rails 應用程式來說是一個 _煙霧測試 (smoke test)_ ：測試設定上是否正確，來讓此頁面正確執行。你也可以透過點擊 _About your application's environment_ 連結來看應用程式中環境相關資訊的摘要。
 
 ### Rails 說 "Hello" 
 
-為了讓 Rails 可以顯示 "Hello"，你必須建立一個簡單的 _controller_ 跟 _view_。
+為了讓 Rails 可以顯示 "Hello"，你必須先建立一個簡單的 _controller_ 跟 _view_ 。
 
-Controller 的功能是去接收對於應用程式的 Http 請求。而 _Routing_ 則是決定由那一個 controller 去接收請求，通常一個 controller 會有一個以上的 route 的規則對應，藉由不同的 actions 來處理這些不同的 routes 所決定的請求 。Action 的功能就是收集資訊並提供給 view 使用。
+Controller 的功能是去接收對於應用程式的 Http 請求。而 _路由動作 (Routing)_ 則是決定由那一個 controller 去接收請求，通常一個 controller 會有一個以上的路由 (route) 規則對應，藉由不同的 actions 來處理這些不同的路由 (routes) 所決定的請求 。Action 的功能就是收集資訊並提供給 view 使用。
 
-View 的功能是將資訊用常人可讀的方式呈現出來。 View 跟 controller 最大的差別就是 controller 負責資訊的收集，而 view 只是負責資訊的呈現。預設的 view 模版是用 eRuby （Embedded Ruby）所寫的，這部份要在所有結果送到使用者之前才會被 Rails 中 request cycle （從 route 到 view 的一系列請求）執行到。
+View 的功能是將資訊用普通人可讀的方式呈現出來。 View 跟 controller 最大的差別就是 controller 負責資訊的收集，而 view 只是負責資訊的呈現。預設的 view 模版是用 eRuby (Embedded Ruby) 所寫的，這部份在結果送到使用者之前就會被 Rails 中 request cycle (從 route 到 view 的一系列請求) 執行到。
 
-要建立一個 controller ，你將必須執行 controller 的產生器，並且附上 controller 名稱以及 action 名稱的參數，就像這樣子：
+要建立一個 controller ，你必需執行 controller 的產生器，並且附上 controller 名稱以及 action 名稱的參數，就像這樣：
 
 ```bash
 $ bin/rails generate controller welcome index
 ```
 
-Rails 會幫你建立幾個檔案和一個 route 。
+Rails 會替你建立一個路由 (route) 和幾個檔案。
 
 ```bash
 create  app/controllers/welcome_controller.rb
@@ -198,7 +197,7 @@ invoke    scss
 create      app/assets/stylesheets/welcome.css.scss
 ```
 
-在這些檔案中最重要的當然是位於 `app/controllers/welcome_controller.rb` 的 controller 以及位於 `app/views/welcome/index.html.erb` 的 view 。
+這些檔案中最重要的當然是位於 `app/controllers/welcome_controller.rb` 的 controller 以及位於 `app/views/welcome/index.html.erb` 的 view 。
 
 接下來用文字編輯器打開 `app/views/welcome/index.html.erb` ，並且將檔案所有內容替換成以下的程式碼：
 
@@ -208,7 +207,7 @@ create      app/assets/stylesheets/welcome.css.scss
 
 ### 設置應用程式首頁
 
-現在我們已經完成了 controller 和 view ，再來就是決定什麼時候讓 Rails 執行顯示 "Hello, Rails!" 。這個例子中，我們想在連結應用程式首頁 <http://localhost:3000> 時來顯示這段訊息。不過目前畫面依舊是 "Welcome aboard" 。
+現在我們已經完成了 controller 和 view ，再來就是決定什麼時候讓 Rails 執行顯示 "Hello, Rails!" 。這個例子中，我們想在連結應用程式首頁 <http://localhost:3000> 來顯示這段訊息。不過目前畫面依舊是 "Welcome aboard" 。
 
 所以接下來，我們要告訴 Rails 正確首頁的所在位置。
 
@@ -227,29 +226,26 @@ Rails.application.routes.draw do
   # ...
 ```
 
-這個是應用程式的 _routing file（路由檔案）_ ，內容是用特殊的 DSL (domain-specific language 專屬領域語言) 所寫的，透過這些設定，可以告訴 Rails 要如何將連進來的要求連結到 controllers 和 actions 。這個檔案包含許多已註解的 routes 規則範例，其中有一條規則是把連到網站根目錄的請求對應到特定的 controller 和 action 做處理。我們從開頭為 `root` 找到這條規則，並且反註解它，看起來會像這樣：
+這個是應用程式的 _routing file (路由檔案)_ ，內容是用特殊的 DSL (domain-specific language 專屬領域語言) 所寫的，透過這些設定，可以告訴 Rails 要如何將連進來的請求對應到 controllers 和 actions 來處理。這個路由檔案包含許多已註解的路由 (route) 規則範例，其中有一條規則是把連到網站根目錄的請求對應到特定的 controller 和 action 做處理。我們從開頭為 `root` 找到這條規則，並且反註解它，看起來會像這樣：
 
 ```ruby
 root 'welcome#index'
 ```
 
-這一行 `root 'welcome#index'` 是告訴 Rails 把連應用程式根目錄的請求對應到 welcome controller 的 index action 作處理。而另一行 `get 'welcome/index'` 則是告訴 Rails 把連 <http://localhost:3000/welcome/index> 的請求對應到 welcome controller 的 index action 作處理。當你執行過 controller 產生器 (`rails generate controller welcome index`) 這些設定都會被新增在檔案中。
+這一行 `root 'welcome#index'` 是告訴 Rails 把要連應用程式根目錄的請求對應到 welcome controller 的 index action 作處理。而另一行 `get 'welcome/index'` 則是告訴 Rails 把要連 <http://localhost:3000/welcome/index> 的請求對應到 welcome controller 的 index action 作處理。當你執行過 controller 產生器後 (`rails generate controller welcome index`) ，這些設定都會被新增到檔案中。
 
-剛剛如果你為了要執行產生器而關掉 web 伺服器，那就再次啟動它 (`rails server`) 。並且用瀏覽器連上 <http://localhost:3000> 。 你將會看到那些被你放在 `app/views/welcome/index.html.erb` 的 "Hello, Rails!" 訊息，這說明了這個新的 route 將這個請求交給 `WelcomeController` 的 `index` action 處理了，並且透過 view 把正確結果顯示出來。
+剛剛如果為了要執行產生器而關掉 web 伺服器的話，那就再次啟動 (`rails server`) 。並且用瀏覽器連到 <http://localhost:3000> 。 你將會看到那些被你放在 `app/views/welcome/index.html.erb` 的訊息 "Hello, Rails!" ，這說明了這個新的路由規則 (route) 將這個請求交由 `WelcomeController` 的 `index` action 處理，並且將 view 正確的 render (算繪) 出來。
 
-TIP: 更多關於 routing 資訊，請參考 [Rails Routing from the Outside In](routing.html).
+TIP: 更多關於路由 (routing) 資訊，請參考 [Rails Routing from the Outside In](routing.html) 。
 
 開始實作
 ----------------------
 
-現在你已經知道如何建立 controller 、 action 還有 view, 接下來讓我們一起建立更實質的一些功能。
+現在你已經知道如何建立 controller 、 action 還有 view ，接下來我們要建立更實質的一些功能。
 
-在這 Blog 應用程式中, 你將需要創造新的 _resource_. Resource 是一個類似物件的集合, 就像 articles, people 或是
-animals.
-對於resource的項目你可以 create建立, read讀取, update更新 and destroy刪除 而這些操作可以被簡稱為 _CRUD_ 操作.
+在這 Blog 應用程式中，你將需要創造新的 _resource (資源)_ 。 Resource (資源) 是一個類似物件的集合，就像 articles (文章集) 、 people (人群) 或是 animals (動物群) 。對於 resource (資源) 的項目你可以 create (建立) 、 read (讀取) 、 update (更新) 以及 destroy (刪除) ，而這些操作我們簡稱為 _CRUD_ 操作。
 
-Rails 提供一個 `resources` 方法 這個方法可以用來宣告一個標準的 REST
-resource. 這裡將示範如何在 `config/routes.rb` 宣告一個 _article resource_.
+Rails 提供一個 `resources` method ，這個 method 可以用來宣告一個標準的 REST resource 。以下程式碼將示範如何在 `config/routes.rb` 宣告一個 _article resource_ 。
 
 ```ruby
 Rails.application.routes.draw do
@@ -260,7 +256,7 @@ Rails.application.routes.draw do
 end
 ```
 
-如果你執行 `rake routes`, 你將會看到他對於標準的 RESTful actions 已經定義了許多 routes.  至於prefix 欄 (還有其他欄位) 的意思我們晚點再提, 但要注意到 Rails 已經對於單數型態的 `article` 有特別的解釋並且對於複數型別有意義上的區別.
+如果你執行 `rake routes` ，你可以發現它對於標準 RESTful actions 已經定義了許多 routes 。至於 prefix 欄 (以及其他欄位) 的意思我們稍候再看，但這裡有一點值得注意， Rails 對於單數型態的 `article` 有特別的解釋，而且對於複數型態有意義上的區別。
 
 ```bash
 $ bin/rake routes
@@ -276,52 +272,45 @@ edit_article GET    /articles/:id/edit(.:format) articles#edit
         root GET    /                            welcome#index
 ```
 
-在下一個段落, 你將可以在你的應用程式新增文章並且檢視它. 這就是 CRUD 中的 "C" 跟 "R":
-creation(建立) and reading(檢視). 而新增文章的表單將會長的像如此:
+在下一個段落，你將可以在應用程式中新增和閱讀文章。這就是 CRUD 中的 "C" 跟 "R" ：
+creation (建立) 以及 reading (檢視) 。而新增文章的表單應該會是如此：
 
 ![The new article form](images/getting_started/new_article.png)
 
-雖然現在看起來有些簡單，但是還可以使用. 之後如有需要再來回頭檢視樣式設計的改善.
+雖然現在看起來有些簡單，但是還可以使用。之後如有需要再來回頭改善樣式設計。
 
 ### 建立基本功能
 
-一開始, 在應用程式中需要一個頁面來建立新增的文章. 有一個不錯的選擇就是在 `/articles/new`. 由於應用程式已經定義了 route， 所以可以向 `/articles/new` 發送請求.
-連到 <http://localhost:3000/articles/new> 你將會看到一個 routing
-錯誤:
+一開始，你在應用程式中會需要一個請求位置來新增文章。適合這個用途的請求位置應該就是 `/articles/new` 。由於剛剛 resource 已經定義了相對應的 route ，所以現在可以向 `/articles/new` 發送請求。當你連到 <http://localhost:3000/articles/new> 時，你將會發現一個 routing 錯誤：
 
 ![Another routing error, uninitialized constant ArticlesController](images/getting_started/routing_error_no_controller.png)
 
-這個錯誤會發生是因為這個route規則需要定義一個 controller 來處理請求，所以這個問題的解決方法很簡單：建立一個名為`Articlescontroller` 的 controller，你可以透過執行以下命令來完成動作。 
+這個錯誤會發生的原因是因為這個 route 規則需要有一個 controller 來處理請求，所以要解決這個問題的方法很簡單：建立一個名為 `Articlescontroller` 的 controller 。你可以透過執行以下命令來完成動作：
 
 ```bash
 $ bin/rails g controller articles
 ```
 
 如果你打開剛產生的 `app/controllers/articles_controller.rb`
-你會看到一個還未有內容的controller:
+你會看到一個空的 controller ：
 
 ```ruby
 class ArticlesController < ApplicationController
 end
 ```
 
-這個 controller 是繼承於 `ApplicationController` 的一個簡單類別.
-在這個類別中你必須定義 method 來做 controller 的 action. 在 blog 系統中這些 actions 將可以完成對於 articles 的 CRUD 操作.
+這個 controller 是繼承 `ApplicationController` 的簡單類別。在這個類別中你必須定義 method 作為 controller 的 action 。而這些 actions 將可以實現在 articles 上的 CRUD 操作。
 
-NOTE: 在 ruby 中有這幾種 `public`, `private`, `protected` methods,
-但只有 `public` methods 才能當 controllers 的 actions.
-更多詳細資訊請參考 [Programming Ruby](http://www.ruby-doc.org/docs/ProgrammingRuby/).
+NOTE: 在 ruby 中有這幾種 `public` 、 `private` 、 `protected` methods ，但只有 `public` methods 才能作為 controllers 的 actions 。
+更多詳細資訊請參考 [Programming Ruby](http://www.ruby-doc.org/docs/ProgrammingRuby/) 。
 
-如果現在你重新整理這個頁面 <http://localhost:3000/articles/new> , 你將又得到一個新的錯誤:
+如果你現在重新整理這個頁面 <http://localhost:3000/articles/new> , 你會發現另一個新的錯誤：
 
 ![Unknown action new for ArticlesController!](images/getting_started/unknown_action_new_for_articles.png)
 
-這個錯誤指出 Rails 找不到剛剛產生的 `ArticlesController` 中有 `new` action
-. 這是因為當 controllers 被產生在 Rails 中的時候，他們內容預設都是空的, 除非在產生controller的時候就要指定什麼名稱的 actions.
+這個錯誤提示指出 Rails 在剛剛建立的 `ArticlesController` 中找不到 `new` action 。這是因為當 controllers 建立在 Rails 中的時候，他們預設內容都是空的，除非在建立 controller 的時候就指定 actions 的名稱。
 
-想在 controller 中手動定義一個 action, 你只要在 controller 中新增一個 method. 打開
-`app/controllers/articles_controller.rb` 並且在 `ArticlesController`
-類別裡面新增一個 `new` method 如此一來 controller 現在會長的像如此:
+想要在 controller 中用手動建立一個 action ，你就必需在 controller 中新增一個 method 。首先打開 `app/controllers/articles_controller.rb` ，再來在 `ArticlesController` 類別中新增一個 `new` method ，如此一來 controller 目前會像是如此：
 
 ```ruby
 class ArticlesController < ApplicationController
@@ -330,49 +319,38 @@ class ArticlesController < ApplicationController
 end
 ```
 
-由於在 `ArticlesController` 中定義了 `new` method, 如果你此時重新整理頁面
-<http://localhost:3000/articles/new> 你將會看到另外一個錯誤:
+由於剛剛已經在 `ArticlesController` 中定義了 `new` method ，如果此時重新整理頁面 <http://localhost:3000/articles/new> ，你將會看到另外一個錯誤：
 
 ![Template is missing for articles/new]
 (images/getting_started/template_is_missing_articles_new.png)
 
-你現在會得到這個錯誤是因為 Rails 希望空白的 actions 能夠跟 views 連結來展示 actions 所要呈現的資訊. 由於沒有可用的 view, Rails 則出現錯誤.
+現在會得到這個錯誤是因為 Rails 希望這個空白的 actions 能夠有相對應的 views 來顯示 actions 所提供的資訊. 由於沒有可用的 view ，於是 Rails 就出現這個錯誤提示。
 
-在上面圖片中的最後一行剛好被截掉. 我們一起看看完整的訊息:
+在上面圖片中最後一行剛好被截掉。我們來看看完整的訊息：
 
-<blockquote>
-Missing template articles/new, application/new with {locale:[:en], formats:[:html], handlers:[:erb, :builder, :coffee]}. Searched in: * "/path/to/blog/app/views"
-</blockquote>
+>Missing template articles/new, application/new with {locale:[:en], formats:[:html], handlers:[:erb, :builder, :coffee]}. Searched in: * "/path/to/blog/app/views"
 
-還滿長的一段文字! 我們一起快速瀏覽並且了解每個部份的用意.
+還滿長的一段文字！我們一起快速瀏覽並且了解每個部份的用意。
 
-第一個部份我們可以找出缺少了什麼 template. 再這個例子中, 我們缺少的就是
-`articles/new` template. Rails 一開始會試著找這個 template. 如果找不到他才會嘗試載入一個名為 `application/new` 的 template. 這是因為 `ArticlesController` 是繼承於 `ApplicationController`的關係.
+第一個部份我們可以發現缺少了什麼 template 。而例子中，我們缺少的就是 `articles/new` template 。 Rails 一開始會試著尋找這個相對應的 template ，如果找不到才會試著載入另一個名為 `application/new` 的 template ，這是因為 `ArticlesController` 是繼承 `ApplicationController`的關係。
 
-下一個部份包含了一個 hash. 再這個 hash，其中 `:locale` key
-簡單的指出要使用什麼國際語言的 template. 而預設是使用簡稱 "en" 的英文 template. 而下一個 key, `:formats` 是指 template 在 回覆的處理上要使用什麼格式. 預設的格式是 `:html`, 所以這邊 Rails 是在尋找一個 HTML template. 最後一個 key, `:handlers` 是告訴我們要使用什麼 _template handlers_ 來將我們的 template 編譯並把結果顯示出來. 對於 HTML templates 我們通常會使用 `:erb`,  而對於 XML templates 我們會選擇使用 `:builder`, 然而
-`:coffee` 是使用 CoffeeScript 來編譯 JavaScript templates.
+第二部份中包含了一個 hash 。在這個 hash 中有三個 key ， `:locale` 這個 key 將決定使用什麼語系的 template ，目前預設是使用簡稱為 "en" 的英文 template 。 下一個 key `:formats` 是指 template 要使用什麼格式來回覆給使用者，這裡預設的格式是 `:html` ，所以 Rails 會尋找一個 HTML 的 template 。最後一個 `:handlers` 是告訴我們要使用什麼 _template handlers_ 來將我們的 template render 出來。其中 `:erb` 是最常用於 HTML templates 的 render ， `:builder` 則是用於 XML templates ，而 `:coffee` 是使用 CoffeeScript 來建立 JavaScript templates 。
 
-這段文字的最後一個部份是告訴我們 Rails 是在哪個地方尋找 templates.
-Templates 在像這個簡單的 Rails 應用專案中通常會放在單一個地方, 但是比較複雜的應用專案可能會有好幾種不同的路徑.
+這段訊息的最後部份讓我們得知 Rails 會從什麼地方尋找 templates 。 Templates 在簡單的 Rails 應用專案中通常存放在單一位置，但是比較複雜的一些應用專案可能會有好幾種不同的路徑來擺放。
 
-再這個例子中位於 `app/views/articles/new.html.erb` 的簡單 template 將會執行. 然而檔案的副檔名則有特殊意義: 第一個副檔名是表示 template 的_format_, 而第二個則是表示使用什麼
-_handler_ . Rails 試著在應用程式的 `app/views` 中找到一個名為`articles/new` 的 template. 
-而這個 template 的 format 只能是 `html` ，不過它的 handler 只要是 `erb`, `builder` 或是 `coffee` 的其中之一就行. 但因為你想新增一個 HTML 表單, 所以你一定要用 `ERB` 語言. 因此這個檔案的名稱應該為 `articles/new.html.erb` 並且須位於應用專案的 `app/views` 目錄中.
+這個例子中，將被執行的是位於 `app/views/articles/new.html.erb` 的一個簡單 template 。其中檔案的副檔名有其意涵：第一個副檔名是 template 的 _format_ 名稱，而第二個則是表示使用了什麼 _handler_ 來處理。 Rails 一開始會試著從應用程式的 `app/views` 位置中找一個叫 `articles/new` 的 template 。這個 template 的 format 只能使用 `html` ，而 handler 部份必須是 `erb`, `builder` 或 `coffee` 三者其中之一才行。因為接下來想在 template 中新增一個 HTML 表單, 所以你一定要使用 `ERB` 語言。因此最後這個檔案的名稱應該取作 `articles/new.html.erb` 並且需擺放於應用專案的 `app/views` 目錄中。
 
-前往該目錄然後新增此檔案 `app/views/articles/new.html.erb` 並且寫上以下內容:
+前往該目錄然後新增此檔案 `app/views/articles/new.html.erb` 並且寫上以下內容：
 
 ```html
 <h1>New Article</h1>
 ```
 
-當你重新整理此頁面 <http://localhost:3000/articles/new> 你將會看到標題. 這也表示 route, controller, action 跟 view 運作的十分順利! 現來就來新增建立 article的表單.
+當你重新整理此頁面 <http://localhost:3000/articles/new> 你將會看到標題文字。這也表示 route 、 controller 、 action 跟 view 運作的十分順利！現來就來建立 article 的表單。
 
 ### 開始第一個表單
 
-想要在這個 template 中建立一個表單, 你會使用到一個 <em>form
-builder</em>. 這個基本的 form builder 是由 Rails 中的 helper method 所提供，叫作 `form_for` . 
-想使用這個 method 的話, 先將以下程式碼新增到 `app/views/articles/new.html.erb`:
+要在 template 中建立一個表單，你將會需要一個 *form builder* 。 Rails 的 helper method 有提供一種基本的 form builder ，叫作 `form_for` 。想要使用此 method 的話，先將以下程式碼新增到 `app/views/articles/new.html.erb` ：
 
 ```html+erb
 <%= form_for :article do |f| %>
@@ -392,25 +370,15 @@ builder</em>. 這個基本的 form builder 是由 Rails 中的 helper method 所
 <% end %>
 ```
 
-如果你現在重新整理頁面, 你就會看到跟範例相同的表單了.
-在rails中建立表單就是如此簡單!
+如果你現在重新整理頁面，你就會看到與範例相同的表單。在 Rails 中建立表單就是如此簡單！
 
-當你呼叫了 `form_for`, 你必須傳遞一個 identifying object 給這個表單. 
-再這個例子中, 是用symbol表示 `:article`. 這樣可以告訴 `form_for`
-helper 這個表單的用途. 在這個 method 的程式區塊中，有個用 `f` 表示的 `FormBuilder` object
-他是被用來建立兩個文字標籤以及兩個文字方塊, 其中兩個文字方塊一個是做為文章的標題另一個是作為文章內文. 
-最後再 `f` object 上呼叫一個 `submit`，如此一來就可以再這個表單上建立一個submit按鈕.
+當你呼叫 `form_for` 時，你必須傳遞一個 identifying object (識別物件) 給這個表單。在例子中，這個物件就是用 symbol `:article` 表示。這告訴了 `form_for` helper 新建立表單的用途。在這個 method 的區塊中，有個用 `f` 表示的 `FormBuilder` 物件，它是被用在建立兩個文字標籤 (text labels) 以及兩個輸入欄位 (text fields) ，其中兩個輸入欄位一個是作為文章的標題另一個則是作為文章內文。最後在 `f` 這個物件上呼叫 `submit` ，表單上將會建立一個 submit 的按鈕。
 
-不過這個表單仍然會有一個問題. 如果你檢視這個頁面的 HTML 原始碼, 你將會看到一個form的屬性`action`
-是指向 `/articles/new`. 這會是一個問題因為route導向的頁面正是現在所在的頁面, 
-而且那個route單純是用來顯示新增文章的表單而已.
+不過這個表單仍然有一個問題，如果你檢視這個頁面的 HTML 原始碼，你會在 form 中看到有個屬性 `action` 是指向 `/articles/new` ，這是有問題的，因為 route 導向的頁面正是現在所處的頁面，而且那個頁面只用來顯示新增文章的表單而已。
 
-這個表單而是需要一個到不同目的地的URL.
-然而這其實只是簡單新增 `form_for` 的選項 `:url` 就可以完成.
-通常在 Rails, action 是用來處理表單送出的資料
-像這邊的動作就是 "create", 所以表單就會將資料送到create動作處理.
+這個表單真正需要的是一個不一樣的 URL ，這在設定上其實只需簡單新增 `form_for` 的選項 `:url` 就可以達成了。通常在 Rails 中， action 是用來處理表單送出的資料，像這邊的 action 就是 "create" ，所以這裡的表單就會指向所對應的 action 來作處理。
 
-現在就來編輯 `app/views/articles/new.html.erb` 中的 `form_for` 那行，結果應該會像這樣:
+現在就來編輯 `app/views/articles/new.html.erb` 中 `form_for` 那一行，修改結果應該會像這樣：
 
 ```html+erb
 <%= form_for :article, url: articles_path do |f| %>
