@@ -374,7 +374,7 @@ end
 
 當你呼叫 `form_for` 時，你必須傳遞一個 identifying object (識別物件) 給這個表單。在例子中，這個物件就是用 symbol `:article` 表示。這告訴了 `form_for` helper 新建立表單的用途。在這個 method 的區塊中，有個用 `f` 表示的 `FormBuilder` 物件，它是被用在建立兩個文字標籤 (text labels) 以及兩個輸入欄位 (text fields) ，其中兩個輸入欄位一個是作為文章的標題另一個則是作為文章內文。最後在 `f` 這個物件上呼叫 `submit` ，表單上將會建立一個 submit 的按鈕。
 
-不過這個表單仍然有一個問題，如果你檢視這個頁面的 HTML 原始碼，你會在 form 中看到有個屬性 `action` 是指向 `/articles/new` ，這是有問題的，因為 route 導向的頁面正是現在所處的頁面，而且那個頁面只用來顯示新增文章的表單而已。
+不過這個表單仍然有一個問題，如果你檢視這個頁面的 HTML 原始碼，你會在表單中看到有個屬性 `action` 是指向 `/articles/new` ，這是有問題的，因為 route 導向的頁面正是現在所處的頁面，而且那個頁面只用來顯示新增文章的表單而已。
 
 這個表單真正需要的是一個不一樣的 URL ，這在設定上其實只需簡單新增 `form_for` 的選項 `:url` 就可以達成了。通常在 Rails 中， action 是用來處理表單送出的資料，像這邊的 action 就是 "create" ，所以這裡的表單就會指向所對應的 action 來作處理。
 
@@ -384,8 +384,7 @@ end
 <%= form_for :article, url: articles_path do |f| %>
 ```
 
-再這個範例中，是將 `articles_path` helper 代入`:url` 選項中.
-為了知道 Rails 將如何運行這個選項, 我們再次看 `rake routes` 的輸出結果:
+在範例中，我們將 `articles_path` helper 代入 `:url` 選項中。想要了解 Rails 透過這個選項來做什麼，我們再回頭看一下 `rake routes` 執行結果：
 
 ```bash
 $ bin/rake routes
@@ -401,19 +400,18 @@ edit_article GET    /articles/:id/edit(.:format) articles#edit
         root GET    /                            welcome#index
 ```
 
-`articles_path` helper 會提示 Rails 將 form 指向 Prefix 為 `articles` 的 URI Pattern;
-再加上form預設是送`POST` 請求到 route ，如此一來將會對應到目前 controller `ArticlesController` 的 `create` action
+這裡的 `articles_path` helper 會告訴 Rails 要把表單指向 Prefix 為 `articles` 的 URI Pattern ；而且表單預設是使用 `POST` 來發送請求到這個 route ，最後可推得由目前 `ArticlesController` controller 的 `create` action 來處理請求。
 
-有了表單和已經定義好的 route , 你將能夠開始填表單而且還可以按下送出開始建立新文章的程序, 所以就這樣繼續. 當你送出了表單時, 你會看到一個熟悉的錯誤:
+有了表單和已經定義好的 route ，你除了能夠填表單以外還可以按下送出按鈕去開啟一個建立新文章的程序，所以就繼續並且照著剛剛描述的來進行。在你送出表單的時後，你將會看到一個熟悉的錯誤：
 
 ![Unknown action create for ArticlesController]
 (images/getting_started/unknown_action_create_for_articles.png)
 
-你現在必須要在 `ArticlesController` 建立一個 `create` action 來讓程式正常執行.
+現在你必須在 `ArticlesController` 建立一個 `create` action 來讓程式正確執行.
 
 ### 新增文章
 
-如果想讓 "Unknown action" 錯誤消失的話, 你可以先打開 `app/controllers/articles_controller.rb` 並且在 `ArticlesController` 類別中的 `new` action 下定義一個 `create` action，如下所示：
+如果想除去 "Unknown action" 這個錯誤的話，你可以先打開 `app/controllers/articles_controller.rb` 並且在 `ArticlesController` 類別中的 `new` action 下方新定義一個 `create` action，如下所示：
 
 ```ruby
 class ArticlesController < ApplicationController
@@ -425,10 +423,9 @@ class ArticlesController < ApplicationController
 end
 ```
 
-如果你現在又再次送出表單, 你會看定另一個熟悉的錯誤: a template is
-missing. 不過沒關係, 我們可以暫且忽略他. `create` action 所要做的是將我們新增的文章存進資料庫中.
+如果你又再次提交表單的話，你應該會看到另一個熟悉的錯誤： a template is missing 。不過沒關係，我們目前暫且忽略他。這裡 `create` action 所要做的是將新增的文章存進資料庫中。
 
-當表單被送出時, 表單的欄位值會被當作 _parameters_ 送給 Rails . 所以這些 parameters 可以在controller 的 actions 中被使用, 通常是用來執行特定的 task . 現在來看看這些 parameters 長什麼樣子，把 `create` action 替換如下:
+當表單被提交時，表單的欄位值會被當作 _parameters (參數)_ 送到 Rails 。所以這些 parameters 可以在 controller 的 actions 中被使用，通常是用來執行特定的工作 (task) 。現在就來看看這些 parameters 如何表示，把 `create` action 替換成如下：
 
 ```ruby
 def create
@@ -436,47 +433,35 @@ def create
 end
 ```
 
-這裡的 `render` method 的設定是用 key 為 `plain` 以及 value 為 `params[:article].inspect` 的簡單 hash. 
-而 `params` method 則是一種物件，它代表的是透過表單送出的 parameters (或欄位值) . 
-這個 `params` method 所回傳是一種類型為 `ActiveSupport::HashWithIndifferentAccess` 的物件, 而這種物件可以讓你使用字串或symbols 表示的key 來得到hash中所相對應的值. 
-目前狀況下, 我們只在乎從表單送出的 parameters.
+這裡的 `render` method 的設定是使用 key 為 `plain` 和 value 為 `params[:article].inspect` 的簡單 hash 。而 `params` method 則是一種物件，它是用來表示從表單送出的 parameters (或欄位值) 。這個 `params` method 所回傳是一種類型為 `ActiveSupport::HashWithIndifferentAccess` 的物件，而這種物件可以讓你使用字串或 symbols 的 key 來從 hash 中得到所相對應值。在這裡我們只關注這些從表單送出的 parameters 。
 
-TIP: 你要確定是否掌握了 `params` method 的用法, 因為以後會滿常用到它的. 現在來一起思考這個範例網址: **http://www.example.com/?username=dhh&email=dhh@email.com**. 在這網址中， `params[:username]` 的值應該會是 "dhh" 而 `params[:email]` 的值也應該會是 "dhh@email.com".
+TIP: 你要確定是否掌握了 `params` method 的用法，因為這個 method 以後會滿常使用到。現在來一起思考這個範例網址： **http://www.example.com/?username=dhh&email=dhh@email.com** 。從這網址可得知 `params[:username]` 的值應該是 "dhh" 而 `params[:email]` 的值也應該會是 "dhh@email.com" 。
 
-If you re-submit the form one more time you'll now no longer get the missing
-template error. Instead, you'll see something that looks like the following:
-如果你再次重送這個表單，你將不會再看到 the missing template 錯誤。而是看到如下的訊息：
+如果你再次重新提交表單，你將不會再看到 the missing template 錯誤。而是像下面一樣的訊息：
 
 ```ruby
 {"title"=>"First article!", "text"=>"This is my first article."}
 ```
 
-這個 action 把透過表單送出的 parameters 顯示出來. 
-然而，這並沒有什麼實質的用處. 是的, 你除了觀看 parameters 之外沒有其他作用.
+這個 action 顯示了從表單送出的 parameters 。然而，這並沒有什麼實質的用處。是的，你除了可看到 parameters 之外沒有其他作用。
 
 ### 建立 Article 模型
 
-對於Rails 中的模型，我們習慣用單數來命名, 而且所對應的資料庫表格，我們習慣用複數來命名 
-Rails 提供一個開發者喜歡用來創造模型的generator.
-想要創造模型的話，請執行以下的命令:
+對於 Rails 中的模型來說，我們習慣用單數來命名，而且所對應的資料庫資料表，我們則是習慣用複數來命名。 Rails 這裡提供一個開發者常用來建立模型的 generator 。想要建立模型，請執行以下的命令：
 
 ```bash
 $ bin/rails generate model Article title:string text:text
 ```
 
-透過這個命令我們告訴 Rails 我們要一個連同型別為string的 _title_ 屬性, and 型別為text的 _text_ 屬性的`Article`模型
-這些屬性會自動的新增到資料庫的 `articles` 表格中並且對應到 `Article` 模型.
+我們用這個命令來告訴 Rails 我們要建立一個 `Article` 模型，而且這個模型需具備 string 型態的 _title_ 屬性和 text 型態的 _text_ 屬性。這些屬性會自動新增到 `articles` 資料表中並且對應到 `Article` 模型。
 
-執行完後 Rails 會建立一長串的檔案. 現在我們有興趣的是 `app/models/article.rb` 以及 `db/migrate/20140120191729_create_articles.rb` (檔名可能略有不同). 後面那個檔案是負責建立資料庫的結構, 這部份是我們下一步所要了解的.
+執行完後 Rails 會建立一長串的檔案。現在我們感興趣的是 `app/models/article.rb` 以及 `db/migrate/20140120191729_create_articles.rb` (檔名可能略有不同) 。後面那個檔案是負責建立資料庫的結構，這部份是我們接下來所要了解的。
 
-TIP: Active Record 可以很聰明的將欄位名稱對應到模型的屬性, 這意思是說你不用再Rails模型中宣告屬性, 因為 Active Record 會自動處理好這部份.
+TIP: Active Record 可以很聰明的將欄位名稱對應到模型的屬性，這意思是你不一定要在 Rails 模型中宣告屬性，因為 Active Record 會自動處理好這部份。
 
 ### 執行一個 Migration
 
-就如同我們所看到的, 執行完 `rails generate model` 會在 `db/migrate` 的目錄中建立一個 _database migration_ 的檔案. 
-Migrations 是Ruby 的一種類別 這些被設計來讓建立或修改資料庫中的表格能夠更容易.
-Rails 是使用 rake 命令來執行 migrations, 而且即使資料庫已經套用設定但還是可以回復migration 動作.
-Migration 的檔名中包含著時間戳記，如此可以確保依照檔案建立的順序來先後執行.
+就如同我們剛剛所見的，執行完 `rails generate model` 會在 `db/migrate` 的目錄中建立一個 _database migration_ 的檔案。Migrations 是 Ruby 的一種類別，這些被設計來讓建立或修改資料庫中的表格能夠更容易。 Rails 是使用 rake 命令來執行 migrations ，而且即使資料庫已經套用設定但還是可以回復 migration 動作。 Migration 的檔名中包含著時間戳記，如此可以確保依照檔案建立的順序來先後執行。
 
 如果你打開這個檔案`db/migrate/20140120191729_create_articles.rb` (記住這個檔案名稱會有些許不同), 你將會看到:
 
