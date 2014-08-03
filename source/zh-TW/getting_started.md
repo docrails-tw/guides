@@ -520,7 +520,7 @@ def create
 end
 ```
 
-我們來看看這段程式碼進行了什麼動作: Rails 模型可以藉由多個別的屬性的賦值來初始化（實體化）, 這些屬性也將會個別的自動對應到資料庫的欄位.
+我們來看看這段程式碼進行了什麼動作:每個 Rails 模型都可以根據各自的屬性來初始化（實體化）, 這些屬性都被自動的對應到各自的資料庫的欄位.
 第一行中我們做的就只是所剛剛說的 (記住 `params[:article]` 中包含著我們有興趣的屬性). 
 接下來, `@article.save` 是負責將模型中資料存進資料庫. 
 最後在將頁面導向晚點會定義的`show` action.
@@ -542,7 +542,7 @@ Rails 有許多安全的機制可以幫助你開發出有安全性應用程式,
 
 為什麼還要這麼麻煩呢? 雖然原本作法可以將 parameters 自動地從 controller 一次代入到模型中，讓開發者的工作簡單了許多,但是這個方便的方法卻也允許了一些惡意的使用方式. 如果出現一個向 server 發出的請求，而且這個請求被偽裝成新增文章表單所送出的資料，其中也包含著會破壞應用程式正常運作的額外欄位值，這時候該怎麼辦? 這些惡意資料將會隨著正常資料 'mass assigned（大量賦值）' 進到模型中以及資料庫 - 如此一來應用程式就有被破壞的潛在性或是更糟的情況.
 
-我們必須將  controller parameters 設置白名單來避免錯誤的 mass assignment
+我們必須將  controller parameters 設置白名單來避免錯誤的 mass assignment ，
 在這個例子中，我們不但需要 `title` 和 `text` 這兩個 parameters 還要將這兩個 parameters 加入允許清單之後才能夠正確執行 create 動作 
 要達成上述動作會用到的兩個語法 `require` 和 `permit`。 現在我們在 `create` action 稍作一行修正:
 
@@ -573,7 +573,7 @@ TIP: 更多資訊, 請參考
 ### 顯示文章
 
 如果你再次送出表單, Rails 會提示找不到`show` action. 
-這個提示用處不大, 所以我們還是先新增 `show` action.
+這樣很不方便, 所以我們還是先新增 `show` action.
 
 如同之前我們所看 `rake routes` 的輸出結果, 關於 `show` action 的 route 規則如下：
 
@@ -586,7 +586,7 @@ parameter, 在我們的例子中這個 parameter 會是文章的 id.
 
 如同之前我們所做過的, 我們要在 `app/controllers/articles_controller.rb` 中新增 `show` action 以及新增相對應的 view.
 
-NOTE: 我們有一個習慣性作法就是將在 controller 中的標準 CRUD actions 按照以下順序擺放: `index`, `show`, `new`, `edit`, `create`, `update`, `destroy`. 當然你可以使用自己的擺放順序, 但是請記住一些像之前所提到過的 public methods, 這些 methods 在 controller 中一定要放在 private 或 protected method 之前才行.
+NOTE: 我們有一個習慣性作法就是將在 controller 中的標準 CRUD actions 按照以下順序擺放: `index`, `show`, `new`, `edit`, `create`, `update`, `destroy`. 當然你可以使用自己的擺放順序, 但是請記住這些是 public methods ,像之前所提到過的, 這些 methods 在 controller 中一定要放在 private 或 protected method 之前才行.
 
 考慮上述的習慣作法, 我們來新增 `show` action, 如下:
 
