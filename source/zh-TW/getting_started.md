@@ -672,7 +672,7 @@ class ArticlesController < ApplicationController
 </table>
 ```
 
-現在如果你連到 `http://localhost:3000/articles` 你將會看到一整列你所新增的文章.
+現在如果你連到 `http://localhost:3000/articles` 你將會看到你所新增的文章的清單.
 
 ### 建立連結
 
@@ -685,7 +685,7 @@ class ArticlesController < ApplicationController
 <%= link_to 'My Blog', controller: 'articles' %>
 ```
 
-這個 `link_to` method 是Rails' 內建的其中一個view helpers. 他是用來建立一個文字超連結，除了顯示之外還可以連結指定頁面- 在這個例子中, 是連結到顯示文章列表的頁面.
+這個 `link_to` method 是Rails' 內建的其中一個view helpers. 他是用來建立一個文字超連結，並連結指定頁面- 在這個例子中, 是連結到顯示文章列表的頁面.
 
 我們也將其他 views 建立連結, 首先將這個
 "New Article" 連結新增到 `app/views/articles/index.html.erb`, 並且放在 `<table>` 上面:
@@ -706,7 +706,7 @@ class ArticlesController < ApplicationController
 <%= link_to 'Back', articles_path %>
 ```
 
-最後，在將 `app/views/articles/show.html.erb` 這個 template 也新增一個可以返回 `index` action 的連結, 如此一來觀看單篇文章的人也可以返回文章清單來觀看:
+最後，在將 `app/views/articles/show.html.erb` 這個 template 也新增一個可以返回 `index` action 的連結, 如此一來觀看單篇文章的人也可以返回文章清單:
 
 ```html+erb
 <p>
@@ -754,7 +754,7 @@ end
 
 有了驗證機制之後, 在文章資料不正確的情況下呼叫了 `@article.save`, 它會回傳 `false`. 如果你再次打開
 `app/controllers/articles_controller.rb`, 你將會注意到我們並沒有在 `create` action 中檢查 `@article.save` 的回傳結果.
-假如 `@article.save` 目前是執行失敗的, 那頁面應該要回到新增文章的頁面. 要完成這項機制, 要編輯位於  `app/controllers/articles_controller.rb` 的 `new` 以及 `create` actions:
+因此假如 `@article.save` 執行失敗, 那頁面應該要回到新增文章的頁面. 要完成這項機制, 要編輯位於  `app/controllers/articles_controller.rb` 的 `new` 以及 `create` actions:
 
 ```ruby
 def new
@@ -830,7 +830,7 @@ private
 
 TIP: Rails 會自動的將有錯誤的欄位用class 為 `field_with_errors` 的 div 包起來. 此時你可以定義css規則將這些特別標示出來。
 
-現在你將會得到一個有用的錯誤提示當你在嘗試去送出新增文章表單卻忘了輸入標題
+現在你嘗試去送出新增文章表單，卻忘了輸入標題時，將會得到一個有用的錯誤提示
 [(http://localhost:3000/articles/new)](http://localhost:3000/articles/new).
 
 ![Form With Errors](images/getting_started/form_with_errors.png)
