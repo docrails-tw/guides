@@ -944,7 +944,7 @@ private
 
 `article_params` method 是在新增 create action 的時候所定義的，現在我們再次的使用它.
 
-TIP: 你並不需要將所有的要更新的屬性傳入到 `update`. 舉例來說, 如果你呼叫了 `@article.update(title: 'A new title')` 那麼 Rails 只會更新 `title` 的屬性, 並不會動到其他部份.
+TIP: 你並不需要將所有的屬性傳入到 `update`. 舉例來說, 如果你呼叫了 `@article.update(title: 'A new title')` 那麼 Rails 只會更新 `title` 的屬性, 並不會動到其他部份.
 
 最後，我們希望在文章列表中新增一個可以對應到`edit` action 的連結, 於是我們在 `app/views/articles/index.html.erb` 中"Show"連結的隔壁新增這個連結:
 
