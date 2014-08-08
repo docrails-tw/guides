@@ -461,9 +461,9 @@ TIP: Active Record 可以很聰明的將欄位名稱對應到模型的屬性，�
 
 ### 執行一個 Migration
 
-就如同我們剛剛所見的，執行完 `rails generate model` 會在 `db/migrate` 的目錄中建立一個 _database migration_ 的檔案。Migrations 是 Ruby 的一種類別，這些被設計來讓建立或修改資料庫中的表格能夠更容易。 Rails 是使用 rake 命令來執行 migrations ，而且即使資料庫已經套用設定但還是可以回復 migration 動作。 Migration 的檔名中包含著時間戳記，如此可以確保依照檔案建立的順序來先後執行。
+就如同我們剛剛所見的，執行完 `rails generate model` 會在 `db/migrate` 的目錄中建立一個 _database migration_ 的檔案。 Migrations 是 Ruby 的一種類別，使得來建立和修改資料庫中的表格能夠更容易。 Rails 使用 rake 命令來執行 migrations ，即使資料庫已經套用設定但還是可以回復 migration 動作。 Migration 的檔名中包含著時間戳記，如此可以確保依照檔案建立的順序來先後執行。
 
-如果你打開這個檔案`db/migrate/20140120191729_create_articles.rb` (記住這個檔案名稱會有些許不同), 你將會看到:
+如果你打開這個檔案`db/migrate/20140120191729_create_articles.rb` (記住這個檔案名稱會有些許不同) ，你將會看到：
 
 ```ruby
 class CreateArticles < ActiveRecord::Migration
@@ -478,16 +478,16 @@ class CreateArticles < ActiveRecord::Migration
 end
 ```
 
-在上面的 migration 建立了一個名為 `change` 的 method ，當執行這個 migration 的時候會呼叫到這個method. 
+上面的 migration 建立了一個名為 `change` 的 method ，當執行這個 migration 的時候會呼叫到這個 method 。 
 而定義在這個 method 中的 action 是可逆的，
-這意思是 Rails 知道如何回復這個 migration 所做的更動，
-以免有一天你想回復它. 當你執行這個 migration 的時候他會建立一個 `articles` 資料表，其中包含著一個 string 型態的欄位以及一個 text 型態的欄位. 
-同時也會建立兩個時間戳記的欄位來讓 Rails 可以紀錄 article 建立以及更新的時間
+也就是說 Rails 知道如何回復這個 migration 所做的更動，
+以免有一天你想回復它。當你執行這個 migration 的時候會建立一個 `articles` 資料表，其中包含著一個 string 型態的欄位以及一個 text 型態的欄位。
+同時也會建立兩個時間戳記的欄位來讓 Rails 可以紀錄 article 建立以及更新的時間。
 
-TIP: 更多關於 migrations 的資訊，請參考 [Rails Database Migrations]
-(migrations.html).
+TIP：更多關於 migrations 的資訊，請參考 [Rails Database Migrations]
+(migrations.html) 。
 
-此時，你可以使用 rake 命令來執行 migration 動作:
+此時，你可以使用 rake 命令來執行 migration 動作：
 
 ```bash
 $ bin/rake db:migrate
@@ -503,13 +503,13 @@ Rails 將會執行這個 migration 的命令，並且顯示建立 Articles 資�
 ```
 
 NOTE. 由於你目前的所有操作都在名為 development 的預設環境下，
-所以這個命令會將套用定義在`config/database.yml` 中 `development` 區塊的資料庫 
-如果你想再其他環境執行 migrations ，像是 production ，你必須將明確的名稱代入到所下達的命令: `rake db:migrate RAILS_ENV=production`.
+所以這個命令會套用在`config/database.yml` 中 `development` 區塊定義的資料庫，
+如果你想在其他環境執行 migrations ，像是 production ，你必須將明確的名稱代入到所下達的命令： `rake db:migrate RAILS_ENV=production`.
 
 ### 在 controller 中儲存資料
 
-現在回頭看 `ArticlesController` , 我們必須要在 `create` action 中使用新增的 `Article` 模型來將資料存進資料庫.
-打開 `app/controllers/articles_controller.rb` 並且將 `create` action 內容替換成以下:
+現在回頭看 `ArticlesController` ， 我們必須要在 `create` action 中使用新增的 `Article` 模型來將資料存進資料庫.
+打開 `app/controllers/articles_controller.rb` 並且將 `create` action 內容替換成以下：
 
 ```ruby
 def create
@@ -520,7 +520,7 @@ def create
 end
 ```
 
-我們來看看這段程式碼進行了什麼動作:每個 Rails 模型都可以根據各自的屬性來初始化（實體化）, 這些屬性都被自動的對應到各自的資料庫的欄位.
+我們來看看這段程式碼進行了什麼動作：每個 Rails 模型都可以根據各自的屬性來初始化（實體化）， 這些屬性都被自動的對應到各自的資料庫的欄位.
 第一行中我們做的就只是所剛剛說的 (記住 `params[:article]` 中包含著我們有興趣的屬性). 
 接下來, `@article.save` 是負責將模型中資料存進資料庫. 
 最後在將頁面導向晚點會定義的`show` action.
