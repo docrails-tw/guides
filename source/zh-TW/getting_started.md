@@ -120,7 +120,7 @@ To verify that you have everything installed correctly, you should be able to
 run the following:
 
 ```bash
-$ bin/rails --version
+$ rails --version
 ```
 
 If it says something like "Rails 4.2.0", you are ready to continue.
@@ -191,14 +191,15 @@ following in the `blog` directory:
 $ bin/rails server
 ```
 
-TIP: Compiling CoffeeScript to JavaScript requires a JavaScript runtime and the
-absence of a runtime will give you an `execjs` error. Usually Mac OS X and
-Windows come with a JavaScript runtime installed. Rails adds the `therubyracer`
-gem to the generated `Gemfile` in a commented line for new apps and you can
-uncomment if you need it. `therubyrhino` is the recommended runtime for JRuby
-users and is added by default to the `Gemfile` in apps generated under JRuby.
-You can investigate about all the supported runtimes at
-[ExecJS](https://github.com/sstephenson/execjs#readme).
+TIP: Compiling CoffeeScript and JavaScript asset compression requires you
+have a JavaScript runtime available on your system, in the absence
+of a runtime you will see an `execjs` error during asset compilation.
+Usually Mac OS X and Windows come with a JavaScript runtime installed.
+Rails adds the `therubyracer` gem to the generated `Gemfile` in a
+commented line for new apps and you can uncomment if you need it.
+`therubyrhino` is the recommended runtime for JRuby users and is added by
+default to the `Gemfile` in apps generated under JRuby. You can investigate
+about all the supported runtimes at [ExecJS](https://github.com/sstephenson/execjs#readme).
 
 This will fire up WEBrick, a web server distributed with Ruby by default. To see
 your application in action, open a browser window and navigate to
@@ -448,9 +449,7 @@ available, Rails errors out.
 In the above image, the bottom line has been truncated. Let's see what the full
 thing looks like:
 
-<blockquote>
-Missing template articles/new, application/new with {locale:[:en], formats:[:html], handlers:[:erb, :builder, :coffee]}. Searched in: * "/path/to/blog/app/views"
-</blockquote>
+>Missing template articles/new, application/new with {locale:[:en], formats:[:html], handlers:[:erb, :builder, :coffee]}. Searched in: * "/path/to/blog/app/views"
 
 That's quite a lot of text! Let's quickly go through and understand what each
 part of it does.
@@ -496,8 +495,8 @@ harmoniously! It's time to create the form for a new article.
 
 ### The first form
 
-To create a form within this template, you will use a <em>form
-builder</em>. The primary form builder for Rails is provided by a helper
+To create a form within this template, you will use a *form
+builder*. The primary form builder for Rails is provided by a helper
 method called `form_for`. To use this method, add this code into
 `app/views/articles/new.html.erb`:
 
@@ -749,8 +748,7 @@ to create an article. Try it! You should get an error that looks like this:
 (images/getting_started/forbidden_attributes_for_new_article.png)
 
 Rails has several security features that help you write secure applications,
-and you're running into one of them now. This one is called `[strong_parameters]
-(http://guides.rubyonrails.org/action_controller_overview.html#strong-parameters)`,
+and you're running into one of them now. This one is called [strong parameters](http://guides.rubyonrails.org/action_controller_overview.html#strong-parameters),
 which requires us to tell Rails exactly which parameters are allowed into our
 controller actions.
 
@@ -910,7 +908,7 @@ And then finally, add the view for this action, located at
 </table>
 ```
 
-Now if you go to `http://localhost:3000/articles` you will see a list of all the
+Now if you go to <http://localhost:3000/articles> you will see a list of all the
 articles that you have created.
 
 ### Adding links
@@ -1106,7 +1104,7 @@ standout.
 
 Now you'll get a nice error message when saving an article without title when
 you attempt to do just that on the new article form
-[(http://localhost:3000/articles/new)](http://localhost:3000/articles/new).
+<http://localhost:3000/articles/new>:
 
 ![Form With Errors](images/getting_started/form_with_errors.png)
 
