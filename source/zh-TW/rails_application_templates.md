@@ -38,9 +38,11 @@ generate(:scaffold, "person name:string")
 route "root to: 'people#index'"
 rake("db:migrate")
 
-git :init
-git add: "."
-git commit: %Q{ -m 'Initial commit' }
+after_bundle do
+  git :init
+  git add: "."
+  git commit: %Q{ -m 'Initial commit' }
+end
 ```
 
 下節概述模版 API 主要提供的方法：
