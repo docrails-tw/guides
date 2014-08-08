@@ -493,7 +493,7 @@ TIP：更多關於 migrations 的資訊，請參考 [Rails Database Migrations]
 $ bin/rake db:migrate
 ```
 
-Rails 將會執行這個 migration 的命令，並且顯示建立 Articles 資料表的訊息.
+Rails 將會執行這個 migration 的命令，並且顯示建立 Articles 資料表的訊息。
 
 ```bash
 ==  CreateArticles: migrating ==================================================
@@ -504,11 +504,11 @@ Rails 將會執行這個 migration 的命令，並且顯示建立 Articles 資�
 
 NOTE. 由於你目前的所有操作都在名為 development 的預設環境下，
 所以這個命令會套用在`config/database.yml` 中 `development` 區塊定義的資料庫，
-如果你想在其他環境執行 migrations ，像是 production ，你必須將明確的名稱代入到所下達的命令： `rake db:migrate RAILS_ENV=production`.
+如果你想在其他環境執行 migrations ，像是 production ，你必須將明確的名稱代入到所下達的命令： `rake db:migrate RAILS_ENV=production` 。
 
 ### 在 controller 中儲存資料
 
-現在回頭看 `ArticlesController` ， 我們必須要在 `create` action 中使用新增的 `Article` 模型來將資料存進資料庫.
+現在回頭看 `ArticlesController` ， 我們必須要在 `create` action 中使用新增的 `Article` 模型來將資料存進資料庫。
 打開 `app/controllers/articles_controller.rb` 並且將 `create` action 內容替換成以下：
 
 ```ruby
@@ -520,17 +520,17 @@ def create
 end
 ```
 
-我們來看看這段程式碼進行了什麼動作：每個 Rails 模型都可以根據各自的屬性來初始化（實體化）， 這些屬性都被自動的對應到各自的資料庫的欄位.
-第一行中我們做的就只是所剛剛說的 (記住 `params[:article]` 中包含著我們有興趣的屬性). 
-接下來, `@article.save` 是負責將模型中資料存進資料庫. 
-最後在將頁面導向晚點會定義的`show` action.
+我們來看看這段程式碼進行了什麼動作：每個 Rails 模型都可以根據各自的屬性來初始化（實體化）， 這些屬性都被自動的對應到各自的資料庫的欄位。
+第一行中我們做的就只是所剛剛說的 (記住 `params[:article]` 中包含著我們有興趣的屬性) 。 
+下一行， `@article.save` 負責將模型中資料存進資料庫。 
+最後再將頁面導向晚點會定義的`show` action 。
 
-TIP: 你應該會想知道為什麼 `Article.new` 的 `A` 是大寫的, 而卻在本文中其他地方有出現過article都是使用小寫.
-在上面的程式碼中, 我們所使用的是定義在 `\models\article.rb` 中名為 `Article` 的類別. 在 Ruby 中類別名稱都是以開頭為大寫的方式命名.
+TIP: 你應該想知道為什麼 `Article.new` 的 `A` 是大寫的，而本文中其他地方出現的 article 卻是使用小寫。
+在上面的程式碼中, 我們所使用的是定義在 `\models\article.rb` 中名為 `Article` 的類別。在 Ruby 中類別名稱都是以開頭為大寫的方式命名。
 
-TIP: `@article.save` 執行完會回傳一個boolean值來確定是否成功存進資料庫，詳細的我們晚點介紹.
+TIP: `@article.save` 執行完會回傳一個boolean值來表示是否成功存進資料庫，詳細的我們晚點介紹。
 
-如果你現在連到 <http://localhost:3000/articles/new> 你 *幾乎* 快完成新增文章的動作了. 再加把勁! 現在你應該會遇到以下的錯誤:
+如果你現在連到 <http://localhost:3000/articles/new> 你 *幾乎* 快完成新增文章的動作了。再加把勁! 現在你應該會遇到以下的錯誤：
 
 ![Forbidden attributes for new article]
 (images/getting_started/forbidden_attributes_for_new_article.png)
