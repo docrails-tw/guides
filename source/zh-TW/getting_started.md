@@ -536,7 +536,7 @@ TIP： `@article.save` 執行完會回傳一個boolean值來表示是否成功�
 (images/getting_started/forbidden_attributes_for_new_article.png)
 
 Rails 有許多安全的機制可以幫助你開發出有安全性的應用程式，
-現在你遇到了其中的一個機制。它被稱做 [strong_parameters](http://guides.rubyonrails.org/action_controller_overview.html#strong-parameters) ，
+現在你遇到了其中的一個機制。它被稱做 [strong parameters](http://guides.rubyonrails.org/action_controller_overview.html#strong-parameters) ，
 這個機制需要我們明確的告訴 Rails 哪些 parameters 可以在 controller 的 action 中使用。
 
 為什麼還要這麼麻煩呢？雖然將 parameters 自動地從 controller 一次代入到模型中，讓開發者的工作簡單了許多，但是這個方便的方法卻允許了一些惡意的使用。如果出現一個向 server 發出的請求，而且這個請求被偽裝成新增文章表單所送出的資料，其中也包含著會破壞應用程式正常運作的額外欄位值，這時候會發生甚麼事？這些惡意資料將會隨著正常資料 'mass assigned（大量賦值）' 進到模型中以及資料庫 - 如此一來應用程式就有被破壞的潛在性或是更糟。
@@ -625,15 +625,15 @@ class ArticlesController < ApplicationController
 
 ### 顯示所有文章
 
-目前我們仍然需要一個條列出所有文章的功能, 所以一起來完成它吧.
-根據 `rake routes` 的輸出結果，有一條 route 規則正是為此制定:
+目前我們仍然需要一個條列出所有文章的功能，所以一起來完成它吧。
+根據 `rake routes` 的輸出結果，有一條 route 規則正是為此制定：
 
 ```
 articles GET    /articles(.:format)          articles#index
 ```
 
-接下來先找到 `app/controllers/articles_controller.rb` ，並且將檔案裡頭的 `ArticlesController` 中加入相對應於這個 route 規則的 `index` action.
-在我們新增 `index` action 的時候, 通常習慣的作法是放在 controller 的第一個 method 的位置上，那我們就開始動手作:
+接下來先找到 `app/controllers/articles_controller.rb` ，並且將檔案裡頭的 `ArticlesController` 中加入相對應於這個 route 規則的 `index` action 。
+在我們新增 `index` action 的時候，習慣放在 controller 的第一個 method 的位置上，那我們就開始動手作：
 
 ```ruby
 class ArticlesController < ApplicationController
@@ -651,7 +651,7 @@ class ArticlesController < ApplicationController
   # snipped for brevity
 ```
 
-最後,我們在替這個 action 新增一個 view 檔案 `app/views/articles/index.html.erb`:
+最後，我們在替這個 action 新增一個 view 檔案 `app/views/articles/index.html.erb` ：
 
 ```html+erb
 <h1>Listing articles</h1>
@@ -671,31 +671,31 @@ class ArticlesController < ApplicationController
 </table>
 ```
 
-現在如果你連到 `http://localhost:3000/articles` 你將會看到你所新增的文章的清單.
+現在如果你連到 `http://localhost:3000/articles` 你將會看到你已新增的文章的清單。
 
 ### 建立連結
 
-你現在可以新增文章，顯示文章，並且顯示文章清單. 現在就來建立一些連結來前往這些頁面.
+你現在可以新增文章，顯示文章，並且顯示文章清單。現在就來建立一些連結來前往這些頁面。
 
-打開 `app/views/welcome/index.html.erb` 並且修改成如下:
+打開 `app/views/welcome/index.html.erb` 並且修改成如下：
 
 ```html+erb
 <h1>Hello, Rails!</h1>
 <%= link_to 'My Blog', controller: 'articles' %>
 ```
 
-這個 `link_to` method 是Rails' 內建的其中一個view helpers. 他是用來建立一個文字超連結，並連結指定頁面- 在這個例子中, 是連結到顯示文章列表的頁面.
+這個 `link_to` method 是 Rail 內建的其中一個 view helpers 。他是用來建立一個文字超連結，並連結指定頁面 - 在這個例子中，是連結到顯示文章列表的頁面。
 
-我們也將其他 views 建立連結, 首先將這個
-"New Article" 連結新增到 `app/views/articles/index.html.erb`, 並且放在 `<table>` 上面:
+我們也為其他 views 建立連結，首先將這個
+"New Article" 連結新增到 `app/views/articles/index.html.erb` ，並且放在 `<table>` 上面：
 
 ```erb
 <%= link_to 'New article', new_article_path %>
 ```
 
-這個連結將會連到新增文章的表單頁面.
+這個連結將會連到新增文章的表單頁面。
 
-在 `app/views/articles/new.html.erb` 中 form 的底下新增一個連結來返回到 `index` action:
+在 `app/views/articles/new.html.erb` 中 form 的底下新增一個連結來返回 `index` action：
 
 ```erb
 <%= form_for :article, url: articles_path do |f| %>
@@ -705,7 +705,7 @@ class ArticlesController < ApplicationController
 <%= link_to 'Back', articles_path %>
 ```
 
-最後，在將 `app/views/articles/show.html.erb` 這個 template 也新增一個可以返回 `index` action 的連結, 如此一來觀看單篇文章的人也可以返回文章清單:
+最後，在 `app/views/articles/show.html.erb` 這個 template 也新增一個可以返回 `index` action 的連結， 如此一來觀看單篇文章的人也可以返回文章清單：
 
 ```html+erb
 <p>
@@ -721,24 +721,24 @@ class ArticlesController < ApplicationController
 <%= link_to 'Back', articles_path %>
 ```
 
-TIP: 如果你要連到的 action 都在同一個 controller 下, 你無需再次定義這個 `:controller` 選項, 因為 Rails 預設的情況下會使用當前的 controller.
+TIP：如果你要連到的 action 都在同一個 controller 下，你無需指定 `:controller` 選項，因為 Rails 預設的情況下會使用當前的 controller 。
 
-TIP: 在 development 模式下 (你現在所有的操作都在此預設模式下), 當瀏覽器發出請求的時候 Rails 就會重新載入你的應用程式, 所以即使做了一點修改也無需停止並重新啟動 web 服務.
+TIP：在 development 模式下 (你現在所有的操作都在此預設模式下) ，每次瀏覽器發出請求的時候 Rails 就會重新載入你的應用程式，所以即使做了一點修改也無需停止並重新啟動 web 服務。
 
 ### 加入一些驗證
 
-目前的模型檔案 `app/models/article.rb` 目前內容非常簡單:
+目前的模型檔案 `app/models/article.rb` 內容非常簡單：
 
 ```ruby
 class Article < ActiveRecord::Base
 end
 ```
 
-雖然這個檔案內容並不多 - 但是請注意 `Article` 類別是繼承於 `ActiveRecord::Base` . 
-Active Record 提供很多的功能來讓你的 Rails models 很大的自由性, 包含著一些基本的資料庫的操作 CRUD (Create, Read, Update, Destroy), 資料的驗證, 複雜的搜尋，還有將多個模型彼此關聯的功能.
+雖然這個檔案內容並不多 - 但是請注意 `Article` 類別是繼承自 `ActiveRecord::Base` 。 
+Active Record 提供很多的功能來讓你的 Rails models 很大的自由性，包含一些基本的資料庫的操作 CRUD (Create ， Read ， Update ， Destroy) ，資料的驗證，複雜的搜尋，還有將多個模型彼此關聯的功能。
 
-Rails 提供了一些 methods 來幫你把送到模型的資料作驗證動作.
-打開 `app/models/article.rb` 並且編輯:
+Rails 提供了一些 methods 來幫你驗證送到模型的資料。
+打開 `app/models/article.rb` 並且編輯：
 
 ```ruby
 class Article < ActiveRecord::Base
@@ -747,13 +747,13 @@ class Article < ActiveRecord::Base
 end
 ```
 
-如此一來所有的文章的title字元長度將限制至少五個字元. 除此之外 Rails 還可以在模型中驗證其他不同的條件,
-其中包含欄位是否存在或是否唯一, 欄位的資料格式, 以及是否存在相對應的物件. 
-驗證的部份 在 [Active Record Validations](active_record_validations.html) 有更詳盡的介紹.
+如此一來將確保所有文章的都有一個 title ，而且至少有五個字元長。 Rails 可以驗證模型中的各種條件，
+包含欄位是否存在或是否唯一，欄位的資料格式，以及是否存在相對應的物件。 
+驗證的部份在 [Active Record Validations](active_record_validations.html) 有更詳盡的介紹。
 
-有了驗證機制之後, 在文章資料不正確的情況下呼叫了 `@article.save`, 它會回傳 `false`. 如果你再次打開
-`app/controllers/articles_controller.rb`, 你將會注意到我們並沒有在 `create` action 中檢查 `@article.save` 的回傳結果.
-因此假如 `@article.save` 執行失敗, 那頁面應該要回到新增文章的頁面. 要完成這項機制, 要編輯位於  `app/controllers/articles_controller.rb` 的 `new` 以及 `create` actions:
+有了驗證機制之後，在文章資料不正確的情況下呼叫了 `@article.save` ，它會回傳 `false` 。如果你再次打開
+`app/controllers/articles_controller.rb` ，你將注意到我們並沒有在 `create` action 中檢查 `@article.save` 的回傳結果。
+假如 `@article.save` 執行失敗，我們應該要讓使用者回到新增文章的頁面。要完成這項機制，編輯位於  `app/controllers/articles_controller.rb` 的 `new` 以及 `create` actions ：
 
 ```ruby
 def new
@@ -776,14 +776,14 @@ private
   end
 ```
 
-這個 `new` action 新建立了一個名為 `@article` 的實體變數, 至於為什麼要這麼做了晚一點你就會知道了.
+這個 `new` action 建立了一個名為 `@article` 的實體變數，至於為什麼要這麼做了晚一點你就會知道了。
 
-值得注意，在 `create` action 的 `save` 回傳 `false` 時，我們是用 `render` 而不是 `redirect_to`. 
-當使用`render` method 時，可讓 `@article` 物件被傳回到 `new` template，
-這樣一來，當render完成後，表單仍然可以保留送出前的結果, 反之 `redirect_to` 則是讓瀏覽器去發出一個新的請求.
+值得注意，當 `create` action 中的 `save` 回傳 `false` 時，我們使用 `render` 而不是 `redirect_to`. 
+當使用`render` method 時，可讓 `@article` 物件傳回到 `new` template，
+這樣一來，當 render 完成後，表單仍然可以保留送出前的結果，反之 `redirect_to` 則是讓瀏覽器去發出一個新的請求。
 
-如果你重新整理了 <http://localhost:3000/articles/new> 並且嘗試送出一個沒有標題的文章, Rails 將會導回送出前的表單頁面, 但這功能還不夠完整. 我們還必須要讓使用者知道在哪邊出錯. 為了這個功能，你需修改
-`app/views/articles/new.html.erb` 來新增錯誤訊息的提示:
+如果你重新整理了 <http://localhost:3000/articles/new> 並且嘗試送出一個沒有標題的文章， Rails 將會將你導回送出前的表單頁面，但這功能還不夠完整。我們還必須讓使用者知道哪邊出錯，因此你需要修改
+`app/views/articles/new.html.erb` 來新增錯誤訊息的提示：
 
 ```html+erb
 <%= form_for :article, url: articles_path do |f| %>
@@ -821,16 +821,16 @@ private
 <%= link_to 'Back', articles_path %>
 ```
 
-繼續看到新增的部份. 我們用 `@article.errors.any?` 來檢查是否出現錯誤, 如果有，我們就用 `@article.errors.full_messages` 來顯示錯誤清單.
+繼續看到新增的部份。我們用 `@article.errors.any?` 來檢查是否有錯誤，如果有，我們就用 `@article.errors.full_messages` 來顯示錯誤清單。
 
-`pluralize` 是一個 rails helper ，它需要代入兩個分別為數字及字串的參數. 而當數字參數大於一時, 字串變數就會使用複數型態.
+`pluralize` 是一個 rails helper ，它需要代入兩個分別為數字及字串的參數。而當數字參數大於一時， 字串參數就會自動轉換為複數型態。
 
-這也是為什麼我們要在`ArticlesController`加入`@article = Article.new`的理由，因為如果不這麼做，在view中的 `@article` 將會是`nil` , 在呼叫`@article.errors.any?` 時就會出現錯誤.
+我們需要在 `ArticlesController` 中加入 `@article = Article.new` ，否則在 view 中的 `@article` 將會是 `nil` ， 在呼叫 `@article.errors.any?` 時就會出現錯誤。
 
-TIP: Rails 會自動的將有錯誤的欄位用class 為 `field_with_errors` 的 div 包起來. 此時你可以定義css規則將這些特別標示出來。
+TIP： Rails 會自動的將有錯誤的欄位用 class 為 `field_with_errors` 的 div 包起來。你可以定義一個 css 樣式來強調它們。
 
-現在你嘗試去送出新增文章表單，卻忘了輸入標題時，將會得到一個有用的錯誤提示
-[(http://localhost:3000/articles/new)](http://localhost:3000/articles/new).
+現在你嘗試送出新增文章表單，卻忘了輸入標題時，將會得到一個有用的錯誤提示
+[(http://localhost:3000/articles/new)](http://localhost:3000/articles/new) 。
 
 ![Form With Errors](images/getting_started/form_with_errors.png)
 
