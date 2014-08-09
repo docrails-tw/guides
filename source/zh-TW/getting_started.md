@@ -525,32 +525,31 @@ end
 下一行， `@article.save` 負責將模型中資料存進資料庫。 
 最後再將頁面導向晚點會定義的`show` action 。
 
-TIP: 你應該想知道為什麼 `Article.new` 的 `A` 是大寫的，而本文中其他地方出現的 article 卻是使用小寫。
-在上面的程式碼中, 我們所使用的是定義在 `\models\article.rb` 中名為 `Article` 的類別。在 Ruby 中類別名稱都是以開頭為大寫的方式命名。
+TIP：你應該想知道為什麼 `Article.new` 的 `A` 是大寫的，而本文中其他地方出現的 article 卻是使用小寫。
+在上面的程式碼中，我們所使用的是定義在 `\models\article.rb` 中名為 `Article` 的類別。在 Ruby 中類別名稱都是以開頭為大寫的方式命名。
 
-TIP: `@article.save` 執行完會回傳一個boolean值來表示是否成功存進資料庫，詳細的我們晚點介紹。
+TIP： `@article.save` 執行完會回傳一個boolean值來表示是否成功存進資料庫，詳細的我們晚點介紹。
 
 如果你現在連到 <http://localhost:3000/articles/new> 你 *幾乎* 快完成新增文章的動作了。再加把勁! 現在你應該會遇到以下的錯誤：
 
 ![Forbidden attributes for new article]
 (images/getting_started/forbidden_attributes_for_new_article.png)
 
-Rails 有許多安全的機制可以幫助你開發出有安全性應用程式,
-現在你將使用其中的一個機制. 它被稱做 `[strong_parameters]
-(http://guides.rubyonrails.org/action_controller_overview.html#strong-parameters)`,
-這個機制需要我們告訴 Rails 哪些 parameters 是可以在 controller 的 action 中使用.
+Rails 有許多安全的機制可以幫助你開發出有安全性的應用程式，
+現在你遇到了其中的一個機制。它被稱做 `[strong_parameters](http://guides.rubyonrails.org/action_controller_overview.html#strong-parameters)` ，
+這個機制需要我們明確的告訴 Rails 哪些 parameters 可以在 controller 的 action 中使用。
 
-為什麼還要這麼麻煩呢? 雖然原本作法可以將 parameters 自動地從 controller 一次代入到模型中，讓開發者的工作簡單了許多,但是這個方便的方法卻也允許了一些惡意的使用方式. 如果出現一個向 server 發出的請求，而且這個請求被偽裝成新增文章表單所送出的資料，其中也包含著會破壞應用程式正常運作的額外欄位值，這時候該怎麼辦? 這些惡意資料將會隨著正常資料 'mass assigned（大量賦值）' 進到模型中以及資料庫 - 如此一來應用程式就有被破壞的潛在性或是更糟的情況.
+為什麼還要這麼麻煩呢？雖然將 parameters 自動地從 controller 一次代入到模型中，讓開發者的工作簡單了許多，但是這個方便的方法卻允許了一些惡意的使用。如果出現一個向 server 發出的請求，而且這個請求被偽裝成新增文章表單所送出的資料，其中也包含著會破壞應用程式正常運作的額外欄位值，這時候會發生甚麼事？這些惡意資料將會隨著正常資料 'mass assigned（大量賦值）' 進到模型中以及資料庫 - 如此一來應用程式就有被破壞的潛在性或是更糟。
 
 我們必須將  controller parameters 設置白名單來避免錯誤的 mass assignment ，
-在這個例子中，我們不但需要 `title` 和 `text` 這兩個 parameters 還要將這兩個 parameters 加入允許清單之後才能夠正確執行 create 動作 
-要達成上述動作會用到的兩個語法 `require` 和 `permit`。 現在我們在 `create` action 稍作一行修正:
+在這個例子中，我們需要將 `title` 和 `text` 這兩個 parameters 加入允許清單後才能正確執行 create 動作，
+要達成上述動作會用到的兩個語法 `require` 和 `permit` 。現在我們在 `create` action 稍作一行修正：
 
 ```ruby
   @article = Article.new(params.require(:article).permit(:title, :text))
 ```
 
-而修改後的 parameters 部份習慣上會被提出來放到屬於他自己的 method 中，如此一來便可在同一個 controller 不同 action 中使用, 就像 `create` 和 `update`. 除了解決 mass assignment 問題之外, 這裡通常會使用 `private` method 來確保不會在非預期的地方被呼叫. 以下是修改後的結果:
+而 parameters 的部份習慣上會被提出來變成一個 method ，如此一來便可被這個 controller 中的其他 actions 使用，如 `create` 和 `update` 。除了解決 mass assignment 問題之外，我們通常會將 method 設為 `private` ，來確保不會在非預期的地方被呼叫。以下是修改後的結果：
 
 ```ruby
 def create
@@ -566,29 +565,29 @@ private
   end
 ```
 
-TIP: 更多資訊, 請參考
+TIP：更多資訊，請參考
 [this blog article about Strong Parameters]
 (http://weblog.rubyonrails.org/2012/3/21/strong-parameters/).
 
 ### 顯示文章
 
-如果你再次送出表單, Rails 會提示找不到`show` action. 
-這樣很不方便, 所以我們還是先新增 `show` action.
+如果你再次送出表單， Rails 會提示找不到 `show` action 。 
+這樣很不方便，所以我們還是先新增 `show` action 。
 
-如同之前我們所看 `rake routes` 的輸出結果, 關於 `show` action 的 route 規則如下：
+如同之前我們所看 `rake routes` 的輸出結果，關於 `show` action 的 route 規則如下：
 
 ```
 article GET    /articles/:id(.:format)      articles#show
 ```
 
 這個特別的語法 `:id` 告訴了 rails 這個 route 規則預期會收到一個 `:id`
-parameter, 在我們的例子中這個 parameter 會是文章的 id.
+parameter ，在我們的例子中這個 parameter 會是文章的 id 。
 
-如同之前我們所做過的, 我們要在 `app/controllers/articles_controller.rb` 中新增 `show` action 以及新增相對應的 view.
+如同之前我們所做過的，我們要在 `app/controllers/articles_controller.rb` 中新增 `show` action 以及新增相對應的 view 。
 
-NOTE: 我們有一個習慣性作法就是將在 controller 中的標準 CRUD actions 按照以下順序擺放: `index`, `show`, `new`, `edit`, `create`, `update`, `destroy`. 當然你可以使用自己的擺放順序, 但是請記住這些是 public methods ,像之前所提到過的, 這些 methods 在 controller 中一定要放在 private 或 protected method 之前才行.
+NOTE：我們習慣在 controller 中的擺放標準 CRUD actions 時按照以下順序： `index` ， `show` ， `new` ， `edit` ， `create` ， `update` ， `destroy` 。當然你可以有自己的擺放順序，但是請記住這些是 public methods ，像之前所提到過的， 這些 methods 在 controller 中一定要放在 private 和 protected method 之前才行。
 
-考慮上述的習慣作法, 我們來新增 `show` action, 如下:
+考慮上述的習慣作法，我們來新增 `show` action ，如下：
 
 ```ruby
 class ArticlesController < ApplicationController
@@ -602,10 +601,10 @@ class ArticlesController < ApplicationController
   # snipped for brevity
 ```
 
-這邊有幾件事要記下來. 我們透過 `params[:id]` 來取得在請求中 `:id` parameter，並且將此 parameter 代入到 `Article.find` 來找到我們想看的文章。
-我們也要使用一個 instance variable（實例變數） (以`@`開頭) 來參考到一個文章物件. 我們會這麼做是因為 Rails 會將所有的 instance variable 送到 view 中.
+這邊有幾件事要注意。我們透過 `params[:id]` 來取得請求中的 `:id` parameter，並且將此 parameter 代入到 `Article.find` 來找到我們想看的文章。
+我們還使用了一個 instance variable（實例變數） (以`@`開頭) 來參考到一個文章物件。我們會這麼做是因為 Rails 會將所有的 instance variable 送到 view 中。
 
-現在就來建立 view `app/views/articles/show.html.erb` 並且新增以下內容:
+現在就來建立 view `app/views/articles/show.html.erb` ，並且新增以下內容：
 
 ```html+erb
 <p>
@@ -619,8 +618,8 @@ class ArticlesController < ApplicationController
 </p>
 ```
 
-完成以上步驟後, 你現在應該總算可以新增一篇文章了.
-現在就連到 <http://localhost:3000/articles/new> 並且試試看!
+完成以上步驟後，你應該總算可以新增一篇文章了。
+現在就連到 <http://localhost:3000/articles/new> 並且試試看！
 
 ![Show action for articles](images/getting_started/show_action_for_articles.png)
 
