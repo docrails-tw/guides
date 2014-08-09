@@ -157,7 +157,7 @@ TIP: 編譯 CoffeeScript 和 JavaScript 資源檔最佳化 (asset compression) �
 ![Welcome aboard screenshot](images/getting_started/rails_welcome.png)
 
 TIP: 如想停止 web 服務，請在已執行中的命令視窗按下 Ctrl+C 跳回命令提示字元就可以終止服務。
-大多數類 UNIX 系統，其中也包含 Mac OS X 將會再次看到錢符 `$` 。在開發模式中, Rails 通常是不會要求你重新起動服務；只要有修改過的檔案伺服器就會自動重新載入。
+大多數類 UNIX 系統，其中也包含 Mac OS X 將會再次看到錢號 `$` 。在開發模式中, Rails 通常是不會要求你重新起動服務；只要有修改過的檔案伺服器就會自動重新載入。
 
 ＂Welcome aboard＂這個頁面對於新建 Rails 應用程式來說是一個 _煙霧測試 (smoke test)_ ：測試設定上是否正確，來讓此頁面正確執行。你也可以透過點擊 _About your application's environment_ 連結來看應用程式中環境相關資訊的摘要。
 
