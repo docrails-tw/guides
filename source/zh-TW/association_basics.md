@@ -105,7 +105,7 @@ class CreateOrders < ActiveRecord::Migration
     end
 
     create_table :orders do |t|
-      t.belongs_to :customer
+      t.belongs_to :customer, index: true
       t.datetime :order_date
       t.timestamps
     end
@@ -136,7 +136,7 @@ class CreateSuppliers < ActiveRecord::Migration
     end
 
     create_table :accounts do |t|
-      t.belongs_to :supplier
+      t.belongs_to :supplier, index: true
       t.string :account_number
       t.timestamps
     end
@@ -169,7 +169,7 @@ class CreateCustomers < ActiveRecord::Migration
     end
 
     create_table :orders do |t|
-      t.belongs_to :customer
+      t.belongs_to :customer, index: true
       t.datetime :order_date
       t.timestamps
     end
@@ -216,8 +216,8 @@ class CreateAppointments < ActiveRecord::Migration
     end
 
     create_table :appointments do |t|
-      t.belongs_to :physician
-      t.belongs_to :patient
+      t.belongs_to :physician, index: true
+      t.belongs_to :patient, index: true
       t.datetime :appointment_date
       t.timestamps
     end
@@ -292,13 +292,13 @@ class CreateAccountHistories < ActiveRecord::Migration
     end
 
     create_table :accounts do |t|
-      t.belongs_to :supplier
+      t.belongs_to :supplier, index: true
       t.string :account_number
       t.timestamps
     end
 
     create_table :account_histories do |t|
-      t.belongs_to :account
+      t.belongs_to :account, index: true
       t.integer :credit_rating
       t.timestamps
     end
@@ -338,8 +338,8 @@ class CreateAssembliesAndParts < ActiveRecord::Migration
     end
 
     create_table :assemblies_parts, id: false do |t|
-      t.belongs_to :assembly
-      t.belongs_to :part
+      t.belongs_to :assembly, index: true
+      t.belongs_to :part, index: true
     end
   end
 end
@@ -375,6 +375,8 @@ class CreateSuppliers < ActiveRecord::Migration
       t.string  :account_number
       t.timestamps
     end
+
+    add_index :accounts, :supplier_id
   end
 end
 ```
@@ -449,6 +451,8 @@ class CreatePictures < ActiveRecord::Migration
       t.string  :imageable_type
       t.timestamps
     end
+
+    add_index :pictures, :imageable_id
   end
 end
 ```
@@ -460,7 +464,7 @@ class CreatePictures < ActiveRecord::Migration
   def change
     create_table :pictures do |t|
       t.string :name
-      t.references :imageable, polymorphic: true
+      t.references :imageable, polymorphic: true, index: true
       t.timestamps
     end
   end
@@ -554,6 +558,8 @@ class CreateOrders < ActiveRecord::Migration
       t.string   :order_number
       t.integer  :customer_id
     end
+
+    add_index :orders, :customer_id
   end
 end
 ```
@@ -587,6 +593,9 @@ class CreateAssembliesPartsJoinTable < ActiveRecord::Migration
       t.integer :assembly_id
       t.integer :part_id
     end
+
+    add_index :assemblies_parts, :assembly_id
+    add_index :assemblies_parts, :part_id
   end
 end
 ```

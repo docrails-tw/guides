@@ -16,6 +16,27 @@
 .large {font-size: larger;}
 .hide {display: none;}
 
+body {
+  text-align: center;
+  font-family: "Noto Sans", "Georgia", "Xin Gothic", "Hiragino Sans GB", "Droid Sans Fallback", "Microsoft YaHei", "Helvetica", "Arial", sans-serif;
+  font-size: 87.5%;
+  line-height: 1.5em;
+  background: #fff;
+  color: #999;
+}
+
+body p {
+  letter-spacing: .7px;
+}
+
+body code {
+  letter-spacing: .2px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Noto Serif", "Georgia", "Xin Gothic", "Hiragino Sans GB", "Droid Sans Fallback", "Microsoft YaHei", "SimSun", sans-serif;
+}
+
 li ul, li ol { margin:0 1.5em; }
 ul, ol { margin: 0 1.5em 1.5em 1.5em; }
 
@@ -28,7 +49,7 @@ dd { margin-left: 1.5em;}
 
 pre, code {
   font-size: 1em;
-  font-family: "Anonymous Pro", "Inconsolata", "Menlo", "Consolas", "Bitstream Vera Sans Mono", "Courier New", monospace;
+  font-family: "Source Code Pro", "Anonymous Pro", "Inconsolata", "Menlo", "Consolas", "Bitstream Vera Sans Mono", "Courier New", monospace;
   line-height: 1.5;
   margin: 1.5em 0;
   overflow: auto;
@@ -90,15 +111,6 @@ img {
 
 /* Structure and Layout
 --------------------------------------- */
-
-body {
-  text-align: center;
-  font-family: Helvetica, Arial, sans-serif;
-  font-size: 87.5%;
-  line-height: 1.5em;
-  background: #fff;
-  color: #999;
-}
 
 .wrapper {
   text-align: left;

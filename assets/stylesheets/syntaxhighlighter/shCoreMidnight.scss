@@ -7,7 +7,7 @@
  *
  * @version
  * 3.0.83 (July 02 2010)
- * 
+ *
  * @copyright
  * Copyright (C) 2004-2010 Alex Gorbatchev.
  *
@@ -44,7 +44,7 @@
   vertical-align: baseline !important;
   width: auto !important;
   box-sizing: content-box !important;
-  font-family: "Consolas", "Bitstream Vera Sans Mono", "Courier New", Courier, monospace !important;
+  font-family: "Source Code Pro", "Anonymous Pro", "Inconsolata", "Menlo", "Consolas", "Bitstream Vera Sans Mono", "Courier New", monospace;
   font-weight: normal !important;
   font-style: normal !important;
   font-size: 1em !important;
@@ -226,32 +226,32 @@
 }
 
 .syntaxhighlighter {
-  background-color: black !important;
+  background-color: #0f192a !important;
 }
 .syntaxhighlighter .line.alt1 {
-  background-color: black !important;
+  background-color: #0f192a !important;
 }
 .syntaxhighlighter .line.alt2 {
-  background-color: black !important;
+  background-color: #0f192a !important;
 }
 .syntaxhighlighter .line.highlighted.alt1, .syntaxhighlighter .line.highlighted.alt2 {
-  background-color: #2a3133 !important;
+  background-color: #253e5a !important;
 }
 .syntaxhighlighter .line.highlighted.number {
-  color: white !important;
+  color: #38566f !important;
 }
 .syntaxhighlighter table caption {
-  color: #d3d3d3 !important;
+  color: #d1edff !important;
 }
 .syntaxhighlighter .gutter {
-  color: #d3d3d3 !important;
+  color: #afafaf !important;
 }
 .syntaxhighlighter .gutter .line {
-  border-right: 3px solid #990000 !important;
+  border-right: 3px solid #435a5f !important;
 }
 .syntaxhighlighter .gutter .line.highlighted {
-  background-color: #990000 !important;
-  color: black !important;
+  background-color: #435a5f !important;
+  color: #0f192a !important;
 }
 .syntaxhighlighter.printing .line .content {
   border: none !important;
@@ -260,65 +260,65 @@
   overflow: visible !important;
 }
 .syntaxhighlighter.collapsed .toolbar {
-  color: #ebdb8d !important;
+  color: #428bdd !important;
   background: black !important;
-  border: 1px solid #990000 !important;
+  border: 1px solid #435a5f !important;
 }
 .syntaxhighlighter.collapsed .toolbar a {
-  color: #ebdb8d !important;
+  color: #428bdd !important;
 }
 .syntaxhighlighter.collapsed .toolbar a:hover {
-  color: #ff7d27 !important;
+  color: #1dc116 !important;
 }
 .syntaxhighlighter .toolbar {
-  color: white !important;
-  background: #990000 !important;
+  color: #d1edff !important;
+  background: #435a5f !important;
   border: none !important;
 }
 .syntaxhighlighter .toolbar a {
-  color: white !important;
+  color: #d1edff !important;
 }
 .syntaxhighlighter .toolbar a:hover {
-  color: #9ccff4 !important;
+  color: #8aa6c1 !important;
 }
 .syntaxhighlighter .plain, .syntaxhighlighter .plain a {
-  color: #d3d3d3 !important;
+  color: #d1edff !important;
 }
 .syntaxhighlighter .comments, .syntaxhighlighter .comments a {
-  color: #ff7d27 !important;
+  color: #428bdd !important;
 }
 .syntaxhighlighter .string, .syntaxhighlighter .string a {
-  color: #ff9e7b !important;
+  color: #1dc116 !important;
 }
 .syntaxhighlighter .keyword {
-  color: aqua !important;
+  color: #b43d3d !important;
 }
 .syntaxhighlighter .preprocessor {
-  color: #aec4de !important;
+  color: #8aa6c1 !important;
 }
 .syntaxhighlighter .variable {
   color: #ffaa3e !important;
 }
 .syntaxhighlighter .value {
-  color: #009900 !important;
+  color: #f7e741 !important;
 }
 .syntaxhighlighter .functions {
-  color: #81cef9 !important;
+  color: #ffaa3e !important;
 }
 .syntaxhighlighter .constants {
-  color: #ff9e7b !important;
+  color: #e0e8ff !important;
 }
 .syntaxhighlighter .script {
   font-weight: bold !important;
-  color: aqua !important;
+  color: #b43d3d !important;
   background-color: none !important;
 }
 .syntaxhighlighter .color1, .syntaxhighlighter .color1 a {
-  color: #ebdb8d !important;
+  color: #f8bb00 !important;
 }
 .syntaxhighlighter .color2, .syntaxhighlighter .color2 a {
-  color: #ff7d27 !important;
+  color: white !important;
 }
 .syntaxhighlighter .color3, .syntaxhighlighter .color3 a {
-  color: #aec4de !important;
+  color: #ffaa3e !important;
 }

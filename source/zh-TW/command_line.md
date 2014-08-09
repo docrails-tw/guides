@@ -143,7 +143,7 @@ Example:
 ```bash
 $ bin/rails generate controller Greetings hello
      create  app/controllers/greetings_controller.rb
-      route  get 'greetings/hello'
+      route  get "greetings/hello"
      invoke  erb
      create    app/views/greetings
      create    app/views/greetings/hello.html.erb
@@ -151,8 +151,6 @@ $ bin/rails generate controller Greetings hello
      create    test/controllers/greetings_controller_test.rb
      invoke  helper
      create    app/helpers/greetings_helper.rb
-     invoke    test_unit
-     create      test/helpers/greetings_helper_test.rb
      invoke  assets
      invoke    coffee
      create      app/assets/javascripts/greetings.js.coffee

@@ -7,7 +7,7 @@
  *
  * @version
  * 3.0.83 (July 02 2010)
- * 
+ *
  * @copyright
  * Copyright (C) 2004-2010 Alex Gorbatchev.
  *
@@ -44,7 +44,7 @@
   vertical-align: baseline !important;
   width: auto !important;
   box-sizing: content-box !important;
-  font-family: "Consolas", "Bitstream Vera Sans Mono", "Courier New", Courier, monospace !important;
+  font-family: "Source Code Pro", "Anonymous Pro", "Inconsolata", "Menlo", "Consolas", "Bitstream Vera Sans Mono", "Courier New", monospace;
   font-weight: normal !important;
   font-style: normal !important;
   font-size: 1em !important;
@@ -226,32 +226,32 @@
 }
 
 .syntaxhighlighter {
-  background-color: #1b2426 !important;
+  background-color: #0a2b1d !important;
 }
 .syntaxhighlighter .line.alt1 {
-  background-color: #1b2426 !important;
+  background-color: #0a2b1d !important;
 }
 .syntaxhighlighter .line.alt2 {
-  background-color: #1b2426 !important;
+  background-color: #0a2b1d !important;
 }
 .syntaxhighlighter .line.highlighted.alt1, .syntaxhighlighter .line.highlighted.alt2 {
-  background-color: #323e41 !important;
+  background-color: #233729 !important;
 }
 .syntaxhighlighter .line.highlighted.number {
-  color: #b9bdb6 !important;
+  color: white !important;
 }
 .syntaxhighlighter table caption {
-  color: #b9bdb6 !important;
+  color: #f8f8f8 !important;
 }
 .syntaxhighlighter .gutter {
-  color: #afafaf !important;
+  color: #497958 !important;
 }
 .syntaxhighlighter .gutter .line {
-  border-right: 3px solid #435a5f !important;
+  border-right: 3px solid #41a83e !important;
 }
 .syntaxhighlighter .gutter .line.highlighted {
-  background-color: #435a5f !important;
-  color: #1b2426 !important;
+  background-color: #41a83e !important;
+  color: #0a2b1d !important;
 }
 .syntaxhighlighter.printing .line .content {
   border: none !important;
@@ -260,47 +260,47 @@
   overflow: visible !important;
 }
 .syntaxhighlighter.collapsed .toolbar {
-  color: #5ba1cf !important;
+  color: #96dd3b !important;
   background: black !important;
-  border: 1px solid #435a5f !important;
+  border: 1px solid #41a83e !important;
 }
 .syntaxhighlighter.collapsed .toolbar a {
-  color: #5ba1cf !important;
+  color: #96dd3b !important;
 }
 .syntaxhighlighter.collapsed .toolbar a:hover {
-  color: #5ce638 !important;
+  color: white !important;
 }
 .syntaxhighlighter .toolbar {
   color: white !important;
-  background: #435a5f !important;
+  background: #41a83e !important;
   border: none !important;
 }
 .syntaxhighlighter .toolbar a {
   color: white !important;
 }
 .syntaxhighlighter .toolbar a:hover {
-  color: #e0e8ff !important;
+  color: #ffe862 !important;
 }
 .syntaxhighlighter .plain, .syntaxhighlighter .plain a {
-  color: #b9bdb6 !important;
+  color: #f8f8f8 !important;
 }
 .syntaxhighlighter .comments, .syntaxhighlighter .comments a {
-  color: #878a85 !important;
+  color: #336442 !important;
 }
 .syntaxhighlighter .string, .syntaxhighlighter .string a {
-  color: #5ce638 !important;
+  color: #9df39f !important;
 }
 .syntaxhighlighter .keyword {
-  color: #5ba1cf !important;
+  color: #96dd3b !important;
 }
 .syntaxhighlighter .preprocessor {
-  color: #435a5f !important;
+  color: #91bb9e !important;
 }
 .syntaxhighlighter .variable {
   color: #ffaa3e !important;
 }
 .syntaxhighlighter .value {
-  color: #009900 !important;
+  color: #f7e741 !important;
 }
 .syntaxhighlighter .functions {
   color: #ffaa3e !important;
@@ -310,15 +310,22 @@
 }
 .syntaxhighlighter .script {
   font-weight: bold !important;
-  color: #5ba1cf !important;
+  color: #96dd3b !important;
   background-color: none !important;
 }
 .syntaxhighlighter .color1, .syntaxhighlighter .color1 a {
-  color: #e0e8ff !important;
+  color: #eb939a !important;
 }
 .syntaxhighlighter .color2, .syntaxhighlighter .color2 a {
-  color: white !important;
+  color: #91bb9e !important;
 }
 .syntaxhighlighter .color3, .syntaxhighlighter .color3 a {
-  color: #ffaa3e !important;
+  color: #edef7d !important;
+}
+
+.syntaxhighlighter .comments {
+  font-style: italic !important;
+}
+.syntaxhighlighter .keyword {
+  font-weight: bold !important;
 }

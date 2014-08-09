@@ -163,7 +163,7 @@ end
 >> Person.create.errors[:name].any? # => true
 ```
 
-在[7 處理驗證錯誤](#)一節會更深入講解驗證錯誤。現在讓我們看看 Rails 內建的驗證輔助方法有那些。
+在 [7 處理驗證錯誤](#)一節會更深入講解驗證錯誤。現在讓我們看看 Rails 內建的驗證輔助方法有那些。
 
 驗證輔助方法
 -----------
@@ -353,7 +353,7 @@ end
 除了 `only_integer` 之外，這個方法也接受下列選項，用來限制允許的數值：
 
 * `:greater_than` - 屬性的值必須大於指定的值。預設錯誤訊息是 _"must be greater than %{count}"_。
-* `:greater_than_or_equal_to` - 屬性的值必須大於指定的值。預設錯誤訊息是 _"must be greater than or equal to %{count}"_。
+* `:greater_than_or_equal_to` - 屬性的值必須大於等於指定的值。預設錯誤訊息是 _"must be greater than or equal to %{count}"_。
 * `:equal_to` - 屬性的值必須等於指定的值。預設錯誤訊息是 _"must be equal to %{count}"_。
 * `:less_than` - 屬性的值必須小於指定的值。預設錯誤訊息是 _"must be less than %{count}"_。
 * `:less_than_or_equal_to` - 屬性的值必須小於等於指定的值。預設錯誤訊息是 _"must be less than or equal to %{count}"_。
@@ -422,10 +422,6 @@ class Order < ActiveRecord::Base
   has_many :line_items, inverse_of: :order
 end
 ```
-
-If you validate the absence of an object associated via a `has_one` or
-`has_many` relationship, it will check that the object is neither `present?` nor
-`marked_for_destruction?`.
 
 如透過 `has_one` 或 `has_many` 關係來驗證關聯的物件是否存在，則會對該物件呼叫 `present?` 與 `marked_for_destruction?`，來確定不存在性。
 

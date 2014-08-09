@@ -90,7 +90,7 @@ $ gem install rails
 如果不確定 Rails 是否有正確安裝的話，請輸入以下命令做確認：
 
 ```bash
-$ bin/rails --version
+$ rails --version
 ```
 
 如果有看到 "Rails 4.2.0" 的訊息，那你可以繼續接下來的步驟。
@@ -149,9 +149,8 @@ Hello, Rails!
 $ bin/rails server
 ```
 
-TIP: 從 CoffeeScript 編譯到 JavaScript 需要一個 JavaScript 直譯器 (runtime) 。如果少了直譯器就執行，命令列就會跳出 `execjs` 錯誤。通常 Mac OS X 以及 Windows 都會搭載 JavaScript 直譯器。對於沒有搭載的系統，由於在新增的應用專案的時候， Rails 會將 `therubyracer` gem 套件註解在 `Gemfile` 中，所以你只要將這行反註解然後就可以安裝。 `therubyrhino` 是一個 JRuby 使用者推薦的直譯器套件，所以在 JRuby 中是直接把它定義在 `Gemfile` 。
-其他一樣有支援的直譯器請參考
-[ExecJS](https://github.com/sstephenson/execjs#readme).
+TIP: 編譯 CoffeeScript 和 JavaScript 資源檔最佳化 (asset compression) 都需要一個 JavaScript 直譯器 (runtime) 。如果缺少了直譯器就執行，命令列就會跳出 `execjs` 錯誤。通常 Mac OS X 以及 Windows 都會搭載 JavaScript 直譯器。對於沒有搭載的系統，由於一開始應用專案建立的時候， Rails 將 `therubyracer` gem 套件註解在 `Gemfile` 中，所以你只要將這行反註解然後就可以安裝。 `therubyrhino` 是一個 JRuby 使用者推薦的直譯器套件，所以在 JRuby 中是直接把它定義在 `Gemfile` 。
+其他一樣有支援的直譯器請參考 [ExecJS](https://github.com/sstephenson/execjs#readme) 。
 
 這將會啟動 WEBrick ，一個 Ruby 預設的 web 伺服器。想看應用程式執行中的畫面，請打開瀏覽器並在網址列上輸入 <http://localhost:3000> 。你就會看到 Rails 的預設資訊頁面了。
 
@@ -188,8 +187,6 @@ invoke  test_unit
 create    test/controllers/welcome_controller_test.rb
 invoke  helper
 create    app/helpers/welcome_helper.rb
-invoke    test_unit
-create      test/helpers/welcome_helper_test.rb
 invoke  assets
 invoke    coffee
 create      app/assets/javascripts/welcome.js.coffee
@@ -536,15 +533,13 @@ TIP: `@article.save` 執行完會回傳一個boolean值來確定是否成功存�
 (images/getting_started/forbidden_attributes_for_new_article.png)
 
 Rails 有許多安全的機制可以幫助你開發出有安全性應用程式,
-現在你將使用其中的一個機制. 它被稱做 `[strong_parameters]
-(http://guides.rubyonrails.org/action_controller_overview.html#strong-parameters)`,
-這個機制需要我們告訴 Rails 哪些 parameters 是可以在 controller 的 action 中使用.
+現在你將使用其中的一個機制. 它被稱做 [strong_parameters](http://guides.rubyonrails.org/action_controller_overview.html#strong-parameters) ，這個機制需要我們告訴 Rails 哪些 parameters 是可以在 controller 的 action 中使用。
 
 為什麼還要這麼麻煩呢? 雖然原本作法可以將 parameters 自動地從 controller 一次代入到模型中，讓開發者的工作簡單了許多,但是這個方便的方法卻也允許了一些惡意的使用方式. 如果出現一個向 server 發出的請求，而且這個請求被偽裝成新增文章表單所送出的資料，其中也包含著會破壞應用程式正常運作的額外欄位值，這時候該怎麼辦? 這些惡意資料將會隨著正常資料 'mass assigned（大量賦值）' 進到模型中以及資料庫 - 如此一來應用程式就有被破壞的潛在性或是更糟的情況.
 
 我們必須將  controller parameters 設置白名單來避免錯誤的 mass assignment
 在這個例子中，我們不但需要 `title` 和 `text` 這兩個 parameters 還要將這兩個 parameters 加入允許清單之後才能夠正確執行 create 動作 
-要達成上述動作會用到的兩個語法 `require` 和 `permit`。 現在我們在 `create` action 稍作一行修正:
+要達成上述動作會用到的兩個語法 `require` 和 `permit`。 現在我們在 `create` action 稍作一行修正：
 
 ```ruby
   @article = Article.new(params.require(:article).permit(:title, :text))
@@ -672,7 +667,7 @@ class ArticlesController < ApplicationController
 </table>
 ```
 
-現在如果你連到 `http://localhost:3000/articles` 你將會看到一整列你所新增的文章.
+現在如果你連到 <http://localhost:3000/articles> 你將會看到一整列你所新增的文章.
 
 ### 建立連結
 
@@ -830,8 +825,7 @@ private
 
 TIP: Rails 會自動的將有錯誤的欄位用class 為 `field_with_errors` 的 div 包起來. 此時你可以定義css規則將這些特別標示出來。
 
-現在你將會得到一個有用的錯誤提示當你在嘗試去送出新增文章表單卻忘了輸入標題
-[(http://localhost:3000/articles/new)](http://localhost:3000/articles/new).
+現在你將會得到一個有用的錯誤提示當你在嘗試去送出新增文章表單卻忘了輸入標題 <http://localhost:3000/articles/new> ：
 
 ![Form With Errors](images/getting_started/form_with_errors.png)
 
@@ -1282,12 +1276,11 @@ $ bin/rails generate controller Comments
 | 檔案/目錄                                    | 用途                                     |
 | -------------------------------------------- | ---------------------------------------- |
 | app/controllers/comments_controller.rb       | Comments controller                      |
-| app/views/comments/                          | Controller 所用到的 view 檔案  |
+| app/views/comments/                          | Controller 所用到的 view 檔案            |
 | test/controllers/comments_controller_test.rb | 用於測試 controller 的檔案               |
 | app/helpers/comments_helper.rb               | View helper 檔案                         |
-| test/helpers/comments_helper_test.rb         | 用於測試 helper 的檔案                   |
-| app/assets/javascripts/comment.js.coffee     | 用於 controller 的 CoffeeScript         |
-| app/assets/stylesheets/comment.css.scss      | 用於 controller 的 cascading style sheet|
+| app/assets/javascripts/comment.js.coffee     | 用於 controller 的 CoffeeScript          |
+| app/assets/stylesheets/comment.css.scss      | 用於 controller 的 cascading style sheet |
 
 就跟其他部落格一樣，讀者通常是閱讀完文章之後才新增留言，並且在新增之後導回文章的顯示頁面來檢視留言是否成功新增。所以說在 `CommentsController` 中必需有新增以及刪除留言的相關 methods 。
 

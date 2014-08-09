@@ -237,15 +237,16 @@ user.destroy
 
 Active Record 允許您在資料被存入資料庫之前，驗證資料的狀態。驗證有許多方法，比如可以檢查屬性的值是不是空的、是不是唯一的、資料庫裡是不是已經有一份？每種檢查方法有特定的書寫格式。
 
-驗證是在把持久化資料存入資料庫前，需要審慎思量的問題。跟資料存入資料庫有關的三個方法 `create`、`save` 以及 `update`，在呼叫時會進行驗證。當這三個方法回傳值為 `false` 時，驗證失敗，將不會對資料庫進行任何操作。上述三個方法皆有對應的 BANG 方法：`create!`、`save!` 以及 `update!`，這比原本的方法更嚴格些，一旦失敗會直接拋出 `ActiveRecord::RecordInvalid` 的異常。用個簡單例子來說明：
+驗證是在把持久化資料存入資料庫前，需要審慎思量的問題。跟資料存入資料庫有關的二種方法 `save` 以及 `update`，在呼叫時會進行驗證。當這三個方法回傳值為 `false` 時，驗證失敗，將不會對資料庫進行任何操作。上述三個方法皆有對應的 BANG 方法：`save!` 以及 `update!`，這比原本的方法更嚴格些，一旦失敗會直接拋出 `ActiveRecord::RecordInvalid` 的異常。用個簡單例子來說明：
 
 ```ruby
 class User < ActiveRecord::Base
   validates :name, presence: true
 end
 
-User.create  # => false
-User.create! # => ActiveRecord::RecordInvalid: Validation failed: Name can't be blank
+user = User.new
+user.save  # => false
+user.save! # => ActiveRecord::RecordInvalid: Validation failed: Name can't be blank
 ```
 
 了解更多關於驗證的內容，請參考：[Active Record Validations

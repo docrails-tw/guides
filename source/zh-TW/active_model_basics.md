@@ -176,8 +176,6 @@ person.first_name_was # => "First Name"
 
 檢查屬性上次與當前的值，有變化回傳 Array，沒變化回傳 `nil`：
 
-Track both previous and current value of the changed attribute. Returns an array if changed, else returns nil.
-
 ```ruby
 # attr_name_change
 person.first_name_change # => [nil, "First Name"]

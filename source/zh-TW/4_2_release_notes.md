@@ -67,6 +67,10 @@ Railties
 * 導入 `Rails.gem_version` 作為回傳 `Gem::Version.new(Rails.version)` 的便捷方法。
   ([Pull Request](https://github.com/rails/rails/pull/14101))
 
+* 導入 `after_bundle` 回呼到 Rails 模版。
+  ([Pull Request](https://github.com/rails/rails/pull/16359))
+
+
 Action Pack
 -----------
 
