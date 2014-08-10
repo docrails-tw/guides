@@ -567,7 +567,7 @@ private
 
 TIP：更多資訊，請參考
 [this blog article about Strong Parameters]
-(http://weblog.rubyonrails.org/2012/3/21/strong-parameters/).
+(http://weblog.rubyonrails.org/2012/3/21/strong-parameters/) 。
 
 ### 顯示文章
 
@@ -778,7 +778,7 @@ private
 
 這個 `new` action 建立了一個名為 `@article` 的實體變數，至於為什麼要這麼做了晚一點你就會知道了。
 
-值得注意，當 `create` action 中的 `save` 回傳 `false` 時，我們使用 `render` 而不是 `redirect_to`. 
+值得注意，當 `create` action 中的 `save` 回傳 `false` 時，我們使用 `render` 而不是 `redirect_to` 。 
 當使用`render` method 時，可讓 `@article` 物件傳回到 `new` template，
 這樣一來，當 render 完成後，表單仍然可以保留送出前的結果，反之 `redirect_to` 則是讓瀏覽器去發出一個新的請求。
 
@@ -836,8 +836,8 @@ TIP： Rails 會自動的將有錯誤的欄位用 class 為 `field_with_errors` 
 
 ### 更新文章
 
-我們已經看過了 CRUD 的 "CR" 部份了. 現在我們來著重在 "U" 這部份, updating
-articles（更新文章）.
+我們已經看過了 CRUD 的 "CR" 部份了。現在我們來著重在 "U" 這部份， updating
+articles（更新文章） 。
 
 我們第一個採取的步驟是在 `ArticlesController` 中新增 `edit` action ，通常這個 action 會擺放在 `new` 跟 `creat` actions 之間，如下所示：
 
@@ -861,7 +861,7 @@ def create
 end
 ```
 
-接下要建立的 view 可能會包含一個類似於新增文章時所用到的表單. 先建立並命名這個檔案 `app/views/articles/edit.html.erb`並且編輯內容如下:
+接下要建立的 view 會包含一個類似於新增文章時所用到的表單。先建立並命名這個檔案 `app/views/articles/edit.html.erb` 並且編輯內容如下：
 
 ```html+erb
 <h1>Editing article</h1>
@@ -901,16 +901,16 @@ end
 <%= link_to 'Back', articles_path %>
 ```
 
-這個表單之後會被 `update` action 所使用, 雖然目前還沒定義，不過也快了.
+這個表單之後會被 `update` action 所使用，雖然目前還沒定義，不過也快了。
 
-表單中的 `method: :patch` 選項告訴 Rails 我們想使用 `PATCH` HTTP method 來送出表單，而我們會想使用這個 HTTP method 來更新資料的因素，根據的就是 REST protocol .
+表單中的 `method: :patch` 選項告訴 Rails 我們想使用 `PATCH` HTTP method 來送出表單，因為根據 REST protocol ，我們應該使用 HTTP method 來更新資料。
 
-`form_for` 的第一個參數可以是一個物件,例如 `@article` ，而這個物件會讓 helper 使用它的欄位值來填入表單. 傳入一個跟instance variable (`@article`)相同名子的symbol (`:article`) 是一樣的意思. 以上是這邊的介紹.
+`form_for` 的第一個參數也可以是一個物件，例如 `@article` ，這個物件會讓 helper 使用它的欄位值來填入表單。而傳入一個跟 instance variable (`@article`) 相同名子的 symbol (`:article`) 會有一樣的效果。以上是這邊的介紹。
 更多詳細細節請參考 [form_for documentation]
-(http://api.rubyonrails.org/classes/ActionView/Helpers/FormHelper.html#method-i-form_for).
+(http://api.rubyonrails.org/classes/ActionView/Helpers/FormHelper.html#method-i-form_for) 。
 
-下一步，我們需要在 `app/controllers/articles_controller.rb` 建立一個 `update` action.
-並且擺放在 `create` action 跟 `private` method 之間:
+下一步，我們需要在 `app/controllers/articles_controller.rb` 建立一個 `update` action 。
+並且擺放在 `create` action 跟 `private` method 之間：
 
 ```ruby
 def create
@@ -939,13 +939,13 @@ private
   end
 ```
 
-當你想更新一個存在的資料時，你就會使用這個新增的method `update`, 而這個 method 會接受傳入一個Hash，其中包含著你想更新的屬性. 如果更新送出的時候發生錯誤，那我們就如同之前的作法，回到表單頁面.
+當你想更新一筆存在的資料時，你就會使用這個新增的 method `update` ，而這個 method 會接受一個 Hash ，其中包含你想更新的屬性。如果更新送出的時候發生錯誤，那我們就如同之前的作法，回到表單頁面。
 
-`article_params` method 是在新增 create action 的時候所定義的，現在我們再次的使用它.
+`article_params` method 是在新增 create action 的時候所定義的，現在我們再次的使用它。
 
-TIP: 你並不需要將所有的屬性傳入到 `update`. 舉例來說, 如果你呼叫了 `@article.update(title: 'A new title')` 那麼 Rails 只會更新 `title` 的屬性, 並不會動到其他部份.
+TIP：你並不需要將所有的屬性傳入到 `update` 。舉例來說，如果你呼叫了 `@article.update(title: 'A new title')` 那麼 Rails 只會更新 `title` 屬性，並不會動到其他部份。
 
-最後，我們希望在文章列表中新增一個可以對應到`edit` action 的連結, 於是我們在 `app/views/articles/index.html.erb` 中"Show"連結的隔壁新增這個連結:
+最後，我們希望為文章列表中的每篇文章新增一個可以對應到 `edit` action 的連結，於是我們在 `app/views/articles/index.html.erb` 中新增這個連結，並把它放在 "Show" 連結的隔壁：
 
 ```html+erb
 <table>
@@ -966,7 +966,7 @@ TIP: 你並不需要將所有的屬性傳入到 `update`. 舉例來說, 如果�
 </table>
 ```
 
-現在我們也在 `app/views/articles/show.html.erb` template 一樣新增連結, 如此一來就會有一個 "Edit" 連結在顯示 article 的頁面出現. 這裡我們選擇擺放在 template 的最下面:
+現在我們也在 `app/views/articles/show.html.erb` template 新增連結，如此一來顯示 article 的頁面也會有一個 "Edit" 連結。這裡我們將連結放在 template 的最下面：
 
 ```html+erb
 ...
@@ -975,17 +975,17 @@ TIP: 你並不需要將所有的屬性傳入到 `update`. 舉例來說, 如果�
 <%= link_to 'Edit', edit_article_path(@article) %>
 ```
 
-這就是目前我們的應用程式長的樣子:
+這就是目前我們的應用程式長的樣子：
 
 ![Index action with edit link](images/getting_started/index_action_with_edit_link.png)
 
 ### 使用 partials 刪除 views 中重複部份
 
-我們的 `edit` 頁面是非常相似 `new` 頁面; 事實上, 他們在顯示表單的部份是相同的. 我們現在就用 view partial 刪除重複的部份. 在習慣上, partial 的檔案會以底線為開頭命名.
+我們的 `edit` 頁面和 `new` 頁面非常相似；事實上，他們顯示相同的表單。我們現在就用 view partial 刪除重複的部份。 在習慣上，partial 的檔案會以底線為開頭命名。
 
-TIP: 你可以從 [Layouts and Rendering in Rails](layouts_and_rendering.html) 讀到更多關於 partials.
+TIP：你可以從 [Layouts and Rendering in Rails](layouts_and_rendering.html) 讀到更多關於 partials 。
 
-先建立檔案 `app/views/articles/_form.html.erb` 並且新增以下內容:
+建立檔案 `app/views/articles/_form.html.erb` 並且新增以下內容：
 
 ```html+erb
 <%= form_for @article do |f| %>
