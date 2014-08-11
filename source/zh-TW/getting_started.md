@@ -53,7 +53,7 @@ Rails 是一個有先見之明的軟體。
 建立一個新的 Rails 專案
 ----------------------------
 
-閱讀這篇教學，過程中最好照著每個步驟走，不要省略任何的程式片段或步驟，一步一步腳踏實地去實作範例程式，最後一定可以完成學習。
+閱讀這篇教學，最佳的方法是照著每個步驟走，本篇教學沒有遺漏任何程式片段或步驟，所以你可以完全跟著教學一步一步來。
 
 一開始我們會建立一個取名為 `blog` 的 Rails 專案，以一個簡易的網誌作為學習範例。不過在這之前，你要先確定是否已經裝了 Rails 。
 
@@ -73,7 +73,7 @@ ruby 2.0.0p353
 如果還沒安裝 Ruby ，可以看一下 [ruby-lang.org](https://www.ruby-lang.org/en/installation/) ，連結裡會有針對你所用系統的 Ruby 安裝方法。
 
 很多熱門的類 Unix 系統都會搭載 SQLite3 的 acceptable 版本。而 Windows 或其他作業系統的安裝教學請參考 [SQLite3 的網站](http://www.sqlite.org) 。
-現在來確定是否有正確安裝或正確新增到 Path 環境變數中：
+現在來確定是否有正確安裝且正確新增到 Path 環境變數中：
 
 ```bash
 $ sqlite3 --version
@@ -458,9 +458,9 @@ TIP: Active Record 可以很聰明的將欄位名稱對應到模型的屬性，�
 
 ### 執行一個 Migration
 
-就如同我們剛剛所見的，執行完 `rails generate model` 會在 `db/migrate` 的目錄中建立一個 _database migration_ 的檔案。Migrations 是 Ruby 的一種類別，這些被設計來讓建立或修改資料庫中的表格能夠更容易。 Rails 是使用 rake 命令來執行 migrations ，而且即使資料庫已經套用設定但還是可以回復 migration 動作。 Migration 的檔名中包含著時間戳記，如此可以確保依照檔案建立的順序來先後執行。
+就如同我們剛剛所見的，執行完 `rails generate model` 會在 `db/migrate` 的目錄中建立一個 _database migration_ 的檔案。 Migrations 是 Ruby 的一種類別，使得來建立和修改資料庫中的表格能夠更容易。 Rails 使用 rake 命令來執行 migrations ，即使資料庫已經套用設定但還是可以回復 migration 動作。 Migration 的檔名中包含著時間戳記，如此可以確保依照檔案建立的順序來先後執行。
 
-如果你打開這個檔案`db/migrate/20140120191729_create_articles.rb` (記住這個檔案名稱會有些許不同), 你將會看到:
+如果你打開這個檔案`db/migrate/20140120191729_create_articles.rb` (記住這個檔案名稱會有些許不同) ，你將會看到：
 
 ```ruby
 class CreateArticles < ActiveRecord::Migration
@@ -475,22 +475,22 @@ class CreateArticles < ActiveRecord::Migration
 end
 ```
 
-再上面的 migration 建立了一個名為 `change` 的method ，當執行這個 migration 的時候會呼叫到這個method. 
-而定義在這個 method 中的 action 是可逆的
-這意思是 Rails 知道如何回復這個 migration 所做的更動,
-以免有一天你想回復它. 當你執行這個 migration 的時候他會建立一個 `articles` 資料表，其中包含著一個 string 型態的欄位以及一個 text 型態的欄位. 
-同時也會建立兩個時間戳記的欄位來讓 Rails 可以紀錄 article 建立以及更新的時間
+上面的 migration 建立了一個名為 `change` 的 method ，當執行這個 migration 的時候會呼叫到這個 method 。 
+而定義在這個 method 中的 action 是可逆的，
+也就是說 Rails 知道如何回復這個 migration 所做的更動，
+以免有一天你想回復它。當你執行這個 migration 的時候會建立一個 `articles` 資料表，其中包含著一個 string 型態的欄位以及一個 text 型態的欄位。
+同時也會建立兩個時間戳記的欄位來讓 Rails 可以紀錄 article 建立以及更新的時間。
 
-TIP: 更多關於 migrations 的資訊, 請參考 [Rails Database Migrations]
-(migrations.html).
+TIP：更多關於 migrations 的資訊，請參考 [Rails Database Migrations]
+(migrations.html) 。
 
-此時, 你可以使用 rake 命令來執行 migration 動作:
+此時，你可以使用 rake 命令來執行 migration 動作：
 
 ```bash
 $ bin/rake db:migrate
 ```
 
-Rails 將會執行這個 migration 的命令 並且顯示建立 Articles 資料表的訊息.
+Rails 將會執行這個 migration 的命令，並且顯示建立 Articles 資料表的訊息。
 
 ```bash
 ==  CreateArticles: migrating ==================================================
@@ -499,14 +499,14 @@ Rails 將會執行這個 migration 的命令 並且顯示建立 Articles 資料�
 ==  CreateArticles: migrated (0.0020s) =========================================
 ```
 
-NOTE. 由於你目前的所有操作都在名為 development 的預設環境下,
-所以這個命令會將套用定義在`config/database.yml` 中 `development` 區塊的資料庫 
-如果你想再其他環境執行 migrations, 像是 production, 你就可以將明確的名稱代入到所下達的命令: `rake db:migrate RAILS_ENV=production`.
+NOTE. 由於你目前的所有操作都在名為 development 的預設環境下，
+所以這個命令會套用在`config/database.yml` 中 `development` 區塊定義的資料庫，
+如果你想在其他環境執行 migrations ，像是 production ，你必須將明確的名稱代入到所下達的命令： `rake db:migrate RAILS_ENV=production` 。
 
 ### 在 controller 中儲存資料
 
-現在回頭看 `ArticlesController` , 我們必須要在 `create` action 中使用新增的 `Article` 模型來將資料存進資料庫.
-打開 `app/controllers/articles_controller.rb` 並且將 `create` action 內容替換成以下:
+現在回頭看 `ArticlesController` ， 我們必須要在 `create` action 中使用新增的 `Article` 模型來將資料存進資料庫。
+打開 `app/controllers/articles_controller.rb` 並且將 `create` action 內容替換成以下：
 
 ```ruby
 def create
@@ -517,35 +517,36 @@ def create
 end
 ```
 
-我們來看看這段程式碼進行了什麼動作: Rails 模型可以藉由多個別的屬性的賦值來初始化（實體化）, 這些屬性也將會個別的自動對應到資料庫的欄位.
-第一行中我們做的就只是所剛剛說的 (記住 `params[:article]` 中包含著我們有興趣的屬性). 
-接下來, `@article.save` 是負責將模型中資料存進資料庫. 
-最後在將頁面導向晚點會定義的`show` action.
+我們來看看這段程式碼進行了什麼動作：每個 Rails 模型都可以根據各自的屬性來初始化（實體化）， 這些屬性都被自動的對應到各自的資料庫的欄位。
+第一行中我們做的就只是所剛剛說的 (記住 `params[:article]` 中包含著我們有興趣的屬性) 。 
+下一行， `@article.save` 負責將模型中資料存進資料庫。 
+最後再將頁面導向晚點會定義的`show` action 。
 
-TIP: 你應該會想知道為什麼 `Article.new` 的 `A` 是大寫的, 而卻在本文中其他地方有出現過article都是使用小寫.
-在上面的程式碼中, 我們所使用的是定義在 `\models\article.rb` 中名為 `Article` 的類別. 在 Ruby 中類別名稱都是以開頭為大寫的方式命名.
+TIP：你應該想知道為什麼 `Article.new` 的 `A` 是大寫的，而本文中其他地方出現的 article 卻是使用小寫。
+在上面的程式碼中，我們所使用的是定義在 `\models\article.rb` 中名為 `Article` 的類別。在 Ruby 中類別名稱都是以開頭為大寫的方式命名。
 
-TIP: `@article.save` 執行完會回傳一個boolean值來確定是否成功存進資料庫，詳細的我們晚點介紹.
+TIP： `@article.save` 執行完會回傳一個boolean值來表示是否成功存進資料庫，詳細的我們晚點介紹。
 
-如果你現在連到 <http://localhost:3000/articles/new> 你 *幾乎* 快完成新增文章的動作了. 再加把勁! 現在你應該會遇到以下的錯誤:
+如果你現在連到 <http://localhost:3000/articles/new> 你 *幾乎* 快完成新增文章的動作了。再加把勁! 現在你應該會遇到以下的錯誤：
 
 ![Forbidden attributes for new article]
 (images/getting_started/forbidden_attributes_for_new_article.png)
 
-Rails 有許多安全的機制可以幫助你開發出有安全性應用程式,
-現在你將使用其中的一個機制. 它被稱做 [strong_parameters](http://guides.rubyonrails.org/action_controller_overview.html#strong-parameters) ，這個機制需要我們告訴 Rails 哪些 parameters 是可以在 controller 的 action 中使用。
+Rails 有許多安全的機制可以幫助你開發出有安全性的應用程式，
+現在你遇到了其中的一個機制。它被稱做 [strong parameters](http://guides.rubyonrails.org/action_controller_overview.html#strong-parameters) ，
+這個機制需要我們明確的告訴 Rails 哪些 parameters 可以在 controller 的 action 中使用。
 
-為什麼還要這麼麻煩呢? 雖然原本作法可以將 parameters 自動地從 controller 一次代入到模型中，讓開發者的工作簡單了許多,但是這個方便的方法卻也允許了一些惡意的使用方式. 如果出現一個向 server 發出的請求，而且這個請求被偽裝成新增文章表單所送出的資料，其中也包含著會破壞應用程式正常運作的額外欄位值，這時候該怎麼辦? 這些惡意資料將會隨著正常資料 'mass assigned（大量賦值）' 進到模型中以及資料庫 - 如此一來應用程式就有被破壞的潛在性或是更糟的情況.
+為什麼還要這麼麻煩呢？雖然將 parameters 自動地從 controller 一次代入到模型中，讓開發者的工作簡單了許多，但是這個方便的方法卻允許了一些惡意的使用。如果出現一個向 server 發出的請求，而且這個請求被偽裝成新增文章表單所送出的資料，其中也包含著會破壞應用程式正常運作的額外欄位值，這時候會發生甚麼事？這些惡意資料將會隨著正常資料 'mass assigned（大量賦值）' 進到模型中以及資料庫 - 如此一來應用程式就有被破壞的潛在性或是更糟。
 
-我們必須將  controller parameters 設置白名單來避免錯誤的 mass assignment
-在這個例子中，我們不但需要 `title` 和 `text` 這兩個 parameters 還要將這兩個 parameters 加入允許清單之後才能夠正確執行 create 動作 
-要達成上述動作會用到的兩個語法 `require` 和 `permit`。 現在我們在 `create` action 稍作一行修正：
+我們必須將  controller parameters 設置白名單來避免錯誤的 mass assignment ，
+在這個例子中，我們需要將 `title` 和 `text` 這兩個 parameters 加入允許清單後才能正確執行 create 動作，
+要達成上述動作會用到的兩個語法 `require` 和 `permit` 。現在我們在 `create` action 稍作一行修正：
 
 ```ruby
   @article = Article.new(params.require(:article).permit(:title, :text))
 ```
 
-而修改後的 parameters 部份習慣上會被提出來放到屬於他自己的 method 中，如此一來便可在同一個 controller 不同 action 中使用, 就像 `create` 和 `update`. 除了解決 mass assignment 問題之外, 這裡通常會使用 `private` method 來確保不會在非預期的地方被呼叫. 以下是修改後的結果:
+而 parameters 的部份習慣上會被提出來變成一個 method ，如此一來便可被這個 controller 中的其他 actions 使用，如 `create` 和 `update` 。除了解決 mass assignment 問題之外，我們通常會將 method 設為 `private` ，來確保不會在非預期的地方被呼叫。以下是修改後的結果：
 
 ```ruby
 def create
@@ -561,29 +562,29 @@ private
   end
 ```
 
-TIP: 更多資訊, 請參考
+TIP：更多資訊，請參考
 [this blog article about Strong Parameters]
-(http://weblog.rubyonrails.org/2012/3/21/strong-parameters/).
+(http://weblog.rubyonrails.org/2012/3/21/strong-parameters/) 。
 
 ### 顯示文章
 
-如果你再次送出表單, Rails 會提示找不到`show` action. 
-這個提示用處不大, 所以我們還是先新增 `show` action.
+如果你再次送出表單， Rails 會提示找不到 `show` action 。 
+這樣很不方便，所以我們還是先新增 `show` action 。
 
-如同之前我們所看 `rake routes` 的輸出結果, 關於 `show` action 的 route 規則如下：
+如同之前我們所看 `rake routes` 的輸出結果，關於 `show` action 的 route 規則如下：
 
 ```
 article GET    /articles/:id(.:format)      articles#show
 ```
 
 這個特別的語法 `:id` 告訴了 rails 這個 route 規則預期會收到一個 `:id`
-parameter, 在我們的例子中這個 parameter 會是文章的 id.
+parameter ，在我們的例子中這個 parameter 會是文章的 id 。
 
-如同之前我們所做過的, 我們要在 `app/controllers/articles_controller.rb` 中新增 `show` action 以及新增相對應的 view.
+如同之前我們所做過的，我們要在 `app/controllers/articles_controller.rb` 中新增 `show` action 以及新增相對應的 view 。
 
-NOTE: 我們有一個習慣性作法就是將在 controller 中的標準 CRUD actions 按照以下順序擺放: `index`, `show`, `new`, `edit`, `create`, `update`, `destroy`. 當然你可以使用自己的擺放順序, 但是請記住一些像之前所提到過的 public methods, 這些 methods 在 controller 中一定要放在 private 或 protected method 之前才行.
+NOTE：我們習慣在 controller 中的擺放標準 CRUD actions 時按照以下順序： `index` ， `show` ， `new` ， `edit` ， `create` ， `update` ， `destroy` 。當然你可以有自己的擺放順序，但是請記住這些是 public methods ，像之前所提到過的， 這些 methods 在 controller 中一定要放在 private 和 protected method 之前才行。
 
-考慮上述的習慣作法, 我們來新增 `show` action, 如下:
+考慮上述的習慣作法，我們來新增 `show` action ，如下：
 
 ```ruby
 class ArticlesController < ApplicationController
@@ -597,10 +598,10 @@ class ArticlesController < ApplicationController
   # snipped for brevity
 ```
 
-這邊有幾件事要記下來. 我們透過 `params[:id]` 來取得在請求中 `:id` parameter，並且將此 parameter 代入到 `Article.find` 來找到我們想看的文章。
-我們也要使用一個 instance variable（實例變數） (以`@`開頭) 來參考到一個文章物件. 我們會這麼做是因為 Rails 會將所有的 instance variable 送到 view 中.
+這邊有幾件事要注意。我們透過 `params[:id]` 來取得請求中的 `:id` parameter，並且將此 parameter 代入到 `Article.find` 來找到我們想看的文章。
+我們還使用了一個 instance variable（實例變數） (以`@`開頭) 來參考到一個文章物件。我們會這麼做是因為 Rails 會將所有的 instance variable 送到 view 中。
 
-現在就來建立 view `app/views/articles/show.html.erb` 並且新增以下內容:
+現在就來建立 view `app/views/articles/show.html.erb` ，並且新增以下內容：
 
 ```html+erb
 <p>
@@ -614,22 +615,22 @@ class ArticlesController < ApplicationController
 </p>
 ```
 
-完成以上步驟後, 你現在應該總算可以新增一篇文章了.
-現在就連到 <http://localhost:3000/articles/new> 並且試試看!
+完成以上步驟後，你應該總算可以新增一篇文章了。
+現在就連到 <http://localhost:3000/articles/new> 並且試試看！
 
 ![Show action for articles](images/getting_started/show_action_for_articles.png)
 
 ### 顯示所有文章
 
-目前我們仍然需要一個條列出所有文章的功能, 所以一起來完成它吧.
-根據 `rake routes` 的輸出結果，有一條 route 規則正是為此制定:
+目前我們仍然需要一個條列出所有文章的功能，所以一起來完成它吧。
+根據 `rake routes` 的輸出結果，有一條 route 規則正是為此制定：
 
 ```
 articles GET    /articles(.:format)          articles#index
 ```
 
-接下來先找到 `app/controllers/articles_controller.rb` ，並且將檔案裡頭的 `ArticlesController` 中加入相對應於這個 route 規則的 `index` action.
-在我們新增 `index` action 的時候, 通常習慣的作法是放在 controller 的第一個 method 的位置上，那我們就開始動手作:
+接下來先找到 `app/controllers/articles_controller.rb` ，並且將檔案裡頭的 `ArticlesController` 中加入相對應於這個 route 規則的 `index` action 。
+在我們新增 `index` action 的時候，習慣放在 controller 的第一個 method 的位置上，那我們就開始動手作：
 
 ```ruby
 class ArticlesController < ApplicationController
@@ -647,7 +648,7 @@ class ArticlesController < ApplicationController
   # snipped for brevity
 ```
 
-最後,我們在替這個 action 新增一個 view 檔案 `app/views/articles/index.html.erb`:
+最後，我們在替這個 action 新增一個 view 檔案 `app/views/articles/index.html.erb` ：
 
 ```html+erb
 <h1>Listing articles</h1>
@@ -671,27 +672,27 @@ class ArticlesController < ApplicationController
 
 ### 建立連結
 
-你現在可以新增文章，顯示文章，並且顯示文章清單. 現在就來建立一些連結來前往這些頁面.
+你現在可以新增文章，顯示文章，並且顯示文章清單。現在就來建立一些連結來前往這些頁面。
 
-打開 `app/views/welcome/index.html.erb` 並且修改成如下:
+打開 `app/views/welcome/index.html.erb` 並且修改成如下：
 
 ```html+erb
 <h1>Hello, Rails!</h1>
 <%= link_to 'My Blog', controller: 'articles' %>
 ```
 
-這個 `link_to` method 是Rails' 內建的其中一個view helpers. 他是用來建立一個文字超連結，除了顯示之外還可以連結指定頁面- 在這個例子中, 是連結到顯示文章列表的頁面.
+這個 `link_to` method 是 Rail 內建的其中一個 view helpers 。他是用來建立一個文字超連結，並連結指定頁面 - 在這個例子中，是連結到顯示文章列表的頁面。
 
-我們也將其他 views 建立連結, 首先將這個
-"New Article" 連結新增到 `app/views/articles/index.html.erb`, 並且放在 `<table>` 上面:
+我們也為其他 views 建立連結，首先將這個
+"New Article" 連結新增到 `app/views/articles/index.html.erb` ，並且放在 `<table>` 上面：
 
 ```erb
 <%= link_to 'New article', new_article_path %>
 ```
 
-這個連結將會連到新增文章的表單頁面.
+這個連結將會連到新增文章的表單頁面。
 
-在 `app/views/articles/new.html.erb` 中 form 的底下新增一個連結來返回到 `index` action:
+在 `app/views/articles/new.html.erb` 中 form 的底下新增一個連結來返回 `index` action：
 
 ```erb
 <%= form_for :article, url: articles_path do |f| %>
@@ -701,7 +702,7 @@ class ArticlesController < ApplicationController
 <%= link_to 'Back', articles_path %>
 ```
 
-最後，在將 `app/views/articles/show.html.erb` 這個 template 也新增一個可以返回 `index` action 的連結, 如此一來觀看單篇文章的人也可以返回文章清單來觀看:
+最後，在 `app/views/articles/show.html.erb` 這個 template 也新增一個可以返回 `index` action 的連結， 如此一來觀看單篇文章的人也可以返回文章清單：
 
 ```html+erb
 <p>
@@ -717,24 +718,24 @@ class ArticlesController < ApplicationController
 <%= link_to 'Back', articles_path %>
 ```
 
-TIP: 如果你要連到的 action 都在同一個 controller 下, 你無需再次定義這個 `:controller` 選項, 因為 Rails 預設的情況下會使用當前的 controller.
+TIP：如果你要連到的 action 都在同一個 controller 下，你無需指定 `:controller` 選項，因為 Rails 預設的情況下會使用當前的 controller 。
 
-TIP: 在 development 模式下 (你現在所有的操作都在此預設模式下), 當瀏覽器發出請求的時候 Rails 就會重新載入你的應用程式, 所以即使做了一點修改也無需停止並重新啟動 web 服務.
+TIP：在 development 模式下 (你現在所有的操作都在此預設模式下) ，每次瀏覽器發出請求的時候 Rails 就會重新載入你的應用程式，所以即使做了一點修改也無需停止並重新啟動 web 服務。
 
 ### 加入一些驗證
 
-目前的模型檔案 `app/models/article.rb` 目前內容非常簡單:
+目前的模型檔案 `app/models/article.rb` 內容非常簡單：
 
 ```ruby
 class Article < ActiveRecord::Base
 end
 ```
 
-雖然這個檔案內容並不多 - 但是請注意 `Article` 類別是繼承於 `ActiveRecord::Base` . 
-Active Record 提供很多的功能來讓你的 Rails models 很大的自由性, 包含著一些基本的資料庫的操作 CRUD (Create, Read, Update, Destroy), 資料的驗證, 複雜的搜尋，還有將多個模型彼此關聯的功能.
+雖然這個檔案內容並不多 - 但是請注意 `Article` 類別是繼承自 `ActiveRecord::Base` 。 
+Active Record 提供很多的功能來讓你的 Rails models 很大的自由性，包含一些基本的資料庫的操作 CRUD (Create ， Read ， Update ， Destroy) ，資料的驗證，複雜的搜尋，還有將多個模型彼此關聯的功能。
 
-Rails 提供了一些 methods 來幫你把送到模型的資料作驗證動作.
-打開 `app/models/article.rb` 並且編輯:
+Rails 提供了一些 methods 來幫你驗證送到模型的資料。
+打開 `app/models/article.rb` 並且編輯：
 
 ```ruby
 class Article < ActiveRecord::Base
@@ -743,13 +744,13 @@ class Article < ActiveRecord::Base
 end
 ```
 
-如此一來所有的文章的title字元長度將限制至少五個字元. 除此之外 Rails 還可以在模型中驗證其他不同的條件,
-其中包含欄位是否存在或是否唯一, 欄位的資料格式, 以及是否存在相對應的物件. 
-驗證的部份 在 [Active Record Validations](active_record_validations.html) 有更詳盡的介紹.
+如此一來將確保所有文章的都有一個 title ，而且至少有五個字元長。 Rails 可以驗證模型中的各種條件，
+包含欄位是否存在或是否唯一，欄位的資料格式，以及是否存在相對應的物件。 
+驗證的部份在 [Active Record Validations](active_record_validations.html) 有更詳盡的介紹。
 
-有了驗證機制之後, 在文章資料不正確的情況下呼叫了 `@article.save`, 它會回傳 `false`. 如果你再次打開
-`app/controllers/articles_controller.rb`, 你將會注意到我們並沒有在 `create` action 中檢查 `@article.save` 的回傳結果.
-假如 `@article.save` 目前是執行失敗的, 那頁面應該要回到新增文章的頁面. 要完成這項機制, 要編輯位於  `app/controllers/articles_controller.rb` 的 `new` 以及 `create` actions:
+有了驗證機制之後，在文章資料不正確的情況下呼叫了 `@article.save` ，它會回傳 `false` 。如果你再次打開
+`app/controllers/articles_controller.rb` ，你將注意到我們並沒有在 `create` action 中檢查 `@article.save` 的回傳結果。
+假如 `@article.save` 執行失敗，我們應該要讓使用者回到新增文章的頁面。要完成這項機制，編輯位於  `app/controllers/articles_controller.rb` 的 `new` 以及 `create` actions ：
 
 ```ruby
 def new
@@ -772,14 +773,14 @@ private
   end
 ```
 
-這個 `new` action 新建立了一個名為 `@article` 的實體變數, 至於為什麼要這麼做了晚一點你就會知道了.
+這個 `new` action 建立了一個名為 `@article` 的實體變數，至於為什麼要這麼做了晚一點你就會知道了。
 
-值得注意，在 `create` action 的 `save` 回傳 `false` 時，我們是用 `render` 而不是 `redirect_to`. 
-當使用`render` method 時，可讓 `@article` 物件被傳回到 `new` template，
-這樣一來，當render完成後，表單仍然可以保留送出前的結果, 反之 `redirect_to` 則是讓瀏覽器去發出一個新的請求.
+值得注意，當 `create` action 中的 `save` 回傳 `false` 時，我們使用 `render` 而不是 `redirect_to` 。 
+當使用`render` method 時，可讓 `@article` 物件傳回到 `new` template，
+這樣一來，當 render 完成後，表單仍然可以保留送出前的結果，反之 `redirect_to` 則是讓瀏覽器去發出一個新的請求。
 
-如果你重新整理了 <http://localhost:3000/articles/new> 並且嘗試送出一個沒有標題的文章, Rails 將會導回送出前的表單頁面, 但這功能還不夠完整. 我們還必須要讓使用者知道在哪邊出錯. 為了這個功能，你需修改
-`app/views/articles/new.html.erb` 來新增錯誤訊息的提示:
+如果你重新整理了 <http://localhost:3000/articles/new> 並且嘗試送出一個沒有標題的文章， Rails 將會將你導回送出前的表單頁面，但這功能還不夠完整。我們還必須讓使用者知道哪邊出錯，因此你需要修改
+`app/views/articles/new.html.erb` 來新增錯誤訊息的提示：
 
 ```html+erb
 <%= form_for :article, url: articles_path do |f| %>
@@ -817,13 +818,13 @@ private
 <%= link_to 'Back', articles_path %>
 ```
 
-繼續看到新增的部份. 我們用 `@article.errors.any?` 來檢查是否出現錯誤, 如果有，我們就用 `@article.errors.full_messages` 來顯示錯誤清單.
+繼續看到新增的部份。我們用 `@article.errors.any?` 來檢查是否有錯誤，如果有，我們就用 `@article.errors.full_messages` 來顯示錯誤清單。
 
-`pluralize` 是一個 rails helper ，它需要代入兩個分別為數字及字串的參數. 而當數字參數大於一時, 字串變數就會使用複數型態.
+`pluralize` 是一個 rails helper ，它需要代入兩個分別為數字及字串的參數。而當數字參數大於一時， 字串參數就會自動轉換為複數型態。
 
-這也是為什麼我們要在`ArticlesController`加入`@article = Article.new`的理由，因為如果不這麼做，在view中的 `@article` 將會是`nil` , 在呼叫`@article.errors.any?` 時就會出現錯誤.
+我們需要在 `ArticlesController` 中加入 `@article = Article.new` ，否則在 view 中的 `@article` 將會是 `nil` ， 在呼叫 `@article.errors.any?` 時就會出現錯誤。
 
-TIP: Rails 會自動的將有錯誤的欄位用class 為 `field_with_errors` 的 div 包起來. 此時你可以定義css規則將這些特別標示出來。
+TIP： Rails 會自動的將有錯誤的欄位用 class 為 `field_with_errors` 的 div 包起來。你可以定義一個 css 樣式來強調它們。
 
 現在你將會得到一個有用的錯誤提示當你在嘗試去送出新增文章表單卻忘了輸入標題 <http://localhost:3000/articles/new> ：
 
@@ -831,8 +832,8 @@ TIP: Rails 會自動的將有錯誤的欄位用class 為 `field_with_errors` 的
 
 ### 更新文章
 
-我們已經看過了 CRUD 的 "CR" 部份了. 現在我們來著重在 "U" 這部份, updating
-articles（更新文章）.
+我們已經看過了 CRUD 的 "CR" 部份了。現在我們來著重在 "U" 這部份， updating
+articles（更新文章） 。
 
 我們第一個採取的步驟是在 `ArticlesController` 中新增 `edit` action ，通常這個 action 會擺放在 `new` 跟 `creat` actions 之間，如下所示：
 
@@ -856,7 +857,7 @@ def create
 end
 ```
 
-接下要建立的 view 可能會包含一個類似於新增文章時所用到的表單. 先建立並命名這個檔案 `app/views/articles/edit.html.erb`並且編輯內容如下:
+接下要建立的 view 會包含一個類似於新增文章時所用到的表單。先建立並命名這個檔案 `app/views/articles/edit.html.erb` 並且編輯內容如下：
 
 ```html+erb
 <h1>Editing article</h1>
@@ -896,16 +897,16 @@ end
 <%= link_to 'Back', articles_path %>
 ```
 
-這個表單之後會被 `update` action 所使用, 雖然目前還沒定義，不過也快了.
+這個表單之後會被 `update` action 所使用，雖然目前還沒定義，不過也快了。
 
-表單中的 `method: :patch` 選項告訴 Rails 我們想使用 `PATCH` HTTP method 來送出表單，而我們會想使用這個 HTTP method 來更新資料的因素，根據的就是 REST protocol .
+表單中的 `method: :patch` 選項告訴 Rails 我們想使用 `PATCH` HTTP method 來送出表單，因為根據 REST protocol ，我們應該使用 HTTP method 來更新資料。
 
-`form_for` 的第一個參數可以是一個物件,例如 `@article` ，而這個物件會讓 helper 使用它的欄位值來填入表單. 傳入一個跟instance variable (`@article`)相同名子的symbol (`:article`) 是一樣的意思. 以上是這邊的介紹.
+`form_for` 的第一個參數也可以是一個物件，例如 `@article` ，這個物件會讓 helper 使用它的欄位值來填入表單。而傳入一個跟 instance variable (`@article`) 相同名子的 symbol (`:article`) 會有一樣的效果。以上是這邊的介紹。
 更多詳細細節請參考 [form_for documentation]
-(http://api.rubyonrails.org/classes/ActionView/Helpers/FormHelper.html#method-i-form_for).
+(http://api.rubyonrails.org/classes/ActionView/Helpers/FormHelper.html#method-i-form_for) 。
 
-下一步，我們需要在 `app/controllers/articles_controller.rb` 建立一個 `update` action.
-並且擺放在 `create` action 跟 `private` method 之間:
+下一步，我們需要在 `app/controllers/articles_controller.rb` 建立一個 `update` action 。
+並且擺放在 `create` action 跟 `private` method 之間：
 
 ```ruby
 def create
@@ -934,13 +935,13 @@ private
   end
 ```
 
-當你想更新一個存在的資料時，你就會使用這個新增的method `update`, 而這個 method 會接受傳入一個Hash，其中包含著你想更新的屬性. 如果更新送出的時候發生錯誤，那我們就如同之前的作法，回到表單頁面.
+當你想更新一筆存在的資料時，你就會使用這個新增的 method `update` ，而這個 method 會接受一個 Hash ，其中包含你想更新的屬性。如果更新送出的時候發生錯誤，那我們就如同之前的作法，回到表單頁面。
 
-`article_params` method 是在新增 create action 的時候所定義的，現在我們再次的使用它.
+`article_params` method 是在新增 create action 的時候所定義的，現在我們再次的使用它。
 
-TIP: 你並不需要將所有的要更新的屬性傳入到 `update`. 舉例來說, 如果你呼叫了 `@article.update(title: 'A new title')` 那麼 Rails 只會更新 `title` 的屬性, 並不會動到其他部份.
+TIP：你並不需要將所有的屬性傳入到 `update` 。舉例來說，如果你呼叫了 `@article.update(title: 'A new title')` 那麼 Rails 只會更新 `title` 屬性，並不會動到其他部份。
 
-最後，我們希望在文章列表中新增一個可以對應到`edit` action 的連結, 於是我們在 `app/views/articles/index.html.erb` 中"Show"連結的隔壁新增這個連結:
+最後，我們希望為文章列表中的每篇文章新增一個可以對應到 `edit` action 的連結，於是我們在 `app/views/articles/index.html.erb` 中新增這個連結，並把它放在 "Show" 連結的隔壁：
 
 ```html+erb
 <table>
@@ -961,7 +962,7 @@ TIP: 你並不需要將所有的要更新的屬性傳入到 `update`. 舉例來�
 </table>
 ```
 
-現在我們也在 `app/views/articles/show.html.erb` template 一樣新增連結, 如此一來就會有一個 "Edit" 連結在顯示 article 的頁面出現. 這裡我們選擇擺放在 template 的最下面:
+現在我們也在 `app/views/articles/show.html.erb` template 新增連結，如此一來顯示 article 的頁面也會有一個 "Edit" 連結。這裡我們將連結放在 template 的最下面：
 
 ```html+erb
 ...
@@ -970,17 +971,17 @@ TIP: 你並不需要將所有的要更新的屬性傳入到 `update`. 舉例來�
 <%= link_to 'Edit', edit_article_path(@article) %>
 ```
 
-這就是目前我們的應用程式長的樣子:
+這就是目前我們的應用程式長的樣子：
 
 ![Index action with edit link](images/getting_started/index_action_with_edit_link.png)
 
 ### 使用 partials 刪除 views 中重複部份
 
-`edit` 頁面是非常相似於 `new` 頁面；事實上，他們在顯示表單的部份是相同的。我們現在就利用 view partial 來刪除重複的部份。習慣上， partial 檔案會以底線為開頭來命名。
+我們的 `edit` 頁面和 `new` 頁面非常相似；事實上，他們顯示相同的表單。我們現在就用 view partial 刪除重複的部份。 在習慣上，partial 的檔案會以底線為開頭命名。
 
-TIP: 你可以從 [Layouts and Rendering in Rails](layouts_and_rendering.html) 讀到更多關於 partials 。
+TIP：你可以從 [Layouts and Rendering in Rails](layouts_and_rendering.html) 讀到更多關於 partials 。
 
-首先建立檔案 `app/views/articles/_form.html.erb` 並且新增以下內容：
+建立檔案 `app/views/articles/_form.html.erb` 並且新增以下內容：
 
 ```html+erb
 <%= form_for @article do |f| %>
