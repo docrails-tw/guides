@@ -16,7 +16,7 @@
 
 * Backtrace
 
-* Model
+* Model 模型
 
 * View
 
@@ -39,6 +39,12 @@
     通常是翻譯成網址。
 
 * Web
+
+* PID
+
+* Symbol
+
+* Active Record
 
 翻譯術語
 ------------
@@ -73,6 +79,10 @@ A
 * Attribute 屬性
 
     Model 的屬性、HTML 的屬性。
+
+* Application Builder 應用專案生成器
+
+* Asset 資源 
 
 B
 ------
@@ -110,6 +120,8 @@ C
 
 * Code 程式碼
 
+* Collection 集合
+
 * Collection Action 集合動作
 
 * Collection Route 集合路由
@@ -121,6 +133,8 @@ C
 * Command 命令
 
 * Command Line 命令列
+
+* Command Line options 命令列參數
 
 * Commit 提交
 
@@ -167,12 +181,20 @@ D
 
 * Dynamic Segments 動態片段
 
+* Dependance 相依套件
+
+* Dollar sign 錢號
+
+* Deploy 佈署
+
 E
 ------
 
 * Exception 異常
 
 * Endpoint 端點
+
+* Extended module 擴充模組
 
 F
 ------
@@ -214,6 +236,10 @@ F
 * Filter Methods 濾動方法
 
     通常電子學的世界裡，我們有濾波器，給定輸入（以波的形式），經濾波器處理，再輸出，得名濾波器。但在 Rails 的世界裡，`before_filter` 總是用來過濾“動作”，或是在動作前執行程式。所以我用“濾動”這個詞。
+
+* Framework 框架
+
+* Fixture 建立模擬資料
 
 G
 ------
@@ -279,6 +305,8 @@ I
 * Iterate 迭代
 
 * Iterator 迭代器
+
+* Identifying object 識別物件
 
 J
 ------
@@ -451,6 +479,10 @@ R
 
     負責解析路由。指得是以 [Journey](https://github.com/rails/journey) 所實作的路由器。
 
+* Refactor 重構
+
+* Runtime 直譯器
+
 S
 ------
 
@@ -506,6 +538,10 @@ S
 
 * Sub-template 子模版
 
+* Setup 配置
+
+* Smoke test 煙霧測試
+
 T
 ------
 
@@ -530,6 +566,8 @@ T
 * Trigger 觸發器
 
     資料庫特有的功能之一。
+
+* Testing harness 測試工具
 
 U
 ------
