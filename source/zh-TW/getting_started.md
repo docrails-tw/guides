@@ -3,27 +3,27 @@ Rails 起步走
 
 本文將介紹如何使用 Ruby on Rails。
 
-在你讀過這篇之後，應可以學習到：
+讀完本篇，您將了解：
 
-* 如何安裝 Rails，如何新建立一個 Rails 應用專案，並且如何連接到資料庫。
-* Rails 應用專案的一般配置。
-* MVC (Model, View, Controller) 跟 RESTful 設計的基本原則。
-* 如何快速產生可執行的 Rails 應用程式。
+* 如何安裝 Rails，如何新建 Rails 應用程式，如何把應用程式和資料庫連結起來；
+* Rails 應用程式的檔案結構；
+* MVC（Model、View、Controller）和 RESTful 設計的基本原則；
+* 如何快速產生可執行的 Rails 應用程式；
 
 --------------------------------------------------------------------------------
 
 學前所需的知識
------------------
+-------------
 
-本文是為了想從頭學 Rails 的初學者所寫，所以不需要具備任何 Rails 的開發經驗。不過你須先安裝：
+本文是為了想從頭學 Rails 的初學者所寫，無需具備任何 Rails 的開發經驗。不過需要先安裝：
 
 * [Ruby](http://www.ruby-lang.org/en/downloads) 1.9.3 及以上版本。
-* [RubyGems](http://rubygems.org) 一個伴隨 Ruby 1.9+ 安裝的套件管理程式。如果想學習更多有關於 RubyGems，請參考 [RubyGems Guides](http://guides.rubygems.org) 。
+* [RubyGems](http://rubygems.org) 一個伴隨 Ruby 1.9+ 安裝的套件管理程式。如果想學習更多有關於 RubyGems，請參考 [RubyGems 指南](http://guides.rubygems.org) 。
 * [SQLite3 資料庫](http://www.sqlite.org) 。
 
-Rails 是一個使用 Ruby 開發的 Web 框架。如果沒有 Ruby 相關的經驗就開始學 Rails，你將會發現這是一條陡峭的學習曲線。這裡提供幾個 Ruby 學習的線上資源：
+Rails 是一個使用 Ruby 開發的 Web 框架。如果沒有 Ruby 相關的經驗就開始學 Rails，將會發現學習曲線非常陡峭。這裡提供幾個 Ruby 學習的線上資源：
 
-* [Ruby Programming Language 官方網站](https://www.ruby-lang.org/en/documentation/) 。
+* [Ruby 程式語言的官方網站](https://www.ruby-lang.org/zh_tw/documentation/) 。
 * [reSRC 免費程式設計書單](http://resrc.io/list/10/list-of-free-programming-books/#ruby) 。
 
 值得注意的，有些不錯的線上資源一般是 Ruby 1.8 版或更舊的 1.6 版，所以這些線上資源沒有涵蓋 Rails 一些新的語法。
@@ -47,7 +47,7 @@ Rails 是一個有先見之明的軟體。
 	"Every piece of knowledge must have a single, unambiguous, authoritative
   representation within a system. (系統中每個功能的構思都必須要有單一、明確且讓人認同的表達方式)"
 	儘量避免一再重複的相同資訊，所寫的程式才容易維護、有擴展性且不容易出現 bug 。
-	
+
 * **Convention Over Configuration (約定優於配置)： ** Rails 不希望你浪費太多時間無止境的配置設定檔，而是直接把最好的一些 Web 開發方式作為預設，讓你熟悉之後就可以上手了。
 
 建立一個新的 Rails 專案
@@ -98,7 +98,7 @@ $ rails --version
 ### 建立一個 Blog 應用程式
 
 Rails 中有許多被稱之為產生器 (generators) 的腳本 (scripts) ，主要用來配置開發所需要的檔案及工具，讓開發可以更加順手。
-而現在要用的其中一種產生器就是可以幫助我們建構出一個新的 Rails 應用專案，如此一來就不用再花時間重頭寫起。
+而現在要用的其中一種產生器就是可以幫助我們建構出一個新的 Rails 應用程式，如此一來就不用再花時間重頭寫起。
 
 要使用產生器之前，請先打開命令提示視窗，切換到有存取權限的目錄接著輸入：
 
@@ -106,9 +106,9 @@ Rails 中有許多被稱之為產生器 (generators) 的腳本 (scripts) ，主�
 $ rails new blog
 ```
 
-執行完後會在 blog 目錄下建立一個名為 `Blog` 的 Rails 應用專案，而執行過程中會透過 `bundle install` 命令安裝在 `Gemfile` 上所提到的 gem 相依套件。
+執行完後會在 blog 目錄下建立一個名為 `Blog` 的 Rails 應用程式，而執行過程中會透過 `bundle install` 命令安裝在 `Gemfile` 上所提到的 gem 相依套件。
 
-TIP: 你可以執行 `rails new -h` 看到所有 Rails 應用專案生成器 (Rails application builder) 可接受的命令列參數 (command line options) 。
+TIP: 你可以執行 `rails new -h` 看到所有 Rails 應用程式生成器 (Rails application builder) 可接受的命令列參數 (command line options) 。
 
 建立 blog 專案之後，切換到它的目錄下：
 
@@ -116,13 +116,13 @@ TIP: 你可以執行 `rails new -h` 看到所有 Rails 應用專案生成器 (Ra
 $ cd blog
 ```
 
-在 `blog` 這個目錄中有許多自動生成的檔案和資料夾，而這些都是構成 Rails 應用專案的重要元素
+在 `blog` 這個目錄中有許多自動生成的檔案和資料夾，而這些都是構成 Rails 應用程式的重要元素
 本篇教學中，大部份會著重在 `app` 這個資料夾，話雖如此，這裡還是附上表格，將所有預設的檔案及資料夾的功能做個簡單介紹：
 
 | 檔案／資料夾| 用途    |
 | ----------- | ------- |
 |app/|包含著應用程式的 controllers 、 models 、 views 、 helpers 、 mailers 以及 assets 等部份。 接下來的教學中，你將會花多數的心力在這個資料夾上。|
-|bin/|包含著像是一開始建構應用專案的 rails 腳本 (script) 以及環境的配置 (setup) 、應用程式的佈署 (deploy) 、執行應用程式 (run) 的其他腳本 (scripts) 。|
+|bin/|包含著像是一開始建構應用程式的 rails 腳本 (script) 以及環境的配置 (setup) 、應用程式的佈署 (deploy) 、執行應用程式 (run) 的其他腳本 (scripts) 。|
 |config/|可以設定應用程式的路由 (routes) 、資料庫、以及其他等等。詳細請參考 [設定 Rails 應用程式](configuring.html) 。|
 |config.ru|用來啟動應用程式的 Rack 設定檔|
 |db/|包含現行資料庫的綱要 (schema) ，方便日後資料庫的移轉。|
@@ -134,7 +134,7 @@ $ cd blog
 |README.rdoc|這是一份應用程式的操作手冊。你可以編輯這個檔案來告訴別人你的應用程式的功能，以及如何安裝配置等等。|
 |test/|包含單元測試、 fixtures (建立模擬資料) ，還有其他的測試工具。 詳細請參考[測試 Rails 應用程式](testing.html) 。|
 |tmp/|包含一些暫存檔（像是快取、 PID 、 session 暫存檔） 。|
-|vendor/|主要放置第三方的程式碼。 通常 Rails 應用專案會在這放置第三方的 gem 套件。|
+|vendor/|主要放置第三方的程式碼。 通常 Rails 應用程式會在這放置第三方的 gem 套件。|
 
 Hello, Rails!
 -------------
@@ -143,13 +143,13 @@ Hello, Rails!
 
 ### 啟動 Web 服務
 
-事實上， Rails 應用專案已經有一個簡單功能。如果想看執行結果，那就必須在開發設備中啟動 web 服務，請在 `blog` 目錄輸入以下的命令：
+事實上， Rails 應用程式已經有一個簡單功能。如果想看執行結果，那就必須在開發設備中啟動 web 服務，請在 `blog` 目錄輸入以下的命令：
 
 ```bash
 $ bin/rails server
 ```
 
-TIP: 編譯 CoffeeScript 和 JavaScript 資源檔最佳化 (asset compression) 都需要一個 JavaScript 直譯器 (runtime) 。如果缺少了直譯器就執行，命令列就會跳出 `execjs` 錯誤。通常 Mac OS X 以及 Windows 都會搭載 JavaScript 直譯器。對於沒有搭載的系統，由於一開始應用專案建立的時候， Rails 將 `therubyracer` gem 套件註解在 `Gemfile` 中，所以你只要將這行反註解然後就可以安裝。 `therubyrhino` 是一個 JRuby 使用者推薦的直譯器套件，所以在 JRuby 中是直接把它定義在 `Gemfile` 。
+TIP: 編譯 CoffeeScript 和 JavaScript 資源檔最佳化 (asset compression) 都需要一個 JavaScript 直譯器 (runtime) 。如果缺少了直譯器就執行，命令列就會跳出 `execjs` 錯誤。通常 Mac OS X 以及 Windows 都會搭載 JavaScript 直譯器。對於沒有搭載的系統，由於一開始應用程式建立的時候， Rails 將 `therubyracer` gem 套件註解在 `Gemfile` 中，所以你只要將這行反註解然後就可以安裝。 `therubyrhino` 是一個 JRuby 使用者推薦的直譯器套件，所以在 JRuby 中是直接把它定義在 `Gemfile` 。
 其他一樣有支援的直譯器請參考 [ExecJS](https://github.com/sstephenson/execjs#readme) 。
 
 這將會啟動 WEBrick ，一個 Ruby 預設的 web 伺服器。想看應用程式執行中的畫面，請打開瀏覽器並在網址列上輸入 <http://localhost:3000> 。你就會看到 Rails 的預設資訊頁面了。
@@ -161,7 +161,7 @@ TIP: 如想停止 web 服務，請在已執行中的命令視窗按下 Ctrl+C �
 
 ＂Welcome aboard＂這個頁面對於新建 Rails 應用程式來說是一個 _煙霧測試 (smoke test)_ ：測試設定上是否正確，來讓此頁面正確執行。你也可以透過點擊 _About your application's environment_ 連結來看應用程式中環境相關資訊的摘要。
 
-### Rails 說 "Hello" 
+### Rails 說 "Hello"
 
 為了讓 Rails 可以顯示 "Hello"，你必須先建立一個簡單的 _controller_ 跟 _view_ 。
 
@@ -333,9 +333,9 @@ end
 
 第二部份中包含了一個 hash 。在這個 hash 中有三個 key ， `:locale` 這個 key 將決定使用什麼語系的 template ，目前預設是使用簡稱為 "en" 的英文 template 。 下一個 key `:formats` 是指 template 要使用什麼格式來回覆給使用者，這裡預設的格式是 `:html` ，所以 Rails 會尋找一個 HTML 的 template 。最後一個 `:handlers` 是告訴我們要使用什麼 _template handlers_ 來將我們的 template render 出來。其中 `:erb` 是最常用於 HTML templates 的 render ， `:builder` 則是用於 XML templates ，而 `:coffee` 是使用 CoffeeScript 來建立 JavaScript templates 。
 
-這段訊息的最後部份讓我們得知 Rails 會從什麼地方尋找 templates 。 Templates 在簡單的 Rails 應用專案中通常存放在單一位置，但是比較複雜的一些應用專案可能會有好幾種不同的路徑來擺放。
+這段訊息的最後部份讓我們得知 Rails 會從什麼地方尋找 templates 。 Templates 在簡單的 Rails 應用程式中通常存放在單一位置，但是比較複雜的一些應用程式可能會有好幾種不同的路徑來擺放。
 
-這個例子中，將被執行的是位於 `app/views/articles/new.html.erb` 的一個簡單 template 。其中檔案的副檔名有其意涵：第一個副檔名是 template 的 _format_ 名稱，而第二個則是表示使用了什麼 _handler_ 來處理。 Rails 一開始會試著從應用程式的 `app/views` 位置中找一個叫 `articles/new` 的 template 。這個 template 的 format 只能使用 `html` ，而 handler 部份必須是 `erb`, `builder` 或 `coffee` 三者其中之一才行。因為接下來想在 template 中新增一個 HTML 表單, 所以你一定要使用 `ERB` 語言。因此最後這個檔案的名稱應該取作 `articles/new.html.erb` 並且需擺放於應用專案的 `app/views` 目錄中。
+這個例子中，將被執行的是位於 `app/views/articles/new.html.erb` 的一個簡單 template 。其中檔案的副檔名有其意涵：第一個副檔名是 template 的 _format_ 名稱，而第二個則是表示使用了什麼 _handler_ 來處理。 Rails 一開始會試著從應用程式的 `app/views` 位置中找一個叫 `articles/new` 的 template 。這個 template 的 format 只能使用 `html` ，而 handler 部份必須是 `erb`, `builder` 或 `coffee` 三者其中之一才行。因為接下來想在 template 中新增一個 HTML 表單, 所以你一定要使用 `ERB` 語言。因此最後這個檔案的名稱應該取作 `articles/new.html.erb` 並且需擺放於應用程式的 `app/views` 目錄中。
 
 前往該目錄然後新增此檔案 `app/views/articles/new.html.erb` 並且寫上以下內容：
 
@@ -475,7 +475,7 @@ class CreateArticles < ActiveRecord::Migration
 end
 ```
 
-上面的 migration 建立了一個名為 `change` 的 method ，當執行這個 migration 的時候會呼叫到這個 method 。 
+上面的 migration 建立了一個名為 `change` 的 method ，當執行這個 migration 的時候會呼叫到這個 method 。
 而定義在這個 method 中的 action 是可逆的，
 也就是說 Rails 知道如何回復這個 migration 所做的更動，
 以免有一天你想回復它。當你執行這個 migration 的時候會建立一個 `articles` 資料表，其中包含著一個 string 型態的欄位以及一個 text 型態的欄位。
@@ -518,8 +518,8 @@ end
 ```
 
 我們來看看這段程式碼進行了什麼動作：每個 Rails 模型都可以根據各自的屬性來初始化（實體化）， 這些屬性都被自動的對應到各自的資料庫的欄位。
-第一行中我們做的就只是所剛剛說的 (記住 `params[:article]` 中包含著我們有興趣的屬性) 。 
-下一行， `@article.save` 負責將模型中資料存進資料庫。 
+第一行中我們做的就只是所剛剛說的 (記住 `params[:article]` 中包含著我們有興趣的屬性) 。
+下一行， `@article.save` 負責將模型中資料存進資料庫。
 最後再將頁面導向晚點會定義的`show` action 。
 
 TIP：你應該想知道為什麼 `Article.new` 的 `A` 是大寫的，而本文中其他地方出現的 article 卻是使用小寫。
@@ -568,7 +568,7 @@ TIP：更多資訊，請參考
 
 ### 顯示文章
 
-如果你再次送出表單， Rails 會提示找不到 `show` action 。 
+如果你再次送出表單， Rails 會提示找不到 `show` action 。
 這樣很不方便，所以我們還是先新增 `show` action 。
 
 如同之前我們所看 `rake routes` 的輸出結果，關於 `show` action 的 route 規則如下：
@@ -731,7 +731,7 @@ class Article < ActiveRecord::Base
 end
 ```
 
-雖然這個檔案內容並不多 - 但是請注意 `Article` 類別是繼承自 `ActiveRecord::Base` 。 
+雖然這個檔案內容並不多 - 但是請注意 `Article` 類別是繼承自 `ActiveRecord::Base` 。
 Active Record 提供很多的功能來讓你的 Rails models 很大的自由性，包含一些基本的資料庫的操作 CRUD (Create ， Read ， Update ， Destroy) ，資料的驗證，複雜的搜尋，還有將多個模型彼此關聯的功能。
 
 Rails 提供了一些 methods 來幫你驗證送到模型的資料。
@@ -745,7 +745,7 @@ end
 ```
 
 如此一來將確保所有文章的都有一個 title ，而且至少有五個字元長。 Rails 可以驗證模型中的各種條件，
-包含欄位是否存在或是否唯一，欄位的資料格式，以及是否存在相對應的物件。 
+包含欄位是否存在或是否唯一，欄位的資料格式，以及是否存在相對應的物件。
 驗證的部份在 [Active Record Validations](active_record_validations.html) 有更詳盡的介紹。
 
 有了驗證機制之後，在文章資料不正確的情況下呼叫了 `@article.save` ，它會回傳 `false` 。如果你再次打開
@@ -775,7 +775,7 @@ private
 
 這個 `new` action 建立了一個名為 `@article` 的實體變數，至於為什麼要這麼做了晚一點你就會知道了。
 
-值得注意，當 `create` action 中的 `save` 回傳 `false` 時，我們使用 `render` 而不是 `redirect_to` 。 
+值得注意，當 `create` action 中的 `save` 回傳 `false` 時，我們使用 `render` 而不是 `redirect_to` 。
 當使用`render` method 時，可讓 `@article` 物件傳回到 `new` template，
 這樣一來，當 render 完成後，表單仍然可以保留送出前的結果，反之 `redirect_to` 則是讓瀏覽器去發出一個新的請求。
 
@@ -1147,7 +1147,7 @@ end
 </table>
 ```
 
-這裡我們使用 `link_to` 的另一種用法。我們傳入 route 名稱作為第二個引數，而其他選項也以引數的方式依序傳入。其中 `:method` 以及 `:'data-confirm'` 這兩個選項是用來設定 HTML5 的屬性。如此一來，在按下連結的時候， Rails 會先顯示確認對話視窗，接下來才會用 `delete` method 送出連結。這些動作是透過 JavaScript 檔案 `jquery_ujs` 所完成的，而這個檔案在建立應用專案時就自動被包含在應用程式的 layout (版面配置) (`app/views/layouts/application.html.erb`) 中，少了這個檔案，確認對話視窗就不會顯示。
+這裡我們使用 `link_to` 的另一種用法。我們傳入 route 名稱作為第二個引數，而其他選項也以引數的方式依序傳入。其中 `:method` 以及 `:'data-confirm'` 這兩個選項是用來設定 HTML5 的屬性。如此一來，在按下連結的時候， Rails 會先顯示確認對話視窗，接下來才會用 `delete` method 送出連結。這些動作是透過 JavaScript 檔案 `jquery_ujs` 所完成的，而這個檔案在建立應用程式時就自動被包含在應用程式的 layout (版面配置) (`app/views/layouts/application.html.erb`) 中，少了這個檔案，確認對話視窗就不會顯示。
 
 ![Confirm Dialog](images/getting_started/confirm_dialog.png)
 
@@ -1158,7 +1158,7 @@ TIP: 一般來說, Rails 會多鼓勵使用 resources 物件而不是自行手�
 加入第二個模型
 ---------------------
 
-現在我們要加入第二個模型到應用專案中，而這個模型將會負責文章留言的部份。
+現在我們要加入第二個模型到應用程式中，而這個模型將會負責文章留言的部份。
 
 ### 產生一個模型
 
@@ -1558,8 +1558,8 @@ class Article < ActiveRecord::Base
 end
 ```
 
-安全行
---------
+安全
+----
 
 ### 基本認證
 
@@ -1604,14 +1604,12 @@ class CommentsController < ApplicationController
 
 對於 Rails 應用程式來說還有很多不錯的 authentication (認證) methods 。而 Rails 中常見的兩個 authentication add-ons (認證套件) 應該就是 [Devise](https://github.com/plataformatec/devise) rails engine 以及 [Authlogic](https://github.com/binarylogic/authlogic) gem 。
 
-
 ### 其他安全性考量
 
-資訊安全，尤其在 web 應用方面，是一個具深度及廣度的領域。如果想要更詳盡探討 Rails 應用程式的安全性，請參考  [Ruby on Rails Security Guide](security.html) 。
-
+資訊安全，尤其在 web 應用方面，是一個具深度及廣度的領域。如果想要更詳盡探討 Rails 應用程式的安全性，請參考 [Ruby on Rails 安全指南](security.html)。
 
 後續
-------------
+----
 
 現在你已經完成你的第一個 Rails 應用程式，你可以自在的更新這個應用程式或是實驗新的功能。但是你現在還無法不靠任何幫助來完成所有的事情，只要你對 Rails 建構或執行上有任何需要協助的部份，你可以參考或請教以下學習資源：
 
@@ -1622,13 +1620,13 @@ class CommentsController < ApplicationController
 
 Rails 本身也有內建的 help ，你可以透過 rake 這個命令列工具來產生：
 
-* 執行 `rake doc:guides` 之後，這個指令會將 Rails 指南文件複製到應用專案中 `doc/guides` 的資料夾。用瀏覽器打開 `doc/guides/index.html` 並且開始使用這份文件。
-* 執行 `rake doc:rails` 之後，這個指令會將 Rails API 文件複製到應用專案中 `doc/api` 的資料夾。用瀏覽器打開 `doc/api/index.htm` 開始使用這份文件。
+* 執行 `rake doc:guides` 之後，這個指令會將 Rails 指南文件複製到應用程式中 `doc/guides` 的資料夾。用瀏覽器打開 `doc/guides/index.html` 並且開始使用這份文件。
+* 執行 `rake doc:rails` 之後，這個指令會將 Rails API 文件複製到應用程式中 `doc/api` 的資料夾。用瀏覽器打開 `doc/api/index.htm` 開始使用這份文件。
 
-TIP: 想要在本地端產生一份 Rails 指南就必需使用一個名為 `doc:guides` 的 rake 任務，不過在執行前需先安裝 RedCloth gem 套件。所以我們要在 `Gemfile` 中新增此套件並且執行 `bundle install` ，最後才能順利執行任務。
+TIP: 想要在本地端產生一份 Rails 指南就必需使用一個名為 `doc:guides` 的 rake 任務，不過在執行前需先安裝 RedCloth Gem 套件。所以我們要在 `Gemfile` 中新增此套件，並執行 `bundle install`，最後才能順利執行任務。
 
 設定上相關問題
----------------------
+-------------
 
 在 Rails 中最簡單的方式就是將所有的外部資料存成 UTF-8 ，如果你不這麼做的話， Ruby 函式庫 以及 Rails 大多時候會將原始資料轉成 UTF-8 ，但是這保證每次都會成功轉存，所以你最好能確定所有的外部資料都是 UTF-8 。
 
