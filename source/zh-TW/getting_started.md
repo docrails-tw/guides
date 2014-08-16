@@ -17,41 +17,36 @@ Rails 起步走
 
 本文是為了想從頭學 Rails 的初學者所寫，無需具備任何 Rails 的開發經驗。不過需要先安裝：
 
-* [Ruby](http://www.ruby-lang.org/en/downloads) 1.9.3 及以上版本。
-* [RubyGems](http://rubygems.org) 一個伴隨 Ruby 1.9+ 安裝的套件管理程式。如果想學習更多有關於 RubyGems，請參考 [RubyGems 指南](http://guides.rubygems.org)。
-* [SQLite3 資料庫](http://www.sqlite.org)。
+* [Ruby](https://www.ruby-lang.org/en/downloads) 1.9.3 及以上版本。
+* [RubyGems](https://rubygems.org) 一個伴隨 Ruby 1.9+ 安裝的套件管理程式。如果想學習更多有關於 RubyGems，請參考 [RubyGems 指南](http://guides.rubygems.org)。
+* [SQLite3 資料庫](https://www.sqlite.org)。
 
 Rails 是一個使用 Ruby 開發的 Web 框架。如果沒有 Ruby 相關的經驗就開始學 Rails，將會發現學習曲線非常陡峭。這裡提供幾個 Ruby 學習的線上資源：
 
 * [Ruby 程式語言的官方網站](https://www.ruby-lang.org/zh_tw/documentation/)。
 * [reSRC 免費程式設計書單](http://resrc.io/list/10/list-of-free-programming-books/#ruby)。
 
-值得注意的，有些不錯的線上資源一般是 Ruby 1.8 版或更舊的 1.6 版，所以這些線上資源沒有涵蓋 Rails 一些新的語法。
+有些線上資源雖然很好，但是針對 Ruby 1.8 版或更舊的 1.6 版而寫，沒有涵蓋 Rails 一些新的語法。
 
 Rails 是什麼？
 --------------
 
-Rails 是一個用 Ruby 所寫的 Web 開發框架。
-這個框架把開發過程的細節的都設想周到，讓開發 Web 應用程式變成一件簡單的事情。
-與其他程式語言或開發框架比較的話，它可以讓你用更簡短的程式碼來實現相同或更完整的功能。
+Rails 是一個用 Ruby 所寫的 Web 開發框架。這個框架把開發過程的細節的都設想周到，讓開發 Web 應用程式變成一件簡單的事情。與其他程式語言或開發框架比較的話，它可以讓你用更簡短的程式碼來實現相同或更完整的功能。
 多數資深的 Rails 開發者認為 Rails 可以使開發 Web 應用程式變的更加有趣。
 
-Rails 是一個有先見之明的軟體。
-當事情有最好的處理方法，他的設計會傾向讓你去使用這個方法，而不是花很多時間去找尋跟嘗試。
-所以當學完 "The Rails Way" 之後，那你的開發效率將會進展到另一個境界。
-但有個前提就是你不能堅持把其他程式語言的開發習慣或思維帶到 Rails 中，否則一開始會對 Rails 有不好的印象。
+Rails 是一個有先見之明的軟體。當事情有最好的處理方法，他的設計會傾向讓你去使用這個方法，而不是花很多時間去找尋跟嘗試。
+所以當學完 "The Rails Way" 之後，那你的開發效率將會進展到另一個境界。但有個前提就是你不能堅持把其他程式語言的開發習慣或思維帶到 Rails 中，否則一開始會對 Rails 有不好的印象。
 
 在 Rails 開發哲學中有著兩個主要的原則：
 
 * **Don't Repeat Yourself (不要重複你自己)： ** DRY 是一個軟體工程的開發原則，是如此描述
-	"Every piece of knowledge must have a single, unambiguous, authoritative
-  representation within a system. (系統中每個功能的構思都必須要有單一、明確且讓人認同的表達方式)"
-	儘量避免一再重複的相同資訊，所寫的程式才容易維護、有擴展性且不容易出現 bug。
+	“系統中每個功能的構思都必須要有單一、明確且讓人認同的表達方式”
+	儘量避免一再重複的相同資訊，所寫的程式才容易維護、有擴展性且不容易出現 Bug。
 
-* **Convention Over Configuration (約定優於配置)： ** Rails 不希望你浪費太多時間無止境的配置設定檔，而是直接把最好的一些 Web 開發方式作為預設，讓你熟悉之後就可以上手了。
+* **(約定優於配置)**：Rails 不希望你浪費太多時間無止境的配置設定上，而是直接把最好的一些 Web 開發方式作為預設，讓你熟悉之後就可以上手了。
 
 建立一個新的 Rails 專案
-----------------------------
+---------------------
 
 閱讀這篇教學，最佳的方法是照著每個步驟走，本篇教學沒有遺漏任何程式片段或步驟，所以你可以完全跟著教學一步一步來。
 
@@ -61,25 +56,25 @@ TIP: 本文的範例中會用 `$` 來表示類 Unix 系統的命令提示字元�
 
 ### 安裝 Rails
 
-首先打開命令提示視窗。在 Mac OS X 底下請打開 Terminal.app ，如果是在 Windows 下請在開始功能表選擇＂執行＂並且輸入 'cmd.exe' 後開啟命令視窗。只要是有錢號 `$` 開頭的命令都是要在命令列上執行。現在就用命令檢查是否已安裝最新的 Ruby 版本：
+首先打開命令列。在 Mac OS X 底下請打開 Terminal.app ，如果是在 Windows 下請在開始功能表選擇“執行”並且輸入 `cmd.exe` 後開啟命令視窗。只要是錢號 `$` 開頭的命令，都是在命令列上執行。現在就用命令檢查，是否已安裝最新的 Ruby 版本：
 
 TIP: 其實有很多工具可以幫助你在系統上快速安裝 Ruby 或是 Ruby on Rails。 像 Windows 使用者可以參考 [Rails Installer](http://railsinstaller.org)，而 Mac OS X 使用者則有 [Tokaido](https://github.com/tokaido/tokaidoapp) 可以選擇。
 
 ```bash
 $ ruby -v
-ruby 2.0.0p353
+ruby 2.1.2p95
 ```
 
 如果還沒安裝 Ruby ，可以看一下 [ruby-lang.org](https://www.ruby-lang.org/en/installation/) ，連結裡會有針對你所用系統的 Ruby 安裝方法。
 
-很多熱門的類 Unix 系統都會搭載 SQLite3 的 acceptable 版本。而 Windows 或其他作業系統的安裝教學請參考 [SQLite3 的網站](http://www.sqlite.org)。
-現在來確定是否有正確安裝且正確新增到 Path 環境變數中：
+熱門的類 Unix 系統都會搭載 SQLite3 的 acceptable 版本。而 Windows 或其他作業系統的安裝教學請參考 [SQLite3 的網站](https://www.sqlite.org)。
+現在來確定是否有正確安裝且正確新增到 `PATH` 環境變數中：
 
 ```bash
 $ sqlite3 --version
 ```
 
-SQLite 會在命令列上顯示版本資訊。
+命令列會顯示 SQLite 的版本資訊。
 
 接下來使用 RubyGems 提供的命令 `gem install` 來安裝 Rails ：
 
@@ -93,7 +88,7 @@ $ gem install rails
 $ rails --version
 ```
 
-如果有看到 "Rails 4.2.0" 的訊息，那你可以繼續接下來的步驟。
+如果有看到“Rails 4.2.0”的訊息，那你可以繼續接下來的步驟。
 
 ### 建立一個 Blog 應用程式
 
@@ -106,34 +101,33 @@ Rails 中有許多被稱之為產生器 (generators) 的腳本 (scripts) ，主�
 $ rails new blog
 ```
 
-執行完後會在 blog 目錄下建立一個名為 `Blog` 的 Rails 應用程式，而執行過程中會透過 `bundle install` 命令安裝在 `Gemfile` 上所提到的 gem 相依套件。
+執行完後會在 `blog` 目錄下建立一個名為 `Blog` 的 Rails 應用程式，而執行過程中會透過 `bundle install` 命令安裝 `Gemfile` 上所列出的相依 Gem。
 
-TIP: 你可以執行 `rails new -h` 看到所有 Rails 應用程式生成器 (Rails application builder) 可接受的命令列參數 (command line options)。
+TIP: 執行 `rails new -h` 可以看到所有 Rails 應用程式產生器可接受的命令列參數。
 
-建立 blog 專案之後，切換到它的目錄下：
+建立 blog 專案之後，切換到目錄裡：
 
 ```bash
 $ cd blog
 ```
 
-在 `blog` 這個目錄中有許多自動生成的檔案和資料夾，而這些都是構成 Rails 應用程式的重要元素
-本篇教學中，大部份會著重在 `app` 這個資料夾，話雖如此，這裡還是附上表格，將所有預設的檔案及資料夾的功能做個簡單介紹：
+在 `blog` 這個目錄中有許多自動產生的檔案和資料夾，這些是構成 Rails 應用程式的重要元素。本篇教學中，大部份會著重在 `app` 這個資料夾，話雖如此，這裡還是附上一張表，將所有預設的檔案及資料夾的功能做個簡單介紹：
 
 | 檔案／資料夾| 用途    |
 | ----------- | ------- |
-|app/|包含著應用程式的 controllers 、 models 、 views 、 helpers 、 mailers 以及 assets 等部份。 接下來的教學中，你將會花多數的心力在這個資料夾上。|
-|bin/|包含著像是一開始建構應用程式的 rails 腳本 (script) 以及環境的配置 (setup) 、應用程式的佈署 (deploy) 、執行應用程式 (run) 的其他腳本 (scripts)。|
-|config/|可以設定應用程式的路由 (routes) 、資料庫、以及其他等等。詳細請參考 [設定 Rails 應用程式](configuring.html)。|
+|app/|包含著應用程式的控制器、models、views、輔助方法、mailers 以及 assets 等。 接下來的教學中，你將會花多數的心力在這個資料夾上。|
+|bin/|包含著像是一開始建構應用程式的 `rails` 腳本以及環境的設定檔、以及用來執行和部署應用程式的腳本|
+|config/|可以設定應用程式的路由 (routes)、資料庫、以及其他等等。詳細請參考[設定 Rails 應用程式](configuring.html)。|
 |config.ru|用來啟動應用程式的 Rack 設定檔|
-|db/|包含現行資料庫的綱要 (schema) ，方便日後資料庫的移轉。|
-|Gemfile<br>Gemfile.lock|這兩個檔案可以指定 Rails application 所要安裝的 gem 相依套件，並且交由 Bundler gem 做管理。更多關於 Bundler 的資訊請看 [Bundler 的網站](http://bundler.io)。|
+|db/|包含資料庫的綱要檔案以及資料庫遷移檔案。|
+|Gemfile、Gemfile.lock|這兩個檔案可以指定 Rails application 所要安裝的 gem 相依套件，並且交由 Bundler gem 做管理。更多關於 Bundler 的資訊請看 [Bundler 的網站](http://bundler.io)。|
 |lib/|包含應用程式的擴充模組。|
 |log/|包含應用程式的 log 檔案。|
-|public/|唯一能再網路上被檢索的目錄，裡面包含著靜態檔案和編譯過後的一些資源 (assets)。|
+|public/|唯一對外開放的目錄，裡面包含著靜態檔案和編譯過後的 Assets。|
 |Rakefile|Rakefile 主要目的是找到並載入可從命令列執行的任務。其中內建任務是定義在各個 Rails 元件當中。若想新增自己寫的任務，不要直接修改 Rakefile，我們傾向把自訂的任務新增到 lib/tasks 目錄下。|
 |README.rdoc|這是一份應用程式的操作手冊。你可以編輯這個檔案來告訴別人你的應用程式的功能，以及如何安裝配置等等。|
-|test/|包含單元測試、 fixtures (建立模擬資料) ，還有其他的測試工具。 詳細請參考[測試 Rails 應用程式](testing.html)。|
-|tmp/|包含一些暫存檔（像是快取、 PID 、 session 暫存檔）。|
+|test/|包含單元測試、fixtures (建立模擬資料) ，還有其他的測試工具。 詳細請參考[測試 Rails 應用程式](testing.html)。|
+|tmp/|包含一些暫存檔（像是快取、PID、session 暫存檔）。|
 |vendor/|主要放置第三方的程式碼。 通常 Rails 應用程式會在這放置第三方的 gem 套件。|
 
 Hello, Rails!
@@ -238,9 +232,9 @@ TIP: 更多關於路由 (routing) 資訊，請參考 [Rails Routing from the Out
 開始實作
 ----------------------
 
-現在你已經知道如何建立 controller 、 action 還有 view ，接下來我們要建立更實質的一些功能。
+現在你已經知道如何建立 controller、action 還有 view ，接下來我們要建立更實質的一些功能。
 
-在這 Blog 應用程式中，你將需要創造新的 _resource (資源)_。 Resource (資源) 是一個類似物件的集合，就像 articles (文章集) 、 people (人群) 或是 animals (動物群)。對於 resource (資源) 的項目你可以 create (建立) 、 read (讀取) 、 update (更新) 以及 destroy (刪除) ，而這些操作我們簡稱為 _CRUD_ 操作。
+在這 Blog 應用程式中，你將需要創造新的 _resource (資源)_。 Resource (資源) 是一個類似物件的集合，就像 articles (文章集)、people (人群) 或是 animals (動物群)。對於 resource (資源) 的項目你可以 create (建立)、read (讀取)、update (更新) 以及 destroy (刪除) ，而這些操作我們簡稱為 _CRUD_ 操作。
 
 Rails 提供一個 `resources` method ，這個 method 可以用來宣告一個標準的 REST resource。以下程式碼將示範如何在 `config/routes.rb` 宣告一個 _article resource_。
 
@@ -298,7 +292,7 @@ end
 
 這個 controller 是繼承 `ApplicationController` 的簡單類別。在這個類別中你必須定義 method 作為 controller 的 action。而這些 actions 將可以實現在 articles 上的 CRUD 操作。
 
-NOTE: 在 ruby 中有這幾種 `public` 、 `private` 、 `protected` methods ，但只有 `public` methods 才能作為 controllers 的 actions。
+NOTE: 在 ruby 中有這幾種 `public`、`private`、`protected` methods ，但只有 `public` methods 才能作為 controllers 的 actions。
 更多詳細資訊請參考 [Programming Ruby](http://www.ruby-doc.org/docs/ProgrammingRuby/)。
 
 如果你現在重新整理這個頁面 <http://localhost:3000/articles/new> , 你會發現另一個新的錯誤：
@@ -343,7 +337,7 @@ end
 <h1>New Article</h1>
 ```
 
-當你重新整理此頁面 <http://localhost:3000/articles/new> 你將會看到標題文字。這也表示 route 、 controller 、 action 跟 view 運作的十分順利！現來就來建立 article 的表單。
+當你重新整理此頁面 <http://localhost:3000/articles/new> 你將會看到標題文字。這也表示 route、controller、action 跟 view 運作的十分順利！現來就來建立 article 的表單。
 
 ### 開始第一個表單
 
@@ -1151,7 +1145,7 @@ end
 
 ![Confirm Dialog](images/getting_started/confirm_dialog.png)
 
-恭喜, 你現在已經可以 create 、 show 、 list 、 update 以及 destroy 文章了。
+恭喜, 你現在已經可以 create、show、list、update 以及 destroy 文章了。
 
 TIP: 一般來說, Rails 會多鼓勵使用 resources 物件而不是自行手動宣告 routes。更多關於 routing 的資訊，請看 [Rails Routing from the Outside In](routing.html)。
 
@@ -1635,4 +1629,4 @@ TIP: 想要在本地端產生一份 Rails 指南就必需使用一個名為 `doc
 有兩種常見的不會存成 UTF-8 的資料來源：
 
 * 你的文字編譯器：大多數的文字編輯器 (就像是 TextMate) ，預設都是將資料存成 UTF-8。如果你的文字編輯器預設不是如此，這將導致你在 template 中輸入的一些特別字元 (就像是 é) 會在瀏覽器中顯示成黑方塊白問號的符號，這跟你在i18n翻譯檔案的情況也一樣。大多數文字編輯器預設並不是 UTF-8 ，就像是 Dreamweaver ，但是這些編輯器都會提供一個方法將預設改為 UTF-8 ，通常我們也會這樣子做。
-* 你的資料庫： Rails 預設會將你的資料庫資料可能的情況下自動轉成 UTF-8	。但是，如果你所使用的資料庫並不是使用 UTF-8 ，這樣可能就無法將使用者輸入的字元保存下來。舉例來說，如果你所使用的資料庫是 Latin-1 ，然而你的使用者卻是輸入了 Russian 、 Hebrew 或是 Japanese 字元，那麼所輸入的資料在存進資料庫時將會遺失，如果可以的話，最好使用 UTF-8 來作資料庫內部儲存的編碼。
+* 你的資料庫： Rails 預設會將你的資料庫資料可能的情況下自動轉成 UTF-8	。但是，如果你所使用的資料庫並不是使用 UTF-8 ，這樣可能就無法將使用者輸入的字元保存下來。舉例來說，如果你所使用的資料庫是 Latin-1 ，然而你的使用者卻是輸入了 Russian、Hebrew 或是 Japanese 字元，那麼所輸入的資料在存進資料庫時將會遺失，如果可以的話，最好使用 UTF-8 來作資料庫內部儲存的編碼。

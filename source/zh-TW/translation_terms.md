@@ -20,8 +20,6 @@
 
 * View
 
-* Controller
-
 * Cookie
 
 * Initializer
@@ -121,6 +119,8 @@ C
 * CamelCase 駝峰形式
 
 * Code 程式碼
+
+* Controller 控制器
 
 * Collection 集合
 
