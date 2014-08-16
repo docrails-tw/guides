@@ -7,7 +7,7 @@ Rails 起步走
 
 * 如何安裝、新建 Rails 應用程式，如何把應用程式和資料庫連結起來；
 * Rails 應用程式的結構；
-* MVC（Model、View、Controller）和 RESTful 設計的基本原則；
+* MVC（Model、文件顯示層、控制器）和 RESTful 設計的基本原則；
 * 如何快速產生可執行的 Rails 應用程式；
 
 --------------------------------------------------------------------------------
@@ -35,15 +35,12 @@ Rails 是一個用 Ruby 所寫的 Web 開發框架。這個框架把開發過程
 多數資深的 Rails 開發者認為 Rails 可以使開發 Web 應用程式變的更加有趣。
 
 Rails 是一個有先見之明的軟體。當事情有最好的處理方法，他的設計會傾向讓你去使用這個方法，而不是花很多時間去找尋跟嘗試。
-所以當學完 "The Rails Way" 之後，那你的開發效率將會進展到另一個境界。但有個前提就是你不能堅持把其他程式語言的開發習慣或思維帶到 Rails 中，否則一開始會對 Rails 有不好的印象。
+所以當學完“The Rails Way”之後，那你的開發效率將會進展到另一個境界。但有個前提就是你不能堅持把其他程式語言的開發習慣或思維帶到 Rails 中，否則一開始會對 Rails 有不好的印象。
 
 在 Rails 開發哲學中有著兩個主要的原則：
 
-* **Don't Repeat Yourself (不要重複你自己)： ** DRY 是一個軟體工程的開發原則，是如此描述
-	“系統中每個功能的構思都必須要有單一、明確且讓人認同的表達方式”
-	儘量避免一再重複的相同資訊，所寫的程式才容易維護、有擴展性且不容易出現 Bug。
-
-* **(約定優於配置)**：Rails 不希望你浪費太多時間無止境的配置設定上，而是直接把最好的一些 Web 開發方式作為預設，讓你熟悉之後就可以上手了。
+* **不要重複你自己**：DRY 是一個軟體工程的開發原則，“系統中每個功能的構思都必須要有單一、明確且讓人認同的表達方式”儘量避免一再重複的相同資訊，所寫的程式才容易維護、有擴展性且不容易出現 Bug。
+* **(約定優於配置)**：Rails 不希望你浪費太多時間無止境的配置設定上，而是直接把最好的一些 Web 開發方式設為預設值，讓你熟悉之後就可以上手了。
 
 建立一個新的 Rails 專案
 ---------------------
@@ -157,9 +154,9 @@ TIP: 如想停止 web 伺服器，請在已執行中的命令視窗按下 Ctrl+C
 
 ### Rails 說 "Hello"
 
-為了讓 Rails 可以顯示 "Hello"，你必須先建立一個簡單的 _controller_ 跟 _view_。
+為了讓 Rails 可以顯示 "Hello"，你必須先建立一個簡單的控制器和文件顯示層。
 
-Controller 的功能是去接收對於應用程式的 Http 請求。而 _路由動作 (Routing)_ 則是決定由那一個 controller 去接收請求，通常一個 controller 會有一個以上的路由 (route) 規則對應，藉由不同的 actions 來處理這些不同的路由 (routes) 所決定的請求。Action 的功能就是收集資訊並提供給 view 使用。
+控制器的功能是去接收對於應用程式的 HTTP 請求。而 _路由動作 (Routing)_ 則是決定由那一個控制器去接收請求，通常一個 控制器會有一個以上的路由 (route) 規則對應，藉由不同的 actions 來處理這些不同的路由 (routes) 所決定的請求。Action 的功能就是收集資訊並提供給 view 使用。
 
 View 的功能是將資訊用普通人可讀的方式呈現出來。View 跟 controller 最大的差別就是 controller 負責資訊的收集，而 view 只是負責資訊的呈現。預設的 view template 是用 eRuby (Embedded Ruby) 所寫的，這部份在結果送到使用者之前就會被 Rails 中 request cycle (從 route 到 view 的一系列請求) 執行到。
 
@@ -169,7 +166,7 @@ View 的功能是將資訊用普通人可讀的方式呈現出來。View 跟 con
 $ bin/rails generate controller welcome index
 ```
 
-Rails 會替你建立一個路由 (route) 和幾個檔案。
+Rails 會替你建立一個路由和幾個檔案。
 
 ```bash
 create  app/controllers/welcome_controller.rb
@@ -188,7 +185,7 @@ invoke    scss
 create      app/assets/stylesheets/welcome.css.scss
 ```
 
-這些檔案中最重要的當然是位於 `app/controllers/welcome_controller.rb` 的 controller 以及位於 `app/views/welcome/index.html.erb` 的 view。
+這些檔案中最重要的當然是位於 `app/controllers/welcome_controller.rb` 的控制器以及位於 `app/views/welcome/index.html.erb` 的 View。
 
 接下來用文字編輯器打開 `app/views/welcome/index.html.erb` ，並且將檔案所有內容替換成以下的程式碼：
 
@@ -198,11 +195,11 @@ create      app/assets/stylesheets/welcome.css.scss
 
 ### 設置應用程式首頁
 
-現在我們已經完成了 controller 和 view ，再來就是決定什麼時候讓 Rails 執行顯示 "Hello, Rails!"。這個例子中，我們想在連結應用程式首頁 <http://localhost:3000> 來顯示這段訊息。不過目前畫面依舊是 "Welcome aboard"。
+現在我們已經完成了控制器和 view ，再來就是決定什麼時候讓 Rails 秀出 "Hello, Rails!"。這個例子中，我們想在連結應用程式首頁 <http://localhost:3000> 來顯示這段訊息。不過目前畫面依舊是 "Welcome aboard"。
 
 所以接下來，我們要告訴 Rails 正確首頁的所在位置。
 
-首先用文字編輯器打開 `config/routes.rb`。
+首先用編輯器打開 `config/routes.rb` 檔案。
 
 ```ruby
 Rails.application.routes.draw do
@@ -217,7 +214,7 @@ Rails.application.routes.draw do
   # ...
 ```
 
-這個是應用程式的 _routing file (路由檔案)_ ，內容是用特殊的 DSL (domain-specific language 專屬領域語言) 所寫的，透過這些設定，可以告訴 Rails 要如何將連進來的請求對應到 controllers 和 actions 來處理。這個路由檔案包含許多已註解的路由 (route) 規則範例，其中有一條規則是把連到網站根目錄的請求對應到特定的 controller 和 action 做處理。我們從開頭為 `root` 找到這條規則，並且反註解它，看起來會像這樣：
+這個是應用程式的路由檔案，內容採用特殊的 DSL 撰寫，透過這些設定，可以告訴 Rails 要如何將連進來的請求對應到控制器和動作來處理。這個路由檔案包含許多已註解的路由規則範例，其中有一條規則是把連到網站根目錄的請求對應到特定的 controller 和 action 做處理。找到以 `root` 開頭的規則，去掉註解，看起來會像這樣：
 
 ```ruby
 root 'welcome#index'
