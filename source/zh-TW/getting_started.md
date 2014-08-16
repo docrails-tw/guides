@@ -58,7 +58,7 @@ TIP: 本文的範例中會用 `$` 來表示類 Unix 系統的命令提示字元�
 
 首先打開命令列。在 Mac OS X 底下請打開 Terminal.app ，如果是在 Windows 下請在開始功能表選擇“執行”並且輸入 `cmd.exe` 後開啟命令視窗。只要是錢號 `$` 開頭的命令，都是在命令列上執行。現在就用命令檢查，是否已安裝最新的 Ruby 版本：
 
-TIP: 其實有很多工具可以幫助你在系統上快速安裝 Ruby 或是 Ruby on Rails。 像 Windows 使用者可以參考 [Rails Installer](http://railsinstaller.org)，而 Mac OS X 使用者則有 [Tokaido](https://github.com/tokaido/tokaidoapp) 可以選擇。
+TIP: 其實有很多工具可以幫助你在系統上快速安裝 Ruby 或是 Ruby on Rails。像 Windows 使用者可以參考 [Rails Installer](http://railsinstaller.org)，而 Mac OS X 使用者則有 [Tokaido](https://github.com/tokaido/tokaidoapp) 可以選擇。
 
 ```bash
 $ ruby -v
@@ -115,45 +115,45 @@ $ cd blog
 
 | 檔案／資料夾| 用途    |
 | ----------- | ------- |
-|app/|包含著應用程式的控制器、models、views、輔助方法、mailers 以及 assets 等。 接下來的教學中，你將會花多數的心力在這個資料夾上。|
-|bin/|包含著像是一開始建構應用程式的 `rails` 腳本以及環境的設定檔、以及用來執行和部署應用程式的腳本|
-|config/|可以設定應用程式的路由 (routes)、資料庫、以及其他等等。詳細請參考[設定 Rails 應用程式](configuring.html)。|
+|app/|包含著應用程式的控制器、models、views、輔助方法、mailers 以及 assets 等。接下來的教學中，你將會花多數的心力在這個資料夾上。|
+|bin/|包含著像是一開始用來建構應用程式的 `rails` 腳本、環境的設定檔以及用來執行和部署應用程式的腳本|
+|config/|設定應用程式的路由、資料庫、以及其他等等。詳細請參考[設定 Rails 應用程式](/configuring.html)。|
 |config.ru|用來啟動應用程式的 Rack 設定檔|
 |db/|包含資料庫的綱要檔案以及資料庫遷移檔案。|
 |Gemfile、Gemfile.lock|這兩個檔案可以指定 Rails application 所要安裝的 gem 相依套件，並且交由 Bundler gem 做管理。更多關於 Bundler 的資訊請看 [Bundler 的網站](http://bundler.io)。|
-|lib/|包含應用程式的擴充模組。|
-|log/|包含應用程式的 log 檔案。|
+|lib/|應用程式的擴充模組。|
+|log/|應用程式的記錄檔案。|
 |public/|唯一對外開放的目錄，裡面包含著靜態檔案和編譯過後的 Assets。|
-|Rakefile|Rakefile 主要目的是找到並載入可從命令列執行的任務。其中內建任務是定義在各個 Rails 元件當中。若想新增自己寫的任務，不要直接修改 Rakefile，我們傾向把自訂的任務新增到 lib/tasks 目錄下。|
+|Rakefile|Rakefile 主要目的是找到並載入可從命令列執行的任務。其中內建任務是定義在各個 Rails 元件當中。若想新增自己寫的任務，不要直接修改 Rakefile，把自訂的任務新增到 lib/tasks 目錄下。|
 |README.rdoc|這是一份應用程式的操作手冊。你可以編輯這個檔案來告訴別人你的應用程式的功能，以及如何安裝配置等等。|
-|test/|包含單元測試、fixtures (建立模擬資料) ，還有其他的測試工具。 詳細請參考[測試 Rails 應用程式](testing.html)。|
-|tmp/|包含一些暫存檔（像是快取、PID、session 暫存檔）。|
-|vendor/|主要放置第三方的程式碼。 通常 Rails 應用程式會在這放置第三方的 gem 套件。|
+|test/|包含單元測試、假資料、還有其他的測試工具。詳細請參考[測試 Rails 應用程式](/testing.html)。|
+|tmp/|暫存檔（像是快取、PID、Session 等暫存檔案）。|
+|vendor/|主要放置第三方的程式碼。通常 Rails 應用程式會在這放置第三方的 Gem 套件。|
 
 Hello, Rails!
 -------------
 
-一開始，如果希望有個簡單的執行結果。而你必須先啟動 Rails 應用服務來執行。
+一開始，如果希望畫面有些簡單的文字輸出。先啟動 Rails 伺服器。
 
-### 啟動 Web 服務
+### 啟動 Web 伺服器
 
-事實上， Rails 應用程式已經有一個簡單功能。如果想看執行結果，那就必須在開發設備中啟動 web 服務，請在 `blog` 目錄輸入以下的命令：
+事實上， Rails 應用程式已經可以用了。如果想看執行結果，那必須先啟動 web 伺服器，請在 `blog` 目錄輸入以下的命令：
 
 ```bash
 $ bin/rails server
 ```
 
-TIP: 編譯 CoffeeScript 和 JavaScript 資源檔最佳化 (asset compression) 都需要一個 JavaScript 直譯器 (runtime)。如果缺少了直譯器就執行，命令列就會跳出 `execjs` 錯誤。通常 Mac OS X 以及 Windows 都會搭載 JavaScript 直譯器。對於沒有搭載的系統，由於一開始應用程式建立的時候， Rails 將 `therubyracer` gem 套件註解在 `Gemfile` 中，所以你只要將這行反註解然後就可以安裝。 `therubyrhino` 是一個 JRuby 使用者推薦的直譯器套件，所以在 JRuby 中是直接把它定義在 `Gemfile`。
+TIP: 編譯 CoffeeScript 和壓縮 JavaScript 需要一個 JavaScript 直譯器 (runtime)。如果缺少了直譯器就執行，命令列就會跳出 `execjs` 錯誤。通常 Mac OS X 以及 Windows 都會搭載 JavaScript 直譯器。對於沒有搭載的系統，由於一開始應用程式建立的時候， Rails 將 `therubyracer` gem 套件註解在 `Gemfile` 中，所以你只要將這行反註解然後就可以安裝。`therubyrhino` 是一個 JRuby 使用者推薦的直譯器套件，所以在 JRuby 中是直接把它定義在 `Gemfile`。
 其他一樣有支援的直譯器請參考 [ExecJS](https://github.com/sstephenson/execjs#readme)。
 
-這將會啟動 WEBrick ，一個 Ruby 預設的 web 伺服器。想看應用程式執行中的畫面，請打開瀏覽器並在網址列上輸入 <http://localhost:3000>。你就會看到 Rails 的預設資訊頁面了。
+這將會啟動 WEBrick ，Ruby 內建的 web 伺服器。想看應用程式執行中的畫面，請打開瀏覽器並在網址列上輸入 <http://localhost:3000>。便會看到 Rails 的預設頁面。
 
 ![Welcome aboard screenshot](images/getting_started/rails_welcome.png)
 
-TIP: 如想停止 web 服務，請在已執行中的命令視窗按下 Ctrl+C 跳回命令提示字元就可以終止服務。
+TIP: 如想停止 web 伺服器，請在已執行中的命令視窗按下 Ctrl+C 跳回命令提示字元就可以終止服務。
 大多數類 UNIX 系統，其中也包含 Mac OS X 將會再次看到錢號 `$`。在開發模式中, Rails 通常是不會要求你重新起動服務；只要有修改過的檔案伺服器就會自動重新載入。
 
-＂Welcome aboard＂這個頁面對於新建 Rails 應用程式來說是一個 _煙霧測試 (smoke test)_ ：測試設定上是否正確，來讓此頁面正確執行。你也可以透過點擊 _About your application's environment_ 連結來看應用程式中環境相關資訊的摘要。
+“Welcome aboard”這個頁面對於新建 Rails 應用程式來說是一個“煙霧測試”：測試設定上是否正確，來讓此頁面正確執行。你也可以透過點擊 _About your application's environment_ 連結來看應用程式中環境相關資訊的摘要。
 
 ### Rails 說 "Hello"
 
@@ -161,7 +161,7 @@ TIP: 如想停止 web 服務，請在已執行中的命令視窗按下 Ctrl+C �
 
 Controller 的功能是去接收對於應用程式的 Http 請求。而 _路由動作 (Routing)_ 則是決定由那一個 controller 去接收請求，通常一個 controller 會有一個以上的路由 (route) 規則對應，藉由不同的 actions 來處理這些不同的路由 (routes) 所決定的請求。Action 的功能就是收集資訊並提供給 view 使用。
 
-View 的功能是將資訊用普通人可讀的方式呈現出來。 View 跟 controller 最大的差別就是 controller 負責資訊的收集，而 view 只是負責資訊的呈現。預設的 view template 是用 eRuby (Embedded Ruby) 所寫的，這部份在結果送到使用者之前就會被 Rails 中 request cycle (從 route 到 view 的一系列請求) 執行到。
+View 的功能是將資訊用普通人可讀的方式呈現出來。View 跟 controller 最大的差別就是 controller 負責資訊的收集，而 view 只是負責資訊的呈現。預設的 view template 是用 eRuby (Embedded Ruby) 所寫的，這部份在結果送到使用者之前就會被 Rails 中 request cycle (從 route 到 view 的一系列請求) 執行到。
 
 要建立一個 controller ，你必需執行 controller 的產生器，並且附上 controller 名稱以及 action 名稱的參數，就像這樣：
 
@@ -225,7 +225,7 @@ root 'welcome#index'
 
 這一行 `root 'welcome#index'` 是告訴 Rails 把要連應用程式根目錄的請求對應到 welcome controller 的 index action 作處理。而另一行 `get 'welcome/index'` 則是告訴 Rails 把要連 <http://localhost:3000/welcome/index> 的請求對應到 welcome controller 的 index action 作處理。當你執行過 controller 產生器後 (`rails generate controller welcome index`) ，這些設定都會被新增到檔案中。
 
-剛剛如果為了要執行產生器而關掉 web 伺服器的話，那就再次啟動 (`rails server`)。並且用瀏覽器連到 <http://localhost:3000>。 你將會看到那些被你放在 `app/views/welcome/index.html.erb` 的訊息 "Hello, Rails!" ，這說明了這個新的路由規則 (route) 將這個請求交由 `WelcomeController` 的 `index` action 處理，並且將 view 正確的 render (算繪) 出來。
+剛剛如果為了要執行產生器而關掉 web 伺服器的話，那就再次啟動 (`rails server`)。並且用瀏覽器連到 <http://localhost:3000>。你將會看到那些被你放在 `app/views/welcome/index.html.erb` 的訊息 "Hello, Rails!" ，這說明了這個新的路由規則 (route) 將這個請求交由 `WelcomeController` 的 `index` action 處理，並且將 view 正確的 render (算繪) 出來。
 
 TIP: 更多關於路由 (routing) 資訊，請參考 [Rails Routing from the Outside In](routing.html)。
 
@@ -234,7 +234,7 @@ TIP: 更多關於路由 (routing) 資訊，請參考 [Rails Routing from the Out
 
 現在你已經知道如何建立 controller、action 還有 view ，接下來我們要建立更實質的一些功能。
 
-在這 Blog 應用程式中，你將需要創造新的 _resource (資源)_。 Resource (資源) 是一個類似物件的集合，就像 articles (文章集)、people (人群) 或是 animals (動物群)。對於 resource (資源) 的項目你可以 create (建立)、read (讀取)、update (更新) 以及 destroy (刪除) ，而這些操作我們簡稱為 _CRUD_ 操作。
+在這 Blog 應用程式中，你將需要創造新的 _resource (資源)_。Resource (資源) 是一個類似物件的集合，就像 articles (文章集)、people (人群) 或是 animals (動物群)。對於 resource (資源) 的項目你可以 create (建立)、read (讀取)、update (更新) 以及 destroy (刪除) ，而這些操作我們簡稱為 _CRUD_ 操作。
 
 Rails 提供一個 `resources` method ，這個 method 可以用來宣告一個標準的 REST resource。以下程式碼將示範如何在 `config/routes.rb` 宣告一個 _article resource_。
 
@@ -323,13 +323,13 @@ end
 
 還滿長的一段文字！我們一起快速瀏覽並且了解每個部份的用意。
 
-第一個部份我們可以發現缺少了什麼 template。而例子中，我們缺少的就是 `articles/new` template。 Rails 一開始會試著尋找這個相對應的 template ，如果找不到才會試著載入另一個名為 `application/new` 的 template ，這是因為 `ArticlesController` 是繼承 `ApplicationController`的關係。
+第一個部份我們可以發現缺少了什麼 template。而例子中，我們缺少的就是 `articles/new` template。Rails 一開始會試著尋找這個相對應的 template ，如果找不到才會試著載入另一個名為 `application/new` 的 template ，這是因為 `ArticlesController` 是繼承 `ApplicationController`的關係。
 
-第二部份中包含了一個 hash。在這個 hash 中有三個 key ， `:locale` 這個 key 將決定使用什麼語系的 template ，目前預設是使用簡稱為 "en" 的英文 template。 下一個 key `:formats` 是指 template 要使用什麼格式來回覆給使用者，這裡預設的格式是 `:html` ，所以 Rails 會尋找一個 HTML 的 template。最後一個 `:handlers` 是告訴我們要使用什麼 _template handlers_ 來將我們的 template render 出來。其中 `:erb` 是最常用於 HTML templates 的 render ， `:builder` 則是用於 XML templates ，而 `:coffee` 是使用 CoffeeScript 來建立 JavaScript templates。
+第二部份中包含了一個 hash。在這個 hash 中有三個 key ， `:locale` 這個 key 將決定使用什麼語系的 template ，目前預設是使用簡稱為 "en" 的英文 template。下一個 key `:formats` 是指 template 要使用什麼格式來回覆給使用者，這裡預設的格式是 `:html` ，所以 Rails 會尋找一個 HTML 的 template。最後一個 `:handlers` 是告訴我們要使用什麼 _template handlers_ 來將我們的 template render 出來。其中 `:erb` 是最常用於 HTML templates 的 render ， `:builder` 則是用於 XML templates ，而 `:coffee` 是使用 CoffeeScript 來建立 JavaScript templates。
 
-這段訊息的最後部份讓我們得知 Rails 會從什麼地方尋找 templates。 Templates 在簡單的 Rails 應用程式中通常存放在單一位置，但是比較複雜的一些應用程式可能會有好幾種不同的路徑來擺放。
+這段訊息的最後部份讓我們得知 Rails 會從什麼地方尋找 templates。Templates 在簡單的 Rails 應用程式中通常存放在單一位置，但是比較複雜的一些應用程式可能會有好幾種不同的路徑來擺放。
 
-這個例子中，將被執行的是位於 `app/views/articles/new.html.erb` 的一個簡單 template。其中檔案的副檔名有其意涵：第一個副檔名是 template 的 _format_ 名稱，而第二個則是表示使用了什麼 _handler_ 來處理。 Rails 一開始會試著從應用程式的 `app/views` 位置中找一個叫 `articles/new` 的 template。這個 template 的 format 只能使用 `html` ，而 handler 部份必須是 `erb`, `builder` 或 `coffee` 三者其中之一才行。因為接下來想在 template 中新增一個 HTML 表單, 所以你一定要使用 `ERB` 語言。因此最後這個檔案的名稱應該取作 `articles/new.html.erb` 並且需擺放於應用程式的 `app/views` 目錄中。
+這個例子中，將被執行的是位於 `app/views/articles/new.html.erb` 的一個簡單 template。其中檔案的副檔名有其意涵：第一個副檔名是 template 的 _format_ 名稱，而第二個則是表示使用了什麼 _handler_ 來處理。Rails 一開始會試著從應用程式的 `app/views` 位置中找一個叫 `articles/new` 的 template。這個 template 的 format 只能使用 `html` ，而 handler 部份必須是 `erb`, `builder` 或 `coffee` 三者其中之一才行。因為接下來想在 template 中新增一個 HTML 表單, 所以你一定要使用 `ERB` 語言。因此最後這個檔案的名稱應該取作 `articles/new.html.erb` 並且需擺放於應用程式的 `app/views` 目錄中。
 
 前往該目錄然後新增此檔案 `app/views/articles/new.html.erb` 並且寫上以下內容：
 
@@ -341,7 +341,7 @@ end
 
 ### 開始第一個表單
 
-要在 template 中建立一個表單，你將會需要一個 *form builder*。 Rails 的 helper method 有提供一種基本的 form builder ，叫作 `form_for`。想要使用此 method 的話，先將以下程式碼新增到 `app/views/articles/new.html.erb` ：
+要在 template 中建立一個表單，你將會需要一個 *form builder*。Rails 的 helper method 有提供一種基本的 form builder ，叫作 `form_for`。想要使用此 method 的話，先將以下程式碼新增到 `app/views/articles/new.html.erb` ：
 
 ```html+erb
 <%= form_for :article do |f| %>
@@ -438,7 +438,7 @@ TIP: 你要確定是否掌握了 `params` method 的用法，因為這個 method
 
 ### 建立 Article 模型
 
-對於 Rails 中的模型來說，我們習慣用單數來命名，而且所對應的資料庫資料表，我們則是習慣用複數來命名。 Rails 這裡提供一個開發者常用來建立模型的 generator。想要建立模型，請執行以下的命令：
+對於 Rails 中的模型來說，我們習慣用單數來命名，而且所對應的資料庫資料表，我們則是習慣用複數來命名。Rails 這裡提供一個開發者常用來建立模型的 generator。想要建立模型，請執行以下的命令：
 
 ```bash
 $ bin/rails generate model Article title:string text:text
@@ -452,7 +452,7 @@ TIP: Active Record 可以很聰明的將欄位名稱對應到模型的屬性，�
 
 ### 執行一個 Migration
 
-就如同我們剛剛所見的，執行完 `rails generate model` 會在 `db/migrate` 的目錄中建立一個 _database migration_ 的檔案。 Migrations 是 Ruby 的一種類別，使得來建立和修改資料庫中的表格能夠更容易。 Rails 使用 rake 命令來執行 migrations ，即使資料庫已經套用設定但還是可以回復 migration 動作。 Migration 的檔名中包含著時間戳記，如此可以確保依照檔案建立的順序來先後執行。
+就如同我們剛剛所見的，執行完 `rails generate model` 會在 `db/migrate` 的目錄中建立一個 _database migration_ 的檔案。Migrations 是 Ruby 的一種類別，使得來建立和修改資料庫中的表格能夠更容易。Rails 使用 rake 命令來執行 migrations ，即使資料庫已經套用設定但還是可以回復 migration 動作。Migration 的檔名中包含著時間戳記，如此可以確保依照檔案建立的順序來先後執行。
 
 如果你打開這個檔案`db/migrate/20140120191729_create_articles.rb` (記住這個檔案名稱會有些許不同) ，你將會看到：
 
@@ -738,7 +738,7 @@ class Article < ActiveRecord::Base
 end
 ```
 
-如此一來將確保所有文章的都有一個 title ，而且至少有五個字元長。 Rails 可以驗證模型中的各種條件，
+如此一來將確保所有文章的都有一個 title ，而且至少有五個字元長。Rails 可以驗證模型中的各種條件，
 包含欄位是否存在或是否唯一，欄位的資料格式，以及是否存在相對應的物件。
 驗證的部份在 [Active Record Validations](active_record_validations.html) 有更詳盡的介紹。
 
@@ -971,7 +971,7 @@ TIP：你並不需要將所有的屬性傳入到 `update`。舉例來說，如�
 
 ### 使用 partials 刪除 views 中重複部份
 
-我們的 `edit` 頁面和 `new` 頁面非常相似；事實上，他們顯示相同的表單。我們現在就用 view partial 刪除重複的部份。 在習慣上，partial 的檔案會以底線為開頭命名。
+我們的 `edit` 頁面和 `new` 頁面非常相似；事實上，他們顯示相同的表單。我們現在就用 view partial 刪除重複的部份。在習慣上，partial 的檔案會以底線為開頭命名。
 
 TIP：你可以從 [Layouts and Rendering in Rails](layouts_and_rendering.html) 讀到更多關於 partials。
 
