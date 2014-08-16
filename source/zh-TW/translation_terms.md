@@ -70,7 +70,7 @@ A
 
     用來連接資料庫的“連接器”，比如 Active Record 以相同的 API，分別實作了 SQLite、PostgreSQL、MySQL 等“連接器”，用來連接資料庫。
 
-* Application 應用程式
+* Application 應用程式、應用
 
 * Association 關聯
 
@@ -82,7 +82,7 @@ A
 
 * Application Builder 應用專案生成器
 
-* Asset 資源 
+* Asset 資源
 
 B
 ------
@@ -110,6 +110,8 @@ C
 
 * Carbon copy 副本 Cc
 
+* Cell 儲存格
+
 * Class 類別
 
     Ruby 的 `Class`
@@ -130,6 +132,12 @@ C
 
     資料庫的欄位。
 
+* Column 直欄
+
+    試算表的欄。
+
+* Coordinate 座標
+
 * Command 命令
 
 * Command Line 命令列
@@ -142,6 +150,8 @@ C
 
 * Compile 編譯
 
+* Compatibility 兼容性
+
 * Computer 計算機
 
     亦作電腦。
@@ -149,6 +159,8 @@ C
 * Conditional 條件式
 
 * Context 上下文
+
+* Content 內容
 
 * Controller 控制器
 
@@ -478,6 +490,8 @@ R
 * Router 路由器
 
     負責解析路由。指得是以 [Journey](https://github.com/rails/journey) 所實作的路由器。
+
+* Row 橫列、列。
 
 * Refactor 重構
 
