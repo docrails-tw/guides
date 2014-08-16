@@ -8,6 +8,7 @@
 * 如何看應用程式裡有那些產生器可用。
 * 如何用模版建立產生器。
 * Rails 如何找到產生器並呼叫它們。
+* Rails 內部如何從 Rails 程式碼產生出模版。
 * 如何用新的產生器來客製化鷹架。
 * 如何變更產生器模版來客製化鷹架。
 * 如何用替代方案避免覆寫一大組產生器。
@@ -314,7 +315,7 @@ hook_for :test_framework, as: :helper
 現在重新執行鷹架，現在也會產生測試了！
 
 修改產生器模版來客製化工作流程
-----------------------------------------------------------
+---------------------------
 
 上例我們不過想讓輔助方法產生出的輔助方法多一行程式碼，沒加別的功能。其實還有更簡單的方法可以辦到，換掉 Rails 內建的輔助方法產生器（`Rails::Generators::HelperGenerator`）原生的模版。
 
@@ -340,8 +341,22 @@ end
 
 產生新的資源看看，可以看到相同的結果！若想要客製化鷹架模版，譬如想要客製化鷹架建立出來的 `index.html.erb` 與 `edit.html.erb`，在 `lib/templates/erb/scaffold/`，新建 `index.html.erb` 與 `edit.html.erb`，填入想產生的內容即可。
 
+許多 Rails 的鷹架模版皆以 ERB 撰寫，ERB 需要處理跳脫字元。所以若輸出是合法的 ERB 程式，就可以在 Rails 應用裡使用。
+
+以下程式來自某個產生器檔案，
+
+```ruby
+<%%= stylesheet_include_tag :application %>
+```
+
+傳給產生器時，會產生如下輸出：
+
+```ruby
+<%= stylesheet_include_tag :application %>
+```
+
 新增產生器的替代方案
----------------------------
+------------------
 
 產生器最後要加入的功能是替代方案。舉個例子，假設想在 `TestUnit` 加入像是 [shoulda](https://github.com/thoughtbot/shoulda) 的功能。由於 TestUnit 已實作所有 Rails 產生器所需要的方法，而 Shoulda 不過是覆寫某部分功能，不需要為了 Shoulda 重新實作這些產生器，可以告訴 Rails 在 `Shoulda` 命名空間下沒找到產生器時，可以用 `TestUnit` 來代替。
 

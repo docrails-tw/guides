@@ -76,6 +76,12 @@ Action Pack
 
 請參考 [CHANGELOG][action-pack] 來了解更多細節。
 
+### 移除
+
+*   移除棄用的 `AbstractController::Helpers::ClassMethods::MissingHelperError`，
+    改用 `AbstractController::Helpers::MissingHelperError` 取代。
+    ([Commit](https://github.com/rails/rails/commit/a1ddde15ae0d612ff2973de9cf768ed701b594e8))
+
 ### 棄用
 
 * 棄用路由的 `:to` 選項裡，`:to` 可以指向符號或不含井號的字串這兩個功能。
