@@ -51,7 +51,7 @@ module RailsGuides
       end
 
       def dom_id_text(text)
-        text.downcase.gsub(/\?/, '-questionmark').gsub(/!/, '-bang').gsub(/\s+/, '-')
+        text.downcase.gsub(/\?/, '-questionmark').gsub(/!/, '-bang').gsub(/[^a-z0-9\p{Han}\p{Katakana}\p{Hiragana}\p{Hangul}]+/, ' ').gsub(/\s+/, '-')
       end
 
       def engine
