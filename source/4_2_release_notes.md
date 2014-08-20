@@ -3,6 +3,11 @@ Ruby on Rails 4.2 Release Notes
 
 Highlights in Rails 4.2:
 
+* Active Job, Action Mailer #deliver_later
+* Adequate Record
+* Web Console
+* Foreign key support
+
 These release notes cover only the major changes. To know about various bug
 fixes and changes, please refer to the change logs or check out the
 [list of commits](https://github.com/rails/rails/commits/master) in the main
@@ -10,20 +15,58 @@ Rails repository on GitHub.
 
 --------------------------------------------------------------------------------
 
+NOTE: This document is a work in progress, please help to improve this by sending
+a [pull request](https://github.com/rails/rails/edit/master/guides/source/4_2_release_notes.md).
+
 Upgrading to Rails 4.2
 ----------------------
 
 If you're upgrading an existing application, it's a great idea to have good test
 coverage before going in. You should also first upgrade to Rails 4.1 in case you
 haven't and make sure your application still runs as expected before attempting
-an update to Rails 4.2. A list of things to watch out for when upgrading is
+to upgrade to Rails 4.2. A list of things to watch out for when upgrading is
 available in the
-[Upgrading Ruby on Rails](upgrading_ruby_on_rails.html#upgrading-from-rails-4-1-to-rails-4-2)
+[Upgrading Ruby on Rails](upgrading_ruby_on_rails.html#upgrading-from-rails-4.1-to-rails-4.2)
 guide.
 
 
 Major Features
 --------------
+
+### Active Job, Action Mailer #deliver_later
+
+Active Job is a new framework in Rails 4.2. It is an adapter layer on top of
+queuing systems like Resque, Delayed Job, Sidekiq, and more. You can write your
+jobs to Active Job, and it'll run on all these queues with no changes. (It comes
+pre-configured with an inline runner.)
+
+Building on top of Active Job, Action Mailer now comes with a #deliver_later
+method, which adds your email to be sent as a job to a queue, so it doesn't
+bog down the controller or model.
+
+The new GlobalID library makes it easy to pass Active Record objects to jobs by
+serializing them in a generic form. This means you no longer have to manually
+pack and unpack your Active Records by passing ids. Just give the job the
+straight Active Record object, and it'll serialize it using GlobalID, and
+deserialize it at run time.
+
+### Adequate Record
+
+Rails 4.2 comes with a performance improvement feature called Adequate Record
+for Active Record. A lot of common queries are now up to twice as fast in Rails
+4.2!
+
+TODO: add some technical details
+
+### Web Console
+
+New applications generated from Rails 4.2 now comes with the Web Console gem by
+default.
+
+Web Console is an IRB console available in the browser. In development mode, you
+can go to /console and do your work right there. It will also be made available
+on all exception pages and allows you to jump between the different points in
+the backtrace.
 
 ### Foreign key support
 
@@ -69,11 +112,60 @@ Please refer to the [Changelog][railties] for detailed changes.
 
 ### Notable changes
 
-*   Introduced `--skip-gems` option in the app generator to skip gems such as
+*   Introduced `web-console` in the default application Gemfile.
+    ([Pull Request](https://github.com/rails/rails/pull/16532))
+
+*   Added a `required` option to the model generator for associations.
+    ([Pull Request](https://github.com/rails/rails/pull/16062))
+
+*   Introduced an `after_bundle` callback for use in Rails templates.
+    ([Pull Request](https://github.com/rails/rails/pull/16359))
+
+*   Introduced the `x` namespace for defining custom configuration options:
+
+    ```ruby
+    # config/environments/production.rb
+    config.x.payment_processing.schedule = :daily
+    config.x.payment_processing.retries  = 3
+    config.x.super_debugger              = true
+    ```
+
+    These options are then available through the configuration object:
+
+    ```ruby
+    Rails.configuration.x.payment_processing.schedule # => :daily
+    Rails.configuration.x.payment_processing.retries  # => 3
+    Rails.configuration.x.super_debugger              # => true
+    ```
+
+    ([Commit](https://github.com/rails/rails/commit/611849772dd66c2e4d005dcfe153f7ce79a8a7db))
+
+*   Introduced `Rails::Application.config_for` to load a configuration for the
+    current environment.
+
+    ```ruby
+    # config/exception_notification.yml:
+    production:
+      url: http://127.0.0.1:8080
+      namespace: my_app_production
+    development:
+      url: http://localhost:3001
+      namespace: my_app_development
+
+    # config/production.rb
+    MyApp::Application.configure do
+      config.middleware.use ExceptionNotifier, config_for(:exception_notification)
+    end
+    ```
+
+    ([Pull Request](https://github.com/rails/rails/pull/16129))
+
+*   Introduced a `--skip-gems` option in the app generator to skip gems such as
     `turbolinks` and `coffee-rails` that does not have their own specific flags.
     ([Commit](https://github.com/rails/rails/commit/10565895805887d4faf004a6f71219da177f78b7))
 
-*   Introduced `bin/setup` script to bootstrap an application.
+*   Introduced a `bin/setup` script to enable automated setup code when
+    bootstrapping an application.
     ([Pull Request](https://github.com/rails/rails/pull/15189))
 
 *   Changed default value for `config.assets.digest` to `true` in development.
@@ -96,11 +188,20 @@ Please refer to the [Changelog][action-pack] for detailed changes.
 
 ### Removals
 
+*   `respond_with` and the class-level `respond_to` were removed from Rails and
+    moved to the `responders` gem (version 2.0). Add `gem 'responders', '~> 2.0'`
+    to your `Gemfile` to continue using these features.
+    ([Pull Request](https://github.com/rails/rails/pull/16526))
+
 *   Removed deprecated `AbstractController::Helpers::ClassMethods::MissingHelperError`
     in favor of `AbstractController::Helpers::MissingHelperError`.
     ([Commit](https://github.com/rails/rails/commit/a1ddde15ae0d612ff2973de9cf768ed701b594e8))
 
 ### Deprecations
+
+*   Deprecated `assert_tag`, `assert_no_tag`, `find_tag` and `find_all_tag` in
+    favor of `assert_select`.
+    ([Commit](https://github.com/rails/rails-dom-testing/commit/b12850bc5ff23ba4b599bf2770874dd4f11bf750))
 
 *   Deprecated support for setting the `:to` option of a router to a symbol or a
     string that does not contain a `#` character:
@@ -116,6 +217,9 @@ Please refer to the [Changelog][action-pack] for detailed changes.
 
 ### Notable changes
 
+*   Rails will now automatically include the template's digest in ETags.
+    ([Pull Request](https://github.com/rails/rails/pull/16527))
+
 *   `render nothing: true` or rendering a `nil` body no longer add a single
     space padding to the response body.
     ([Pull Request](https://github.com/rails/rails/pull/14883))
@@ -125,8 +229,8 @@ Please refer to the [Changelog][action-pack] for detailed changes.
     is `['controller', 'action']`.
     ([Pull Request](https://github.com/rails/rails/pull/15933))
 
-*   The `*_filter` family methods has been removed from the documentation. Their
-    usage are discouraged in favor of the `*_action` family methods:
+*   The `*_filter` family methods have been removed from the documentation. Their
+    usage is discouraged in favor of the `*_action` family methods:
 
     ```
     after_filter          => after_action
@@ -161,10 +265,10 @@ Please refer to the [Changelog][action-pack] for detailed changes.
 *   Segments that are passed into URL helpers are now automatically escaped.
     ([Commit](https://github.com/rails/rails/commit/5460591f0226a9d248b7b4f89186bd5553e7768f))
 
-*   Improved Routing Error page with fuzzy matching for route search.
+*   Improved the Routing Error page with fuzzy matching for route search.
     ([Pull Request](https://github.com/rails/rails/pull/14619))
 
-*   Added option to disable logging of CSRF failures.
+*   Added an option to disable logging of CSRF failures.
     ([Pull Request](https://github.com/rails/rails/pull/14280))
 
 
@@ -180,11 +284,17 @@ Please refer to the [Changelog][action-view] for detailed changes.
     where to find views.
     ([Pull Request](https://github.com/rails/rails/pull/15026))
 
-*   Deprecated `ActionView::Digestor#digest(name, format, finder, options = {})`,
-    arguments should be passed as a hash instead.
+*   Deprecated `ActionView::Digestor#digest(name, format, finder, options = {})`.
+    Arguments should be passed as a hash instead.
     ([Pull Request](https://github.com/rails/rails/pull/14243))
 
 ### Notable changes
+
+*   Introduced a `#{partial_name}_iteration` special local variable for use with
+    partials that are rendered with a collection. It provides access to the
+    current state of the iteration via the `#index`, `#size`, `#first?` and
+    `#last?` methods.
+    ([Pull Request](https://github.com/rails/rails/pull/7698))
 
 *   The form helpers no longer generate a `<div>` element with inline CSS around
     the hidden fields.
@@ -196,7 +306,16 @@ Action Mailer
 
 Please refer to the [Changelog][action-mailer] for detailed changes.
 
+### Deprecations
+
+*   Deprecated `*_path` helpers in mailers. Always use `*_url` helpers instead.
+    ([Pull Request](https://github.com/rails/rails/pull/15840))
+
 ### Notable changes
+
+*   Introduced `deliver_later` which enqueues a job on the application's queue
+    to deliver the mailer asynchronously.
+    ([Pull Request](https://github.com/rails/rails/pull/16485))
 
 *   Added the `show_previews` configuration option for enabling mailer previews
     outside of the development environment.
@@ -228,6 +347,17 @@ for detailed changes.
     ([Pull Request](https://github.com/rails/rails/pull/15184))
 
 ### Deprecations
+
+*   Deprecated swallowing of errors inside `after_commit` and `after_rollback`.
+    ([Pull Request](https://github.com/rails/rails/pull/16537))
+
+*   Deprecated calling `DatabaseTasks.load_schema` without a connection. Use
+    `DatabaseTasks.load_schema_current` instead.
+    ([Commit](https://github.com/rails/rails/commit/f15cef67f75e4b52fd45655d7c6ab6b35623c608))
+
+*   Deprecated `Reflection#source_macro` without replacement as it is no longer
+    needed in Active Record.
+    ([Pull Request](https://github.com/rails/rails/pull/16373))
 
 *   Deprecated broken support for automatic detection of counter caches on
     `has_many :through` associations. You should instead manually specify the
@@ -265,6 +395,13 @@ for detailed changes.
     ([Commit](https://github.com/rails/rails/commit/91949e48cf41af9f3e4ffba3e5eecf9b0a08bfc3))
 
 ### Notable changes
+
+*   The PostgreSQL adapter now supports the `JSONB` datatype in PostgreSQL 9.4+.
+    ([Pull Request](https://github.com/rails/rails/pull/16220))
+
+*   The `#references` method in migrations now supports a `type` option for
+    specifying the type of the foreign key (e.g. `:uuid`).
+    ([Pull Request](https://github.com/rails/rails/pull/16231))
 
 *   Added a `:required` option to singular associations, which defines a
     presence validation on the association.
@@ -329,13 +466,25 @@ Please refer to the [Changelog][active-model] for detailed changes.
 ### Removals
 
 *   Removed deprecated `Validator#setup` without replacement.
-    ([Pull Request](https://github.com/rails/rails/pull/15617))
+    ([Pull Request](https://github.com/rails/rails/pull/10716))
+
+### Deprecations
+
+*   Deprecated reset_#{attribute} in favor of restore_#{attribute}.
+    ([Pull Request](https://github.com/rails/rails/pull/16180))
+
+*   Deprecated ActiveModel::Dirty#reset_changes in favor of #clear_changes_information.
+    ([Pull Request](https://github.com/rails/rails/pull/16180))
 
 ### Notable changes
 
-*   Introduced `undo_changes` method in `ActiveModel::Dirty` to restore the
-    changed (dirty) attributes to their previous values.
-    ([Pull Request](https://github.com/rails/rails/pull/14861))
+*   Introduced the `restore_attributes` method in `ActiveModel::Dirty` to restore
+    the changed (dirty) attributes to their previous values.
+    (Pull Request [1](https://github.com/rails/rails/pull/14861), [2](https://github.com/rails/rails/pull/16180))
+
+*   `has_secure_password` no longer disallow blank passwords (i.e. passwords
+    that contains only spaces) by default.
+    ([Pull Request](https://github.com/rails/rails/pull/16412))
 
 *   `has_secure_password` now verifies that the given password is less than 72
     characters if validations are enabled.
@@ -361,6 +510,10 @@ Please refer to the [Changelog][active-support] for detailed changes.
 
 ### Deprecations
 
+*   Deprecated `Kernel#silence_stderr`, `Kernel#capture` and `Kernel#quietly`
+    without replacement.
+    ([Pull Request](https://github.com/rails/rails/pull/13392))
+
 *   Deprecated `Class#superclass_delegating_accessor`, use
     `Class#class_attribute` instead.
     ([Pull Request](https://github.com/rails/rails/pull/14271))
@@ -371,6 +524,23 @@ Please refer to the [Changelog][active-support] for detailed changes.
 
 ### Notable changes
 
+*   The `travel_to` test helper now truncates the `usec` component to 0.
+    ([Commit](https://github.com/rails/rails/commit/9f6e82ee4783e491c20f5244a613fdeb4024beb5))
+
+*   `ActiveSupport::TestCase` now randomizes the order that test cases are ran
+    by default.
+    ([Commit](https://github.com/rails/rails/commit/6ffb29d24e05abbd9ffe3ea974140d6c70221807))
+
+*   Introduced `Object#itself` as an identity function.
+    (Commit [1](https://github.com/rails/rails/commit/702ad710b57bef45b081ebf42e6fa70820fdd810),
+    [2](https://github.com/rails/rails/commit/64d91122222c11ad3918cc8e2e3ebc4b0a03448a))
+
+*   `Object#with_options` can now be used without an explicit receiver.
+    ([Pull Request](https://github.com/rails/rails/pull/16339))
+
+*   Introduced `String#truncate_words` to truncate a string by a number of words.
+    ([Pull Request](https://github.com/rails/rails/pull/16190))
+
 *   Added `Hash#transform_values` and `Hash#transform_values!` to simplify a
     common pattern where the values of a hash must change, but the keys are left
     the same.
@@ -379,7 +549,7 @@ Please refer to the [Changelog][active-support] for detailed changes.
 *   The `humanize` inflector helper now strips any leading underscores.
     ([Commit](https://github.com/rails/rails/commit/daaa21bc7d20f2e4ff451637423a25ff2d5e75c7))
 
-*   Introduce `Concern#class_methods` as an alternative to
+*   Introduced `Concern#class_methods` as an alternative to
     `module ClassMethods`, as well as `Kernel#concern` to avoid the
     `module Foo; extend ActiveSupport::Concern; end` boilerplate.
     ([Commit](https://github.com/rails/rails/commit/b16c36e688970df2f96f793a759365b248b582ad))
