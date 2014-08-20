@@ -1,66 +1,53 @@
-Active Job Basics
-=================
+Active Job 基礎
+===============
 
-This guide provides you with all you need to get started in creating,
-enqueueing and executing background jobs.
+本篇提供所有建立任務、將任務加入排程，執行背景任務的所有知識。
 
-After reading this guide, you will know:
+讀完本篇，您將了解：
 
-* How to create jobs.
-* How to enqueue jobs.
-* How to run jobs in the background.
-* How to send emails from your application async.
+* 如何新建任務。
+* 如何把任務加入排程。
+* 如何在背景執行任務。
+* 如何異步發送信件。
 
 --------------------------------------------------------------------------------
 
-Introduction
-------------
+簡介
+----
 
-Active Job is a framework for declaring jobs and making them run on a variety
-of queueing backends. These jobs can be everything from regularly scheduled
-clean-ups, billing charges, or mailings. Anything that can be chopped up
-into small units of work and run in parallel, really.
+Active Job 是用來宣告任務，並把任務放到多種佇列後台執行的框架。這些任務可以是平常的系統定時清理、收費方式改變通知、或是定時寄送郵件等任務。任何可以細分的工作與同步執行的事情都可以用 Active Job 來做。
 
+Active Job 存在目的
+-------------------
 
-The Purpose of the Active Job
------------------------------
-The main point is to ensure that all Rails apps will have a job infrastructure
-in place, even if it's in the form of an "immediate runner". We can then have
-framework features and other gems build on top of that, without having to
-worry about API differences between various job runners such as Delayed Job
-and Resque. Picking your queuing backend becomes more of an operational concern,
-then. And you'll be able to switch between them without having to rewrite your jobs.
+主要確保 Rails 應用程式有個一致的背景任務框架，不做背景任務，要即時執行也可以。接著便可以有基於 Active Job 打造的功能、Gem 誕生，而無需擔心各種佇列後台，像是 Delayed Job 和 Resque 之間的 API 差異。選擇佇列後台變成一種運維方面的考量，而切換後台也無需修改任務本身的實作。
 
+新建任務
+-------
 
-Creating a Job
---------------
+本節提供建立任務，將任務加入排程的詳細教學。
 
-This section will provide a step-by-step guide to creating a job and enqueue it.
+### 建立任務
 
-### Create the Job
-
-Active Job provides a Rails generator to create jobs. The following will create a
-job in app/jobs:
+Active Job 提供了 Rails 產生器來建立任務。以下會在 `app/jobs` 建立一件新任務：
 
 ```bash
 $ bin/rails generate job guests_cleanup
 create  app/jobs/guests_cleanup_job.rb
 ```
 
-You can also create a job that will run on a specific queue:
+也可以建立跑在特定佇列上的任務：
 
 ```bash
 $ bin/rails generate job guests_cleanup --queue urgent
 create  app/jobs/guests_cleanup_job.rb
 ```
 
-As you can see, you can generate jobs just like you use other generators with
-Rails.
+可以看出來，建立任務就和使用其他的 Rails 產生器一樣簡單。
 
-If you don't want to use a generator, you could create your own file inside of
-app/jobs, just make sure that it inherits from `ActiveJob::Base`.
+若不想使用產生器，也可以自己在 `app/jobs` 下建立檔案，只要確保任務是繼承自 `ActiveJob::Base` 的類別即可。
 
-Here's how a job looks like:
+以下是任務的程式範例：
 
 ```ruby
 class GuestsCleanupJob < ActiveJob::Base
@@ -72,9 +59,9 @@ class GuestsCleanupJob < ActiveJob::Base
 end
 ```
 
-### Enqueue the Job
+### 任務排程
 
-Enqueue a job like so:
+將任務加入排程：
 
 ```ruby
 MyJob.enqueue record  # Enqueue a job to be performed as soon the queueing system is free.
@@ -88,17 +75,16 @@ MyJob.enqueue_at Date.tomorrow.noon, record  # Enqueue a job to be performed tom
 MyJob.enqueue_in 1.week, record # Enqueue a job to be performed 1 week from now.
 ```
 
-That's it!
+就這麼簡單！
 
-
-Job Execution
+執行任務
 -------------
 
-If not adapter is set, the job is immediately executed.
+若無設定連接器，任務會即刻執行。
 
-### Backends
+### 後台
 
-Active Job has adapters for the following queueing backends:
+Active Job 針對提供以下佇列後台的連接器：
 
 * [Backburner](https://github.com/nesquena/backburner)
 * [Delayed Job](https://github.com/collectiveidea/delayed_job)
@@ -110,7 +96,7 @@ Active Job has adapters for the following queueing backends:
 * [Sneakers](https://github.com/jondot/sneakers)
 * [Sucker Punch](https://github.com/brandonhilkert/sucker_punch)
 
-#### Backends Features
+#### 各後台功能特色
 
 |                       | Async | Queues  | Delayed | Priorities  | Timeout | Retries |
 |-----------------------|-------|---------|---------|-------------|---------|---------|
@@ -125,9 +111,9 @@ Active Job has adapters for the following queueing backends:
 | **Active Job**        | Yes   | Yes     | WIP     | No          | No      | No      |
 | **Active Job Inline** | No    | Yes     | N/A     | N/A         | N/A     | N/A     |
 
-### Change Backends
+### 切換後台
 
-You can easy change your adapter:
+切換後台的連接器非常簡單：
 
 ```ruby
 # be sure to have the adapter gem in your Gemfile and follow the adapter specific
@@ -135,11 +121,10 @@ You can easy change your adapter:
 YourApp::Application.config.active_job.queue_adapter = :sidekiq
 ```
 
-Queues
+佇列
 ------
 
-Most of the adapters supports multiple queues. With Active Job you can schedule the job
-to run on a specific queue:
+多數的連接器都支持多種佇列。用 Active Job 可以將任務放到特定的佇列裡執行：
 
 ```ruby
 class GuestsCleanupJob < ActiveJob::Base
@@ -148,17 +133,14 @@ class GuestsCleanupJob < ActiveJob::Base
 end
 ```
 
-NOTE: Make sure your queueing backend "listens" on your queue name. For some backends
-you need to specify the queues to listen to.
+NOTE: 確保後台程式知道佇列的名稱是什麼。某些後台可能需要明確指定佇列。
 
-
-Callbacks
+回呼
 ---------
 
-Active Job provides hooks during the lifecycle of a job. Callbacks allows you to trigger
-logic during the lifecycle of a job.
+Active Job 在任務生命週期裡的每個階段都有提供 hooks。回呼允許在任務生命週期裡觸發事件來執行程式邏輯。
 
-### Available callbacks
+### 可用的回呼
 
 * before_enqueue
 * around_enqueue
@@ -167,7 +149,7 @@ logic during the lifecycle of a job.
 * around_perform
 * after_perform
 
-### Usage
+### 用法
 
 ```ruby
 class GuestsCleanupJob < ActiveJob::Base
@@ -191,9 +173,9 @@ end
 
 ActionMailer
 ------------
-One of the most common jobs in a modern web application is sending emails outside
-of the request-response cycle, so the user doesn't have to wait on it. Active Job
-is integrated with Action Mailer so you can easily send emails async:
+
+現代網路應用最常見的任務之一是在請求響應週期之外發送 Email，減去使用者等待的時間。Active Job
+已與 Action Mailer 整合，異步寄送信件只需使用 `deliver_later` 即可：
 
 ```ruby
 # Instead of the classic
@@ -205,9 +187,8 @@ UserMailer.welcome(@user).deliver_later
 
 GlobalID
 --------
-Active Job supports GlobalID for parameters. This makes it possible
-to pass live Active Record objects to your job instead of class/id pairs, which
-you then have to manually deserialize. Before, jobs would look like this:
+
+Active Job 支持使用 GlobalID 作為參數。這使得任務可以傳入 Active Record 物件，而不只是需要額外處理的類別名稱或 ID。使用類別和 ID 的任務看起來會像是：
 
 ```ruby
 class TrashableCleanupJob
@@ -218,7 +199,7 @@ class TrashableCleanupJob
 end
 ```
 
-Now you can simply do:
+可以傳入 Active Record 物件來簡化：
 
 ```ruby
 class TrashableCleanupJob
@@ -228,14 +209,12 @@ class TrashableCleanupJob
 end
 ```
 
-This works with any class that mixes in ActiveModel::GlobalIdentification, which
-by default has been mixed into Active Model classes.
-
+以上對任何混入 `ActiveModel::GlobalIdentification` 的類都有效，Active Model 的類別預設皆有混入 `ActiveModel::GlobalIdentification`。
 
 Exceptions
 ----------
-Active Job provides a way to catch exceptions raised during the execution of the
-job:
+
+Active Job 提供捕捉任務執行期間發生異常的方法：
 
 ```ruby
 
