@@ -892,7 +892,7 @@ WARNING: 必須指定圖片的副檔名。
 會產生：
 
 ```erb
-<video><source src="trailer.ogg" /><source src="movie.ogg" /></video>
+<video><source src="/videos/trailer.ogg" /><source src="/videos/trailer.flv" /></video>
 ```
 
 #### 使用 `audio_tag` 連結到音訊檔案
