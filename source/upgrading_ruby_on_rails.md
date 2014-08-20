@@ -50,7 +50,20 @@ Don't forget to review the difference, to see if there were any unexpected chang
 Upgrading from Rails 4.1 to Rails 4.2
 -------------------------------------
 
-NOTE: This section is a work in progress.
+NOTE: This section is a work in progress, please help to improve this by sending
+a [pull request](https://github.com/rails/rails/edit/master/guides/source/upgrading_ruby_on_rails.md).
+
+### Web Console
+
+TODO: setup instructions for web console on existing apps.
+
+### Responders
+
+TODO: mention https://github.com/rails/rails/pull/16526
+
+### Error handling in transaction callbacks
+
+TODO: mention https://github.com/rails/rails/pull/16537
 
 ### Serialized attributes
 
@@ -90,6 +103,42 @@ after_bundle do
   git commit: %Q{ -m 'Initial commit' }
 end
 ```
+
+### Rails Html Sanitizer
+
+There's a new choice for sanitizing HTML fragments in your applications. The
+venerable html-scanner approach is now officially being deprecated in favor of
+[`Rails Html Sanitizer`](https://github.com/rails/rails-html-sanitizer).
+
+This means the methods `sanitize`, `sanitize_css`, `strip_tags` and
+`strip_links` are backed by a new implementation.
+
+In the next major Rails version `Rails Html Sanitizer` will be the default
+sanitizer. It already is for new applications.
+
+Include this in your Gemfile to try it out today:
+
+```ruby
+gem 'rails-html-sanitizer'
+```
+
+This new sanitizer uses [Loofah](https://github.com/flavorjones/loofah) internally. Loofah in turn uses Nokogiri, which
+wraps XML parsers written in both C and Java, so sanitization should be faster
+no matter which Ruby version you run.
+
+The new version updates `sanitize`, so it can take a `Loofah::Scrubber` for
+powerful scrubbing.
+[See some examples of scrubbers here](https://github.com/flavorjones/loofah#loofahscrubber).
+
+Two new scrubbers have also been added: `PermitScrubber` and `TargetScrubber`.
+Read the [gem's readme](https://github.com/rails/rails-html-sanitizer) for more information.
+
+The documentation for `PermitScrubber` and `TargetScrubber` explains how you
+can gain complete control over when and how elements should be stripped.
+
+### Rails DOM Testing
+
+TODO: Mention https://github.com/rails/rails/commit/4e97d7585a2f4788b9eed98c6cdaf4bb6f2cf5ce
 
 Upgrading from Rails 4.0 to Rails 4.1
 -------------------------------------
@@ -165,7 +214,7 @@ secrets, you need to:
 
 If your test helper contains a call to
 `ActiveRecord::Migration.check_pending!` this can be removed. The check
-is now done automatically when you `require 'test_help'`, although
+is now done automatically when you `require 'rails/test_help'`, although
 leaving this line in your helper is not harmful in any way.
 
 ### Cookies serializer
@@ -565,7 +614,7 @@ being used, you can update your form to use the `PUT` method instead:
 <%= form_for [ :update_name, @user ], method: :put do |f| %>
 ```
 
-For more on PATCH and why this change was made, see [this post](http://weblog.rubyonrails.org/2012/2/25/edge-rails-patch-is-the-new-primary-http-method-for-updates/)
+For more on PATCH and why this change was made, see [this post](http://weblog.rubyonrails.org/2012/2/26/edge-rails-patch-is-the-new-primary-http-method-for-updates/)
 on the Rails blog.
 
 #### A note about media types
