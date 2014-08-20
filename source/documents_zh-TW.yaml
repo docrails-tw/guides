@@ -89,6 +89,10 @@
       url: action_mailer_basics.html
       description: 本篇介紹如何使用 Action Mailer 來收發信件。
     -
+      name: Active Job 基礎
+      url: active_job_basics.html
+      description: 本篇介紹建立任務、任務排程以及執行背景任務的所有知識。
+    -
       name: 測試 Rails 應用程式
       url: testing.html
       work_in_progress: true
