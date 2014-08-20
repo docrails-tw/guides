@@ -142,12 +142,12 @@ Active Job 在任務生命週期裡的每個階段都有提供 hooks。回呼允
 
 ### 可用的回呼
 
-* before_enqueue
-* around_enqueue
-* after_enqueue
-* before_perform
-* around_perform
-* after_perform
+* `before_enqueue`
+* `around_enqueue`
+* `after_enqueue`
+* `before_perform`
+* `around_perform`
+* `after_perform`
 
 ### 用法
 
