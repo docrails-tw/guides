@@ -24,7 +24,7 @@ Rails 4.1 精華摘要：
 
 Spring 會預加載你的 Rails 應用程式。保持應用程式在背景執行，如此一來在執行 Rails 命令時：如跑測試、`rake`、`migrate` 時，不用每次都重啟 Rails 應用程式，加速你的開發流程。
 
-新版 Rails 4.1 應用程式出廠內建 “Spring 化” 的 binstubs（aka，執行檔，如 `rails`、`rake`）。這表示 `bin/rails`、`bin/rake` 會自動採用 Spring 預載的那一份 Rails。
+新版 Rails 4.1 應用程式出廠內建“Spring 加持”的 binstubs（aka，執行檔，如 `rails`、`rake`）。這表示 `bin/rails`、`bin/rake` 會自動採用 Spring 預載的那一份 Rails。
 
 **執行 rake task：**
 
@@ -65,13 +65,13 @@ development:
   some_api_key: "b2c299a4a7b2fe41b6b7ddf517604a1c34"
 ```
 
-如何讀：
+如何讀出來：
 
 ```ruby
 > Rails.application.secrets
 => "3b7cd727ee24e8444053437c36cc66c3"
 > Rails.application.secrets.some_api_key
-=> "SOMEKEY"
+=> "b2c299a4a7b2fe41b6b7ddf517604a1c34"
 ```
 
 參考 [Ruby on Rails 升級指南](http://edgeguides.rubyonrails.org/upgrading_ruby_on_rails.html)來了解如何在現有專案裡導入此功能。
