@@ -51,7 +51,13 @@ module RailsGuides
       end
 
       def dom_id_text(text)
-        text.downcase.gsub(/\?/, '-questionmark').gsub(/!/, '-bang').gsub(/[^a-z0-9\p{Han}\p{Katakana}\p{Hiragana}\p{Hangul}]+/, ' ').gsub(/\s+/, '-')
+        # text.downcase.gsub(/\?/, '-questionmark').gsub(/!/, '-bang').gsub(/[^a-z0-9\p{Han}\p{Katakana}\p{Hiragana}\p{Hangul}]+/, ' ').gsub(/\s+/, '-')
+        escaped_chars = Regexp.escape('\\/`*_{}[]()#+-.!:,;|&<>^~=\'"')
+
+        text.downcase.gsub(/\?/, '-questionmark')
+                     .gsub(/!/, '-bang')
+                     .gsub(/[#{escaped_chars}]+/, ' ').strip
+                     .gsub(/\s+/, '-')
       end
 
       def engine
