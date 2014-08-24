@@ -54,9 +54,10 @@ module RailsGuides
         punctuation_regexp = RUBY_VERSION > "1.9" ? /[^\p{Word}\- ]/u : /[^\w\- ]/
 
         text.downcase.gsub(/\?/, '-questionmark')
-                .gsub(/!/, '-bang')
-                .gsub(punctuation_regexp, ' ')
-                .gsub(/\s+/, '-')
+                     .gsub(/!/, '-bang')
+                     .gsub(/_/, '-')
+                     .gsub(punctuation_regexp, ' ')
+                     .gsub(/\s+/, '-')
       end
 
       def engine
