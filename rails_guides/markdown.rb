@@ -51,12 +51,11 @@ module RailsGuides
       end
 
       def dom_id_text(text)
-        punctuation_regexp = RUBY_VERSION > "1.9" ? /[^\p{Word}\- ]/u : /[^\w\- ]/
+        escaped_chars = Regexp.escape('\\/`*_{}[]()#+-.!:,;|&<>^~=\'"')
 
         text.downcase.gsub(/\?/, '-questionmark')
                      .gsub(/!/, '-bang')
-                     .gsub(/_/, '-')
-                     .gsub(punctuation_regexp, ' ')
+                     .gsub(/[#{escaped_chars}]+/, ' ').strip
                      .gsub(/\s+/, '-')
       end
 
