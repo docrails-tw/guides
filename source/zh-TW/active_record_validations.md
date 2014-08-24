@@ -358,7 +358,7 @@ end
 * `:less_than` - 屬性的值必須小於指定的值。預設錯誤訊息是 _"must be less than %{count}"_。
 * `:less_than_or_equal_to` - 屬性的值必須小於等於指定的值。預設錯誤訊息是 _"must be less than or equal to %{count}"_。
 * `:odd` - 若 `:odd` 設為 `true`，則屬性的值必須是奇數。預設錯誤訊息是 _"must be odd"_。
-* `:even` - 若 `:even` 設為 `true`，則屬性的值必須是奇數。預設錯誤訊息是 _"must be even"_。
+* `:even` - 若 `:even` 設為 `true`，則屬性的值必須是偶數。預設錯誤訊息是 _"must be even"_。
 
 `numericality` 預設錯誤訊息是 _"is not a number"_。
 
