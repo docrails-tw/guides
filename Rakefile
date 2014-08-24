@@ -80,6 +80,18 @@ namespace :guides do
       ENV["WARN_BROKEN_LINKS"] = "1" # authors can't disable this
       ruby "rails_guides.rb"
     end
+
+    desc "Generate .mobi file. The kindlegen executable must be in your PATH. You can get it for free from http://www.amazon.com/kindlepublishing"
+    task :kindle do
+      unless `kindlerb -v 2> /dev/null` =~ /kindlerb 0.1.1/
+        abort "Please `gem install kindlerb` and make sure you have `kindlegen` in your PATH"
+      end
+      unless `convert` =~ /convert/
+        abort "Please install ImageMagick`"
+      end
+      ENV['KINDLE'] = '1'
+      Rake::Task['guides:generate:html'].invoke
+    end
   end
 
   desc "Show help"
@@ -120,6 +132,7 @@ Some arguments may be passed via environment variables:
 Examples:
   $ rake guides:generate ALL=1
   $ rake guides:generate EDGE=1
+  $ rake guides:generate:kindle EDGE=1
   $ rake guides:generate GUIDES_LANGUAGE=es
     help
   end
