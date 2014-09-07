@@ -8,7 +8,7 @@ Highlights in Rails 3.1:
 * Assets Pipeline
 * jQuery as the default JavaScript library
 
-This release notes cover the major changes, but don't include every little bug fix and change. If you want to see everything, check out the [list of commits](https://github.com/rails/rails/commits/master) in the main Rails repository on GitHub.
+This release notes cover the major changes, but don't include every little bug fix and change. If you want to see everything, check out the [list of commits](https://github.com/rails/rails/commits/3-1-stable) in the main Rails repository on GitHub.
 
 --------------------------------------------------------------------------------
 

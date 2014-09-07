@@ -8,7 +8,7 @@ Rails 4.1 精華摘要：
 * Action Pack Variants
 * Action Mailer Preview
 
-本篇僅記錄主要的變化。要了解關於已修復的 Bug、功能變更等，請參考 [Rails GitHub 主頁][rails]上各個 Gem 的 CHANGELOG 或是 [Rails 的提交歷史](https://github.com/rails/rails/commits/master)。
+本篇僅記錄主要的變化。要了解關於已修復的 Bug、功能變更等，請參考 [Rails GitHub 主頁][rails]上各個 Gem 的 CHANGELOG 或是 [Rails 的提交歷史](https://github.com/rails/rails/commits/4-1-stable)。
 
 --------------------------------------------------------------------------------
 
