@@ -130,7 +130,9 @@ $ bin/rails generate scaffold user name email login
 $ bin/rake db:migrate
 ```
 
-現在有了可以實驗的 `User` Model，打開 `app/controllers/users_controller.rb`，修改 `create` 動作，在成功新建使用者之後，讓 Controller 呼叫 `UserMailer` 寄信出去。將 `UserMailer.welcome_email` 這一行，放到成功儲存使用者之後：
+現在有了可以實驗的 `User` Model，打開 `app/controllers/users_controller.rb`，修改 `create` 動作，在成功新建使用者之後，讓 Controller 呼叫 `UserMailer` 寄信出去。將 `UserMailer.welcome_email` 這一行，放到成功儲存使用者之後。
+
+Action Mailer 最近與 Active Job 整併，現在可以在請求響應週期之外寄送信件（背景執行），而無需使用者等候。
 
 ```ruby
 class UsersController < ApplicationController
@@ -142,7 +144,7 @@ class UsersController < ApplicationController
     respond_to do |format|
       if @user.save
         # Tell the UserMailer to send a welcome email after save
-        UserMailer.welcome_email(@user).deliver
+        UserMailer.welcome_email(@user).deliver_later
 
         format.html { redirect_to(@user, notice: 'User was successfully created.') }
         format.json { render json: @user, status: :created, location: @user }
@@ -155,7 +157,21 @@ class UsersController < ApplicationController
 end
 ```
 
-`welcome_email` 會回傳 `Mail::Message` 物件，對這個物件呼叫 `deliver` 便會將信件發送出去。
+NOTE: Active Job 的預設行為是即刻（`:inline`）執行任務，要馬上寄出信件現在用 `deliver_later` 即可。之後要改成背景執行也很簡單，給 Active Job 設定一個佇列後台即可（比如 Sidekiq、Resque 等）。
+
+若想馬上寄出信件（比如在定時任務裡），只要呼叫 `deliver_now` 即可：
+
+```ruby
+class SendWeeklySummary
+  def run
+    User.find_each do |user|
+      UserMailer.weekly_summary(user).deliver_now
+    end
+  end
+end
+```
+
+`welcome_email` 會回傳 `Mail::Message` 物件，對這個物件呼叫 `deliver_now` 或 `deliver_later` 便會將信件發送出去。`ActionMailer::MessageDelivery` 物件不過是 `Mail::Message` 物件的封裝。若想查看、修改 `Mail::Message` 物件，可以對 `ActionMailer::MessageDelivery` 呼叫 `message` 方法，來獲得 `Mail::Message` 物件。
 
 ### 自動對標頭編碼
 
