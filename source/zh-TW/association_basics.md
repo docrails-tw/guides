@@ -1307,9 +1307,9 @@ has_many` 的這個類別沒有外鍵。外鍵在與之關聯的類別，參照�
 * `collection<<(object, ...)`
 * `collection.delete(object, ...)`
 * `collection.destroy(object, ...)`
-* `collection=objects`
+* `collection=(objects)`
 * `collection_singular_ids`
-* `collection_singular_ids=ids`
+* `collection_singular_ids=(ids)`
 * `collection.clear`
 * `collection.empty?`
 * `collection.size`
@@ -1335,9 +1335,9 @@ orders(force_reload = false)
 orders<<(object, ...)
 orders.delete(object, ...)
 orders.destroy(object, ...)
-orders=objects
+orders=(objects)
 order_ids
-order_ids=ids
+order_ids=(ids)
 orders.clear
 orders.empty?
 orders.size
@@ -1385,7 +1385,7 @@ WARNING: 除此之外，若關聯設定了 `dependent: :destroy`，則關聯物�
 
 WARNING: 無論 `:dependent` 選項是什麼，物件都會從資料庫裡刪除。
 
-##### `collection=objects`
+##### `collection=(objects)`
 
 `collection=` 方法更改集合內容，根據提供的物件來決定要刪除還是新增。
 
@@ -1397,7 +1397,7 @@ WARNING: 無論 `:dependent` 選項是什麼，物件都會從資料庫裡刪除
 @order_ids = @customer.order_ids
 ```
 
-##### `collection_singular_ids=ids`
+##### `collection_singular_ids=(ids)`
 
 `collection_singular_ids=` 方法更改集合擁有物件的 ID，根據所提供的主鍵值來決定要刪除還是新增。
 
@@ -1780,9 +1780,9 @@ person.articles << article unless person.articles.include?(article)
 * `collection<<(object, ...)`
 * `collection.delete(object, ...)`
 * `collection.destroy(object, ...)`
-* `collection=objects`
+* `collection=(objects)`
 * `collection_singular_ids`
-* `collection_singular_ids=ids`
+* `collection_singular_ids=(ids)`
 * `collection.clear`
 * `collection.empty?`
 * `collection.size`
@@ -1808,9 +1808,9 @@ assemblies(force_reload = false)
 assemblies<<(object, ...)
 assemblies.delete(object, ...)
 assemblies.destroy(object, ...)
-assemblies=objects
+assemblies=(objects)
 assembly_ids
-assembly_ids=ids
+assembly_ids=(ids)
 assemblies.clear
 assemblies.empty?
 assemblies.size
@@ -1865,7 +1865,7 @@ WARNING: 不會觸發連接資料表記錄的回呼。
 @part.assemblies.destroy(@assembly1)
 ```
 
-##### `collection=objects`
+##### `collection=(objects)`
 
 `collection=` 方法更改集合內容，根據提供的物件來決定要刪除還是新增。
 
@@ -1877,7 +1877,7 @@ WARNING: 不會觸發連接資料表記錄的回呼。
 @assembly_ids = @part.assembly_ids
 ```
 
-##### `collection_singular_ids=ids`
+##### `collection_singular_ids=(ids)`
 
 `collection_singular_ids=` 方法更改集合擁有物件的 ID，根據所提供的主鍵值來決定要刪除還是新增。
 
