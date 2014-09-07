@@ -290,7 +290,7 @@ SELECT * FROM clients ORDER BY id DESC LIMIT 2
 ```ruby
 # 如果有數千個使用者，效率非常差。
 User.all.each do |user|
-  NewsLetter.weekly_deliver(user)
+  NewsMailer.weekly(user).deliver_now
 end
 ```
 
@@ -306,7 +306,7 @@ TIP: `find_each` 與 `find_in_batches` 方法專門用來解決大量記錄，�
 
 ```ruby
 User.find_each do |user|
-  NewsMailer.weekly(user).deliver
+  NewsMailer.weekly(user).deliver_now
 end
 ```
 
@@ -314,7 +314,7 @@ end
 
 ```ruby
 User.where(weekly_subscriber: true).find_each do |user|
-  NewsMailer.weekly(user).deliver
+  NewsMailer.weekly(user).deliver_now
 end
 ```
 
@@ -330,7 +330,7 @@ end
 
 ```ruby
 User.find_each(batch_size: 5000) do |user|
-  NewsLetter.weekly_deliver(user)
+  NewsMailer.weekly(user).deliver_now
 end
 ```
 
@@ -342,7 +342,7 @@ end
 
 ```ruby
 User.find_each(start: 2000, batch_size: 5000) do |user|
-  NewsLetter.weekly_deliver(user)
+  NewsMailer.weekly(user).deliver_now
 end
 ```
 
