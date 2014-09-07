@@ -93,7 +93,6 @@ require 'bundler/setup' if File.exist?(ENV['BUNDLE_GEMFILE'])
 * i18n
 * mail
 * mime-types
-* polyglot
 * rack
 * rack-cache
 * rack-mount
@@ -103,7 +102,6 @@ require 'bundler/setup' if File.exist?(ENV['BUNDLE_GEMFILE'])
 * rake
 * sqlite3
 * thor
-* treetop
 * tzinfo
 
 ### `rails/commands.rb`
