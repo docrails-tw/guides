@@ -53,7 +53,7 @@ create  app/jobs/guests_cleanup_job.rb
 class GuestsCleanupJob < ActiveJob::Base
   queue_as :default
 
-  def perform
+  def perform(*args)
     # Do something later
   end
 end
@@ -90,26 +90,29 @@ Active Job 針對提供以下佇列後台的連接器：
 * [Delayed Job](https://github.com/collectiveidea/delayed_job)
 * [Qu](https://github.com/bkeepers/qu)
 * [Que](https://github.com/chanks/que)
-* [QueueClassic](https://github.com/ryandotsmith/queue_classic)
-* [Resque 1.x](https://github.com/resque/resque)
+* [QueueClassic 2.x](https://github.com/ryandotsmith/queue_classic/tree/v2.2.3)
+* [Resque 1.x](https://github.com/resque/resque/tree/1-x-stable)
 * [Sidekiq](https://github.com/mperham/sidekiq)
 * [Sneakers](https://github.com/jondot/sneakers)
 * [Sucker Punch](https://github.com/brandonhilkert/sucker_punch)
 
 #### 各後台功能特色
 
-|                       | Async | Queues  | Delayed | Priorities  | Timeout | Retries |
-|-----------------------|-------|---------|---------|-------------|---------|---------|
-| **Backburner**        | Yes   | Yes     | Yes     | Yes         | Job     | Global  |
-| **Delayed Job**       | Yes   | Yes     | Yes     | Job         | Global  | Global  |
-| **Que**               | Yes   | Yes     | Yes     | Job         | No      | Job     |
-| **Queue Classic**     | Yes   | Yes     | Gem     | No          | No      | No      |
-| **Resque**            | Yes   | Yes     | Gem     | Queue       | Global  | ?       |
-| **Sidekiq**           | Yes   | Yes     | Yes     | Queue       | No      | Job     |
-| **Sneakers**          | Yes   | Yes     | No      | Queue       | Queue   | No      |
-| **Sucker Punch**      | Yes   | Yes     | Yes     | No          | No      | No      |
-| **Active Job**        | Yes   | Yes     | WIP     | No          | No      | No      |
-| **Active Job Inline** | No    | Yes     | N/A     | N/A         | N/A     | N/A     |
+|                       | Async | Queues | Delayed   | Priorities | Timeout | Retries |
+|-----------------------|-------|--------|-----------|------------|---------|---------|
+| **Backburner**        | Yes   | Yes    | Yes       | Yes        | Job     | Global  |
+| **Delayed Job**       | Yes   | Yes    | Yes       | Job        | Global  | Global  |
+| **Que**               | Yes   | Yes    | Yes       | Job        | No      | Job     |
+| **Queue Classic**     | Yes   | Yes    | No*       | No         | No      | No      |
+| **Resque**            | Yes   | Yes    | Yes (Gem) | Queue      | Global  | Yes     |
+| **Sidekiq**           | Yes   | Yes    | Yes       | Queue      | No      | Job     |
+| **Sneakers**          | Yes   | Yes    | No        | Queue      | Queue   | No      |
+| **Sucker Punch**      | Yes   | Yes    | No        | No         | No      | No      |
+| **Active Job Inline** | No    | Yes    | N/A       | N/A        | N/A     | N/A     |
+| **Active Job**        | Yes   | Yes    | Yes       | No         | No      | No      |
+
+NOTE:
+* Queue Classic 不支援任務排程。但可以自己用 queue_classic-later Gem 來實作，詳細請參考 `ActiveJob::QueueAdapters::QueueClassicAdapter` 的文件。
 
 ### 切換後台
 
@@ -131,6 +134,26 @@ class GuestsCleanupJob < ActiveJob::Base
   queue_as :low_priority
   #....
 end
+```
+
+也可給所有任務加上佇列名前綴，加入 `config.active_job.queue_name_prefix` 設定到 `application.rb` 即可：
+
+```ruby
+# config/application.rb
+module YourApp
+  class Application < Rails::Application
+    config.active_job.queue_name_prefix = Rails.env
+  end
+end
+
+# app/jobs/guests_cleanup.rb
+class GuestsCleanupJob < ActiveJob::Base
+  queue_as :low_priority
+  #....
+end
+
+# Now your job will run on queue production_low_priority on your production
+# environment and on beta_low_priority on your beta environment
 ```
 
 NOTE: 確保後台程式知道佇列的名稱是什麼。某些後台可能需要明確指定佇列。
@@ -178,10 +201,10 @@ ActionMailer
 已與 Action Mailer 整合，異步寄送信件只需使用 `deliver_later` 即可：
 
 ```ruby
-# Instead of the classic
-UserMailer.welcome(@user).deliver
+# If you want to send the email now use #deliver_now
+UserMailer.welcome(@user).deliver_now
 
-# use #deliver later to send the email async
+# If you want to send the email through Active Job use #deliver_later
 UserMailer.welcome(@user).deliver_later
 ```
 
@@ -221,7 +244,7 @@ Active Job 提供捕捉任務執行期間發生異常的方法：
 class GuestsCleanupJob < ActiveJob::Base
   queue_as :default
 
-  rescue_from(ActiveRecord:NotFound) do |exception|
+  rescue_from(ActiveRecord::RecordNotFound) do |exception|
    # do something with the exception
   end
 
