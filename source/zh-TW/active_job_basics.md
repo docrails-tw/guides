@@ -64,15 +64,15 @@ end
 將任務加入排程：
 
 ```ruby
-MyJob.enqueue record  # Enqueue a job to be performed as soon the queueing system is free.
+MyJob.perform_later record  # Enqueue a job to be performed as soon the queueing system is free.
 ```
 
 ```ruby
-MyJob.enqueue_at Date.tomorrow.noon, record  # Enqueue a job to be performed tomorrow at noon.
+MyJob.set(wait_until: Date.tomorrow.noon).perform_later(record)  # Enqueue a job to be performed tomorrow at noon.
 ```
 
 ```ruby
-MyJob.enqueue_in 1.week, record # Enqueue a job to be performed 1 week from now.
+MyJob.set(wait: 1.week).perform_later(record) # Enqueue a job to be performed 1 week from now.
 ```
 
 就這麼簡單！
@@ -152,8 +152,36 @@ class GuestsCleanupJob < ActiveJob::Base
   #....
 end
 
-# Now your job will run on queue production_low_priority on your production
-# environment and on beta_low_priority on your beta environment
+# Now your job will run on queue production_low_priority on your
+# production environment and on beta_low_priority on your beta
+# environment
+```
+
+若需要更細緻的控制任務的執行，可以傳 `:queue` 給 `#set` 方法。
+
+```ruby
+MyJob.set(queue: :another_queue).perform_later(record)
+```
+
+要在任務層級控制佇列，可以傳一個區塊給 `queue_as`。區塊會在任務的上下文裡執行（也就是拿的到 `self.arguments），記得要回傳佇列的名稱：
+
+```ruby
+class ProcessVideoJob < ActiveJob::Base
+  queue_as do
+    video = self.arguments.first
+    if video.owner.premium?
+      :premium_videojobs
+    else
+      :videojobs
+    end
+  end
+
+  def perform(video)
+    # do process video
+  end
+end
+
+ProcessVideoJob.perform_later(Video.last)
 ```
 
 NOTE: 確保後台程式知道佇列的名稱是什麼。某些後台可能需要明確指定佇列。
@@ -179,7 +207,7 @@ class GuestsCleanupJob < ActiveJob::Base
   queue_as :default
 
   before_enqueue do |job|
-    # do somthing with the job instance
+    # do something with the job instance
   end
 
   around_perform do |job, block|

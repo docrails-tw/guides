@@ -1153,9 +1153,9 @@ NOTE: 特定的異常只有在 `ApplicationController` 裡面可以捕捉的到�
 * `config/routes.rb`
 
   ```ruby
-  get '/404', to: 'errors#not_found'
-  get '/422', to: 'errors#unprocessable_entity'
-  get '/500', to: 'errors#server_error'
+  match '/404', via: :all, to: 'errors#not_found'
+  match '/422', via: :all, to: 'errors#unprocessable_entity'
+  match '/500', via: :all, to: 'errors#server_error'
   ```
 
 建立 Controller 與 View。

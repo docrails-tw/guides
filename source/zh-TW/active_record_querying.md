@@ -354,18 +354,15 @@ end
 
 ```ruby
 # Give add_invoices an array of 1000 invoices at a time
-Invoice.find_in_batches(include: :invoice_lines) do |invoices|
+Invoice.find_in_batches do |invoices|
   export.add_invoices(invoices)
 end
 ```
 
-NOTE: `:include` 選項可以指定需要跟 Model 一起載入的關聯。
-
 ##### `find_in_batches` 接受的選項
 
-`find_in_batches` 方法接受和 `find_each` 一樣的選項： `:batch_size` 與 `:start`，以及多數 `find` 接受的參數，除了 `:order` 與 `:limit` 之外。
+`find_in_batches` 方法接受和 `find_each` 一樣的選項： `:batch_size` 與 `:start`。
 
-`find_in_batches` 方法接受和 `find_each` 一樣的選項： `:batch_size` 與 `:start`，以及多數 `find` 接受的參數，除了 `:order` 與 `:limit` 之外。這兩個選項保留供 `find_in_batches` 內部使用。
 
 條件
 ----------
