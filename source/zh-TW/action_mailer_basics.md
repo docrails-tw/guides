@@ -239,8 +239,7 @@ Action Mailer 3.0 起可製作行內附件（inline attachments）。3.0 以前�
     ```html+erb
     <p>Hello there, this is our image</p>
 
-    <%= image_tag attachments['image.jpg'].url, alt: 'My Photo',
-                                                class: 'photos' %>
+    <%= image_tag attachments['image.jpg'].url, alt: 'My Photo', class: 'photos' %>
     ```
 
 #### 寄信給多個收件者
