@@ -266,6 +266,8 @@ class Product < ActiveRecord::Base
 end
 ```
 
+也可以使用 `:without` 來指定沒有匹配的屬性。
+
 `format` 預設錯誤訊息是  _"is invalid"_。
 
 ### `inclusion`
@@ -391,7 +393,13 @@ end
 
 如透過 `has_one` 或 `has_many` 關係來驗證關聯的物件是否存在，則會對該物件呼叫 `blank?` 與 `marked_for_destruction?`，來確定存在性。
 
-由於 `false.blank?` 為 `true`，如果想驗證布林欄位的存在性，應該要使用 `validates :field_name, inclusion: { in: [true, false] }`。
+由於 `false.blank?` 為 `true`，如果想驗證布林欄位的存在性，應該要使用下列的驗證方法：
+
+```ruby
+validates :boolean_field_name, presence: true
+validates :boolean_field_name, inclusion: { in: [true, false] }
+validates :boolean_field_name, exclusion: { in: [nil] }
+```
 
 預設錯誤訊息是 _"can't be blank"_。
 
@@ -537,7 +545,7 @@ end
 ```ruby
 class Person < ActiveRecord::Base
   validates_each :name, :surname do |record, attr, value|
-    record.errors.add(attr, 'must start with upper case') if value =~ /\A[a-z]/
+    record.errors.add(attr, 'must start with upper case') if value =~ /\A[[:lower:]]/
   end
 end
 ```
