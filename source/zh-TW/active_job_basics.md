@@ -84,35 +84,7 @@ MyJob.set(wait: 1.week).perform_later(record) # Enqueue a job to be performed 1 
 
 ### 後台
 
-Active Job 針對提供以下佇列後台的連接器：
-
-* [Backburner](https://github.com/nesquena/backburner)
-* [Delayed Job](https://github.com/collectiveidea/delayed_job)
-* [Qu](https://github.com/bkeepers/qu)
-* [Que](https://github.com/chanks/que)
-* [QueueClassic 2.x](https://github.com/ryandotsmith/queue_classic/tree/v2.2.3)
-* [Resque 1.x](https://github.com/resque/resque/tree/1-x-stable)
-* [Sidekiq](https://github.com/mperham/sidekiq)
-* [Sneakers](https://github.com/jondot/sneakers)
-* [Sucker Punch](https://github.com/brandonhilkert/sucker_punch)
-
-#### 各後台功能特色
-
-|                       | Async | Queues | Delayed   | Priorities | Timeout | Retries |
-|-----------------------|-------|--------|-----------|------------|---------|---------|
-| **Backburner**        | Yes   | Yes    | Yes       | Yes        | Job     | Global  |
-| **Delayed Job**       | Yes   | Yes    | Yes       | Job        | Global  | Global  |
-| **Que**               | Yes   | Yes    | Yes       | Job        | No      | Job     |
-| **Queue Classic**     | Yes   | Yes    | No*       | No         | No      | No      |
-| **Resque**            | Yes   | Yes    | Yes (Gem) | Queue      | Global  | Yes     |
-| **Sidekiq**           | Yes   | Yes    | Yes       | Queue      | No      | Job     |
-| **Sneakers**          | Yes   | Yes    | No        | Queue      | Queue   | No      |
-| **Sucker Punch**      | Yes   | Yes    | No        | No         | No      | No      |
-| **Active Job Inline** | No    | Yes    | N/A       | N/A        | N/A     | N/A     |
-| **Active Job**        | Yes   | Yes    | Yes       | No         | No      | No      |
-
-NOTE:
-* Queue Classic 不支援任務排程。但可以自己用 queue_classic-later Gem 來實作，詳細請參考 `ActiveJob::QueueAdapters::QueueClassicAdapter` 的文件。
+Active Job 內建支援多種佇列後台的連接器（Sidekiq、Resque、Delayed Job 等）。完整連接器列表請見 [ActiveJob::QueueAdapters](http://api.rubyonrails.org/classes/ActiveJob/QueueAdapters.html) 的 API 文件。
 
 ### 切換後台
 
@@ -121,7 +93,7 @@ NOTE:
 ```ruby
 # be sure to have the adapter gem in your Gemfile and follow the adapter specific
 # installation and deployment instructions
-YourApp::Application.config.active_job.queue_adapter = :sidekiq
+Rails.Application.config.active_job.queue_adapter = :sidekiq
 ```
 
 佇列

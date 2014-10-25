@@ -1183,15 +1183,18 @@ NOTE: 特定的異常只有在 `ApplicationController` 裡面可以捕捉的到�
 * `app/views`
 
   ```
-    errors/
-      not_found.html.erb
-      unprocessable_entity.html.erb
-      server_error.html.erb
-    layouts/
-      error.html.erb
+  errors/
+    not_found.html.erb
+    unprocessable_entity.html.erb
+    server_error.html.erb
+  layouts/
+    error.html.erb
   ```
 
-別忘記在 Controller 設定正確的錯誤碼（如上所示）。錯誤頁面要避免使用資料庫，或進行任何複雜的操作。因為使用者已經到了錯誤頁面這裡，在錯誤頁面產生另外的錯誤會造成不必要的問題。
+
+別忘記在 Controller 設定正確的錯誤碼（如上所示）。
+
+WARNING: 錯誤頁面要避免對資料庫進行操作，或是進行任何複雜的操作。因為使用者已經到了錯誤頁面這裡，在錯誤頁面產生另外的錯誤會造成不必要的問題。
 
 強制使用 HTTPS 協定
 ------------------------------

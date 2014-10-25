@@ -72,7 +72,7 @@ Active Record 資料表欄位的命名慣例，取決於欄位的用途
 * `updated_at` - 無論何時更新記錄時，會自動設定此欄位為當下的日期與時間。
 * `lock_version` - 加入 [optimistic
   locking](http://api.rubyonrails.org/classes/ActiveRecord/Locking.html) 功能至 Model。
-* `type` - 表示 Model 開啟了[單表繼承](http://api.rubyonrails.org/classes/ActiveRecord/Base.html#label-Single+table+inheritance)功能。
+* `type` - 表示 Model 開啟了[單表繼承](http://api.rubyonrails.org/classes/ActiveRecord/Base.html#class-ActiveRecord::Base-label-Single+table+inheritance)功能。
 * `(association_name)_type` - 儲存
   [多態關聯](association_basics.html#polymorphic-associations) 所需的類型資料。
 * `(table_name)_count` - 用來快取關聯物件的數量。舉例來說，`Article` Model 的 `comments_count` 便會為每篇文章快取評論的數量。
