@@ -496,6 +496,12 @@ TIP: `options_for_select` 的第二個參數，必須與需要選中選項的值
 <%= collection_select(:person, :city_id, City.all, :id, :name) %>
 ```
 
+和其他輔助方法一樣，若想在 form builder 的作用在 `@person` 物件裡使用 `collection_select`，應當這麼寫：
+
+```erb
+<%= f.collection_select(:city_id, City.all, :id, :name) %>
+```
+
 複習一下，`options_from_collection_for_select` 與 `collection_select` 的關係，和 `options_for_select` 與 `select` 之間的關係一樣。
 
 NOTE: 傳給 `options_for_select` 的陣列需要先傳 `name`，再傳 `id`；而 `options_from_collection_for_select` 則是先傳 `id`，再傳 `name`。

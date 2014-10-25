@@ -109,9 +109,7 @@ After applying their branch, test it out! Here are some things to think about:
 
 Once you're happy that the pull request contains a good change, comment on the GitHub issue indicating your approval. Your comment should indicate that you like the change and what you like about it. Something like:
 
-<blockquote>
-I like the way you've restructured that code in generate_finder_sql - much nicer. The tests look good too.
-</blockquote>
+>I like the way you've restructured that code in generate_finder_sql - much nicer. The tests look good too.
 
 If your comment simply says "+1", then odds are that other reviewers aren't going to take it too seriously. Show that you took the time to review the pull request.
 
@@ -195,7 +193,7 @@ Now get busy and add/edit code. You're on your branch now, so you can write what
 * Update the (surrounding) documentation, examples elsewhere, and the guides: whatever is affected by your contribution.
 
 
-TIP: Changes that are cosmetic in nature and do not add anything substantial to the stability, functionality, or testability of Rails will generally not be accepted.
+TIP: Changes that are cosmetic in nature and do not add anything substantial to the stability, functionality, or testability of Rails will generally not be accepted (read more about [our rationales behind this decision](https://github.com/rails/rails/pull/13771#issuecomment-32746700)).
 
 #### Follow the Coding Conventions
 
@@ -320,6 +318,12 @@ You can also run any single test separately:
 $ ARCONN=sqlite3 ruby -Itest test/cases/associations/has_many_associations_test.rb
 ```
 
+To run a single test against all adapters, use:
+
+```bash
+$ bundle exec rake TEST=test/cases/associations/has_many_associations_test.rb
+```
+
 You can invoke `test_jdbcmysql`, `test_jdbcsqlite3` or `test_jdbcpostgresql` also. See the file `activerecord/RUNNING_UNIT_TESTS.rdoc` for information on running more targeted database tests, or the file `ci/travis.rb` for the test suite run by the continuous integration server.
 
 ### Warnings
@@ -393,7 +397,7 @@ inside, just indent it with 4 spaces:
 
     class ArticlesController
       def index
-        respond_with Article.limit(10)
+        render json: Article.limit(10)
       end
     end
 
@@ -554,6 +558,23 @@ $ git push origin my_pull_request -f
 
 You should be able to refresh the pull request on GitHub and see that it has
 been updated.
+
+#### Updating pull request
+
+Sometimes you will be asked to make some changes to the code you have
+already committed. This can include amending existing commits. In this
+case Git will not allow you to push the changes as the pushed branch
+and local branch do not match. Instead of opening a new pull request,
+you can force push to your branch on GitHub as described earlier in
+squashing commits section:
+
+```bash
+$ git push origin my_pull_request -f
+```
+
+This will update the branch and pull request on GitHub with your new code. Do
+note that using force push may result in commits being lost on the remote branch; use it with care.
+
 
 ### Older Versions of Ruby on Rails
 

@@ -138,7 +138,7 @@ Rails.logger.level = 0 # at any time
 
 這在開發和準上線環境（Staging）下很有用，也能避免上線環境寫入大量不必要的資訊。
 
-TIP: Rails 預設上線環境的 Log 層級是 `info`，開發與測試環境是 `debug`。
+TIP: Rails 所有環境預設的 Log 層級是 `debug`。
 
 ### 寫入訊息
 

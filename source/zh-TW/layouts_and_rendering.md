@@ -189,7 +189,7 @@ render file: "/u/apps/warehouse_app/current/app/views/products/show"
 
 `:file` 選項接受系統的絕對路徑，要算繪的檔案必須要有權限才行。
 
-NOTE: 算繪檔案預設不會使用版型。若想 Rails 將算繪的檔案內容放入版型裡，需要加上 `layout: true` 選項，版型檔案需使用 `txt.erb` 副檔名。
+NOTE: 檔案預設使用當下的模版進行算繪。
 
 TIP: 若想在 Microsoft Windows 執行 Rails，要算繪檔案必須要使用 `:file` 選項，因為 Windows 的檔名跟 Unix 的檔名格式不同。
 

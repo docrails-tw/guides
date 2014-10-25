@@ -97,6 +97,10 @@ $ rackup config.ru
 $ rackup --help
 ```
 
+### 開發自動重載
+
+Middlewares 只會載入一次，察覺不到新的修改。有關 Middleware 的修改需要重新啟動伺服器才行。
+
 Action Dispatcher Middleware Stack
 -------------------------------------
 
