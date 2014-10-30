@@ -395,6 +395,9 @@ Please refer to the [Changelog][action-pack] for detailed changes.
 
 ### Deprecations
 
+*   Deprecated the `only_path` option on `*_path` helpers.
+    ([Commit](https://github.com/rails/rails/commit/aa1fadd48fb40dd9396a383696134a259aa59db9))
+
 *   Deprecated `assert_tag`, `assert_no_tag`, `find_tag` and `find_all_tag` in
     favor of `assert_select`.
     ([Commit](https://github.com/rails/rails-dom-testing/commit/b12850bc5ff23ba4b599bf2770874dd4f11bf750))
@@ -749,6 +752,10 @@ Please refer to the [Changelog][active-support] for detailed changes.
     ([Pull Request](https://github.com/rails/rails/pull/14529))
 
 ### Notable changes
+
+*   `Object#try` and `Object#try!` can now be used without an explicit receiver.
+    ([Commit](https://github.com/rails/rails/commit/5e51bdda59c9ba8e5faf86294e3e431bd45f1830),
+    [Pull Request](https://github.com/rails/rails/pull/17361))
 
 *   Introduced new configuration option `active_support.test_order` for
     specifying the order test cases are executed. This option currently defaults
