@@ -3,6 +3,11 @@ Ruby on Rails 4.2 發佈記
 
 Rails 4.2 精華摘要：
 
+* Active Job、Action Mailer #deliver_later
+* Adequate Record
+* Web Console
+* 外鍵支援
+
 本篇僅記錄主要的變化。要了解關於已修復的 Bug、功能變更等，請參考 [Rails GitHub 主頁](https://github.com/rails/rails)上各個 Gem 的 CHANGELOG 或是 [Rails 的提交歷史](https://github.com/rails/rails/commits/master)。
 
 --------------------------------------------------------------------------------
@@ -12,8 +17,68 @@ Rails 4.2 精華摘要：
 
 如果您正試著升級現有的應用程式，最好有廣的測試覆蓋度。首先應先升級至 4.1，確保應用程式仍正常工作，接著再升上 4.2。升級需要注意的事項在 [Ruby on Rails 升級指南](upgrading_ruby_on_rails.html#upgrading-from-rails-4-1-to-rails-4-2)可以找到。
 
-新功能
-------
+主要的新功能
+----------
+
+### Active Job、Action Mailer #deliver_later
+
+Active Job 是 Rails 4.2 新搭載的框架。基於佇列系統打造的一層連接器，用來連接像是 [Resque](https://github.com/resque/resque)、[Delayed
+Job](https://github.com/collectiveidea/delayed_job)、[Sidekiq](https://github.com/mperham/sidekiq) 等佇列系統。
+
+採用 Active Job API 撰寫背景任務程式，便能讓程式跑在任何支援的佇列之上（預設會即時執行任務），而無需做任何修正。
+
+有了 Active Job 做基礎，Action Mailer 新增了 `#deliver_later` 方法，把寄出去的信作為任務加到佇列裡，不會拖慢 Controller 或 Model 的執行。
+
+新的 GlobalID 函式庫，透過把 Active Record 物件序列化為通用的形式，Active Record 物件現在傳入任務變得簡單了。這表示不再需要傳入 ID，自己對 ID 做處理，只要給任務 Active Record 物件，任務會自己用 Global ID 做序列化，執行時再自動進行反序列化。
+
+### Adequate Record
+
+Adequate Record 是對 Active Record 進行的一系列重構，`find` 和 `find_by` 以及其它關聯的查詢方法，速度最高提昇到了兩倍之多。
+
+工作原理是在執行 Active Record 呼叫時，把 SQL 查詢的模式快取起來。有了快取之後，同樣的 SQL 查詢模式就不需要再次把呼叫轉換成 SQL 語句。更多細節請參考 [Aaron Patterson 的文章](http://tenderlovemaking.com/2014/02/19/adequaterecord-pro-like-activerecord.html)。
+
+Adequate Record 已經合併到 Rails 裡，所以不需要做什麼特別的事情來啟用這個功能。多數的 `find` 和 `find_by` 呼叫和關聯查詢會自動使用 Adequate Record，比如：
+
+```ruby
+Post.find 1  # caches query pattern
+Post.find 2  # uses the cached pattern
+
+Post.find_by_title 'first post'  # caches query pattern
+Post.find_by_title 'second post' # uses the cached pattern
+
+post.comments        # caches query pattern
+post.comments(true)  # uses cached pattern
+```
+
+下列場景則不會使用快取：
+
+- The model has a default scope
+- The model uses single table inheritance to inherit from another model
+- `find` with a list of ids. eg:
+
+  ```ruby
+  Post.find(1,2,3)
+  OR
+  Post.find [1,2]
+  ```
+
+- 以 SQL 片段執行 `find_by`：
+
+  ```ruby
+  Post.find_by "published_at < ?", 2.weeks.ago
+  ```
+
+### Web Console
+
+Rails 4.2 產生的新應用程式，預設搭載了 Web Console。
+
+Web Console 是一組專門為 Rails 應用程式打造的除錯工具，在錯誤頁面加入了互動式的終端，`console` View 輔助方法，以及一個相容 VT100 的終端機。
+
+錯誤頁面的互動式的終端，讓你可以在異常發生的地方執行程式碼。用來檢查異常發生的狀態格外有用。
+
+插入 `console` View 輔助方法到任何頁面，便可以在頁面的上下文裡，啟動一個互動式的終端。
+
+最後，可以執行 `rails console` 來啟動一個 VT100 終端。若需要建立或修改測試資料，可以直接從瀏覽器裡執行。
 
 ### 外鍵支援
 
@@ -35,6 +100,136 @@ remove_foreign_key :accounts, column: :owner_id
 
 完整說明請參考 API 文件：[add_foreign_key](http://api.rubyonrails.org/v4.2.0/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html#method-i-add_foreign_key) 和 [remove_foreign_key](http://api.rubyonrails.org/v4.2.0/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html#method-i-remove_foreign_key)。
 
+
+不相容的部份
+----------
+
+先前棄用的功能皆以移除。請參考文後下列各 Rails 元件來了解新棄用的功能有那些。
+
+以下是升級至 Rails 4.2 所需要即刻執行的工作。
+
+### `render` 字串參數
+
+以前在 Controller 動作呼叫 `render "foo/bar"` 等同於：`render file: "foo/bar"`；Rails 4.2 改為 `render template: "foo/bar"`。如需 `render` 檔案，請將程式碼改為 `render file: "foo/bar"`。
+
+### `respond_with` / class-level `respond_to`
+
+`respond_with` 以及對應的**類別層級**方法 `respond_to` 被移到了 `responders` gem。要使用這個功能，把 `gem 'responders', '~> 2.0'` 加到 Gemfile：
+
+```ruby
+# app/controllers/users_controller.rb
+
+class UsersController < ApplicationController
+  respond_to :html, :json
+
+  def show
+    @user = User.find(params[:id])
+    respond_with @user
+  end
+end
+```
+
+而實體層級的 `respond_to` 則不受影響：
+
+```ruby
+# app/controllers/users_controller.rb
+
+class UsersController < ApplicationController
+  def show
+    @user = User.find(params[:id])
+    respond_to do |format|
+      format.html
+      format.json { render json: @user }
+    end
+  end
+end
+```
+
+### `rails server` 的預設主機
+
+由於 [Rack 的一項修正](https://github.com/rack/rack/commit/28b014484a8ac0bbb388e7eaeeef159598ec64fc)，`rails server` 現在預設會監聽 `localhost` 而不是 `0.0.0.0`。http://127.0.0.1:3000 和 http://localhost:3000 會像以前一樣正常工作，只是先前慣用 `0.0.0.0` 的工作流程可能需要稍作修正。
+
+但這項變更禁止了從其它機器訪問 Rails 伺服器（譬如開發環境位於虛擬環境裡，而想要從宿主機器上訪問），會需要用 `rails server -b 0.0.0.0` 來啟動才能像之前一樣使用。
+
+若是使用了 `0.0.0.0`，記得適當設定防火牆，改成只有信任的機器才可以存取你的開發伺服器。
+
+### Production logging
+
+`production` 環境預設的 log 層級改為 `:debug`。和其它環境保持一致，確保足夠的資訊輸出到 Log，用來診斷問題。
+
+要改回先前的層級 `:info`，在環境設定檔裡加入：
+
+```ruby
+# config/environments/production.rb
+
+# Decrease the log volume.
+config.log_level = :info
+```
+
+### HTML Sanitizer
+
+
+HTML sanitizer 替換成新的、更加安全的實作，基於 Loofah 和 Nokogiri。新的 Sanitizer 更安全，而 sanitization 更加完善與靈活。
+
+有了新的 sanitization 演算法之後，某些 pathological 的輸入的輸出會和之前不一樣。
+
+若真的需要使用舊的 sanitizer，可以把 `rails-deprecated_sanitizer` 加到 Gemfile，會取代掉新的實作。因為這是自己選擇性加入的 gem，並不會拋出棄用警告。
+
+Rails 4.2 仍會給予 `rails-deprecated_sanitizer` 支援，但 Rails 5.0 之後便不會在進行維護。
+
+參考[這篇文章](http://blog.plataformatec.com.br/2014/07/the-new-html-sanitizer-in-rails-4-2/)來了解更多關於新的 Sanitizer 的變更內容細節。
+
+### `assert_select`
+
+`assert_select` is now based on Nokogiri, making it (TODO: betterer).
+
+As a result, some previously-valid selectors are now unsupported. If your
+application is using any of these spellings, you will need to update them:
+
+*   Values in attribute selectors may need to be quoted if they contain
+    non-alphanumeric characters.
+
+    ```
+    a[href=/]      =>     a[href="/"]
+    a[href$=/]     =>     a[href$="/"]
+    ```
+
+*   DOMs built from HTML source containing invalid HTML with improperly
+    nested elements may differ.
+
+    For example:
+
+    ``` ruby
+    # content: <div><i><p></i></div>
+
+    # before:
+    assert_select('div > i')  # => true
+    assert_select('div > p')  # => false
+    assert_select('i > p')    # => true
+
+    # now:
+    assert_select('div > i')  # => true
+    assert_select('div > p')  # => true
+    assert_select('i > p')    # => false
+    ```
+
+*   If the data selected contains entities, the value selected for comparison
+    used to be raw (e.g. `AT&amp;T`), and now is evaluated
+    (e.g. `AT&T`).
+
+    ``` ruby
+    # content: <p>AT&amp;T</p>
+
+    # before:
+    assert_select('p', 'AT&amp;T')  # => true
+    assert_select('p', 'AT&T')      # => false
+
+    # now:
+    assert_select('p', 'AT&T')      # => true
+    assert_select('p', 'AT&amp;T')  # => false
+    ```
+
+
 Railties
 --------
 
@@ -42,7 +237,11 @@ Railties
 
 ### 移除
 
-* 移除 `rails application` 命令。
+*   The `--skip-action-view` option has been removed from the
+    app generator. ([Pull Request](https://github.com/rails/rails/pull/17042))
+
+
+*   移除 `rails application` 命令。
   ([Pull Request](https://github.com/rails/rails/pull/11616))
 
 ### 棄用
@@ -52,23 +251,68 @@ Railties
 
 ### 值得一提的變化
 
-* 產生器新增 `--skip-gems` 選項，可以在產生應用時忽略像是 `turbolinks` 和 `coffee-rails` 等 Gem。
-  ([Commit](https://github.com/rails/rails/commit/10565895805887d4faf004a6f71219da177f78b7))
+*   Introduced `web-console` in the default application Gemfile.
+    ([Pull Request](https://github.com/rails/rails/pull/11667))
 
-* 導入 `bin/setup` 腳本來啟動應用程式。
+*   Added a `required` option to the model generator for associations.
+    ([Pull Request](https://github.com/rails/rails/pull/16062))
+
+*   導入 `after_bundle` 回呼到 Rails 模版。
+  ([Pull Request](https://github.com/rails/rails/pull/16359))
+
+*   Introduced the `x` namespace for defining custom configuration options:
+
+    ```ruby
+    # config/environments/production.rb
+    config.x.payment_processing.schedule = :daily
+    config.x.payment_processing.retries  = 3
+    config.x.super_debugger              = true
+    ```
+
+    These options are then available through the configuration object:
+
+    ```ruby
+    Rails.configuration.x.payment_processing.schedule # => :daily
+    Rails.configuration.x.payment_processing.retries  # => 3
+    Rails.configuration.x.super_debugger              # => true
+    ```
+
+    ([Commit](https://github.com/rails/rails/commit/611849772dd66c2e4d005dcfe153f7ce79a8a7db))
+
+*   Introduced `Rails::Application.config_for` to load a configuration for the
+    current environment.
+
+    ```ruby
+    # config/exception_notification.yml:
+    production:
+      url: http://127.0.0.1:8080
+      namespace: my_app_production
+    development:
+      url: http://localhost:3001
+      namespace: my_app_development
+
+    # config/production.rb
+    Rails.application.configure do
+      config.middleware.use ExceptionNotifier, config_for(:exception_notification)
+    end
+    ```
+
+    ([Pull Request](https://github.com/rails/rails/pull/16129))
+
+*   產生器新增 `--skip-turbolinks` 選項，新建應用程式便不會內建 turbolink。
+    ([Commit](https://github.com/rails/rails/commit/bf17c8a531bc8059d50ad731398002a3e7162a7d))
+
+*   導入 `bin/setup` 腳本來啟動應用程式。
   ([Pull Request](https://github.com/rails/rails/pull/15189))
 
-* `config.assets.digest` 在開發模式的預設值改為 `true`。
+*   `config.assets.digest` 在開發模式的預設值改為 `true`。
   ([Pull Request](https://github.com/rails/rails/pull/15155))
 
-* 導入給 `rake notes` 註冊新擴充功能的 API。
+*   導入給 `rake notes` 註冊新擴充功能的 API。
   ([Pull Request](https://github.com/rails/rails/pull/14379))
 
-* 導入 `Rails.gem_version` 作為回傳 `Gem::Version.new(Rails.version)` 的便捷方法。
+*   導入 `Rails.gem_version` 作為回傳 `Gem::Version.new(Rails.version)` 的便捷方法。
   ([Pull Request](https://github.com/rails/rails/pull/14101))
-
-* 導入 `after_bundle` 回呼到 Rails 模版。
-  ([Pull Request](https://github.com/rails/rails/pull/16359))
 
 
 Action Pack
@@ -78,11 +322,23 @@ Action Pack
 
 ### 移除
 
+*   `respond_with` and the class-level `respond_to` were removed from Rails and
+    moved to the `responders` gem (version 2.0). Add `gem 'responders', '~> 2.0'`
+    to your `Gemfile` to continue using these features.
+    ([Pull Request](https://github.com/rails/rails/pull/16526))
+
 *   移除棄用的 `AbstractController::Helpers::ClassMethods::MissingHelperError`，
     改用 `AbstractController::Helpers::MissingHelperError` 取代。
     ([Commit](https://github.com/rails/rails/commit/a1ddde15ae0d612ff2973de9cf768ed701b594e8))
 
 ### 棄用
+
+*   Deprecated the `only_path` option on `*_path` helpers.
+    ([Commit](https://github.com/rails/rails/commit/aa1fadd48fb40dd9396a383696134a259aa59db9))
+
+*   Deprecated `assert_tag`, `assert_no_tag`, `find_tag` and `find_all_tag` in
+    favor of `assert_select`.
+    ([Commit](https://github.com/rails/rails-dom-testing/commit/b12850bc5ff23ba4b599bf2770874dd4f11bf750))
 
 * 棄用路由的 `:to` 選項裡，`:to` 可以指向符號或不含井號的字串這兩個功能。
 
@@ -96,6 +352,9 @@ Action Pack
     ([Commit](https://github.com/rails/rails/commit/cc26b6b7bccf0eea2e2c1a9ebdcc9d30ca7390d9))
 
 ### 值得一提的變化
+
+*   Rails will now automatically include the template's digest in ETags.
+    ([Pull Request](https://github.com/rails/rails/pull/16527))
 
 * `render nothing: true` 或算繪 `nil` 不再加入一個空白到響應主體。
   ([Pull Request](https://github.com/rails/rails/pull/14883))
@@ -142,6 +401,27 @@ Action Pack
 * 新增關掉記錄 CSRF 失敗的選項。
   ([Pull Request](https://github.com/rails/rails/pull/14280))
 
+*   When the Rails server is set to serve static assets, gzip assets will now be
+    served if the client supports it and a pre-generated gzip file (`.gz`) is on disk.
+    By default the asset pipeline generates `.gz` files for all compressible assets.
+    Serving gzip files minimizes data transfer and speeds up asset requests. Always
+    [use a CDN](http://guides.rubyonrails.org/asset_pipeline.html#cdns) if you are
+    serving assets from your Rails server in production.
+    ([Pull Request](https://github.com/rails/rails/pull/16466))
+
+*   The way `assert_select` works has changed; specifically a different library
+    is used to interpret CSS selectors, build the transient DOM that the
+    selectors are applied against, and to extract the data from that DOM. These
+    changes should only affect edge cases. Examples:
+    *  Values in attribute selectors may need to be quoted if they contain
+       non-alphanumeric characters.
+    *  DOMs built from HTML source containing invalid HTML with improperly
+       nested elements may differ.
+    *  If the data selected contains entities, the value selected for comparison
+       used to be raw (e.g. `AT&amp;T`), and now is evaluated
+       (e.g. `AT&T`).
+
+
 Action View
 -------------
 
@@ -149,27 +429,52 @@ Action View
 
 ### 棄用
 
-* 棄用 `AbstractController::Base.parent_prefixes`。想修改尋找 View 的位置，
+*   棄用 `AbstractController::Base.parent_prefixes`。想修改尋找 View 的位置，
   請覆寫 `AbstractController::Base.local_prefixes`。
   ([Pull Request](https://github.com/rails/rails/pull/15026))
 
-* 棄用 `ActionView::Digestor#digest(name, format, finder, options = {})`，
+*   棄用 `ActionView::Digestor#digest(name, format, finder, options = {})`，
   現在參數改用 Hash 傳入。
   ([Pull Request](https://github.com/rails/rails/pull/14243))
 
 ### 值得一提的變化
 
-* 隱藏欄位的表單輔助方法不再產生含有行內樣式表的 `<div>` 元素。
+*   `render "foo/bar"` now expands to `render template: "foo/bar"` instead of
+    `render file: "foo/bar"`.
+    ([Pull Request](https://github.com/rails/rails/pull/16888))
+
+*   Introduced a `#{partial_name}_iteration` special local variable for use with
+    partials that are rendered with a collection. It provides access to the
+    current state of the iteration via the `#index`, `#size`, `#first?` and
+    `#last?` methods.
+    ([Pull Request](https://github.com/rails/rails/pull/7698))
+
+*   隱藏欄位的表單輔助方法不再產生含有行內樣式表的 `<div>` 元素。
   ([Pull Request](https://github.com/rails/rails/pull/14738))
+
+*   Placeholder I18n follows the same convention as `label` I18n.
+    ([Pull Request](https://github.com/rails/rails/pull/16438))
 
 Action Mailer
 -------------
 
 請參考 [CHANGELOG][action-mailer] 來了解更多細節。
 
+### 棄用
+
+*   Deprecated `*_path` helpers in mailers. Always use `*_url` helpers instead.
+    ([Pull Request](https://github.com/rails/rails/pull/15840))
+
+*   Deprecated `deliver` / `deliver!` in favor of `deliver_now` / `deliver_now!`.
+    ([Pull Request](https://github.com/rails/rails/pull/16582))
+
 ### 值得一提的變化
 
-* 新增 `show_previews` 選項，用來在開發環境之外啟用郵件預覽功能。
+*   Introduced `deliver_later` which enqueues a job on the application's queue
+    to deliver emails asynchronously.
+    ([Pull Request](https://github.com/rails/rails/pull/16485))
+
+*   新增 `show_previews` 選項，用來在開發環境之外啟用郵件預覽功能。
   ([Pull Request](https://github.com/rails/rails/pull/15970))
 
 Active Record
@@ -179,41 +484,56 @@ Active Record
 
 ### 移除
 
-* 移除 `cache_attributes` 以及其它相關的方法。現在所有屬性都有快取。
+*   移除 `cache_attributes` 以及其它相關的方法。現在所有屬性都有快取。
   ([Pull Request](https://github.com/rails/rails/pull/15429))
 
-* 移除已棄用的方法 `ActiveRecord::Base.quoted_locking_column`.
+*   移除已棄用的方法 `ActiveRecord::Base.quoted_locking_column`.
   ([Pull Request](https://github.com/rails/rails/pull/15612))
 
-* 移除已棄用的方法 `ActiveRecord::Migrator.proper_table_name`。
+*   移除已棄用的方法 `ActiveRecord::Migrator.proper_table_name`。
   請改用 `ActiveRecord::Migration` 的實體方法：`proper_table_name`。
   ([Pull Request](https://github.com/rails/rails/pull/15512))
 
-* 移除了未使用的 `:timestamp` 類型。把所有 `timestamp` 類型都改為 `:datetime` 的別名。
+*   移除了未使用的 `:timestamp` 類型。把所有 `timestamp` 類型都改為 `:datetime` 的別名。
   修正在 `ActiveRecord` 之外，欄位類型不一致的問題，譬如 XML 序列化。
   ([Pull Request](https://github.com/rails/rails/pull/15184))
 
 ### 棄用
 
-* 棄用對 `has_many :through` 自動偵測 counter cache 的支持。要自己對 `has_many` 與
+*   Deprecated `sanitize_sql_hash_for_conditions` without replacement. Using a
+    `Relation` for performing queries and updates is the prefered API.
+    ([Commit](https://github.com/rails/rails/commit/d5902c9e))
+
+*   Deprecated swallowing of errors inside `after_commit` and `after_rollback`.
+    ([Pull Request](https://github.com/rails/rails/pull/16537))
+
+*   Deprecated calling `DatabaseTasks.load_schema` without a connection. Use
+    `DatabaseTasks.load_schema_current` instead.
+    ([Commit](https://github.com/rails/rails/commit/f15cef67f75e4b52fd45655d7c6ab6b35623c608))
+
+*   Deprecated `Reflection#source_macro` without replacement as it is no longer
+    needed in Active Record.
+    ([Pull Request](https://github.com/rails/rails/pull/16373))
+
+*   棄用對 `has_many :through` 自動偵測 counter cache 的支持。要自己對 `has_many` 與
   `belongs_to` 關聯，給 `through` 的紀錄手動設定。
   ([Pull Request](https://github.com/rails/rails/pull/15754))
 
-* 棄用了 `serialized_attributes`，沒有替代方案。
+*   棄用了 `serialized_attributes`，沒有替代方案。
   ([Pull Request](https://github.com/rails/rails/pull/15704))
 
-* 棄用了當欄位不存在時，還會從 `column_for_attribute` 回傳 `nil` 的情況。
+*   棄用了當欄位不存在時，還會從 `column_for_attribute` 回傳 `nil` 的情況。
   Rails 5.0 將會回傳 Null Object。
   ([Pull Request](https://github.com/rails/rails/pull/15878))
 
-* 依賴實體狀態（有定義接受參數的作用域）的關聯現在不能使用 `.joins`、`.preload` 以及 `.eager_load` 了。
+*   依賴實體狀態（有定義接受參數的作用域）的關聯現在不能使用 `.joins`、`.preload` 以及 `.eager_load` 了。
   ([Commit](https://github.com/rails/rails/commit/ed56e596a0467390011bc9d56d462539776adac1))
 
-* 棄用 `.find` 或 `.exists?` 可傳入 Active Record 物件。請先對物件呼叫 `#id`。
+*   棄用 `.find` 或 `.exists?` 可傳入 Active Record 物件。請先對物件呼叫 `#id`。
   (Commit [1](https://github.com/rails/rails/commit/d92ae6ccca3bcfd73546d612efaea011270bd270),
   [2](https://github.com/rails/rails/commit/d35f0033c7dec2b8d8b52058fb8db495d49596f7))
 
-* 棄用僅支持一半的 PostgreSQL 範圍數值（不包含起始值）。目前我們把 PostgreSQL 的範圍對應到 Ruby 的範圍。但由於 Ruby 的範圍不支援不包含起始值，所以無法完全轉換。
+*   棄用僅支持一半的 PostgreSQL 範圍數值（不包含起始值）。目前我們把 PostgreSQL 的範圍對應到 Ruby 的範圍。但由於 Ruby 的範圍不支援不包含起始值，所以無法完全轉換。
 
     目前的解決方法是將起始數遞增，這是不對的，已經棄用了。關於不知如何遞增的子類型（比如沒有定義 `#succ`）會對不包含起始值的拋出 `ArgumentError`。
 
@@ -221,20 +541,27 @@ Active Record
 
 ### 值得一提的變化
 
-* 單數關聯增加 `:required` 選項，用來定義關聯的存在性驗證。
+*   The PostgreSQL adapter now supports the `JSONB` datatype in PostgreSQL 9.4+.
+    ([Pull Request](https://github.com/rails/rails/pull/16220))
+
+*   The `#references` method in migrations now supports a `type` option for
+    specifying the type of the foreign key (e.g. `:uuid`).
+    ([Pull Request](https://github.com/rails/rails/pull/16231))
+
+*   單數關聯增加 `:required` 選項，用來定義關聯的存在性驗證。
   ([Pull Request](https://github.com/rails/rails/pull/16056))
 
-* 導入 `ActiveRecord::Base#validate!`，會在記錄不合法時拋出 `RecordInvalid` 異常。
+*   導入 `ActiveRecord::Base#validate!`，會在記錄不合法時拋出 `RecordInvalid` 異常。
   ([Pull Request](https://github.com/rails/rails/pull/8639))
 
-* `ActiveRecord::Base#reload` 行為同 `m = Model.find(m.id)`，代表自訂的 `select` 不再保有額外的屬性。
+*   `ActiveRecord::Base#reload` 行為同 `m = Model.find(m.id)`，代表自訂的 `select` 不再保有額外的屬性。
   meaning that it no longer retains the extra attributes from custom `select`s.
   ([Pull Request](https://github.com/rails/rails/pull/15866))
 
-* 導入 `bin/rake db:purge` 任務，用來清空當前環境的資料庫。
+*   導入 `bin/rake db:purge` 任務，用來清空當前環境的資料庫。
   ([Commit](https://github.com/rails/rails/commit/e2f232aba15937a4b9d14bd91e0392c6d55be58d))
 
-* `ActiveRecord::Dirty` 現在會偵測可變數值的改變。序列化過的屬性有變更才會儲存。
+*   `ActiveRecord::Dirty` 現在會偵測可變數值的改變。序列化過的屬性有變更才會儲存。
   修復了像是 PostgreSQL 不會偵測到變更的字串欄位、JSON 欄位。
   (Pull Requests [1](https://github.com/rails/rails/pull/15674),
   [2](https://github.com/rails/rails/pull/15786),
@@ -273,18 +600,32 @@ Active Model
 
 ### 移除
 
-* 移除了 `Validator#setup`，沒有替代方案。
+*   移除了 `Validator#setup`，沒有替代方案。
   ([Pull Request](https://github.com/rails/rails/pull/15617))
+
+### 棄用
+
+*   Deprecated `reset_#{attribute}` in favor of `restore_#{attribute}`.
+    ([Pull Request](https://github.com/rails/rails/pull/16180))
+
+*   Deprecated `ActiveModel::Dirty#reset_changes` in favor of
+    `#clear_changes_information`.
+    ([Pull Request](https://github.com/rails/rails/pull/16180))
 
 ### 值得一提的變化
 
-* `ActiveModel::Dirty` 導入 `undo_changes` 方法，用來回復更改的屬性到先前的數值。
-  ([Pull Request](https://github.com/rails/rails/pull/14861))
+*   `ActiveModel::Dirty` 導入 `restore_attributes` 方法，用來回復更改的屬性到先前的數值。
+    (Pull Request [1](https://github.com/rails/rails/pull/14861),
+    [2](https://github.com/rails/rails/pull/16180))
 
-* 驗證啟用時，`has_secure_password` 現在會檢查密碼是否少於 72 個字元。
+*   `has_secure_password` no longer disallows blank passwords (i.e. passwords
+    that contains only spaces) by default.
+    ([Pull Request](https://github.com/rails/rails/pull/16412))
+
+*    驗證啟用時，`has_secure_password` 現在會檢查密碼是否少於 72 個字元。
   ([Pull Request](https://github.com/rails/rails/pull/15708))
 
-* 引入 `#validate` 作為 `#valid?` 的別名。
+*    引入 `#validate` 作為 `#valid?` 的別名。
   ([Pull Request](https://github.com/rails/rails/pull/14456))
 
 Active Support
@@ -302,6 +643,10 @@ Active Support
 
 ### 棄用
 
+*   Deprecated `Kernel#silence_stderr`, `Kernel#capture` and `Kernel#quietly`
+    without replacement.
+    ([Pull Request](https://github.com/rails/rails/pull/13392))
+
 * 棄用 `Class#superclass_delegating_accessor`，請改用 `Class#class_attribute`。
   ([Pull Request](https://github.com/rails/rails/pull/14271))
 
@@ -309,6 +654,28 @@ Active Support
   ([Pull Request](https://github.com/rails/rails/pull/14529))
 
 ### 值得一提的變化
+
+*   Introduced new configuration option `active_support.test_order` for
+    specifying the order test cases are executed. This option currently defaults
+    to `:sorted` but will be changed to `:random` in Rails 5.0.
+    ([Commit](https://github.com/rails/rails/commit/53e877f7d9291b2bf0b8c425f9e32ef35829f35b))
+
+*   `Object#try` and `Object#try!` can now be used without an explicit receiver.
+    ([Commit](https://github.com/rails/rails/commit/5e51bdda59c9ba8e5faf86294e3e431bd45f1830),
+    [Pull Request](https://github.com/rails/rails/pull/17361))
+
+*   The `travel_to` test helper now truncates the `usec` component to 0.
+    ([Commit](https://github.com/rails/rails/commit/9f6e82ee4783e491c20f5244a613fdeb4024beb5))
+
+*   Introduced `Object#itself` as an identity function.
+    (Commit [1](https://github.com/rails/rails/commit/702ad710b57bef45b081ebf42e6fa70820fdd810),
+    [2](https://github.com/rails/rails/commit/64d91122222c11ad3918cc8e2e3ebc4b0a03448a))
+
+*   `Object#with_options` can now be used without an explicit receiver.
+    ([Pull Request](https://github.com/rails/rails/pull/16339))
+
+*   Introduced `String#truncate_words` to truncate a string by a number of words.
+    ([Pull Request](https://github.com/rails/rails/pull/16190))
 
 * 新增 `Hash#transform_values` 與 `Hash#transform_values!` 方法，來簡化 Hash
   值需要更新、但鍵保留不變這樣的常見模式。
