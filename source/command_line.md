@@ -368,8 +368,7 @@ Rake is Ruby Make, a standalone Ruby utility that replaces the Unix utility 'mak
 
 You can get a list of Rake tasks available to you, which will often depend on your current directory, by typing `rake --tasks`. Each task has a description, and should help you find the thing you need.
 
-To get the full backtrace for running rake task you can pass the option
-```--trace``` to command line, for example ```rake db:create --trace```.
+To get the full backtrace for running rake task you can pass the option ```--trace``` to command line, for example ```rake db:create --trace```.
 
 ```bash
 $ bin/rake --tasks
@@ -408,10 +407,7 @@ Database schema version   20110805173523
 
 ### `assets`
 
-You can precompile the assets in `app/assets` using `rake assets:precompile`,
-and remove older compiled assets using `rake assets:clean`. The `assets:clean`
-task allows for rolling deploys that may still be linking to an old asset while
-the new assets are being built.
+You can precompile the assets in `app/assets` using `rake assets:precompile`, and remove older compiled assets using `rake assets:clean`. The `assets:clean` task allows for rolling deploys that may still be linking to an old asset while the new assets are being built.
 
 If you want to clear `public/assets` completely, you can use `rake assets:clobber`.
 
@@ -498,7 +494,7 @@ Rails comes with a test suite called Minitest. Rails owes its stability to the u
 
 ### `tmp`
 
-The `Rails.root/tmp` directory is, like the *nix /tmp directory, the holding place for temporary files like sessions (if you're using a file store for files), process id files, and cached actions.
+The `Rails.root/tmp` directory is, like the *nix /tmp directory, the holding place for temporary files like sessions (if you're using a file store for sessions), process id files, and cached actions.
 
 The `tmp:` namespaced tasks will help you clear and create the `Rails.root/tmp` directory:
 
