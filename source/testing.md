@@ -51,7 +51,7 @@ The `test_helper.rb` file holds the default configuration for your tests.
 
 For good tests, you'll need to give some thought to setting up test data.
 In Rails, you can handle this by defining and customizing fixtures.
-You can find comprehensive documentation in the [fixture api documentation](http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html).
+You can find comprehensive documentation in the [Fixtures API documentation](http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html).
 
 #### What Are Fixtures?
 
@@ -100,7 +100,7 @@ Note: For associations to reference one another by name, you cannot specify the 
  attribute on the fixtures. Rails will auto assign a primary key to be consistent between
  runs. If you manually specify an `id:` attribute, this behavior will not work. For more
   information on this association behavior please read the
-  [fixture api documentation](http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html).
+  [Fixtures API documentation](http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html).
 
 #### ERB'in It Up
 
