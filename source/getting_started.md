@@ -90,18 +90,18 @@ current version of Ruby installed:
 TIP: A number of tools exist to help you quickly install Ruby and Ruby
 on Rails on your system. Windows users can use [Rails Installer](http://railsinstaller.org),
 while Mac OS X users can use [Tokaido](https://github.com/tokaido/tokaidoapp).
+For more installation methods for most Operating Systems take a look at
+[ruby-lang.org](https://www.ruby-lang.org/en/documentation/installation/).
 
 ```bash
 $ ruby -v
 ruby 2.0.0p353
 ```
 
-If you don't have Ruby installed have a look at
-[ruby-lang.org](https://www.ruby-lang.org/en/installation/) for possible ways to
-install Ruby on your platform.
-
-Many popular UNIX-like OSes ship with an acceptable version of SQLite3. Windows
-users and others can find installation instructions at the [SQLite3 website](https://www.sqlite.org).
+Many popular UNIX-like OSes ship with an acceptable version of SQLite3.
+On Windows, if you installed Rails through Rails Installer, you
+already have SQLite installed. Others can find installation instructions
+at the [SQLite3 website](https://www.sqlite.org).
 Verify that it is correctly installed and in your PATH:
 
 ```bash
@@ -422,12 +422,12 @@ If you refresh <http://localhost:3000/articles/new> now, you'll get a new error:
 This error indicates that Rails cannot find the `new` action inside the
 `ArticlesController` that you just generated. This is because when controllers
 are generated in Rails they are empty by default, unless you tell it
-your wanted actions during the generation process.
+your desired actions during the generation process.
 
 To manually define an action inside a controller, all you need to do is to
 define a new method inside the controller. Open
 `app/controllers/articles_controller.rb` and inside the `ArticlesController`
-class, define a `new` method so that the controller now looks like this:
+class, define the `new` method so that your controller now looks like this:
 
 ```ruby
 class ArticlesController < ApplicationController
@@ -444,23 +444,23 @@ With the `new` method defined in `ArticlesController`, if you refresh
 
 You're getting this error now because Rails expects plain actions like this one
 to have views associated with them to display their information. With no view
-available, Rails errors out.
+available, Rails will raise an exception.
 
 In the above image, the bottom line has been truncated. Let's see what the full
-thing looks like:
+error message looks like:
 
 >Missing template articles/new, application/new with {locale:[:en], formats:[:html], handlers:[:erb, :builder, :coffee]}. Searched in: * "/path/to/blog/app/views"
 
 That's quite a lot of text! Let's quickly go through and understand what each
-part of it does.
+part of it means.
 
-The first part identifies what template is missing. In this case, it's the
+The first part identifies which template is missing. In this case, it's the
 `articles/new` template. Rails will first look for this template. If not found,
 then it will attempt to load a template called `application/new`. It looks for
 one here because the `ArticlesController` inherits from `ApplicationController`.
 
 The next part of the message contains a hash. The `:locale` key in this hash
-simply indicates what spoken language template should be retrieved. By default,
+simply indicates which spoken language template should be retrieved. By default,
 this is the English - or "en" - template. The next key, `:formats` specifies the
 format of template to be served in response. The default format is `:html`, and
 so Rails is looking for an HTML template. The final key, `:handlers`, is telling
@@ -473,14 +473,16 @@ Templates within a basic Rails application like this are kept in a single
 location, but in more complex applications it could be many different paths.
 
 The simplest template that would work in this case would be one located at
-`app/views/articles/new.html.erb`. The extension of this file name is key: the
-first extension is the _format_ of the template, and the second extension is the
-_handler_ that will be used. Rails is attempting to find a template called
-`articles/new` within `app/views` for the application. The format for this
-template can only be `html` and the handler must be one of `erb`, `builder` or
-`coffee`. Because you want to create a new HTML form, you will be using the `ERB`
-language. Therefore the file should be called `articles/new.html.erb` and needs
-to be located inside the `app/views` directory of the application.
+`app/views/articles/new.html.erb`. The extension of this file name is important:
+the first extension is the _format_ of the template, and the second extension
+is the _handler_ that will be used. Rails is attempting to find a template
+called `articles/new` within `app/views` for the application. The format for
+this template can only be `html` and the handler must be one of `erb`,
+`builder` or `coffee`. Because you want to create a new HTML form, you will be
+using the `ERB` language which is designed to embed Ruby in HTML.
+
+Therefore the file should be called `articles/new.html.erb` and needs to be
+located inside the `app/views` directory of the application.
 
 Go ahead now and create a new file at `app/views/articles/new.html.erb` and
 write this content in it:
@@ -665,8 +667,8 @@ rake commands to run migrations, and it's possible to undo a migration after
 it's been applied to your database. Migration filenames include a timestamp to
 ensure that they're processed in the order that they were created.
 
-If you look in the `db/migrate/20140120191729_create_articles.rb` file (remember,
-yours will have a slightly different name), here's what you'll find:
+If you look in the `db/migrate/YYYYMMDDHHMMSS_create_articles.rb` file
+(remember, yours will have a slightly different name), here's what you'll find:
 
 ```ruby
 class CreateArticles < ActiveRecord::Migration
@@ -675,7 +677,7 @@ class CreateArticles < ActiveRecord::Migration
       t.string :title
       t.text :text
 
-      t.timestamps
+      t.timestamps null: false
     end
   end
 end
@@ -736,7 +738,7 @@ database columns. In the first line we do just that (remember that
 `@article.save` is responsible for saving the model in the database. Finally,
 we redirect the user to the `show` action, which we'll define later.
 
-TIP: You might be wondering why the `A` in `Article.new` is capitalized above, whereas most other references to articles in this guide have used lowercase. In this context, we are referring to the class named `Article` that is defined in `\models\article.rb`. Class names in Ruby must begin with a capital letter.
+TIP: You might be wondering why the `A` in `Article.new` is capitalized above, whereas most other references to articles in this guide have used lowercase. In this context, we are referring to the class named `Article` that is defined in `app/models/article.rb`. Class names in Ruby must begin with a capital letter.
 
 TIP: As we'll see later, `@article.save` returns a boolean indicating whether
 the article was saved or not.
@@ -1537,7 +1539,7 @@ class CreateComments < ActiveRecord::Migration
       # this line adds an integer column called `article_id`.
       t.references :article, index: true
 
-      t.timestamps
+      t.timestamps null: false
     end
   end
 end
