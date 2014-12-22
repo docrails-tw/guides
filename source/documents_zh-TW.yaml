@@ -141,6 +141,10 @@
       work_in_progress: true
       url: initialization.html
       description: 本篇介紹 Rails 內部的啟動過程。
+    -
+      name: Constant Autoloading and Reloading
+      url: constant_autoloading_and_reloading.html
+      description: This guide documents how constant autoloading and reloading work.
 -
   name: 擴充 Rails
   documents:
