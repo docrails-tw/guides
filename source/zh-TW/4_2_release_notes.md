@@ -3,7 +3,8 @@ Ruby on Rails 4.2 發佈記
 
 Rails 4.2 精華摘要：
 
-* Active Job、Action Mailer #deliver_later
+* Active Job
+* 異步寄信
 * Adequate Record
 * Web Console
 * 外鍵支援
@@ -20,69 +21,83 @@ Rails 4.2 精華摘要：
 主要的新功能
 ----------
 
-### Active Job、Action Mailer #deliver_later
+### Active Job
 
-Active Job 是 Rails 4.2 新搭載的框架。是連結佇列系統（Queuing systems）的連接層（adapter layer），用來連接像是 [Resque](https://github.com/resque/resque)、[Delayed
+Active Job 是 Rails 4.2 新搭載的框架。是佇列系統（Queuing systems）的統一接口，用來連接像是 [Resque](https://github.com/resque/resque)、[Delayed
 Job](https://github.com/collectiveidea/delayed_job)、[Sidekiq](https://github.com/mperham/sidekiq) 等佇列系統。
 
-採用 Active Job 的 API 來撰寫背景任務程式（Background jobs），程式便可跑在任何支援的佇列系統之上（預設會即時執行任務），而無需做任何修正。
+採用 Active Job API 撰寫的背景任務程式（Background jobs），便可在任何支持的佇列系統上運行而無需對程式碼進行任何修改。Active Job 預設會即時執行任務。
 
-有了 Active Job 做基礎，Action Mailer 新增了 `#deliver_later` 方法，把要寄出的信作為任務，加到佇列裡，不會拖慢 Controller 或 Model 的執行。
+任務通常需要傳入 Active Record 物件作為參數。Active Job 將傳入的物件作為 URI（統一資源標識符），而不是直接對物件進行 marshal。新增的 GlobalID 函式庫，給物件生成統一資源標識符，並使用該標識符來查找物件。現在因為內部使用了 Global ID，任務只要傳入 Active Record 物件即可。
 
-新加入的 GlobalID 函式庫，透過把 Active Record 物件序列化（serialize）為通用的形式，Active Record 物件現在要傳給任務變得簡單了。不再需要傳入 ID，自己對 ID 做處理，只要傳給任務 Active Record 物件，任務會自己用 Global ID 做序列化，執行時再自動進行反序列化。
+譬如，`trashable` 是一個 Active Record 物件，則下面這個任務無需做任何序列化，便可正常完成任務：
+
+```ruby
+class TrashableCleanupJob < ActiveJob::Base
+  def perform(trashable, depth)
+    trashable.cleanup(depth)
+  end
+end
+```
+
+參考 [Active Job 基礎](active_job_basics.html)指南來進一步瞭解。
+
+### 異步郵件
+
+基於 Active Job 之上，Action Mailer 新增了 `#deliver_later` 方法，通過佇列來發送郵件，若開啓了佇列的異步特性，便不會拖慢控制器或模型的運行（預設佇列是即時執行任務）。
+
+想直接發送信件仍可以使用 `deliver_now`。
 
 ### Adequate Record
 
-Adequate Record 是對 Active Record `find` 和 `find_by` 方法以及其它的關聯查詢方法所進行的一系列重構，查詢速度最高提昇到了兩倍之多。
+Adequate Record 是對 Active Record `find` 和 `find_by` 方法以及其它的關聯查詢方法所進行的一系列重構，查詢速度最高提升到了兩倍之多。
 
-工作原理是在執行 Active Record 呼叫時，把 SQL 查詢語句快取起來。有了查詢語句的快取之後，同樣的 SQL 查詢就不需要再次把呼叫轉換成 SQL 語句。更多細節請參考 [Aaron Patterson 的文章](http://tenderlovemaking.com/2014/02/19/adequaterecord-pro-like-activerecord.html)。
+工作原理是在執行 Active Record 調用時，把 SQL 查詢語句快取起來。有了查詢語句的快取之後，同樣的 SQL 查詢就無需再次把調用轉換成 SQL 語句。更多細節請參考 [Aaron Patterson 的博文](http://tenderlovemaking.com/2014/02/19/adequaterecord-pro-like-activerecord.html)。
 
-Adequate Record 已經合併到 Rails 裡，所以不需要特別啟用這個功能。多數的 `find` 和 `find_by` 呼叫和關聯查詢會自動使用 Adequate Record，比如：
+Adequate Record 已經合併到 Rails 里，所以不需要特別啓用這個特性。多數的 `find` 和 `find_by` 調用和關聯查詢會自動使用 Adequate Record，比如：
 
 ```ruby
-Post.find 1  # caches query pattern
-Post.find 2  # uses the cached pattern
+Post.find(1)  # First call generates and cache the prepared statement
+Post.find(2)  # Subsequent calls reuse the cached prepared statement
 
-Post.find_by_title 'first post'  # caches query pattern
-Post.find_by_title 'second post' # uses the cached pattern
+Post.find_by_title('first post')
+Post.find_by_title('second post')
 
-post.comments        # caches query pattern
-post.comments(true)  # uses cached pattern
+post.comments
+post.comments(true)
 ```
 
-下列場景則不會使用快取：
+有一點特別要說明的是，如上例所示，快取的語句不會快取傳入的數值，只是快取查詢語句的模版而已。
+
+下列場景則不會使用緩存：
 
 - 當 model 有預設作用域時
 - 當 model 使用了單表繼承時
 - 當 `find` 查詢一組 ID 時：
 
   ```ruby
-  Post.find(1,2,3)
-  OR
-  Post.find [1,2]
+  # not cached
+  Post.find(1, 2, 3)
+  Post.find([1,2])
   ```
 
 - 以 SQL 片段執行 `find_by`：
 
   ```ruby
-  Post.find_by "published_at < ?", 2.weeks.ago
+  Post.find_by('published_at < ?', 2.weeks.ago)
   ```
 
-### Web Console
+### Web 終端
 
-用 Rails 4.2 新產生的應用程式，預設搭載了 Web Console。
+用 Rails 4.2 新產生的應用程式，預設搭載了 [Web 終端](https://github.com/rails/web-console)。Web 終端給錯誤頁面添加了一個互動式 Ruby 終端，並提供視圖幫助方法 `console`，以及一些控制器幫助方法。
 
-Web Console 是一組專門為 Rails 應用程式打造的除錯工具，在錯誤頁面加入了互動式的終端，`console` View 輔助方法，以及一個相容 VT100 的終端機。
+錯誤頁面的互動式的終端，讓你可以在異常發生的地方執行程式碼。插入 `console` 視圖幫助方法到任何頁面，便可以在頁面的上下文里，在頁面算繪（render）結束後啓動一個互動式的終端。
 
-錯誤頁面的互動式的終端，讓你可以在異常發生的地方執行程式碼。用來檢查異常發生的狀態格外有用。
+最後，可以執行 `rails console` 來啓動一個 VT100 終端。若需要建立或修改測試資料，可以直接從瀏覽器里執行。
 
-插入 `console` View 輔助方法到任何頁面，便可以在頁面的上下文裡，啟動一個互動式的終端。
+### 外鍵支持
 
-最後，可以執行 `rails console` 來啟動一個 VT100 終端。若需要建立或修改測試資料，可以直接從瀏覽器裡執行。
-
-### 外鍵支援
-
-遷移 DSL 現在支援新增、移除外鍵，也會導出到 `schema.rb`。目前只有 `mysql`、`mysql2` 以及 `postgresql` 的連接器支援外鍵。
+遷移 DSL 現在支持新增、移除外鍵，外鍵也會導出到 `schema.rb`。目前只有 `mysql`、`mysql2` 以及 `postgresql` 的連接器（adapter）支持外鍵。
 
 ```ruby
 # add a foreign key to `articles.author_id` referencing `authors.id`
@@ -98,7 +113,7 @@ remove_foreign_key :accounts, :branches
 remove_foreign_key :accounts, column: :owner_id
 ```
 
-完整說明請參考 API 文件：[add_foreign_key](http://api.rubyonrails.org/v4.2.0/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html#method-i-add_foreign_key) 和 [remove_foreign_key](http://api.rubyonrails.org/v4.2.0/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html#method-i-remove_foreign_key)。
+完整說明請參考 API 文檔：[add_foreign_key](http://api.rubyonrails.org/v4.2.0/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html#method-i-add_foreign_key) 和 [remove_foreign_key](http://api.rubyonrails.org/v4.2.0/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html#method-i-remove_foreign_key)。
 
 
 Rails 4.2 向下不相容的部份
