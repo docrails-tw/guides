@@ -168,19 +168,6 @@ end
 
 若是使用了 `0.0.0.0`，記得要把防火牆設定好，改成只有信任的機器才可以存取你的開發伺服器。
 
-### Production logging
-
-`production` 環境預設的 log 層級改為 `:debug`。和其它環境保持一致，確保足夠的資訊輸出到 Log，供診斷問題之用。
-
-要改回先前的 `:info` 層級 ，在環境設定檔裡加入：
-
-```ruby
-# config/environments/production.rb
-
-# Decrease the log volume.
-config.log_level = :info
-```
-
 ### HTML Sanitizer
 
 HTML sanitizer 換成一個新的、更加安全的實作，基於 Loofah 和 Nokogiri。新的 Sanitizer 更安全，而 sanitization 更加完善與靈活。
@@ -246,11 +233,20 @@ Railties
 
 ### 移除
 
-*   `--skip-action-view` 選項從產生器移除了。([Pull Request](https://github.com/rails/rails/pull/17042))
+*   `--skip-action-view` 選項從 app generator 移除了。([Pull Request](https://github.com/rails/rails/pull/17042))
 
 *   移除 `rails application` 命令。([Pull Request](https://github.com/rails/rails/pull/11616))
 
 ### 棄用
+
+*   Production 環境新增 `config.log_level` 設定。
+    ([Pull Request](https://github.com/rails/rails/pull/16622))
+
+*   棄用 `rake test:all`，請改用 `rake test` 來執行 `test` 目錄下的所有測試。
+    ([Pull Request](https://github.com/rails/rails/pull/17348))
+
+*   棄用 `rake test:all:db`，請改用 `rake test:db`。
+    ([Pull Request](https://github.com/rails/rails/pull/17348))
 
 *   棄用 `Rails::Rack::LogTailer`，沒有替代方案。([Commit](https://github.com/rails/rails/commit/84a13e019e93efaa8994b3f8303d635a7702dbce))
 
@@ -351,17 +347,19 @@ Action Pack
 
     ([Commit](https://github.com/rails/rails/commit/cc26b6b7bccf0eea2e2c1a9ebdcc9d30ca7390d9))
 
+*   棄用 URL 輔助方法不再支持使用字串作為鍵：
+
+    ```ruby
+    # bad
+    root_path('controller' => 'posts', 'action' => 'index')
+
+    # good
+    root_path(controller: 'posts', action: 'index')
+    ```
+
+    ([Pull Request](https://github.com/rails/rails/pull/17743))
+
 ### 值得一提的變化
-
-*   Rails 現在會自動把模版的 digest 加入到 ETag。
-    ([Pull Request](https://github.com/rails/rails/pull/16527))
-
-*   `render nothing: true` 或算繪 `nil` 不再加入一個空白到響應主體。
-  ([Pull Request](https://github.com/rails/rails/pull/14883))
-
-*   導入 `always_permitted_parameters` 選項，用來設定全局允許賦值的參數。
-  預設值是 `['controller', 'action']`。
-  ([Pull Request](https://github.com/rails/rails/pull/15933))
 
 *   `*_filter` 方法已經從文件中移除，已經不鼓勵使用。偏好使用 `*_action` 方法：
 
@@ -386,27 +384,44 @@ Action Pack
     (Commit [1](https://github.com/rails/rails/commit/6c5f43bab8206747a8591435b2aa0ff7051ad3de),
     [2](https://github.com/rails/rails/commit/489a8f2a44dc9cea09154ee1ee2557d1f037c7d4))
 
-* 從 RFC-4791 新增 HTTP 方法 `MKCALENDAR`。
-  ([Pull Request](https://github.com/rails/rails/pull/15121))
+*   `render nothing: true` 或算繪 `nil` 不再加入一個空白到響應主體。
+  ([Pull Request](https://github.com/rails/rails/pull/14883))
 
-* `*_fragment.action_controller` 通知訊息的 Payload 現在包含 Controller 與動作名稱。
-  ([Pull Request](https://github.com/rails/rails/pull/14137))
+*   Rails 現在會自動把模版的 digest 加入到 ETag。
+    ([Pull Request](https://github.com/rails/rails/pull/16527))
 
-* 傳入 URL 輔助方法的片段現在會自動 Escaped。
+*   傳入 URL 輔助方法的片段現在會自動 Escaped。
   ([Commit](https://github.com/rails/rails/commit/5460591f0226a9d248b7b4f89186bd5553e7768f))
 
-* 改善路由錯誤頁面，搜索路由支持模糊搜尋。
+*   導入 `always_permitted_parameters` 選項，用來設定全局允許賦值的參數。
+  預設值是 `['controller', 'action']`。
+  ([Pull Request](https://github.com/rails/rails/pull/15933))
+
+*   從 [RFC 4791](https://tools.ietf.org/html/rfc4791) 新增 HTTP 方法 `MKCALENDAR`。
+  ([Pull Request](https://github.com/rails/rails/pull/15121))
+
+*   `*_fragment.action_controller` 通知訊息的 Payload 現在包含 Controller 與動作名稱。
+  ([Pull Request](https://github.com/rails/rails/pull/14137))
+
+*   改善路由錯誤頁面，搜索路由支持模糊搜尋。
   ([Pull Request](https://github.com/rails/rails/pull/14619))
 
-* 新增關掉記錄 CSRF 失敗的選項。
+*   傳入 URL 輔助方法的片段現在會自動 Escaped。
+  ([Commit](https://github.com/rails/rails/commit/5460591f0226a9d248b7b4f89186bd5553e7768f))
+
+*   新增關掉記錄 CSRF 失敗的選項。
   ([Pull Request](https://github.com/rails/rails/pull/14280))
 
 *   當 Rails 伺服器設為提供靜態資源時，若客戶端支援 gzip，則會自動傳送預先產生好的 gzip 靜態資源。Asset Pipeline 預設會給所有可壓縮的靜態資源產生 `.gz` 檔。傳送 gzip 可將所需傳輸的資料量降到最小，並加速靜態資源請求的存取。當然若要在 Rails 線上環境提供靜態資源，最好還是使用 [CDN](http://guides.rubyonrails.org/asset_pipeline.html#cdns)。([Pull Request](https://github.com/rails/rails/pull/16466))
 
-*   `assert_select` 的工作方式變更了，解讀 CSS 選擇器若用了多個不同的函式庫，會建一個過渡的 DOM 供選擇器選擇取出資料。譬如：
-    *  屬性選擇器的值為非字母字元時，需要用雙引號包起來。
-    *  由含有嵌套錯誤元素的 HTML 建出來的 DOM 和先前不同。
-    *  先前要比較未轉譯的元素時，需傳入未轉譯的元素（比如 `AT&amp;T`）給選擇器，現在只要傳轉譯後的元素（`AT&T`）即可。
+*   在整合測試里呼叫 `process` 輔助方法時，路徑開頭需要有 `/`。以前可以忽略開頭的 `/`，但這是實作所產生的副產品，而不是有意新增的特性，譬如：
+
+    ```ruby
+    test "list all posts" do
+      get "/posts"
+      assert_response :success
+    end
+    ```
 
 
 Action View
@@ -451,11 +466,15 @@ Action Mailer
 
 ### 值得一提的變化
 
+*   `link_to` 和 `url_for` 在模版裡預設會產生絕對路徑，不再需要傳入 `only_path: false`。
+    ([Commit](https://github.com/rails/rails/commit/9685080a7677abfa5d288a81c3e078368c6bb67c)
+
 *   導入 `deliver_later` 方法，將要寄的信加到應用程式的佇列裡，用來異步發送信件。
     ([Pull Request](https://github.com/rails/rails/pull/16485))
 
 *   新增 `show_previews` 選項，用來在開發環境之外啟用郵件預覽功能。
   ([Pull Request](https://github.com/rails/rails/pull/15970))
+
 
 Active Record
 -------------
@@ -480,32 +499,22 @@ Active Record
 
 ### 棄用
 
+*   棄用 `after_commit` 和 `after_rollback` 會吃掉錯誤的行為。
+    ([Pull Request](https://github.com/rails/rails/pull/16537))
+
+*   棄用對 `has_many :through` 自動偵測 counter cache 的支持。要自己對 `has_many` 與
+  `belongs_to` 關聯，給 `through` 的紀錄手動設定。
+  ([Pull Request](https://github.com/rails/rails/pull/15754))
+
 *   棄用 `sanitize_sql_hash_for_conditions`，沒有替代方案。使用
     `Relation` 物件來進行查詢與更新是偏好的使用方式。
     ([Commit](https://github.com/rails/rails/commit/d5902c9e))
-
-*   棄用 `after_commit` 和 `after_rollback` 將錯誤吃掉的行為。
-    ([Pull Request](https://github.com/rails/rails/pull/16537))
 
 *   棄用未連接資料庫便呼叫 `DatabaseTasks.load_schema`，請改用 `DatabaseTasks.load_schema_current`。
     ([Commit](https://github.com/rails/rails/commit/f15cef67f75e4b52fd45655d7c6ab6b35623c608))
 
 *   棄用 `Reflection#source_macro`，沒有替代方案。因為 Active Record 不再需要這個方法。
     ([Pull Request](https://github.com/rails/rails/pull/16373))
-
-*   棄用對 `has_many :through` 自動偵測 counter cache 的支持。要自己對 `has_many` 與
-  `belongs_to` 關聯，給 `through` 的紀錄手動設定。
-  ([Pull Request](https://github.com/rails/rails/pull/15754))
-
-*   棄用了 `serialized_attributes`，沒有替代方案。
-  ([Pull Request](https://github.com/rails/rails/pull/15704))
-
-*   棄用了當欄位不存在時，還會從 `column_for_attribute` 回傳 `nil` 的情況。
-  Rails 5.0 將會回傳 Null Object。
-  ([Pull Request](https://github.com/rails/rails/pull/15878))
-
-*   依賴實體狀態（有定義接受參數的作用域）的關聯現在不能使用 `.joins`、`.preload` 以及 `.eager_load` 了。
-  ([Commit](https://github.com/rails/rails/commit/ed56e596a0467390011bc9d56d462539776adac1))
 
 *   棄用 `.find` 或 `.exists?` 可傳入 Active Record 物件。請先對物件呼叫 `#id`。
   (Commit [1](https://github.com/rails/rails/commit/d92ae6ccca3bcfd73546d612efaea011270bd270),
@@ -517,7 +526,34 @@ Active Record
 
     ([Commit](https://github.com/rails/rails/commit/91949e48cf41af9f3e4ffba3e5eecf9b0a08bfc3))
 
+*   棄用沒有連上資料庫，缺可以呼叫 `DatabaseTasks.load_schema` 的行為。請改用 `DatabaseTasks.load_schema_current` 來取代。
+    ([Commit](https://github.com/rails/rails/commit/f15cef67f75e4b52fd45655d7c6ab6b35623c608))
+
+*   棄用 `sanitize_sql_hash_for_conditions`，沒有替代方案。使用 `Relation` 來進行查詢或更新是推薦的做法。
+    ([Commit](https://github.com/rails/rails/commit/d5902c9e))
+
+*   棄用 `add_timestamps` 和 `t.timestamps` 可不用傳入 `:null` 選項的行為。Rails 5 將把預設值 `null: true` 改為 `null: false`。
+    ([Pull Request](https://github.com/rails/rails/pull/16481))
+
+*   棄用 `Reflection#source_macro`，沒有替代方案。Active Record 不再需要這個方法了。
+    ([Pull Request](https://github.com/rails/rails/pull/16373))
+
+*   棄用了 `serialized_attributes`，沒有替代方案。
+  ([Pull Request](https://github.com/rails/rails/pull/15704))
+
+*   棄用了當欄位不存在時，還會從 `column_for_attribute` 回傳 `nil` 的情況。
+  Rails 5.0 將會回傳 Null 物件。
+  ([Pull Request](https://github.com/rails/rails/pull/15878))
+
+*   依賴實體狀態（有定義接受參數的作用域）的關聯現在不能使用 `.joins`、`.preload` 以及 `.eager_load` 了。
+  ([Commit](https://github.com/rails/rails/commit/ed56e596a0467390011bc9d56d462539776adac1))
+
 ### 值得一提的變化
+
+*   `SchemaDumper` 對 `create_table` 使用 `force: :cascade`。這樣就可以重載加入外鍵的綱要文件。
+
+*   單數關聯增加 `:required` 選項，用來定義關聯的存在性驗證。
+  ([Pull Request](https://github.com/rails/rails/pull/16056))
 
 *   PostgreSQL 連接器現在支持 PostgreSQL 9.4 的 `JSONB` 資料類型。
     ([Pull Request](https://github.com/rails/rails/pull/16220))
@@ -525,35 +561,17 @@ Active Record
 *   遷移的 `#references` 方法現在可以指定類型，`type` 選項，可用來指定外鍵的類型（比如 `:uuid`）。
     ([Pull Request](https://github.com/rails/rails/pull/16231))
 
-*   單數關聯增加 `:required` 選項，用來定義關聯的存在性驗證。
-  ([Pull Request](https://github.com/rails/rails/pull/16056))
-
-*   導入 `ActiveRecord::Base#validate!`，會在記錄不合法時拋出 `RecordInvalid` 異常。
-  ([Pull Request](https://github.com/rails/rails/pull/8639))
-
-*   `ActiveRecord::Base#reload` 行為同 `m = Model.find(m.id)`，代表自訂的 `select` 不再保有額外的屬性。
-  meaning that it no longer retains the extra attributes from custom `select`s.
-  ([Pull Request](https://github.com/rails/rails/pull/15866))
-
-*   導入 `bin/rake db:purge` 任務，用來清空當前環境的資料庫。
-  ([Commit](https://github.com/rails/rails/commit/e2f232aba15937a4b9d14bd91e0392c6d55be58d))
-
 *   `ActiveRecord::Dirty` 現在會偵測可變數值的改變。序列化過的屬性有變更才會儲存。
   修復了像是 PostgreSQL 不會偵測到變更的字串欄位、JSON 欄位。
   (Pull Requests [1](https://github.com/rails/rails/pull/15674),
   [2](https://github.com/rails/rails/pull/15786),
   [3](https://github.com/rails/rails/pull/15788))
 
-* 新增 `ActiveRecord::Base` 物件的 `#pretty_print` 方法。
-  ([Pull Request](https://github.com/rails/rails/pull/15172))
+*   導入 `bin/rake db:purge` 任務，用來清空當前環境的資料庫。
+  ([Commit](https://github.com/rails/rails/commit/e2f232aba15937a4b9d14bd91e0392c6d55be58d))
 
-* PostgreSQL 與 SQLite 連接器不再預設限制字串只能 255 字元。
-  ([Pull Request](https://github.com/rails/rails/pull/14579))
-
-* `sqlite3:///some/path` 現在可以解析系統的絕對路徑 `/some/path`。
-  相對路徑請使用 `sqlite3:some/path`。(先前是 `sqlite3:///some/path`
-  會解析成 `some/path`。這個行為已在 Rails 4.1 被棄用了。  Rails 4.1.)
-  ([Pull Request](https://github.com/rails/rails/pull/14569))
+*   導入 `ActiveRecord::Base#validate!`，會在記錄不合法時拋出 `RecordInvalid` 異常。
+  ([Pull Request](https://github.com/rails/rails/pull/8639))
 
 * 引入 `#validate` 作為 `#valid?` 的別名。
   ([Pull Request](https://github.com/rails/rails/pull/14456))
@@ -561,14 +579,40 @@ Active Record
 * `#touch` 現在可一次對多屬性操作。
   ([Pull Request](https://github.com/rails/rails/pull/14423))
 
-* 新增 MySQL 5.6 以上版本的 fractional seconds 支持。
-  (Pull Request [1](https://github.com/rails/rails/pull/8240), [2](https://github.com/rails/rails/pull/14359))
+*   PostgreSQL 連接器現在支持 PostgreSQL 9.4+ 的 `jsonb` 資料類型。
+    ([Pull Request](https://github.com/rails/rails/pull/16220))
 
-* 新增 PostgreSQL 連接器的 `citext` 支持。
+*   新增 PostgreSQL 連接器的 `citext` 支持。
   ([Pull Request](https://github.com/rails/rails/pull/12523))
 
-* 新增 PostgreSQL 連接器的使用者自訂的範圍類型支持。
+*   PostgreSQL 與 SQLite 適配器不再默認限制字串只能 255 字元。
+  ([Pull Request](https://github.com/rails/rails/pull/14579))
+
+*   新增 PostgreSQL 連接器的使用自訂的範圍類型支持。
   ([Commit](https://github.com/rails/rails/commit/4cb47167e747e8f9dc12b0ddaf82bdb68c03e032))
+
+*   `sqlite3:///some/path` 現在可以解析系統的絕對路徑 `/some/path`。
+  相對路徑請使用 `sqlite3:some/path`。(先前是 `sqlite3:///some/path`
+  會解析成 `some/path`。這個行為已在 Rails 4.1 被棄用了。  Rails 4.1.)
+  ([Pull Request](https://github.com/rails/rails/pull/14569))
+
+*   新增 MySQL 5.6 以上版本的 fractional seconds 支持。
+  (Pull Request [1](https://github.com/rails/rails/pull/8240), [2](https://github.com/rails/rails/pull/14359))
+
+*   新增 `ActiveRecord::Base` 物件的 `#pretty_print` 方法。
+  ([Pull Request](https://github.com/rails/rails/pull/15172))
+
+*   PostgreSQL 與 SQLite 連接器不再預設限制字串只能 255 字元。
+  ([Pull Request](https://github.com/rails/rails/pull/14579))
+
+*   `ActiveRecord::Base#reload` 行為同 `m = Model.find(m.id)`，代表自訂的 `select` 不再保有額外的屬性。
+  meaning that it no longer retains the extra attributes from custom `select`s.
+  ([Pull Request](https://github.com/rails/rails/pull/15866))
+
+*   `ActiveRecord::Base#reflections` 現在返回的 hash 的鍵是字串類型，而不是符號。 ([Pull Request](https://github.com/rails/rails/pull/17718))
+
+*   遷移的 `references` 方法支持 `type` 選項，用來指定外鍵的類型，比如 `:uuid`。
+    ([Pull Request](https://github.com/rails/rails/pull/16231))
 
 Active Model
 ------------
@@ -590,18 +634,19 @@ Active Model
 
 ### 值得一提的變化
 
-*   `ActiveModel::Dirty` 導入 `restore_attributes` 方法，用來回復更改的屬性到先前的數值。
+*    引入 `#validate` 作為 `#valid?` 的別名。
+  ([Pull Request](https://github.com/rails/rails/pull/14456))
+
+*   `ActiveModel::Dirty` 導入 `restore_attributes` 方法，用來恢復已修改的屬性到先前的數值。
     (Pull Request [1](https://github.com/rails/rails/pull/14861),
     [2](https://github.com/rails/rails/pull/16180))
 
-*   `has_secure_password` 現在預設允許空密碼（只含空白的密碼也算空密碼）。
+*   `has_secure_password` 現在缺省允許空密碼（只含空白的密碼也算空密碼）。
     ([Pull Request](https://github.com/rails/rails/pull/16412))
 
-*    驗證啟用時，`has_secure_password` 現在會檢查密碼是否少於 72 個字元。
+*    驗證啓用時，`has_secure_password` 現在會檢查密碼是否少於 72 個字元。
   ([Pull Request](https://github.com/rails/rails/pull/15708))
 
-*    引入 `#validate` 作為 `#valid?` 的別名。
-  ([Pull Request](https://github.com/rails/rails/pull/14456))
 
 Active Support
 --------------
@@ -620,10 +665,10 @@ Active Support
 
 *   棄用 `Kernel#silence_stderr`、`Kernel#capture` 以及 `Kernel#quietly` 方法，沒有替代方案。([Pull Request](https://github.com/rails/rails/pull/13392))
 
-* 棄用 `Class#superclass_delegating_accessor`，請改用 `Class#class_attribute`。
+*   棄用 `Class#superclass_delegating_accessor`，請改用 `Class#class_attribute`。
   ([Pull Request](https://github.com/rails/rails/pull/14271))
 
-* 棄用 `ActiveSupport::SafeBuffer#prepend!` 請改用 `ActiveSupport::SafeBuffer#prepend`（兩者功能相同）。
+*   棄用 `ActiveSupport::SafeBuffer#prepend!` 請改用 `ActiveSupport::SafeBuffer#prepend`（兩者功能相同）。
   ([Pull Request](https://github.com/rails/rails/pull/14529))
 
 ### 值得一提的變化
@@ -645,16 +690,18 @@ Active Support
 *   導入 `String#truncate_words` 方法，可指定要單字截斷至幾個單字。
     ([Pull Request](https://github.com/rails/rails/pull/16190))
 
-* 新增 `Hash#transform_values` 與 `Hash#transform_values!` 方法，來簡化 Hash
+*   新增 `Hash#transform_values` 與 `Hash#transform_values!` 方法，來簡化 Hash
   值需要更新、但鍵保留不變這樣的常見模式。
   ([Pull Request](https://github.com/rails/rails/pull/15819))
 
-* `humanize` 現在會去掉前面的底線。
+*   `humanize` 現在會去掉前面的底線。
   ([Commit](https://github.com/rails/rails/commit/daaa21bc7d20f2e4ff451637423a25ff2d5e75c7))
 
-* 導入 `Concern#class_methods` 來取代 `module ClassMethods` 以及 `Kernel#concern`，
+*   導入 `Concern#class_methods` 來取代 `module ClassMethods` 以及 `Kernel#concern`，
   來避免使用 `module Foo; extend ActiveSupport::Concern; end` 這樣的樣板。
   ([Commit](https://github.com/rails/rails/commit/b16c36e688970df2f96f793a759365b248b582ad))
+
+*   新增一篇[指南](constant_autoloading_and_reloading.html)，關於常數的載入與重載。
 
 致謝
 ----
