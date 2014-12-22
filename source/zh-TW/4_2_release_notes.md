@@ -641,10 +641,10 @@ Active Model
     (Pull Request [1](https://github.com/rails/rails/pull/14861),
     [2](https://github.com/rails/rails/pull/16180))
 
-*   `has_secure_password` 現在缺省允許空密碼（只含空白的密碼也算空密碼）。
+*   `has_secure_password` 現在預設允許空密碼（只含空白的密碼也算空密碼）。
     ([Pull Request](https://github.com/rails/rails/pull/16412))
 
-*    驗證啓用時，`has_secure_password` 現在會檢查密碼是否少於 72 個字元。
+*    驗證啟用時，`has_secure_password` 現在會檢查密碼是否少於 72 個字元。
   ([Pull Request](https://github.com/rails/rails/pull/15708))
 
 
