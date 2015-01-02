@@ -1,3 +1,5 @@
+**DO NOT READ THIS FILE IN GITHUB, GUIDES ARE PUBLISHED IN http://guides.rubyonrails.org.**
+
 Action Controller Overview
 ==========================
 
@@ -991,6 +993,11 @@ Rails allows you to stream more than just files. In fact, you can stream anythin
 you would like in a response object. The `ActionController::Live` module allows
 you to create a persistent connection with a browser. Using this module, you will
 be able to send arbitrary data to the browser at specific points in time.
+
+NOTE: The default Rails server (WEBrick) is a buffering web server and does not
+support streaming. In order to use this feature, you'll need to use a non buffering
+server like [Puma](http://puma.io), [Rainbows](http://rainbows.bogomips.org)
+or [Passenger](https://www.phusionpassenger.com).
 
 #### Incorporating Live Streaming
 

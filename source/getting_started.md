@@ -1,3 +1,5 @@
+**DO NOT READ THIS FILE IN GITHUB, GUIDES ARE PUBLISHED IN http://guides.rubyonrails.org.**
+
 Getting Started with Rails
 ==========================
 
@@ -259,9 +261,9 @@ invoke  helper
 create    app/helpers/welcome_helper.rb
 invoke  assets
 invoke    coffee
-create      app/assets/javascripts/welcome.js.coffee
+create      app/assets/javascripts/welcome.coffee
 invoke    scss
-create      app/assets/stylesheets/welcome.css.scss
+create      app/assets/stylesheets/welcome.scss
 ```
 
 Most important of these are of course the controller, located at
@@ -300,8 +302,9 @@ Rails.application.routes.draw do
   # ...
 ```
 
-This is your application's _routing file_ which holds entries in a special DSL
-(domain-specific language) that tells Rails how to connect incoming requests to
+This is your application's _routing file_ which holds entries in a special
+[DSL (domain-specific language)](http://en.wikipedia.org/wiki/Domain-specific_language)
+that tells Rails how to connect incoming requests to
 controllers and actions. This file contains many sample routes on commented
 lines, and one of them actually shows you how to connect the root of your site
 to a specific controller and action. Find the line beginning with `root` and
@@ -1541,6 +1544,7 @@ class CreateComments < ActiveRecord::Migration
 
       t.timestamps null: false
     end
+    add_foreign_key :comments, :articles
   end
 end
 ```
@@ -1560,6 +1564,8 @@ run against the current database, so in this case you will just see:
 ==  CreateComments: migrating =================================================
 -- create_table(:comments)
    -> 0.0115s
+-- add_foreign_key(:comments, :articles)
+   -> 0.0000s
 ==  CreateComments: migrated (0.0119s) ========================================
 ```
 
@@ -1637,8 +1643,8 @@ This creates five files and one empty directory:
 | app/views/comments/                          | Views of the controller are stored here  |
 | test/controllers/comments_controller_test.rb | The test for the controller              |
 | app/helpers/comments_helper.rb               | A view helper file                       |
-| app/assets/javascripts/comment.js.coffee     | CoffeeScript for the controller          |
-| app/assets/stylesheets/comment.css.scss      | Cascading style sheet for the controller |
+| app/assets/javascripts/comment.coffee        | CoffeeScript for the controller          |
+| app/assets/stylesheets/comment.scss          | Cascading style sheet for the controller |
 
 Like with any blog, our readers will create their comments directly after
 reading the article, and once they have added their comment, will be sent back
@@ -2031,9 +2037,14 @@ What's Next?
 ------------
 
 Now that you've seen your first Rails application, you should feel free to
-update it and experiment on your own. But you don't have to do everything
-without help. As you need assistance getting up and running with Rails, feel
-free to consult these support resources:
+update it and experiment on your own.
+
+We recommend next that you read [A Guide to Testing Rails Applications](testing.html),
+for a deep dive into Rails testing facilities and approaches.
+
+Remember you don't have to do everything without help. As you need assistance
+getting up and running with Rails, feel free to consult these support
+resources:
 
 * The [Ruby on Rails Guides](index.html)
 * The [Ruby on Rails Tutorial](http://railstutorial.org/book)
@@ -2051,7 +2062,7 @@ command-line utility:
   in your web browser to explore the API documentation.
 
 TIP: To be able to generate the Rails Guides locally with the `doc:guides` rake
-task you need to install the RedCloth and Nokogiri gems. Add it to your `Gemfile` and run
+task you need to install the Redcarpet and Nokogiri gems. Add it to your `Gemfile` and run
 `bundle install` and you're ready to go.
 
 Configuration Gotchas

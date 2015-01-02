@@ -1,3 +1,5 @@
+**DO NOT READ THIS FILE IN GITHUB, GUIDES ARE PUBLISHED IN http://guides.rubyonrails.org.**
+
 Rails on Rack
 =============
 
@@ -233,7 +235,7 @@ Much of Action Controller's functionality is implemented as Middlewares. The fol
 
 **`ActionDispatch::Static`**
 
-* Used to serve static assets. Disabled if `config.serve_static_assets` is `false`.
+* Used to serve static files. Disabled if `config.serve_static_files` is `false`.
 
 **`Rack::Lock`**
 

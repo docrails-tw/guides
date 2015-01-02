@@ -1,3 +1,5 @@
+**DO NOT READ THIS FILE IN GITHUB, GUIDES ARE PUBLISHED IN http://guides.rubyonrails.org.**
+
 Ruby on Rails 4.2 Release Notes
 ===============================
 
@@ -509,6 +511,17 @@ Please refer to the [Changelog][action-pack] for detailed changes.
     serving assets from your Rails server in production.
     ([Pull Request](https://github.com/rails/rails/pull/16466))
 
+*   When calling the `process` helpers in an integration test the path needs to have
+    a leading slash. Previously you could omit it but that was a byproduct of the
+    implementation and not an intentional feature, e.g.:
+
+    ```ruby
+    test "list all posts" do
+      get "/posts"
+      assert_response :success
+    end
+    ```
+
 Action View
 -----------
 
@@ -543,17 +556,6 @@ Please refer to the [Changelog][action-view] for detailed changes.
 
 *   Placeholder I18n follows the same convention as `label` I18n.
     ([Pull Request](https://github.com/rails/rails/pull/16438))
-
-*   When calling the `process` helpers in an integration test the path needs to have
-    a leading slash. Previously you could omit it but that was a byproduct of the
-    implementation and not an intentional feature, e.g.:
-
-    ```ruby
-    test "list all posts" do
-      get "/posts"
-      assert_response :success 
-    end
-    ```
 
 
 Action Mailer
@@ -640,6 +642,10 @@ Please refer to the [Changelog][active-record] for detailed changes.
     `Relation` for performing queries and updates is the preferred API.
     ([Commit](https://github.com/rails/rails/commit/d5902c9e))
 
+*   Deprecated `add_timestamps` and `t.timestamps` without passing the `:null`
+    option. The default of `null: true` will change in Rails 5 to `null: false`.
+    ([Pull Request](https://github.com/rails/rails/pull/16481))
+
 *   Deprecated `Reflection#source_macro` without replacement as it is no longer
     needed in Active Record.
     ([Pull Request](https://github.com/rails/rails/pull/16373))
@@ -657,6 +663,9 @@ Please refer to the [Changelog][active-record] for detailed changes.
     ([Commit](https://github.com/rails/rails/commit/ed56e596a0467390011bc9d56d462539776adac1))
 
 ### Notable changes
+
+*   `SchemaDumper` uses `force: :cascade` on `create_table`. This makes it
+    possible to reload a schema when foreign keys are in place.
 
 *   Added a `:required` option to singular associations, which defines a
     presence validation on the association.
@@ -824,6 +833,7 @@ Please refer to the [Changelog][active-support] for detailed changes.
     `module Foo; extend ActiveSupport::Concern; end` boilerplate.
     ([Commit](https://github.com/rails/rails/commit/b16c36e688970df2f96f793a759365b248b582ad))
 
+*   New [guide](constant_autoloading_and_reloading.html) about constant autoloading and reloading.
 
 Credits
 -------

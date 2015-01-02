@@ -1,3 +1,5 @@
+**DO NOT READ THIS FILE IN GITHUB, GUIDES ARE PUBLISHED IN http://guides.rubyonrails.org.**
+
 The Rails Command Line
 ======================
 
@@ -24,7 +26,7 @@ There are a few commands that are absolutely critical to your everyday usage of 
 * `rails dbconsole`
 * `rails new app_name`
 
-All commands can run with ```-h or --help``` to list more information.
+All commands can run with `-h` or `--help` to list more information.
 
 Let's create a simple Rails application to step through each of these commands in context.
 
@@ -151,9 +153,9 @@ $ bin/rails generate controller Greetings hello
      create    app/helpers/greetings_helper.rb
      invoke  assets
      invoke    coffee
-     create      app/assets/javascripts/greetings.js.coffee
+     create      app/assets/javascripts/greetings.coffee
      invoke    scss
-     create      app/assets/stylesheets/greetings.css.scss
+     create      app/assets/stylesheets/greetings.scss
 ```
 
 What all did this generate? It made sure a bunch of directories were in our application, and created a controller file, a view file, a functional test file, a helper for the view, a JavaScript file and a stylesheet file.
@@ -239,11 +241,11 @@ $ bin/rails generate scaffold HighScore game:string score:integer
     create      app/views/high_scores/show.json.jbuilder
     invoke  assets
     invoke    coffee
-    create      app/assets/javascripts/high_scores.js.coffee
+    create      app/assets/javascripts/high_scores.coffee
     invoke    scss
-    create      app/assets/stylesheets/high_scores.css.scss
+    create      app/assets/stylesheets/high_scores.scss
     invoke  scss
-   identical    app/assets/stylesheets/scaffolds.css.scss
+   identical    app/assets/stylesheets/scaffolds.scss
 ```
 
 The generator checks that there exist the directories for models, controllers, helpers, layouts, functional and unit tests, stylesheets, creates the views, controller, model and database migration for HighScore (creating the `high_scores` table and fields), takes care of the route for the **resource**, and new tests for everything.
@@ -368,7 +370,7 @@ Rake is Ruby Make, a standalone Ruby utility that replaces the Unix utility 'mak
 
 You can get a list of Rake tasks available to you, which will often depend on your current directory, by typing `rake --tasks`. Each task has a description, and should help you find the thing you need.
 
-To get the full backtrace for running rake task you can pass the option ```--trace``` to command line, for example ```rake db:create --trace```.
+To get the full backtrace for running rake task you can pass the option `--trace` to command line, for example `rake db:create --trace`.
 
 ```bash
 $ bin/rake --tasks
@@ -384,7 +386,7 @@ rake middleware         # Prints out your Rack middleware stack
 rake tmp:clear          # Clear session, cache, and socket files from tmp/ (narrow w/ tmp:sessions:clear, tmp:cache:clear, tmp:sockets:clear)
 rake tmp:create         # Creates tmp directories for sessions, cache, sockets, and pids
 ```
-INFO: You can also use ```rake -T```  to get the list of tasks.
+INFO: You can also use `rake -T`  to get the list of tasks.
 
 ### `about`
 

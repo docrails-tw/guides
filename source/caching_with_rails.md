@@ -1,3 +1,5 @@
+**DO NOT READ THIS FILE IN GITHUB, GUIDES ARE PUBLISHED IN http://guides.rubyonrails.org.**
+
 Caching with Rails: An overview
 ===============================
 
@@ -105,7 +107,7 @@ This method generates a cache key that depends on all products and can be used i
 <% end %>
 ```
 
-If you want to cache a fragment under certain condition you can use `cache_if` or `cache_unless`
+If you want to cache a fragment under certain conditions, you can use `cache_if` or `cache_unless`
 
 ```erb
 <% cache_if (condition, cache_key_for_products) do %>

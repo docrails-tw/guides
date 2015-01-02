@@ -1,3 +1,5 @@
+**DO NOT READ THIS FILE IN GITHUB, GUIDES ARE PUBLISHED IN http://guides.rubyonrails.org.**
+
 A Guide for Upgrading Ruby on Rails
 ===================================
 
@@ -235,8 +237,8 @@ mail = Notifier.notify(user, ...) # Notifier#notify is not yet called at this po
 mail = mail.deliver_now           # Prints "Called"
 ```
 
-This should not result in any noticible differnces for most applications.
-However, if you need some non-mailer methods to be exectuted synchronously, and
+This should not result in any noticeable differences for most applications.
+However, if you need some non-mailer methods to be executed synchronously, and
 you were previously relying on the synchronous proxying behavior, you should
 define them as class methods on the mailer class directly:
 
@@ -766,7 +768,7 @@ file (in `config/application.rb`):
 ```ruby
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
-Bundler.require(:default, Rails.env)
+Bundler.require(*Rails.groups)
 ```
 
 ### vendor/plugins
@@ -1110,7 +1112,7 @@ You can help test performance with these additions to your test environment:
 
 ```ruby
 # Configure static asset server for tests with Cache-Control for performance
-config.serve_static_assets = true
+config.serve_static_files = true
 config.static_cache_control = 'public, max-age=3600'
 ```
 

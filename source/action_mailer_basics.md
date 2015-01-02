@@ -1,3 +1,5 @@
+**DO NOT READ THIS FILE IN GITHUB, GUIDES ARE PUBLISHED IN http://guides.rubyonrails.org.**
+
 Action Mailer Basics
 ====================
 
@@ -48,7 +50,7 @@ create    test/mailers/previews/user_mailer_preview.rb
 ```ruby
 # app/mailers/application_mailer.rb
 class ApplicationMailer < ActionMailer::Base
-  default "from@example.com"
+  default from: "from@example.com"
   layout 'mailer'
 end
 
@@ -731,7 +733,9 @@ Mailer framework. You can do this in an initializer file
 `config/initializers/sandbox_email_interceptor.rb`
 
 ```ruby
-ActionMailer::Base.register_interceptor(SandboxEmailInterceptor) if Rails.env.staging?
+if Rails.env.staging?
+  ActionMailer::Base.register_interceptor(SandboxEmailInterceptor)
+end
 ```
 
 NOTE: The example above uses a custom environment called "staging" for a

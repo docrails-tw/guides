@@ -1,3 +1,5 @@
+**DO NOT READ THIS FILE IN GITHUB, GUIDES ARE PUBLISHED IN http://guides.rubyonrails.org.**
+
 Active Record Query Interface
 =============================
 
@@ -1331,15 +1333,17 @@ If you want to find both by name and locked, you can chain these finders togethe
 Understanding The Method Chaining
 ---------------------------------
 
-The ActiveRecord pattern implements [Method Chaining](http://en.wikipedia.org/wiki/Method_chaining).
-This allow us to use multiple ActiveRecord methods in a simple and straightforward way.
+The Active Record pattern implements [Method Chaining](http://en.wikipedia.org/wiki/Method_chaining),
+which allow us to use multiple Active Record methods together in a simple and straightforward way.
 
-You can chain a method in a sentence when the previous method called returns `ActiveRecord::Relation`,
-like `all`, `where`, and `joins`. Methods that returns a instance of a single object 
-(see [Retrieving a Single Object Section](#retrieving-a-single-object)) have to be be the last
-in the sentence.
+You can chain methods in a statement when the previous method called returns an
+`ActiveRecord::Relation`, like `all`, `where`, and `joins`. Methods that return
+a single object (see [Retrieving a Single Object Section](#retrieving-a-single-object))
+have to be at the end of the statement.
 
-This guide won't cover all the possibilities, just a few as example.
+There are some examples below. This guide won't cover all the possibilities, just a few as examples.
+When an Active Record method is called, the query is not immediately generated and sent to the database,
+this just happens when the data is actually needed. So each example below generates a single query.
 
 ### Retrieving filtered data from multiple tables
 
@@ -1347,7 +1351,17 @@ This guide won't cover all the possibilities, just a few as example.
 Person
   .select('people.id, people.name, comments.text')
   .joins(:comments)
-  .where('comments.create_at > ?', 1.week.ago)
+  .where('comments.created_at > ?', 1.week.ago)
+```
+
+The result should be something like this:
+
+```sql
+SELECT people.id, people.name, comments.text
+FROM people
+INNER JOIN comments
+  ON comments.person_id = people.id
+WHERE comments.created_at = '2015-01-01'
 ```
 
 ### Retrieving specific data from multiple tables
@@ -1359,16 +1373,23 @@ Person
   .find_by('people.name' => 'John') # this should be the last
 ```
 
-NOTE: Remember that, if `find_by` return more than one registry, it will take just the first
-and ignore the others.
+The above should generate:
+
+```sql
+SELECT people.id, people.name, companies.name
+FROM people
+INNER JOIN companies
+  ON companies.person_id = people.id
+WHERE people.name = 'John'
+LIMIT 1
+```
+
+NOTE: Remember that, if `find_by` returns more than one registry, it will take just the first and ignore the others. Note the `LIMIT 1` statement above.
 
 Find or Build a New Object
 --------------------------
 
-NOTE: Some dynamic finders were deprecated in Rails 4.0 and
-removed in Rails 4.1. The best practice is to use Active Record scopes
-instead. You can find the deprecation gem at
-https://github.com/rails/activerecord-deprecated_finders
+NOTE: Some dynamic finders were deprecated in Rails 4.0 and removed in Rails 4.1. The best practice is to use Active Record scopes instead. You can find the deprecation gem at https://github.com/rails/activerecord-deprecated_finders
 
 It's common that you need to find a record or create it if it doesn't exist. You can do that with the `find_or_create_by` and `find_or_create_by!` methods.
 

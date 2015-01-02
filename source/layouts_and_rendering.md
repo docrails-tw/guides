@@ -1,3 +1,5 @@
+**DO NOT READ THIS FILE IN GITHUB, GUIDES ARE PUBLISHED IN http://guides.rubyonrails.org.**
+
 Layouts and Rendering in Rails
 ==============================
 
@@ -424,6 +426,9 @@ Rails understands both numeric status codes and the corresponding symbols shown 
 |                     | 508              | :loop_detected                   |
 |                     | 510              | :not_extended                    |
 |                     | 511              | :network_authentication_required |
+
+NOTE:  If you try to render content along with a non-content status code 
+(100-199, 204, 205 or 304), it will be dropped from the response.
 
 #### Finding Layouts
 
