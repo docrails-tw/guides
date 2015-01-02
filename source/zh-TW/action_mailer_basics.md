@@ -7,10 +7,10 @@ Action Mailer 基礎
 
 讀完本篇，您將了解：
 
-* 如何在 Rails 裡寄信收信。
-* 如何產生、編輯 Action Mailer 的類別與 View。
+* 如何在 Rails 裡收發信件。
+* 如何產生、編輯 Action Mailer 的類別與信件預覽（Mailer View）。
 * 如何針對環境設定 Action Mailer。
-* 如何測試 Action Mailer。
+* 如何測試 Action Mailer 類別。
 
 --------------------------------------------------------------------------------
 
@@ -22,19 +22,35 @@ Action Mailer 允許在應用程式裡使用 Mailer 類別與 View 來寄信。M
 寄信
 ----
 
-本節逐步介紹如何建立 Mailer，以及相關的 View。
+本節逐步介紹一步步介紹如何建立 Mailer，以及 Mailer 的 View。
 
-### 產生 Mailer 的步驟
+### 逐步介紹如何產生 Mailer
 
 #### 新建 Mailer
 
 ```bash
 $ bin/rails generate mailer UserMailer
 create  app/mailers/user_mailer.rb
+create  app/mailers/application_mailer.rb
 invoke  erb
 create    app/views/user_mailer
+create    app/views/layouts/mailer.text.erb
+create    app/views/layouts/mailer.html.erb
 invoke  test_unit
 create    test/mailers/user_mailer_test.rb
+create    test/mailers/previews/user_mailer_preview.rb
+```
+
+```ruby
+# app/mailers/application_mailer.rb
+class ApplicationMailer < ActionMailer::Base
+  default from: "from@example.com"
+  layout 'mailer'
+end
+
+# app/mailers/user_mailer.rb
+class UserMailer < ApplicationMailer
+end
 ```
 
 如上所見，可以使用產生器來產生 Mailer。Mailer 概念上類似於 Controller，產生的檔案也差不多：有 Mailer、放信件內容的目錄（View），以及測試 Mailer 的檔案。
@@ -48,20 +64,19 @@ end
 
 #### 編輯 Mailer
 
-Mailer 和 Controller 非常類似。方法都叫做“動作”，用 View 來組織信件內容。但 Controller 是產生 HTML，回給客戶端；然而 Mailer 則是建立訊息，透過信件寄出。
+Mailer 和 Controller 非常類似。方法都叫做“動作”，用 View 來組織信件內容。但 Controller 是產生 HTML 回給客戶端；然而 Mailer 則是建立透過 email 寄出的信件（message）。
 
-看看剛剛產生出來的 `UserMailer`（`app/mailers/user_mailer.rb`）：
+看看剛剛產生出來的 `app/mailers/user_mailer.rb`，內有一個空的 Mailer：
 
 ```ruby
-class UserMailer < ActionMailer::Base
-  default from: 'from@example.com'
+class UserMailer < ApplicationMailer
 end
 ```
 
-新增一個方法，稱之為 `welcome_email`，會寄信給使用者註冊的信箱：
+讓我們新增一個方法，稱之為 `welcome_email`，會寄信給使用者註冊的信箱：
 
 ```ruby
-class UserMailer < ActionMailer::Base
+class UserMailer < ApplicationMailer
   default from: 'notifications@example.com'
 
   def welcome_email(user)
@@ -74,8 +89,8 @@ end
 
 以下是 `welcome_email` 的快速說明。關於 Action Mailer 所有可用的選項請參考[〈Action Mailer 設定〉](#action-mailer-設定)一節。
 
-* `default` ─ 任何使用這個 Mailer 送出的信件，預設值都存在這個 Hash 裡。上例設定了 `:from` 設為 `'notifications@example.com'`。所有發出去的信都會採用這個預設值，但可以在動作裡覆蓋。
-* `mail` ─ 寄信的方法。上例傳入了 `:to` 與 `:subject` 這兩個標頭（Header）。
+* `default Hash` ─ 任何使用這個 Mailer 送出的信件，所有發出去的信都會採用都存在這個 Hash 裡的預設值。上例設定 `:from` 標頭（header）。但預設值可以在每封信裡覆蓋。
+* `mail` ─ 實際的信件內容。上例傳入了 `:to` 與 `:subject` 這兩個標頭（Header）。
 
 和 Controller 一樣，動作裡定義的實體變數，在 View 裡都可以取用。
 
@@ -159,7 +174,7 @@ class UsersController < ApplicationController
 end
 ```
 
-NOTE: Active Job 的預設行為是即刻（`:inline`）執行任務，要馬上寄出信件現在用 `deliver_later` 即可。之後要改成背景執行也很簡單，給 Active Job 設定一個佇列後台即可（比如 Sidekiq、Resque 等）。
+NOTE: Active Job 的預設行為是即刻（`:inline`）執行任務，即時寄出信件現在改用 `deliver_later` 即可。之後要改成背景執行也很簡單，只要給 Active Job 設定一個佇列後台即可（比如 Sidekiq、Resque 等）。
 
 若想馬上寄出信件（比如在定時任務裡），只要呼叫 `deliver_now` 即可：
 
@@ -173,9 +188,9 @@ class SendWeeklySummary
 end
 ```
 
-`welcome_email` 會回傳 `Mail::Message` 物件，對這個物件呼叫 `deliver_now` 或 `deliver_later` 便會將信件發送出去。`ActionMailer::MessageDelivery` 物件不過是 `Mail::Message` 物件的封裝。若想查看、修改 `Mail::Message` 物件，可以對 `ActionMailer::MessageDelivery` 呼叫 `message` 方法，來獲得 `Mail::Message` 物件。
+`welcome_email` 會回傳 `ActionMailer::MessageDelivery` 物件，對這個物件呼叫 `deliver_now` 或 `deliver_later` 便會將信件發送出去。`ActionMailer::MessageDelivery` 物件不過是 `Mail::Message` 物件的封裝。若想查看、修改 `Mail::Message` 物件，可以對 `ActionMailer::MessageDelivery` 呼叫 `message` 方法，來獲得 `Mail::Message` 物件。
 
-### 自動對標頭編碼
+### 標頭值自動編碼
 
 Action Mailer 會自動對標頭（header）與信件主體（body）裡的多位元組字元進行編碼。
 
@@ -193,13 +208,13 @@ Action Mailer 會自動對標頭（header）與信件主體（body）裡的多�
 
 Action Mailer 把新增附件變得非常簡單。
 
-* 傳入檔名與內容，Action Mailer 與 [Mail gem](https://github.com/mikel/mail) 會自動推論出 `mime_type`，設定編碼、建立附件。
+*   傳入檔名與內容，Action Mailer 與 [Mail gem](https://github.com/mikel/mail) 會自動推論出 `mime_type`，設定編碼、建立附件。
 
     ```ruby
     attachments['filename.jpg'] = File.read('/path/to/filename.jpg')
     ```
 
-  觸發 `mail` 方法之後，會寄出由多個部分組成的 Email，附件會嵌套在 `multipart/mixed` 類型裡，`multipart/mixed` 第一個部分是 `multipart/alternative`，包含 HTML 與純文字格式的信件，接著是附件。
+    觸發 `mail` 方法之後，會寄出由多個部分組成的 Email，附件會嵌套在 `multipart/mixed` 類型裡，`multipart/mixed` 第一個部分是 `multipart/alternative`，包含 HTML 與純文字格式的信件，接著是附件。
 
 NOTE: Mail 會自動使用 Base64 來對附件做編碼。若想用不同的編碼，先自行編碼，再使用 Hash 傳給 `attachments` 方法。
 
@@ -281,7 +296,7 @@ Mailer views 檔案在 `app/views/name_of_mailer_class` 目錄下。Mailer 之�
 要修改 Mailer 動作預設使用的 View，可以這麼做：
 
 ```ruby
-class UserMailer < ActionMailer::Base
+class UserMailer < ApplicationMailer
   default from: 'notifications@example.com'
 
   def welcome_email(user)
@@ -300,7 +315,7 @@ end
 若想更靈活的話，也可以傳入區塊，在區塊內明確算繪要用的模版，或是不使用模版，直接傳入字串也可以：
 
 ```ruby
-class UserMailer < ActionMailer::Base
+class UserMailer < ApplicationMailer
   default from: 'notifications@example.com'
 
   def welcome_email(user)
@@ -334,7 +349,7 @@ end
 也可以在算繪呼叫裡，傳入 `layout: 'layout_name'` 選項來指定版型：
 
 ```ruby
-class UserMailer < ActionMailer::Base
+class UserMailer < ApplicationMailer
   def welcome_email(user)
     mail(to: user.email) do |format|
       format.html { render layout: 'my_layout' }
@@ -412,7 +427,7 @@ Email 格式收到的順序由 `ActionMailer::Base.default` 方法裡的 `:parts
 若想送信時覆蓋預設的發送選項（譬如 SMTP credential），可以在 Mailer 的動作裡使用 `delivery_method_options`。
 
 ```ruby
-class UserMailer < ActionMailer::Base
+class UserMailer < ApplicationMailer
   def welcome_email(user, company)
     @user = user
     @url  = user_url(@user)
@@ -431,7 +446,7 @@ end
 有些情況可能不想要使用模版，需要直接將信件主體（Email Body）作為字串送出。可以使用 `:body` 選項。同時記得要加上 `:content_type` 選項（Rails 預設是 `text/plain`）。
 
 ```ruby
-class UserMailer < ActionMailer::Base
+class UserMailer < ApplicationMailer
   def welcome_email(user, email_body)
     mail(to: user.email,
          body: email_body,
@@ -454,7 +469,7 @@ end
 一旦在任何 Mailer 裡定義了 `receive`，Action Mailer 會將進來的信件解析成 Email 物件、解碼、實體化新的 Mailer，接著將 Email 物件傳給 Mailer 的 `receive`。以下是範例：
 
 ```ruby
-class UserMailer < ActionMailer::Base
+class UserMailer < ApplicationMailer
   def receive(email)
     page = Page.find_by(address: email.to.first)
     page.emails.create(
@@ -486,7 +501,7 @@ Action Mailer 允許指定 `before_action`、`after_action` 以及 `around_actio
 * 可以使用 `after_action` 做和 `before_action` 類似的事情，但動作裡可以使用實體變數。
 
 ```ruby
-class UserMailer < ActionMailer::Base
+class UserMailer < ApplicationMailer
   after_action :set_delivery_options,
                :prevent_delivery_to_guests,
                :set_business_headers
