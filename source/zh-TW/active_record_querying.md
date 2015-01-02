@@ -1,5 +1,7 @@
+**DO NOT READ THIS FILE IN GITHUB, GUIDES ARE PUBLISHED IN http://rails.ruby.tw.**
+
 Active Record 查詢
-=============================
+==================
 
 本篇詳細介紹各種用 Active Record 多種從資料庫取出資料的方法。
 

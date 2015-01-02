@@ -1,3 +1,5 @@
+**DO NOT READ THIS FILE IN GITHUB, GUIDES ARE PUBLISHED IN http://rails.ruby.tw.**
+
 Ruby on Rails 3.0 Release Notes
 ===============================
 

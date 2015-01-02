@@ -1,4 +1,6 @@
-Active Model Basics
+**DO NOT READ THIS FILE IN GITHUB, GUIDES ARE PUBLISHED IN http://rails.ruby.tw.**
+
+Active Model 基礎
 ====================
 
 本篇教你如何開始使用 Model。 Active Model 允許 Action Pack 輔助方法與不是 Active Record 的 Model 類別來做互動。Active Model 也允許在 Rails 框架之外自己造 ORM。

@@ -1,5 +1,7 @@
+**DO NOT READ THIS FILE IN GITHUB, GUIDES ARE PUBLISHED IN http://rails.ruby.tw.**
+
 Active Record PostgreSQL
-============================
+========================
 
 本篇介紹 Active Record PostgreSQL 的具體用法。
 
