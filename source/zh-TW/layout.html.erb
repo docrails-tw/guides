@@ -10,7 +10,7 @@
   <meta name="author"      content="http://git.io/G_R1sA">
 
   <meta property="fb:admins"      content="1340181291">
-  <meta property="og:title"       content="Ruby on Rails 指南">
+  <meta property="og:title"       content="<%= yield(:page_title) || Ruby on Rails 指南 %>">
   <meta property="og:site_name"   content="Ruby on Rails 指南">
   <meta property="og:image"       content="http://rails.ruby.tw/images/rails_guides_cover.jpg">
   <meta property="og:url"         content="http://rails.ruby.tw/">
@@ -24,6 +24,19 @@
   <link href="images/favicon.ico" rel="shortcut icon" type="image/x-icon">
 </head>
 <body class="guide">
+  <div id="fb-root"></div>
+  <script>(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/zh-TW/sdk.js#xfbml=1&appId=837401439623727&version=v2.0";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));</script>
+
+  <script type="text/javascript">
+  window.twttr=(function(d,s,id){var t,js,fjs=d.getElementsByTagName(s)[0];if(d.getElementById(id)){return}js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);return window.twttr||(t={_e:[],ready:function(f){t._e.push(f)}})}(document,"script","twitter-wjs"));
+  </script>
+
   <% if @edge %>
   <div>
     <img src="images/edge_badge.png" id="edge-badge" alt="edge-badge">
@@ -31,7 +44,7 @@
   <% end %>
   <div id="topNav">
     <div class="wrapper">
-      <strong class="more-info-label">更多內容 <a href="http://rubyonrails.org/">rubyonrails.org:</a> </strong>
+      <strong class="more-info-label">更多內容 <a href="http://rubyonrails.org/">rubyonrails.org:</a></strong>
       <span class="red-button more-info-button">
         更多內容
       </span>
