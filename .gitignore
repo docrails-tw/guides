@@ -6,3 +6,4 @@
 BASE_PATH
 .DS_Store
 .sass-cache
+*.css.map
