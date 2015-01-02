@@ -35,6 +35,8 @@ Active Job 提供了 Rails 產生器來建立任務。以下會在 `app/jobs` �
 
 ```bash
 $ bin/rails generate job guests_cleanup
+invoke  test_unit
+create    test/jobs/guests_cleanup_job_test.rb
 create  app/jobs/guests_cleanup_job.rb
 ```
 
@@ -42,7 +44,6 @@ create  app/jobs/guests_cleanup_job.rb
 
 ```bash
 $ bin/rails generate job guests_cleanup --queue urgent
-create  app/jobs/guests_cleanup_job.rb
 ```
 
 可以看出來，建立任務就和使用其他的 Rails 產生器一樣簡單。
@@ -66,15 +67,18 @@ end
 將任務加入排程：
 
 ```ruby
-MyJob.perform_later record  # Enqueue a job to be performed as soon the queueing system is free.
+# Enqueue a job to be performed as soon the queueing system is free.
+MyJob.perform_later record
 ```
 
 ```ruby
-MyJob.set(wait_until: Date.tomorrow.noon).perform_later(record)  # Enqueue a job to be performed tomorrow at noon.
+# Enqueue a job to be performed tomorrow at noon.
+MyJob.set(wait_until: Date.tomorrow.noon).perform_later(record)
 ```
 
 ```ruby
-MyJob.set(wait: 1.week).perform_later(record) # Enqueue a job to be performed 1 week from now.
+# Enqueue a job to be performed 1 week from now.
+MyJob.set(wait: 1.week).perform_later(record)
 ```
 
 就這麼簡單！
@@ -110,13 +114,14 @@ class GuestsCleanupJob < ActiveJob::Base
 end
 ```
 
-也可給所有任務加上佇列名前綴，加入 `config.active_job.queue_name_prefix` 設定到 `application.rb` 即可：
+預設佇列名稱的前綴為 `\_`。可以在 `application.rb 修改 `config.active_job.queue_name_delimiter` 來修改：
 
 ```ruby
 # config/application.rb
 module YourApp
   class Application < Rails::Application
     config.active_job.queue_name_prefix = Rails.env
+    config.active_job.queue_name_delimiter = '.'
   end
 end
 
@@ -234,7 +239,8 @@ class TrashableCleanupJob
 end
 ```
 
-以上對任何混入 `ActiveModel::GlobalIdentification` 的類都有效，Active Model 的類別預設皆有混入 `ActiveModel::GlobalIdentification`。
+以上對任何混入 `GlobalID::Identification` 的類都有效，Active Model 的類別預設皆有混入 `GlobalID::Identification`。
+
 
 Exceptions
 ----------
