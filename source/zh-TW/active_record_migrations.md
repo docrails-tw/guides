@@ -780,7 +780,7 @@ Active Record 與參照完整性
 
 Active Record 認為事情要在 model 裡處理好，而不是在資料庫。也是因為這個原因，需要在資料庫實作的功能，不常使用像是觸發器或約束條件。
 
-像 `validates :foreign_key, uniqueness: true` 這樣的驗證，是 Model 可以增強資料整合性的一種方法。`:dependet` 選項讓 Model 可以自動刪除關聯的資料。某些人認為像是這種操作，以及所有在應用程式層級執行的操作，無法保證參照的完整性，要跟[外鍵約束](#外鍵)一樣，放在資料庫解決才是。
+像 `validates :foreign_key, uniqueness: true` 這樣的驗證，是 Model 可以增強資料整合性的一種方法。`:dependent` 選項讓 Model 可以自動刪除關聯的資料。某些人認為像是這種操作，以及所有在應用程式層級執行的操作，無法保證參照的完整性，要跟[外鍵約束](#外鍵)一樣，放在資料庫解決才是。
 
 雖然 Active Record 沒有直接提供任何工具來解決這件事，但可以用 `execute` 方法來執行任何的 SQL 語句。
 
