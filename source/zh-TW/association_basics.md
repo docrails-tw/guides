@@ -1,4 +1,4 @@
-**DO NOT READ THIS FILE IN GITHUB, GUIDES ARE PUBLISHED IN http://rails.ruby.tw.**
+**DO NOT READ THIS FILE ON GITHUB, GUIDES ARE PUBLISHED ON http://rails.ruby.tw.**
 
 Active Record 關聯
 ==========================
@@ -2207,3 +2207,57 @@ end
 * `proxy_association.owner`：回傳關聯物件的擁有者。
 * `proxy_association.reflection`：回傳描述關聯的反射物件（reflection object）。
 * `proxy_association.target`：回傳 `belongs_to` 或 `has_one` 的關聯物件，或是 `has_many` 或 `has_and_belongs_to_many` 的關聯物件集合。
+
+單表繼承
+-------
+
+有時候會想要再不同的 Model 之間共享欄位與行為。比如我們有 Car、Motorcycle 以及 Bicycle 這三個 Model。這三個 Model 都有 `color` 以及 `price` 欄位，以及通用的方法，但各自又有特定的行為及控制器。
+
+在 Rails 裡面要辦到非常容易。首先，先產生一個 Vehicle Model 作為基石：
+
+```bash
+$ rails generate model vehicle type:string color:string price:decimal{10.2}
+```
+
+有注意到加了一個 “type” 欄位嗎？因為所有的 Model 都會存在一張“單一的資料表”裡，Rails 會把 Model 名稱存在這個 type 欄位裡。根據上面舉的例子，type 的值就會是 "Car"、"Motorcycle" 或 "Bicycle"。STI 需要有一個 “type” 欄位才可以正常工作。
+
+接下來產生三張繼承自 Vehicle 的 Model。這裡可以使用 `--parent=PARENT` 選項，會產生出繼承自指定 `PARENT` 的 Model，而不會產生出遷移檔案（因為表已經存在了嘛）。
+
+譬如要產生 Car Model：
+
+```bash
+$ rails generate model car --parent=Vehicle
+```
+
+產生的 Model 看起來會像是：
+
+```ruby
+class Car < Vehicle
+end
+```
+
+這表示所有 Vehicle 有的行為，譬如公有方法、關聯等，Car 也有。
+
+新建的 Car 會存在 `vehicles` 表裡，`type` 會被設為 `"Car"`。
+
+```ruby
+Car.create color: 'Red', price: 10000
+```
+
+會產生下列的 SQL 語句：
+
+```sql
+INSERT INTO "vehicles" ("type", "color", "price") VALUES ("Car", "Red", 10000)
+```
+
+查詢 Car 記錄也只會搜尋是 “Car” 的 Vehicles：
+
+```ruby
+Car.all
+```
+
+會執行像是下面的 SQL 查詢：
+
+```sql
+SELECT "vehicles".* FROM "vehicles" WHERE "vehicles"."type" IN ('Car')
+```
