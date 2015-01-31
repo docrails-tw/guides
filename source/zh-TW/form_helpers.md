@@ -667,9 +667,16 @@ class LabellingFormBuilder < ActionView::Helpers::FormBuilder
 end
 ```
 
-若很常需要使用這個功能，可以定義一個 `labeled_form_for` 輔助方法，來自動代入 `builder: LabellingFormBuilder` 選項。
+若很常需要使用這個功能，可以定義一個 `labeled_form_for` 輔助方法，來自動代入 `builder: LabellingFormBuilder` 選項：
 
-表單構造器會決定下面這行程式碼會做什麼事：
+```ruby
+def labeled_form_for(record, options = {}, &block)
+  options.merge! builder: LabellingFormBuilder
+  form_for record, options, &block
+end
+```
+
+表單構造器也決定了下面這行程式碼的行為：
 
 ```erb
 <%= render partial: f %>
