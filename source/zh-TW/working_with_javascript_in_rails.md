@@ -285,7 +285,7 @@ class UsersController < ApplicationController
   end
 ```
 
-注意 `respond_to` 區塊內的 `format.js`，這是 Cotroller 回應 Ajax 請求的地方。`create` 動作對應 `app/views/users/create.js.erb`：
+注意 `respond_to` 區塊內的 `format.js`，這是 Controller 回應 Ajax 請求的地方。`create` 動作對應 `app/views/users/create.js.erb`：
 
 ```erb
 $("<%= escape_javascript(render @user) %>").appendTo("#users");
