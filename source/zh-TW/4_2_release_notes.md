@@ -408,9 +408,6 @@ Action Pack
 *   改善路由錯誤頁面，搜索路由支持模糊搜尋。
   ([Pull Request](https://github.com/rails/rails/pull/14619))
 
-*   傳入 URL 輔助方法的片段現在會自動 Escaped。
-  ([Commit](https://github.com/rails/rails/commit/5460591f0226a9d248b7b4f89186bd5553e7768f))
-
 *   新增關掉記錄 CSRF 失敗的選項。
   ([Pull Request](https://github.com/rails/rails/pull/14280))
 
