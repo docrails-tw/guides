@@ -1295,7 +1295,7 @@ Client.unscoped {
 動態查詢方法
 ------------------
 
-NOTE: Rails 4.0 已棄用動態查詢方法，並在 4.1 移除這些方法。最佳實踐是使用 Active Record 的 scope 來取代。可以在 [activerecord-deprecated_finders](https://github.com/rails/activerecord-deprecated_finders。
+NOTE: Rails 4.0 已棄用動態查詢方法，並在 4.1 移除這些方法。最佳實踐是使用 Active Record 的 scope 來取代。可以在 [activerecord-deprecated_finders](https://github.com/rails/activerecord-deprecated_finders
 ) Gem 找到這些棄用的方法。
 
 每個資料表裡定義的欄位（又稱屬性），Active Record 都提供一個 Finder 方法。假設 `Client` Model 有 `first_name`，則 Active Record 便會有 `find_by_first_name` 方法可用。若 `Client` Model 有 `locked`，則 Active Record 便會有 `find_by_locked` 方法可用。
