@@ -1,13 +1,13 @@
-source 'https://rubygems.org'
+source "https://rubygems.org"
 
-gem 'activesupport'
-gem 'actionpack'
+gem "activesupport"
+gem "actionpack"
 
 group :doc do
-  gem 'redcarpet'
+  gem "redcarpet", ">= 3.2.3"
 end
 
-gem 'nokogiri'
-gem 'rake'
-gem 'sass'
-gem 'compass'
+gem "nokogiri"
+gem "rake"
+gem "sass"
+gem "compass"
