@@ -254,7 +254,7 @@ Client.where(first_name: 'does not exist').take!
 
 #### `first`
 
-`first`取出 `limit` 筆記錄，按主鍵排序：
+`first` 取出 `limit` 筆記錄，按主鍵排序：
 
 ```ruby
 client = Client.first
