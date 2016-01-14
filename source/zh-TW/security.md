@@ -1,6 +1,6 @@
 **DO NOT READ THIS FILE ON GITHUB, GUIDES ARE PUBLISHED ON http://rails.ruby.tw.**
 
-Ruby on Rails 安全性指南
+Ruby on Rails 安全指南
 ============================
 
 本文介紹網頁應用程式常見的安全問題，以及在 Rails 中該如何避免。
