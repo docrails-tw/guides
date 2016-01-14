@@ -1,33 +1,33 @@
 **DO NOT READ THIS FILE ON GITHUB, GUIDES ARE PUBLISHED ON http://rails.ruby.tw.**
 
-Ruby on Rails Security Guide
+Ruby on Rails 安全性指南
 ============================
 
-This manual describes common security problems in web applications and how to avoid them with Rails.
+本文介紹網頁應用程式常見的安全問題，以及在 Rails 中該如何避免。
 
-After reading this guide, you will know:
+閱讀本文之後，你將會暸解：
 
-* All countermeasures _that are highlighted_.
-* The concept of sessions in Rails, what to put in there and popular attack methods.
-* How just visiting a site can be a security problem (with CSRF).
-* What you have to pay attention to when working with files or providing an administration interface.
-* How to manage users: Logging in and out and attack methods on all layers.
-* And the most popular injection attack methods.
+* 所有推薦使用的安全性對策。
+* Rails 中會話的概念，應該在會話中保存什麼樣的內容以及常見的攻擊手法。
+* 單純訪問網站為什麼會造成安全問題（CSRF 跨站請求偽造）。
+* 處理檔案與提供管理介面時，應該注意哪些問題。
+* 如何管理使用者：登入登出以及各種攻擊手法。
+* 最常見的注入攻擊手法。
 
 --------------------------------------------------------------------------------
 
-Introduction
+簡介
 ------------
 
-Web application frameworks are made to help developers build web applications. Some of them also help you with securing the web application. In fact one framework is not more secure than another: If you use it correctly, you will be able to build secure apps with many frameworks. Ruby on Rails has some clever helper methods, for example against SQL injection, so that this is hardly a problem. It's nice to see that all of the Rails applications I audited had a good level of security.
+網頁應用程式框架能夠幫助開發者開發網頁應用程式。有些框架也能加強網頁的安全性。事實上，框架之間並沒有誰比誰更安全：只要使用得當，可以用任何框架開發出安全的網頁應用程式。Ruby on Rails 提供一些聰明的幫助方法，例如避免SQL資料隱碼攻擊（SQL injection），所以我們不必為此擔心。很高興我見到的所有 Rails 應用程式都有很高的安全性。
 
-In general there is no such thing as plug-n-play security. Security depends on the people using the framework, and sometimes on the development method. And it depends on all layers of a web application environment: The back-end storage, the web server and the web application itself (and possibly other layers or applications).
+一般來說安全性並不能隨插即用。安全性取決於使用的框架，有時候也與開發方式有關。安全性會受到網頁應用程式的所有環節影響：儲存方式、網頁伺服器以及應用程式本身（也可能是其他層面的問題）。
 
-The Gartner Group however estimates that 75% of attacks are at the web application layer, and found out "that out of 300 audited sites, 97% are vulnerable to attack". This is because web applications are relatively easy to attack, as they are simple to understand and manipulate, even by the lay person.
+高德納諮詢公司（Gartner Group）估計有 75% 的攻擊都來自於網頁應用程式層面，同時也指出「300 個接受檢查的網站，97%  存在安全性風險」。這是因為網頁應用程式就連外行人也很容易瞭解與操作，使得它相對易於受到攻擊。
 
-The threats against web applications include user account hijacking, bypass of access control, reading or modifying sensitive data, or presenting fraudulent content. Or an attacker might be able to install a Trojan horse program or unsolicited e-mail sending software, aim at financial enrichment or cause brand name damage by modifying company resources. In order to prevent attacks, minimize their impact and remove points of attack, first of all, you have to fully understand the attack methods in order to find the correct countermeasures. That is what this guide aims at.
+對網頁應用程式不利的威脅包括：竊取使用者帳戶、繞開訪問限制、讀取敏感資料或是顯示詐欺內容。攻擊者也有可能安裝木馬程式或是未經允許的郵件發送程式，目的是獲得金錢上的回報或是竄改目標公司資料導致品牌信譽受到影響。為了防範這些攻擊，降低攻擊的影響以及移除可能受到攻擊的弱點，你必須完全暸解攻擊手法才能找出對策。這就是本文的目的。
 
-In order to develop secure web applications you have to keep up to date on all layers and know your enemies. To keep up to date subscribe to security mailing lists, read security blogs and make updating and security checks a habit (check the <a href="#additional-resources">Additional Resources</a> chapter). I do it manually because that's how you find the nasty logical security problems.
+為了開發出安全的應用程式，你必須要保持更新相關知識，並暸解你的攻擊者。持續訂閱安全性相關的郵件列表、部落格文章，將更新與確認安全性當作一種習慣（查看<a href="#additional-resources">相關資源</a>章節)。親自做這些事情，因為這樣你就能夠從中找到邏輯上的糟糕安全性問題。
 
 Sessions
 --------
