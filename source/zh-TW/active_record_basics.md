@@ -22,7 +22,7 @@ Active Record 是 [MVC](getting_started.html#the-mvc-architecture) 的 M（Model
 
 ### Active Record 模式
 
-Active Record 模式出自 Martin Fowler 在其書：《Patterns of Enterprise Application Architecture》中[所描述的 Active Record](http://www.martinfowler.com/eaaCatalog/activeRecord.html)。在 Active Record 模式裡，物件擁有持久化的資料與行為，Active Record 確保存取資料的邏輯是物件的一部分，進而教導使用者如何將物件寫入於讀出資料庫。
+Active Record 模式出自 Martin Fowler 在其書：《Patterns of Enterprise Application Architecture》中[所描述的 Active Record](http://www.martinfowler.com/eaaCatalog/activeRecord.html)。在 Active Record 模式裡，物件擁有持久化的資料與行為，Active Record 確保存取資料的邏輯是物件的一部分，進而教導使用者如何將物件寫入與讀出資料庫。
 
 ### 物件關聯映射
 
@@ -66,7 +66,7 @@ Active Record 資料表欄位的命名慣例，取決於欄位的用途
 * **外鍵** - 應用資料表的單數形加上 `_id` 來命名，比如 `item_id`, `order_id`。Active Record 會在你建立 Model 之間的關聯時，尋找這種形式的欄位 `singularized_table_name_id`。
 
 * **主鍵** -  Active Record 預設會使用一個叫做 `id` 的整數欄位，作為資料表的主鍵。採用 [Active Record
-  遷移](migrations.html) 來建立資料表時，這個欄位會自動產生。
+  遷移](active_record_migrations.html) 來建立資料表時，這個欄位會自動產生。
 
 以下是某些選擇性的欄位名稱，會加入更多功能到 Active Record 實體：
 
@@ -79,7 +79,7 @@ Active Record 資料表欄位的命名慣例，取決於欄位的用途
   [多態關聯](association_basics.html#polymorphic-associations) 所需的類型資料。
 * `(table_name)_count` - 用來快取關聯物件的數量。舉例來說，`Article` Model 的 `comments_count` 便會為每篇文章快取評論的數量。
 
-NOTE: 雖然這些欄位名稱是選擇性的，但實際上是 Active Record 的保留字。如果要使用這些額外的功能，不要將這些保留字作為他用。比如，`type` 是用來設計單表繼承的資料表。如果沒有使用 STI 功能，試試用個類似的名稱如，“context” 來描述您在建模的資料。
+NOTE: 雖然這些欄位名稱是選擇性的，但實際上是 Active Record 的保留字。如果要使用這些額外的功能，不要將這些保留字作為他用。比如，`type` 是用來設計單表繼承的資料表。如果沒有使用 STI（Single Table Inheritance） 功能，試試用個類似的名稱如，“context” 來描述您在建模的資料。
 
 新增 Active Record Models
 -----------------------------
@@ -148,7 +148,7 @@ CRUD 是四種資料操作的簡稱：**C**reate,
 
 ### 新增 Create
 
-Active Record 物件可以從 Hash、區塊（blcok）中建立出來，或者是建立後再設定也可以。`new` 方法回傳一個新的物件，而 `create` 會會傳新物件並存入資料庫。
+Active Record 物件可以從 Hash、區塊（blcok）中建立出來，或者是建立後再設定也可以。`new` 方法回傳一個新的物件，而 `create` 會回傳新物件並存入資料庫。
 
 舉個例子，`User` Model 有 `name` 與 `occupation` 屬性，以下是用 `create` 方法在資料庫新增一筆記錄的例子：
 
@@ -262,7 +262,7 @@ Active Record 回呼允許您在 Model 生命週期裡對特定事件附加程�
 遷移
 ----------
 
-Rails 提供了用來處理資料庫綱要的 DSL，稱為“遷移”。遷移存在檔案裡，可以對 Active Record 支持的任何資料庫，透過 `rake` 執行。以下是如何新建一張資料表：
+Rails 提供了用來處理資料庫綱要的 DSL（domain-specific language），稱為“遷移”。遷移存在檔案裡，可以對 Active Record 支持的任何資料庫，透過 `rake` 執行。以下是如何新建一張資料表：
 
 ```ruby
 class CreatePublications < ActiveRecord::Migration
