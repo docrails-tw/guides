@@ -1139,7 +1139,7 @@ end
 
 ##### `:class_name`
 
-如果關聯 Model 名稱推論不出來時，可以使用 `:class_name` 選項來指定。舉例來說，訂單屬於顧客，但顧客的 Model 名是 `Billing`，則可以這麼指定：
+如果關聯 Model 名稱推論不出來時，可以使用 `:class_name` 選項來指定。舉例來說，供應商只有一個帳號，但帳號的 Model 名是 `Billing`，則可以這麼指定：
 
 ```ruby
 class Supplier < ActiveRecord::Base
@@ -1177,7 +1177,7 @@ TIP: 所有情況下，Rails 都不會幫您建立外鍵。需要自己在遷移
 
 ```ruby
 class Supplier < ActiveRecord::Base
-  has_one :account, : :supplier
+  has_one :account, inverse_of: :supplier
 end
 
 class Account < ActiveRecord::Base
@@ -1599,7 +1599,7 @@ end
 * `order`
 * `readonly`
 * `select`
-* `uniq`
+* `distinct`
 
 ##### `where`
 
