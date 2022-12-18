@@ -1135,8 +1135,7 @@ end
       <td><%= link_to 'Show', article_path(article) %></td>
       <td><%= link_to 'Edit', edit_article_path(article) %></td>
       <td><%= link_to 'Destroy', article_path(article),
-              method: :delete,
-              data: { confirm: 'Are you sure?' } %></td>
+              data: {turbo_method: :delete, turbo_confirm: 'Are you sure?'} %></td>
     </tr>
   <% end %>
 </table>
